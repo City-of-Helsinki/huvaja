@@ -1,0 +1,46 @@
+{
+  "extends": "airbnb",
+
+  "env": {
+    "browser": true,
+    "mocha": true,
+    "node": true
+  },
+
+  "parser": "babel-eslint",
+
+  "plugins": [
+    "babel",
+    "import",
+    "react"
+  ],
+
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "./config/webpack.common.js"
+      }
+    }
+  },
+
+  "rules": {
+
+    // Amendments to airbnb rules
+    // ##########################
+
+    "import/no-extraneous-dependencies": "off",
+
+    "import/order": ["error", { groups: ["builtin", "external", ["internal", "parent", "sibling", "index"]], "newlines-between": "always" }],
+
+    // makes testing easier with chai expect
+    "no-unused-expressions": "off",
+
+    // allow functions to be used before they are defined
+    "no-use-before-define": ["error", "nofunc"],
+
+    "react/jsx-filename-extension": "off",
+
+    "react/no-unused-prop-types": ["error", { "skipShapeProps": true }],
+
+  }
+}

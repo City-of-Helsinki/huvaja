@@ -1,0 +1,21 @@
+{
+  "name": "huvaja",
+  "scripts": {
+    "postdeploy": "npm run build"
+  },
+  "env": {},
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "https://github.com/jpvanhal/nginx-buildpack.git#no-app-server"
+    }
+  ]
+}
