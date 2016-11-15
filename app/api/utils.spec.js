@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { CALL_API } from 'redux-api-middleware';
 
+import schemas from './schemas';
 import {
   buildAPIUrl,
   createTransformFunction,
@@ -57,6 +58,31 @@ describe('api/utils', () => {
         };
 
         expect(transformFunction(initial)).to.deep.equal(expected);
+      });
+
+      describe('if normalizr Schema is provided', () => {
+        it('uses the Schema to normalize data', () => {
+          const transformFunction = createTransformFunction(schemas.resourceSchema);
+          const initialResourceData = {
+            id: 'r-1',
+            unit: {
+              id: 'u-1',
+            },
+          };
+          const expectedResourceData = {
+            entities: {
+              resources: {
+                'r-1': { id: 'r-1', unit: 'u-1' },
+              },
+              units: {
+                'u-1': { id: 'u-1' },
+              },
+            },
+            result: 'r-1',
+          };
+
+          expect(transformFunction(initialResourceData)).to.deep.equal(expectedResourceData);
+        });
       });
     });
   });
