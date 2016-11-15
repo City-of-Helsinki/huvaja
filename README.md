@@ -1,6 +1,8 @@
 huvaja
 ======
 
+[![Circle CI](https://circleci.com/gh/fastmonkeys/huvaja.svg?style=svg)](https://circleci.com/gh/fastmonkeys/huvaja)
+
 Requirements
 ------------
 
