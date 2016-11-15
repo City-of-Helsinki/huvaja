@@ -38,6 +38,11 @@ module.exports = merge(common, {
     ],
   },
   plugins: [
+    new webpack.DefinePlugin({
+      SETTINGS: {
+        API_URL: JSON.stringify('https://mock-api.fi'),
+      },
+    }),
     new webpack.IgnorePlugin(/ReactContext/),
   ],
 });
