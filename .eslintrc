@@ -23,6 +23,10 @@
     }
   },
 
+  "globals": {
+    SETTINGS: true
+  },
+
   "rules": {
 
     // Amendments to airbnb rules

@@ -44,6 +44,9 @@ module.exports = merge(common, {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
+      SETTINGS: {
+        API_URL: JSON.stringify(process.env.API_URL || 'https://api.hel.fi/virkarespa/v1/'),
+      },
     }),
     new CleanWebpackPlugin([outputPath], { root: path.resolve(__dirname, '..') }),
     new webpack.optimize.DedupePlugin(),
