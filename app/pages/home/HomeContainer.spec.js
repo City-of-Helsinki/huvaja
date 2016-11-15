@@ -4,7 +4,7 @@ import React from 'react';
 
 import { UnconnectedHomeContainer as HomeContainer } from './HomeContainer';
 
-describe('screens/my-pets/HomeContainer', () => {
+describe('pages/my-pets/HomeContainer', () => {
   function getWrapper(props) {
     const defaults = {
       message: 'Some message',

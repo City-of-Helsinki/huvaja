@@ -5,7 +5,7 @@ import DocumentTitle from 'react-document-title';
 
 import App from './App';
 
-describe('screens/App', () => {
+describe('pages/App', () => {
   const defaultProps = {
     className: 'test-page',
     title: 'Test title',
