@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
 import { dataReducer } from 'api/reducers';
-import home from './homeReducer';
+import search from './searchReducer';
 
 export default combineReducers({
   data: dataReducer,
-  home,
+  search,
 });

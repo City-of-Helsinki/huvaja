@@ -2,14 +2,14 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import { UnconnectedHomeContainer as HomeContainer } from './HomeContainer';
+import { UnconnectedSearchContainer as SearchContainer } from './SearchContainer';
 
-describe('pages/my-pets/HomeContainer', () => {
+describe('pages/search/SearchContainer', () => {
   function getWrapper(props) {
     const defaults = {
       message: 'Some message',
     };
-    return shallow(<HomeContainer {...defaults} {...props} />);
+    return shallow(<SearchContainer {...defaults} {...props} />);
   }
 
   it('renders a header with correct text', () => {

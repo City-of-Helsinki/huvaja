@@ -2,11 +2,11 @@ const initialState = {
   message: 'Huvaja',
 };
 
-function homeReducer(state = initialState, action) {
+function searchReducer(state = initialState, action) {
   switch (action.type) {
     default:
       return state;
   }
 }
 
-export default homeReducer;
+export default searchReducer;
