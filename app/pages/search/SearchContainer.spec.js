@@ -10,7 +10,6 @@ import { UnconnectedSearchContainer as SearchContainer } from './SearchContainer
 describe('pages/search/SearchContainer', () => {
   function getWrapper(props) {
     const defaults = {
-      message: 'Some message',
       fetchResources: simple.mock(),
       resources: [],
     };
@@ -20,20 +19,19 @@ describe('pages/search/SearchContainer', () => {
   describe('render', () => {
     describe('when resources are fetched', () => {
       let wrapper;
-      const message = 'Hello';
       const resources = [
         { id: 'r-1', name: { fi: 'Resurssi 1' } },
         { id: 'r-2', name: { fi: 'Resurssi 2' } },
       ];
 
       before(() => {
-        wrapper = getWrapper({ message, resources });
+        wrapper = getWrapper({ resources });
       });
 
       it('renders a header with correct text', () => {
         const header = wrapper.find('h1');
         expect(header.length).to.equal(1);
-        expect(header.text()).to.equal('Project Hello');
+        expect(header.text()).to.equal('Tilat');
       });
 
       it('renders a Link with correct props for each resource given in props', () => {
