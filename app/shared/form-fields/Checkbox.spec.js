@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
-import Col from 'react-bootstrap/lib/Col';
 import RBCheckbox from 'react-bootstrap/lib/Checkbox';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
@@ -30,19 +29,6 @@ describe('shared/form-fields/Checkbox', () => {
       const actualProps = getWrapper().find(FormGroup).props();
       expect(actualProps.controlId).to.equal(defaultProps.id);
       expect(actualProps.validationState).to.equal(defaultProps.validationState);
-    });
-  });
-
-  describe('Col component', () => {
-    it('is rendered', () => {
-      const col = getWrapper().find(Col);
-      expect(col.length).to.equal(1);
-    });
-
-    it('gets correct props', () => {
-      const actualProps = getWrapper().find(Col).props();
-      expect(actualProps.sm).to.equal(9);
-      expect(actualProps.smOffset).to.equal(3);
     });
   });
 
