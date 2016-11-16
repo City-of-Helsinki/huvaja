@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
-import Col from 'react-bootstrap/lib/Col';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import RBFormControl from 'react-bootstrap/lib/FormControl';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
@@ -33,46 +32,11 @@ describe('shared/form-fields/FormControl', () => {
       expect(actualProps.controlId).to.equal(defaultProps.id);
       expect(actualProps.validationState).to.equal(defaultProps.validationState);
     });
-  });
 
-  describe('Col components', () => {
-    it('renders 2 Col components', () => {
-      const cols = getWrapper().find(Col);
-      expect(cols.length).to.equal(2);
-    });
-
-    describe('the first Col', () => {
-      let col;
-
-      before(() => {
-        col = getWrapper().find(Col).at(0);
-      });
-
-      it('gets correct props', () => {
-        expect(col.props().componentClass).to.equal(ControlLabel);
-        expect(col.props().sm).to.equal(3);
-      });
-
-      it('contains the label text given in props', () => {
-        expect(col.props().children).to.equal(defaultProps.label);
-      });
-    });
-
-    describe('the second Col', () => {
-      let col;
-
-      before(() => {
-        col = getWrapper().find(Col).at(1);
-      });
-
-      it('gets correct props', () => {
-        expect(col.props().sm).to.equal(9);
-      });
-
-      it('contains React Bootstrap FormControl', () => {
-        const rbFormControl = col.find(RBFormControl);
-        expect(rbFormControl.length).to.equal(1);
-      });
+    it('renders a ControlLabel with correct label', () => {
+      const controlLabel = getWrapper().find(FormGroup).find(ControlLabel);
+      expect(controlLabel).to.have.length(1);
+      expect(controlLabel.prop('children')).to.equal(defaultProps.label);
     });
   });
 
