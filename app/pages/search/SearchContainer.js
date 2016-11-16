@@ -2,9 +2,14 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
+import { fetchResources } from 'api/actions';
 import selector from './searchSelector';
 
-export class UnconnectedSearchContainer extends Component {  // eslint-disable-line
+export class UnconnectedSearchContainer extends Component {
+  componentDidMount() {
+    this.props.fetchResources();
+  }
+
   render() {
     return (
       <div className="search">
@@ -16,7 +21,12 @@ export class UnconnectedSearchContainer extends Component {  // eslint-disable-l
 }
 
 UnconnectedSearchContainer.propTypes = {
+  fetchResources: PropTypes.func.isRequired,
   message: PropTypes.string.isRequired,
 };
 
-export default connect(selector)(UnconnectedSearchContainer);
+const actions = {
+  fetchResources,
+};
+
+export default connect(selector, actions)(UnconnectedSearchContainer);
