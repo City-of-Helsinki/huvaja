@@ -52,6 +52,7 @@
     "redux-api-middleware": "1.0.2",
     "redux-form": "6.2.0",
     "reselect": "2.5.4",
+    "seamless-immutable": "6.1.4",
     "style-loader": "0.13.1",
     "url-loader": "0.5.7",
     "webpack": "1.13.3",
