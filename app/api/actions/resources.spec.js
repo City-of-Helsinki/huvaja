@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import types from './actionTypes';
+import types from '../actionTypes';
 import {
   favoriteResource,
   unfavoriteResource,

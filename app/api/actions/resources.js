@@ -1,6 +1,6 @@
 import { CALL_API } from 'redux-api-middleware';
 
-import types from './actionTypes';
+import types from '../actionTypes';
 import {
   buildAPIUrl,
   getErrorTypeDescriptor,
