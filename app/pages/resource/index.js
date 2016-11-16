@@ -1,3 +1,3 @@
-import ResourceContainer from './ResourceContainer';
+import ResourcePageContainer from './ResourcePageContainer';
 
-export default ResourceContainer;
+export default ResourcePageContainer;
