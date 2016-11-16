@@ -2,12 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
-import selector from './homeSelector';
+import selector from './searchSelector';
 
-export class UnconnectedHomeContainer extends Component {  // eslint-disable-line
+export class UnconnectedSearchContainer extends Component {  // eslint-disable-line
   render() {
     return (
-      <div className="home">
+      <div className="search">
         <h1>Project {this.props.message}</h1>
         <Link to="/resources/999">Go to resource page</Link>
       </div>
@@ -15,8 +15,8 @@ export class UnconnectedHomeContainer extends Component {  // eslint-disable-lin
   }
 }
 
-UnconnectedHomeContainer.propTypes = {
+UnconnectedSearchContainer.propTypes = {
   message: PropTypes.string.isRequired,
 };
 
-export default connect(selector)(UnconnectedHomeContainer);
+export default connect(selector)(UnconnectedSearchContainer);

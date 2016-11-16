@@ -1,7 +1,7 @@
 import { createStructuredSelector } from 'reselect';
 
 function messageSelector(state) {
-  return state.home.message;
+  return state.search.message;
 }
 
 export default createStructuredSelector({
