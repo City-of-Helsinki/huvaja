@@ -46,5 +46,7 @@
 
     "react/no-unused-prop-types": ["error", { "skipShapeProps": true }],
 
+    "react/forbid-prop-types": ["warn", { "forbid": ['array', 'object'] }]
+
   }
 }
