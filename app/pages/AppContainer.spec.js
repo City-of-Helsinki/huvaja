@@ -7,11 +7,12 @@ import simple from 'simple-mock';
 import { UnconnectedAppContainer as AppContainer } from './AppContainer';
 
 describe('pages/AppContainer', () => {
+  const content = <p className="children">Some content</p>;
   function getWrapper(props) {
     const defaults = {
       fetchUnits: simple.mock,
     };
-    return shallow(<AppContainer {...defaults} {...props} />);
+    return shallow(<AppContainer {...defaults} {...props}>{content}</AppContainer>);
   }
 
   describe('render', () => {
@@ -31,6 +32,11 @@ describe('pages/AppContainer', () => {
       const div = getWrapper().find('div');
       expect(div.length).to.equal(1);
       expect(div.prop('className')).to.equal('app');
+    });
+
+    it('renders children', () => {
+      const children = getWrapper().find('.children');
+      expect(children.equals(content)).to.be.true;
     });
   });
 
