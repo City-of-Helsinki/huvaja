@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import { fetchResource } from 'api/actions';
 import ResourceInfo from './info';
+import ReservationForm from './reservation-form/';
 import selector from './resourcePageSelector';
 
 export class UnconnectedResourcePageContainer extends Component {
@@ -18,6 +19,7 @@ export class UnconnectedResourcePageContainer extends Component {
     return (
       <Loader loaded={isLoaded}>
         <ResourceInfo resource={resource} unit={unit} />
+        <ReservationForm resource={resource} />
       </Loader>
     );
   }

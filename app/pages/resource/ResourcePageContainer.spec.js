@@ -5,6 +5,7 @@ import Loader from 'react-loader';
 import simple from 'simple-mock';
 
 import ResourceInfo from './info';
+import ReservationForm from './reservation-form/';
 import { UnconnectedResourcePageContainer as ResourcePageContainer } from './ResourcePageContainer';
 
 describe('pages/resource/ResourcePageContainer', () => {
@@ -33,6 +34,12 @@ describe('pages/resource/ResourcePageContainer', () => {
         expect(resourceInfo).to.have.length(1);
         expect(resourceInfo.prop('resource')).to.deep.equal(resource);
         expect(resourceInfo.prop('unit')).to.deep.equal(unit);
+      });
+
+      it('renders a ReservationForm with correct props', () => {
+        const reservationForm = wrapper.find(ReservationForm);
+        expect(reservationForm).to.have.length(1);
+        expect(reservationForm.prop('resource')).to.deep.equal(resource);
       });
     });
 
