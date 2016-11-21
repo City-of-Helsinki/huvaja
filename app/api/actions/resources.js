@@ -1,4 +1,4 @@
-import { createApiAction } from './utils';
+import createApiAction from './createApiAction';
 import schemas from './schemas';
 
 function fetchFavoritedResources(timeAsMoment, source) {
