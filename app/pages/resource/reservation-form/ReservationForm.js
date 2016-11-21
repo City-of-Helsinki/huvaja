@@ -1,28 +1,24 @@
 import React, { PropTypes } from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import { Field, reduxForm } from 'redux-form';
-import forIn from 'lodash/forIn';
 
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
 
 
-const requiredFields = {
-  resource: true,
-  eventName: true,
-  participants: true,
-};
+const requiredFields = ['resource', 'eventName', 'numberOfParticipants'];
 
 export function validate(values) {
   const errors = {};
-  forIn(requiredFields, (value, key) => {
-    if (!values[key]) {
-      errors[key] = 'Required';
+  requiredFields.forEach((value) => {
+    if (!values[value]) {
+      errors[value] = 'Pakollinen tieto';
     }
   });
   return errors;
 }
 
-function renderField(name, type, label, { controlProps, required }) {
+function renderField(name, type, label, controlProps = {}) {
+  const required = requiredFields.indexOf(name) !== -1;
   return (
     <Field
       component={ReduxFormField}
@@ -42,22 +38,17 @@ export function UnconnectedReservationForm({ handleSubmit }) {
           'resource',
           'text',
           'Tila',
-          {
-            controlProps: { disabled: true },
-            required: requiredFields.resource !== null,
-          }
+          { disabled: true }
         )}
         {renderField(
           'eventName',
           'text',
           'Tapahtuma',
-          { required: requiredFields.eventName !== null }
         )}
         {renderField(
-          'participants',
+          'numberOfParticipants',
           'number',
           'Osallistujia',
-          { required: requiredFields.participants !== null }
         )}
         <div className="form-controls">
           <Button
