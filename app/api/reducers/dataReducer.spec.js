@@ -99,6 +99,59 @@ describe('api/reducers/dataReducer', () => {
   });
 
   describe('handling actions', () => {
+    describe('RESERVATION_DELETE_SUCCESS', () => {
+      const deleteReservationSuccess = createAction(actionTypes.RESERVATION_DELETE_SUCCESS);
+
+      it('changes reservation state to cancelled in reservations', () => {
+        const reservation = { id: 1234, state: 'confirmed' };
+        const initialState = immutable({
+          reservations: { [reservation.id]: reservation },
+          resources: {},
+        });
+        const action = deleteReservationSuccess(reservation);
+        const nextState = dataReducer(initialState, action);
+
+        const actual = nextState.reservations[reservation.id];
+        const expected = { id: 1234, state: 'cancelled' };
+
+        expect(actual).to.deep.equal(expected);
+      });
+
+      it('changes reservation state to cancelled in resource reservations', () => {
+        const resource = { id: 'r-1' };
+        const reservation = { id: 1234, resource: resource.id, state: 'confirmed' };
+        resource.reservations = [reservation];
+
+        const initialState = immutable({
+          reservations: {},
+          resources: { [resource.id]: resource },
+        });
+        const action = deleteReservationSuccess(reservation);
+        const nextState = dataReducer(initialState, action);
+        const actualReservations = nextState.resources[resource.id].reservations;
+
+        expect(actualReservations[0].state).to.deep.equal('cancelled');
+      });
+
+      it('does not touch other resource values', () => {
+        const resource = {
+          id: 'r-1',
+          otherValue: 'whatever',
+        };
+        const reservation = { id: 1234, resource: resource.id, state: 'confirmed' };
+        const initialState = immutable({
+          reservations: {},
+          resources: { [resource.id]: resource },
+        });
+        const action = deleteReservationSuccess(reservation);
+        const nextState = dataReducer(initialState, action);
+        const expectedValue = resource.otherValue;
+        const actualvalue = nextState.resources[resource.id].otherValue;
+
+        expect(expectedValue).to.deep.equal(actualvalue);
+      });
+    });
+
     describe('RESERVATION_POST_SUCCESS', () => {
       const postReservationSuccess = createAction(actionTypes.RESERVATION_POST_SUCCESS);
 
