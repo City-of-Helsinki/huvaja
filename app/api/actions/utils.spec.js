@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { CALL_API } from 'redux-api-middleware';
 
 import schemas from './schemas';
 import {
@@ -100,44 +99,11 @@ describe('api/utils', () => {
       expect(actual).to.equal(actionType);
     });
 
-    it('contains a meta function', () => {
-      expect(typeof getErrorTypeDescriptor(actionType).meta).to.equal('function');
-    });
-
-    describe('the meta function', () => {
-      const mockAction = {
-        [CALL_API]: {
-          types: [{ type: 'SOME_GET_REQUEST' }],
-        },
-      };
-
-      it('returns an object with correct properties', () => {
-        const typeDescriptor = getErrorTypeDescriptor(actionType);
-        const actual = typeDescriptor.meta(mockAction);
-        const expected = {
-          API_ACTION: {
-            apiRequestFinish: true,
-            countable: undefined,
-            type: 'SOME_GET_REQUEST',
-          },
-        };
-
-        expect(actual).to.deep.equal(expected);
-      });
-
-      it('supports adding a countable property', () => {
-        const typeDescriptor = getErrorTypeDescriptor(actionType, { countable: true });
-        const actual = typeDescriptor.meta(mockAction);
-        const expected = {
-          API_ACTION: {
-            apiRequestFinish: true,
-            countable: true,
-            type: 'SOME_GET_REQUEST',
-          },
-        };
-
-        expect(actual).to.deep.equal(expected);
-      });
+    it('contains meta object with given data', () => {
+      const options = { meta: { foo: 'bar' }, errorMeta: { some: 'value' } };
+      const actual = getErrorTypeDescriptor(actionType, options).meta;
+      const expected = { foo: 'bar', some: 'value' };
+      expect(actual).to.deep.equal(expected);
     });
   });
 
@@ -227,43 +193,10 @@ describe('api/utils', () => {
       expect(actual).to.equal(actionType);
     });
 
-    it('contains a meta object with correct properties', () => {
-      const actual = getRequestTypeDescriptor(actionType).meta;
-      const expected = {
-        API_ACTION: {
-          apiRequestStart: true,
-          countable: undefined,
-          type: 'SOME_GET_REQUEST',
-        },
-      };
-
-      expect(actual).to.deep.equal(expected);
-    });
-
-    it('supports adding coutable property to meta object', () => {
-      const actual = getRequestTypeDescriptor(actionType, { countable: true }).meta;
-      const expected = {
-        API_ACTION: {
-          apiRequestStart: true,
-          countable: true,
-          type: 'SOME_GET_REQUEST',
-        },
-      };
-
-      expect(actual).to.deep.equal(expected);
-    });
-
-    it('supports adding extra meta properties', () => {
-      const actual = getRequestTypeDescriptor(actionType, { meta: { test: 'test' } }).meta;
-      const expected = {
-        API_ACTION: {
-          apiRequestStart: true,
-          countable: undefined,
-          type: 'SOME_GET_REQUEST',
-        },
-        test: 'test',
-      };
-
+    it('contains a meta object with given data', () => {
+      const options = { meta: { foo: 'bar' }, requestMeta: { some: 'value' } };
+      const actual = getRequestTypeDescriptor(actionType, options).meta;
+      const expected = { foo: 'bar', some: 'value' };
       expect(actual).to.deep.equal(expected);
     });
   });
@@ -315,65 +248,16 @@ describe('api/utils', () => {
       expect(typeof getSuccessTypeDescriptor(actionType).payload).to.equal('function');
     });
 
-    it('contains a meta function', () => {
-      expect(typeof getSuccessTypeDescriptor(actionType).meta).to.equal('function');
+    it('contains a meta object with given data', () => {
+      const options = { meta: { foo: 'bar' }, successMeta: { some: 'value' } };
+      const actual = getSuccessTypeDescriptor(actionType, options).meta;
+      const expected = { foo: 'bar', some: 'value' };
+      expect(actual).to.deep.equal(expected);
     });
 
-    describe('the meta function', () => {
-      const mockAction = {
-        [CALL_API]: {
-          types: [{ type: 'SOME_GET_REQUEST' }],
-        },
-      };
-
-      it('returns an object with correct properties', () => {
-        const typeDescriptor = getSuccessTypeDescriptor(actionType);
-        const actual = typeDescriptor.meta(mockAction);
-        const expected = {
-          API_ACTION: {
-            apiRequestFinish: true,
-            countable: undefined,
-            type: 'SOME_GET_REQUEST',
-          },
-        };
-
-        expect(actual).to.deep.equal(expected);
-      });
-
-      it('supports adding a countable property', () => {
-        const typeDescriptor = getSuccessTypeDescriptor(actionType, { countable: true });
-        const actual = typeDescriptor.meta(mockAction);
-        const expected = {
-          API_ACTION: {
-            apiRequestFinish: true,
-            countable: true,
-            type: 'SOME_GET_REQUEST',
-          },
-        };
-
-        expect(actual).to.deep.equal(expected);
-      });
-
-      it('supports adding payload property', () => {
-        const typeDescriptor = getSuccessTypeDescriptor(actionType, { payload: 'mock-payload' });
-
-        expect(typeDescriptor.payload).to.equal('mock-payload');
-      });
-
-      it('supports adding extra meta properties', () => {
-        const typeDescriptor = getSuccessTypeDescriptor(actionType, { meta: { test: 'test' } });
-        const actual = typeDescriptor.meta(mockAction);
-        const expected = {
-          API_ACTION: {
-            apiRequestFinish: true,
-            countable: undefined,
-            type: 'SOME_GET_REQUEST',
-          },
-          test: 'test',
-        };
-
-        expect(actual).to.deep.equal(expected);
-      });
+    it('supports adding payload property', () => {
+      const typeDescriptor = getSuccessTypeDescriptor(actionType, { payload: 'mock-payload' });
+      expect(typeDescriptor.payload).to.equal('mock-payload');
     });
   });
 });
