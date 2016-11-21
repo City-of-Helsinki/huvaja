@@ -9,7 +9,7 @@ import {
 import { createApiTest } from './testUtils';
 import { buildAPIUrl } from './createApiAction';
 
-describe('api/resources', () => {
+describe('api/actions/resources', () => {
   describe('favoriteResource', () => {
     const resourceId = '123';
 
@@ -40,29 +40,26 @@ describe('api/resources', () => {
     });
   });
 
-  describe('api/units', () => {
-    describe('fetchResources', () => {
-      createApiTest({
-        name: 'fetchResources',
-        action: fetchResources,
-        args: [],
-        tests: {
-          method: 'GET',
-          endpoint: buildAPIUrl('resource', { pageSize: 100 }),
-          request: {
-            type: types.RESOURCES_GET_REQUEST,
-          },
-          success: {
-            type: types.RESOURCES_GET_SUCCESS,
-          },
-          error: {
-            type: types.RESOURCES_GET_ERROR,
-          },
+  describe('fetchResources', () => {
+    createApiTest({
+      name: 'fetchResources',
+      action: fetchResources,
+      args: [],
+      tests: {
+        method: 'GET',
+        endpoint: buildAPIUrl('resource', { pageSize: 100 }),
+        request: {
+          type: types.RESOURCES_GET_REQUEST,
         },
-      });
+        success: {
+          type: types.RESOURCES_GET_SUCCESS,
+        },
+        error: {
+          type: types.RESOURCES_GET_ERROR,
+        },
+      },
     });
   });
-
 
   describe('unfavoriteResource', () => {
     const resourceId = '123';
