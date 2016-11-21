@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 import Button from 'react-bootstrap/lib/Button';
-import Form from 'react-bootstrap/lib/Form';
 import { Field } from 'redux-form';
 
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
@@ -15,9 +14,9 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
 
       it('returns an error if field is in requiredFields', () => {
         const errors = validate(values);
-        expect(errors.resource).to.equal('Required');
-        expect(errors.eventName).to.equal('Required');
-        expect(errors.participants).to.equal('Required');
+        expect(errors.resource).to.equal('Pakollinen tieto');
+        expect(errors.eventName).to.equal('Pakollinen tieto');
+        expect(errors.numberOfParticipants).to.equal('Pakollinen tieto');
       });
     });
 
@@ -26,12 +25,12 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
         const values = {
           resource: '123',
           eventName: 'name',
-          participants: 21,
+          numberOfParticipants: 21,
         };
         const errors = validate(values);
         expect(errors.resource).to.not.exist;
         expect(errors.eventName).to.not.exist;
-        expect(errors.participants).to.not.exist;
+        expect(errors.numberOfParticipants).to.not.exist;
       });
     });
   });
@@ -43,7 +42,7 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
     }
 
     it('renders a Form component', () => {
-      const form = getWrapper().find(Form);
+      const form = getWrapper().find('form');
       expect(form.length).to.equal(1);
     });
 
@@ -71,20 +70,20 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
       it('has a eventName field', () => {
         const field = fields.filter({
           component: ReduxFormField,
-          controlProps: { disabled: true },
-          label: 'Tila*',
-          name: 'resource',
+          controlProps: {},
+          label: 'Tapahtuma*',
+          name: 'eventName',
           type: 'text',
         });
         expect(field).to.have.length(1);
       });
-      it('has a participants field', () => {
+      it('has a numberOfParticipants field', () => {
         const field = fields.filter({
           component: ReduxFormField,
-          controlProps: { disabled: true },
-          label: 'Tila*',
-          name: 'resource',
-          type: 'text',
+          controlProps: {},
+          label: 'Osallistujia*',
+          name: 'numberOfParticipants',
+          type: 'number',
         });
         expect(field).to.have.length(1);
       });
