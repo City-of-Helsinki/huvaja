@@ -1,0 +1,30 @@
+.resource-availability {
+  @reservation-height: 40px;
+  display: flex;
+
+  .reservation, .reservation-slot {
+    display: inline-flex;
+    margin: 1px;
+    border-radius: 2px;
+  }
+  .reservation {
+    height: @reservation-height;
+    background-color: lightgreen;
+    font-size: 10px;
+    align-items: center;
+    padding: 3px 5px;
+    overflow: hidden;
+
+    .times {
+      margin-right: 5px;
+    }
+    .name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  .reservation-slot {
+    height: @reservation-height;
+    background-color: grey;
+  }
+}
