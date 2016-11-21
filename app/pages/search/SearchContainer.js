@@ -22,13 +22,12 @@ export class UnconnectedSearchContainer extends Component {
   }
 
   render() {
-    const { resources } = this.props;
-    const isLoaded = Boolean(resources.length);
+    const { isFetching, resources } = this.props;
 
     return (
       <div className="search">
-        <Loader loaded={isLoaded}>
-          <h1>Tilat</h1>
+        <h1>Tilat</h1>
+        <Loader loaded={!isFetching}>
           <ul>
             {resources.map(renderResource)}
           </ul>
@@ -46,6 +45,7 @@ const resourceShape = PropTypes.shape({
 });
 
 UnconnectedSearchContainer.propTypes = {
+  isFetching: PropTypes.bool.isRequired,
   fetchResources: PropTypes.func.isRequired,
   resources: PropTypes.arrayOf(resourceShape).isRequired,
 };

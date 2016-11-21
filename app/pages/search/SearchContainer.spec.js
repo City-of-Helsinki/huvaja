@@ -10,6 +10,7 @@ import { UnconnectedSearchContainer as SearchContainer } from './SearchContainer
 describe('pages/search/SearchContainer', () => {
   function getWrapper(props) {
     const defaults = {
+      isFetching: false,
       fetchResources: simple.mock(),
       resources: [],
     };
@@ -19,13 +20,14 @@ describe('pages/search/SearchContainer', () => {
   describe('render', () => {
     describe('when resources are fetched', () => {
       let wrapper;
+      const isFetching = true;
       const resources = [
         { id: 'r-1', name: { fi: 'Resurssi 1' } },
         { id: 'r-2', name: { fi: 'Resurssi 2' } },
       ];
 
       before(() => {
-        wrapper = getWrapper({ resources });
+        wrapper = getWrapper({ isFetching, resources });
       });
 
       it('renders a header with correct text', () => {
@@ -48,10 +50,11 @@ describe('pages/search/SearchContainer', () => {
 
     describe('when resources are not fetched', () => {
       let wrapper;
+      const isFetching = false;
       const resources = [];
 
       before(() => {
-        wrapper = getWrapper({ resources });
+        wrapper = getWrapper({ isFetching, resources });
       });
 
       it('renders a Loader', () => {
