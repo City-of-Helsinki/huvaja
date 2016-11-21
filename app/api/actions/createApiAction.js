@@ -81,13 +81,22 @@ export function getSuccessTypeDescriptor(type, options = {}) {
 // The createApiAction function
 // ----------------------------
 
-function createApiAction({ endpoint, type, method, params = {}, options = {}, headers = {} }) {
+function createApiAction({
+  endpoint,
+  type,
+  method,
+  body,
+  params = {},
+  options = {},
+  headers = {},
+}) {
   return {
     [CALL_API]: {
       types: getRequestTypeDescriptors(type, method, options),
       endpoint: buildAPIUrl(endpoint, params),
       method,
       headers: getHeadersCreator(headers),
+      body,
     },
   };
 }

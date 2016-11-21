@@ -99,6 +99,55 @@ describe('api/reducers/dataReducer', () => {
   });
 
   describe('handling actions', () => {
+    describe('RESERVATION_POST_SUCCESS', () => {
+      const postReservationSuccess = createAction(actionTypes.RESERVATION_POST_SUCCESS);
+
+      it('adds the reservation to reservations', () => {
+        const reservation = { id: 1234 };
+        const initialState = immutable({
+          reservations: {},
+          resources: {},
+        });
+        const action = postReservationSuccess(reservation);
+        const nextState = dataReducer(initialState, action);
+
+        const actualReservations = nextState.reservations;
+        const expectedReservations = { [reservation.id]: reservation };
+
+        expect(actualReservations).to.deep.equal(expectedReservations);
+      });
+
+      it('adds the given reservation to correct resource', () => {
+        const resource = { id: 'r-1', reservations: [] };
+        const reservation = { id: 1234, resource: resource.id };
+        const initialState = immutable({
+          reservations: {},
+          resources: { [resource.id]: resource },
+        });
+        const action = postReservationSuccess(reservation);
+        const nextState = dataReducer(initialState, action);
+        const actualReservations = nextState.resources[resource.id].reservations;
+        const expectedReservations = [reservation];
+
+        expect(actualReservations).to.deep.equal(expectedReservations);
+      });
+
+      it('does not touch other resource values', () => {
+        const resource = { id: 'r-1', reservations: [], otherValue: 'whatever' };
+        const reservation = { id: 1234, resource: resource.id };
+        const initialState = immutable({
+          reservations: {},
+          resources: { [resource.id]: resource },
+        });
+        const action = postReservationSuccess(reservation);
+        const nextState = dataReducer(initialState, action);
+        const expectedValue = resource.otherValue;
+        const actualvalue = nextState.resources[resource.id].otherValue;
+
+        expect(expectedValue).to.deep.equal(actualvalue);
+      });
+    });
+
     describe('RESOURCES_GET_SUCCESS', () => {
       const resourcesGetSuccess = createAction(
         actionTypes.RESOURCES_GET_SUCCESS,
