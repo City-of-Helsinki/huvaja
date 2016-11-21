@@ -14,4 +14,11 @@ const reservationFormSelector = createSelector(
   })
 );
 
-export default connect(reservationFormSelector)(ReservationForm);
+function mergeProps(stateProps, dispatchProps, ownProps) {
+  return Object.assign({}, ownProps, stateProps, dispatchProps, {
+    onSubmit: () => {},
+  });
+}
+
+
+export default connect(reservationFormSelector, {}, mergeProps)(ReservationForm);
