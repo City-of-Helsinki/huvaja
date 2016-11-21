@@ -4,6 +4,7 @@ import immutable from 'seamless-immutable';
 import actionTypes from '../actionTypes';
 
 const initialState = immutable({
+  reservations: {},
   resources: {},
   units: {},
 });
@@ -15,6 +16,7 @@ function handleData(state, data) {
 function dataReducer(state = initialState, action) {
   switch (action.type) {
 
+    case actionTypes.RESERVATIONS_GET_SUCCESS:
     case actionTypes.RESOURCE_GET_SUCCESS:
     case actionTypes.UNITS_GET_SUCCESS: {
       return handleData(state, action.payload.entities);
