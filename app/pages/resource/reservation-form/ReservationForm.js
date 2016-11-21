@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import Button from 'react-bootstrap/lib/Button';
-import Form from 'react-bootstrap/lib/Form';
 import { Field, reduxForm } from 'redux-form';
 import forIn from 'lodash/forIn';
 
@@ -38,7 +37,7 @@ function renderField(name, type, label, { controlProps, required }) {
 export function UnconnectedReservationForm({ handleSubmit }) {
   return (
     <div>
-      <Form className="reservation-form" onSubmit={handleSubmit}>
+      <form className="reservation-form" onSubmit={handleSubmit}>
         {renderField(
           'resource',
           'text',
@@ -73,7 +72,7 @@ export function UnconnectedReservationForm({ handleSubmit }) {
             Peruuta
           </Button>
         </div>
-      </Form>
+      </form>
     </div>
   );
 }
