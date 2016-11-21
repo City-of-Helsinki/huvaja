@@ -1,7 +1,7 @@
 import { camelizeKeys, decamelizeKeys } from 'humps';
 import pickBy from 'lodash/pickBy';
-import isEmpty from 'lodash/isEmpty';
 import { normalize } from 'normalizr';
+import queryString from 'query-string';
 import { getJSON } from 'redux-api-middleware';
 
 import actionTypes from '../actionTypes';
@@ -13,15 +13,10 @@ const requiredHeaders = {
 };
 
 function buildAPIUrl(endpoint, params) {
-  let url = `${SETTINGS.API_URL}/${endpoint}/`;
-
+  const url = `${SETTINGS.API_URL}${endpoint}/`;
   const nonEmptyParams = pickBy(params, value => value !== '');
-
-  if (!isEmpty(nonEmptyParams)) {
-    url = `${url}?${getSearchParamsString(nonEmptyParams)}`;
-  }
-
-  return url;
+  const paramsString = queryString.stringify(decamelizeKeys(nonEmptyParams));
+  return paramsString ? `${url}?${paramsString}` : url;
 }
 
 function createTransformFunction(schema) {
@@ -66,17 +61,6 @@ function getRequestTypeDescriptors(type, method, options = {}) {
   ];
 }
 
-function getSearchParamsString(params) {
-  const decamelized = decamelizeKeys(params);
-  const parts = [];
-
-  Object.keys(decamelized).forEach((key) => {
-    parts.push(`${encodeURIComponent(key)}=${encodeURIComponent(decamelized[key])}`);
-  });
-
-  return parts.join('&');
-}
-
 function getSuccessPayload(options) {
   return (action, state, response) => (
     getJSON(response).then(createTransformFunction(options.schema))
@@ -98,7 +82,6 @@ export {
   getHeadersCreator,
   getRequestTypeDescriptor,
   getRequestTypeDescriptors,
-  getSearchParamsString,
   getSuccessTypeDescriptor,
   requiredHeaders,
 };
