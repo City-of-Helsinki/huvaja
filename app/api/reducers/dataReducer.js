@@ -55,6 +55,11 @@ function dataReducer(state = initialState, action) {
       return handleData(state, { resources });
     }
 
+    case actionTypes.RESERVATION_DELETE_SUCCESS: {
+      const reservation = Object.assign({}, action.payload, { state: 'cancelled' });
+      return handleReservation(state, reservation);
+    }
+
     case actionTypes.RESERVATION_POST_SUCCESS:
     case actionTypes.RESERVATION_PUT_SUCCESS: {
       return handleReservation(state, action.payload);
