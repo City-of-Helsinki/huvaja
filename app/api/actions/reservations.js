@@ -4,6 +4,15 @@ import { decamelizeKeys } from 'humps';
 import createApiAction from './createApiAction';
 import schemas from './schemas';
 
+function editReservation(reservation) {
+  return createApiAction({
+    endpoint: `reservation/${reservation.id}`,
+    method: 'PUT',
+    type: 'RESERVATION',
+    body: parseReservationData(reservation),
+  });
+}
+
 function fetchReservations(params = {}) {
   return createApiAction({
     endpoint: 'reservation',
@@ -29,6 +38,7 @@ function parseReservationData(reservation) {
 }
 
 export {
+  editReservation,
   fetchReservations,
   makeReservation,
 };
