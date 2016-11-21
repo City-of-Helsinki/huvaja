@@ -2,7 +2,9 @@ import { camelizeKeys, decamelizeKeys } from 'humps';
 import pickBy from 'lodash/pickBy';
 import isEmpty from 'lodash/isEmpty';
 import { normalize } from 'normalizr';
-import { CALL_API, getJSON } from 'redux-api-middleware';
+import { getJSON } from 'redux-api-middleware';
+
+import actionTypes from '../actionTypes';
 
 const requiredHeaders = {
   Accept: 'application/json',
@@ -35,13 +37,7 @@ function createTransformFunction(schema) {
 function getErrorTypeDescriptor(type, options = {}) {
   return {
     type,
-    meta: action => ({
-      API_ACTION: {
-        apiRequestFinish: true,
-        countable: options.countable,
-        type: action[CALL_API].types[0].type,
-      },
-    }),
+    meta: Object.assign({}, options.meta, options.errorMeta),
   };
 }
 
@@ -58,14 +54,16 @@ function getHeadersCreator(headers) {
 function getRequestTypeDescriptor(type, options = {}) {
   return {
     type,
-    meta: Object.assign({
-      API_ACTION: {
-        apiRequestStart: true,
-        countable: options.countable,
-        type,
-      },
-    }, options.meta),
+    meta: Object.assign({}, options.meta, options.requestMeta),
   };
+}
+
+function getRequestTypeDescriptors(type, method, options = {}) {
+  return [
+    getRequestTypeDescriptor(actionTypes[`${type}_${method}_REQUEST`], options),
+    getSuccessTypeDescriptor(actionTypes[`${type}_${method}_SUCCESS`], options),
+    getErrorTypeDescriptor(actionTypes[`${type}_${method}_ERROR`], options),
+  ];
 }
 
 function getSearchParamsString(params) {
@@ -89,16 +87,7 @@ function getSuccessTypeDescriptor(type, options = {}) {
   return {
     type,
     payload: options.payload || getSuccessPayload(options),
-
-    meta: action => (
-      Object.assign({
-        API_ACTION: {
-          apiRequestFinish: true,
-          countable: options.countable,
-          type: action[CALL_API].types[0].type,
-        },
-      }, options.meta)
-    ),
+    meta: Object.assign({}, options.meta, options.successMeta),
   };
 }
 
@@ -108,6 +97,7 @@ export {
   getErrorTypeDescriptor,
   getHeadersCreator,
   getRequestTypeDescriptor,
+  getRequestTypeDescriptors,
   getSearchParamsString,
   getSuccessTypeDescriptor,
   requiredHeaders,

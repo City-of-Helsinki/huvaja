@@ -113,11 +113,7 @@ function createApiTest(options) {
             const getParams = () => ({
               typeAction,
               mockAction,
-              meta: (
-                actionTypeName === 'request' ?
-                  typeAction.meta :
-                  typeAction.meta(mockAction)
-              ),
+              meta: typeAction.meta,
             });
             const func = (
               value.length === 2 ?
