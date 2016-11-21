@@ -7,7 +7,7 @@ import {
   fetchResources,
 } from './resources';
 import { createApiTest } from './testUtils';
-import { buildAPIUrl } from './utils';
+import { buildAPIUrl } from './createApiAction';
 
 describe('api/resources', () => {
   describe('favoriteResource', () => {
