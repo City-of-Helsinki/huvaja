@@ -2,7 +2,7 @@ import { camelizeKeys, decamelizeKeys } from 'humps';
 import pickBy from 'lodash/pickBy';
 import { normalize } from 'normalizr';
 import queryString from 'query-string';
-import { getJSON } from 'redux-api-middleware';
+import { CALL_API, getJSON } from 'redux-api-middleware';
 
 import actionTypes from '../actionTypes';
 
@@ -17,6 +17,17 @@ function buildAPIUrl(endpoint, params) {
   const nonEmptyParams = pickBy(params, value => value !== '');
   const paramsString = queryString.stringify(decamelizeKeys(nonEmptyParams));
   return paramsString ? `${url}?${paramsString}` : url;
+}
+
+function createApiAction({ endpoint, type, method, params = {}, options = {}, headers = {} }) {
+  return {
+    [CALL_API]: {
+      types: getRequestTypeDescriptors(type, method, options),
+      endpoint: buildAPIUrl(endpoint, params),
+      method,
+      headers: getHeadersCreator(headers),
+    },
+  };
 }
 
 function createTransformFunction(schema) {
@@ -77,6 +88,7 @@ function getSuccessTypeDescriptor(type, options = {}) {
 
 export {
   buildAPIUrl,
+  createApiAction,
   createTransformFunction,
   getErrorTypeDescriptor,
   getHeadersCreator,
