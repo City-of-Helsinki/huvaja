@@ -9,6 +9,10 @@ describe('api/reducers/dataReducer', () => {
   describe('initial state', () => {
     const initialState = dataReducer(undefined, {});
 
+    it('reservations is an empty object', () => {
+      expect(initialState.reservations).to.deep.equal({});
+    });
+
     it('resources is an empty object', () => {
       expect(initialState.resources).to.deep.equal({});
     });
