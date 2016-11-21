@@ -1,4 +1,5 @@
 import {
+  editReservation,
   fetchReservations,
   makeReservation,
 } from './reservations';
@@ -12,6 +13,7 @@ import {
 import { fetchUnits } from './units';
 
 export {
+  editReservation,
   favoriteResource,
   fetchFavoritedResources,
   fetchReservations,
