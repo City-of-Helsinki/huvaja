@@ -1,4 +1,7 @@
-import { fetchReservations } from './reservations';
+import {
+  fetchReservations,
+  makeReservation,
+} from './reservations';
 import {
   favoriteResource,
   fetchFavoritedResources,
@@ -15,5 +18,6 @@ export {
   fetchResource,
   fetchResources,
   fetchUnits,
+  makeReservation,
   unfavoriteResource,
 };

@@ -1,9 +1,10 @@
 import types from '../actionTypes';
+import { buildAPIUrl } from './createApiAction';
 import {
   fetchReservations,
+  makeReservation,
 } from './reservations';
 import { createApiTest } from './testUtils';
-import { buildAPIUrl } from './createApiAction';
 
 describe('api/actions/reservations', () => {
   describe('fetchReservations', () => {
@@ -22,6 +23,30 @@ describe('api/actions/reservations', () => {
         },
         error: {
           type: types.RESERVATIONS_GET_ERROR,
+        },
+      },
+    });
+  });
+
+  describe('makeReservation', () => {
+    const reservation = { foo: 'bar' };
+
+    createApiTest({
+      name: 'makeReservation',
+      action: makeReservation,
+      args: [reservation],
+      tests: {
+        method: 'POST',
+        endpoint: buildAPIUrl('reservation'),
+        body: reservation,
+        request: {
+          type: types.RESERVATION_POST_REQUEST,
+        },
+        success: {
+          type: types.RESERVATION_POST_SUCCESS,
+        },
+        error: {
+          type: types.RESERVATION_POST_ERROR,
         },
       },
     });

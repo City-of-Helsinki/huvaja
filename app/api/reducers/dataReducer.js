@@ -1,4 +1,5 @@
 import mapValues from 'lodash/mapValues';
+import reject from 'lodash/reject';
 import immutable from 'seamless-immutable';
 
 import actionTypes from '../actionTypes';
@@ -11,6 +12,28 @@ const initialState = immutable({
 
 function handleData(state, data) {
   return state.merge(data, { deep: true });
+}
+
+function handleReservation(state, reservation) {
+  const entities = {
+    reservations: {
+      [reservation.id]: reservation,
+    },
+  };
+
+  if (state.resources[reservation.resource]) {
+    const reservations = reject(
+      state.resources[reservation.resource].reservations,
+      current => current.id === reservation.id
+    );
+    entities.resources = {
+      [reservation.resource]: {
+        reservations: [...reservations, reservation],
+      },
+    };
+  }
+
+  return handleData(state, entities);
 }
 
 function dataReducer(state = initialState, action) {
@@ -30,6 +53,10 @@ function dataReducer(state = initialState, action) {
         return resource;
       });
       return handleData(state, { resources });
+    }
+
+    case actionTypes.RESERVATION_POST_SUCCESS: {
+      return handleReservation(state, action.payload);
     }
 
     case actionTypes.RESOURCE_UNFAVORITE_POST_SUCCESS: {
