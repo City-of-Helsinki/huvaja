@@ -7,7 +7,6 @@ import {
   getErrorTypeDescriptor,
   getHeadersCreator,
   getRequestTypeDescriptor,
-  getSearchParamsString,
   getSuccessTypeDescriptor,
   requiredHeaders,
 } from './utils';
@@ -17,21 +16,21 @@ describe('api/utils', () => {
     const endpoint = 'some/endpoint';
 
     it('returns API_URL + given endpoint if params is empty', () => {
-      const expected = `${SETTINGS.API_URL}/${endpoint}/`;
+      const expected = `${SETTINGS.API_URL}${endpoint}/`;
 
       expect(buildAPIUrl(endpoint)).to.equal(expected);
     });
 
     it('rejects params with empty values', () => {
       const params = { empty: '' };
-      const expected = `${SETTINGS.API_URL}/${endpoint}/`;
+      const expected = `${SETTINGS.API_URL}${endpoint}/`;
 
       expect(buildAPIUrl(endpoint, params)).to.equal(expected);
     });
 
     it('appends search params at the end if params is not empty', () => {
       const params = { param: 'hello_world' };
-      const expected = `${SETTINGS.API_URL}/${endpoint}/?param=hello_world`;
+      const expected = `${SETTINGS.API_URL}${endpoint}/?param=hello_world`;
 
       expect(buildAPIUrl(endpoint, params)).to.equal(expected);
     });
@@ -198,36 +197,6 @@ describe('api/utils', () => {
       const actual = getRequestTypeDescriptor(actionType, options).meta;
       const expected = { foo: 'bar', some: 'value' };
       expect(actual).to.deep.equal(expected);
-    });
-  });
-
-  describe('getSearchParamsString', () => {
-    it('returns key and value of the param with "=" in between', () => {
-      const params = { param: 'hello' };
-      const expected = 'param=hello';
-
-      expect(getSearchParamsString(params)).to.equal(expected);
-    });
-
-    it('returns multiple params separated with "&"', () => {
-      const params = { param: 'hello', other: 'world' };
-      const expected = 'param=hello&other=world';
-
-      expect(getSearchParamsString(params)).to.equal(expected);
-    });
-
-    it('uses encodeURIComponent to both keys and values', () => {
-      const params = { päräm: 'hellö' };
-      const expected = `${encodeURIComponent('päräm')}=${encodeURIComponent('hellö')}`;
-
-      expect(getSearchParamsString(params)).to.equal(expected);
-    });
-
-    it('decamelizes keys of the given params', () => {
-      const params = { camelizedParam: 'hello' };
-      const expected = 'camelized_param=hello';
-
-      expect(getSearchParamsString(params)).to.equal(expected);
     });
   });
 
