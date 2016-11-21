@@ -1,16 +1,8 @@
 import last from 'lodash/last';
 
-import actionTypes from '../actionTypes';
+import { getApiActionName, isApiAction } from '../utils';
 
 const initialState = {};
-
-function getApiActionName(actionType) {
-  return actionType.split('_').slice(0, -1).join('_');
-}
-
-function isApiAction(actionType) {
-  return Boolean(actionTypes[actionType]);
-}
 
 function handleApiCallStart(state, actionName) {
   if (state[actionName]) {
