@@ -1,20 +1,36 @@
 .resource-availability {
-  @reservation-height: 40px;
+  @slot-height: 40px;
+  @slot-margin: 1px;
   width: 1000px;
   overflow-x: auto;
 
+  .group-timeline {
+    .hours {
+      display: flex;
+
+      .hour {
+        display: flex;
+        height: @slot-height;
+        flex-shrink: 0;
+        margin: @slot-margin;
+        border-left: 1px solid lightgrey;
+        align-items: center;
+        padding: 3px;
+        font-size: 10px;
+      }
+    }
+  }
   .reservations-timeline {
     display: flex;
   }
   .reservation, .reservation-slot {
     display: inline-flex;
-    margin: 1px;
+    margin: @slot-margin;
     border-radius: 2px;
-    flex-grow: 0;
     flex-shrink: 0;
   }
   .reservation {
-    height: @reservation-height;
+    height: @slot-height;
     background-color: lightgreen;
     font-size: 10px;
     align-items: center;
@@ -30,7 +46,7 @@
     }
   }
   .reservation-slot {
-    height: @reservation-height;
-    background-color: grey;
+    height: @slot-height;
+    background-color: lightgrey;
   }
 }
