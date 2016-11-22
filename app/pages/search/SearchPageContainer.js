@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 import { fetchResources } from 'api/actions';
-import selector from './searchSelector';
+import selector from './searchPageSelector';
 
 function renderResource(resource) {
   return (
@@ -16,7 +16,7 @@ function renderResource(resource) {
   );
 }
 
-export class UnconnectedSearchContainer extends Component {
+export class UnconnectedSearchPageContainer extends Component {
   componentDidMount() {
     this.props.fetchResources();
   }
@@ -25,7 +25,7 @@ export class UnconnectedSearchContainer extends Component {
     const { isFetching, resources } = this.props;
 
     return (
-      <div className="search">
+      <div className="search-page">
         <h1>Tilat</h1>
         <Loader loaded={!isFetching}>
           <ul>
@@ -44,7 +44,7 @@ const resourceShape = PropTypes.shape({
   }).isRequired,
 });
 
-UnconnectedSearchContainer.propTypes = {
+UnconnectedSearchPageContainer.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   fetchResources: PropTypes.func.isRequired,
   resources: PropTypes.arrayOf(resourceShape).isRequired,
@@ -54,4 +54,4 @@ const actions = {
   fetchResources,
 };
 
-export default connect(selector, actions)(UnconnectedSearchContainer);
+export default connect(selector, actions)(UnconnectedSearchPageContainer);
