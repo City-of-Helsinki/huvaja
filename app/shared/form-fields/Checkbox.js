@@ -15,7 +15,7 @@ function Checkbox({ controlProps = {}, help, id, label, validationState }) {
 }
 
 Checkbox.propTypes = {
-  controlProps: PropTypes.object, // eslint-disable-line
+  controlProps: PropTypes.object,
   help: PropTypes.string,
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,

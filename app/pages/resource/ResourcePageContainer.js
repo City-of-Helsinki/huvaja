@@ -30,8 +30,8 @@ UnconnectedResourcePageContainer.propTypes = {
   params: PropTypes.shape({
     id: PropTypes.string.isRequired,
   }).isRequired,
-  resource: PropTypes.object.isRequired,  // eslint-disable-line
-  unit: PropTypes.object.isRequired,  // eslint-disable-line
+  resource: PropTypes.object.isRequired,
+  unit: PropTypes.object.isRequired,
 };
 
 const actions = { fetchResource };
