@@ -1,9 +1,29 @@
 .resource-availability {
   @slot-height: 40px;
   @slot-margin: 1px;
-  width: 1000px;
-  overflow-x: auto;
+  display: flex;
 
+  .resource-info {
+    height: @slot-height + @slot-margin * 2;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    font-size: 10px;
+
+    .name {
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .capacity {
+      color: gray;
+    }
+  }
+  .grouped-timeline {
+    width: 1000px;
+    overflow-x: auto;
+  }
   .group-timeline {
     .hours {
       display: flex;
