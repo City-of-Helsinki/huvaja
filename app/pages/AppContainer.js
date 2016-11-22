@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import Grid from 'react-bootstrap/lib/Grid';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 
@@ -15,7 +16,9 @@ export class UnconnectedAppContainer extends Component {
       <div className="app">
         <Navbar />
         <DocumentTitle title="Huonevarausjärjestelmä" />
-        {this.props.children}
+        <Grid>
+          {this.props.children}
+        </Grid>
       </div>
     );
   }
