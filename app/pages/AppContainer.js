@@ -3,6 +3,7 @@ import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 
 import { fetchUnits } from 'api/actions';
+import Navbar from 'shared/navbar';
 
 export class UnconnectedAppContainer extends Component {
   componentDidMount() {
@@ -12,6 +13,7 @@ export class UnconnectedAppContainer extends Component {
   render() {
     return (
       <div className="app">
+        <Navbar />
         <DocumentTitle title="Huonevarausjärjestelmä" />
         {this.props.children}
       </div>
