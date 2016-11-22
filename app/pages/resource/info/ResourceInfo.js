@@ -13,8 +13,8 @@ function ResourceInfo({ resource, unit }) {
 }
 
 ResourceInfo.propTypes = {
-  resource: PropTypes.object.isRequired,  // eslint-disable-line
-  unit: PropTypes.object.isRequired,  // eslint-disable-line
+  resource: PropTypes.object.isRequired,
+  unit: PropTypes.object.isRequired,
 };
 
 export default ResourceInfo;
