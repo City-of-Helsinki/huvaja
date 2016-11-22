@@ -5,16 +5,16 @@ import Loader from 'react-loader';
 import { Link } from 'react-router';
 import simple from 'simple-mock';
 
-import { UnconnectedSearchContainer as SearchContainer } from './SearchContainer';
+import { UnconnectedSearchPageContainer as SearchPageContainer } from './SearchPageContainer';
 
-describe('pages/search/SearchContainer', () => {
+describe('pages/search/SearchPageContainer', () => {
   function getWrapper(props) {
     const defaults = {
       isFetching: false,
       fetchResources: simple.mock(),
       resources: [],
     };
-    return shallow(<SearchContainer {...defaults} {...props} />);
+    return shallow(<SearchPageContainer {...defaults} {...props} />);
   }
 
   describe('render', () => {
