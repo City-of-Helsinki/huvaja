@@ -1,9 +1,11 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
+import Grid from 'react-bootstrap/lib/Grid';
 import DocumentTitle from 'react-document-title';
 import simple from 'simple-mock';
 
+import Navbar from 'shared/navbar';
 import { UnconnectedAppContainer as AppContainer } from './AppContainer';
 
 describe('pages/AppContainer', () => {
@@ -16,6 +18,13 @@ describe('pages/AppContainer', () => {
   }
 
   describe('render', () => {
+    describe('Navbar', () => {
+      it('is rendered', () => {
+        const title = getWrapper().find(Navbar);
+        expect(title.length).to.equal(1);
+      });
+    });
+
     describe('DocumentTitle', () => {
       it('is rendered', () => {
         const title = getWrapper().find(DocumentTitle);
@@ -34,8 +43,10 @@ describe('pages/AppContainer', () => {
       expect(div.prop('className')).to.equal('app');
     });
 
-    it('renders children', () => {
-      const children = getWrapper().find('.children');
+    it('renders children inside a grid wrapper', () => {
+      const grid = getWrapper().find(Grid);
+      expect(grid).to.have.length(1);
+      const children = grid.find('.children');
       expect(children.equals(content)).to.be.true;
     });
   });
