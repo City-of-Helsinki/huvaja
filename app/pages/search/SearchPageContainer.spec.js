@@ -6,15 +6,18 @@ import { Link } from 'react-router';
 import simple from 'simple-mock';
 
 import { UnconnectedSearchPageContainer as SearchPageContainer } from './SearchPageContainer';
+import SearchControls from './search-controls';
 
 describe('pages/search/SearchPageContainer', () => {
+  const defaultProps = {
+    isFetching: false,
+    fetchResources: simple.mock(),
+    resources: [],
+    searchFilters: { query: 'some query' },
+  };
+
   function getWrapper(props) {
-    const defaults = {
-      isFetching: false,
-      fetchResources: simple.mock(),
-      resources: [],
-    };
-    return shallow(<SearchPageContainer {...defaults} {...props} />);
+    return shallow(<SearchPageContainer {...defaultProps} {...props} />);
   }
 
   describe('render', () => {
@@ -33,7 +36,13 @@ describe('pages/search/SearchPageContainer', () => {
       it('renders a header with correct text', () => {
         const header = wrapper.find('h1');
         expect(header.length).to.equal(1);
-        expect(header.text()).to.equal('Tilat');
+        expect(header.text()).to.equal('Hae tiloja');
+      });
+
+      it('renders SearchControls with correct props', () => {
+        const searchControls = wrapper.find(SearchControls);
+        expect(searchControls).to.have.length(1);
+        expect(searchControls.prop('initialValues')).to.deep.equal(defaultProps.searchFilters);
       });
 
       it('renders a Link with correct props for each resource given in props', () => {
@@ -60,6 +69,12 @@ describe('pages/search/SearchPageContainer', () => {
       it('renders a Loader', () => {
         const loader = wrapper.find(Loader);
         expect(loader).to.have.length(1);
+      });
+
+      it('renders SearchControls with correct props', () => {
+        const searchControls = wrapper.find(SearchControls);
+        expect(searchControls).to.have.length(1);
+        expect(searchControls.prop('initialValues')).to.deep.equal(defaultProps.searchFilters);
       });
     });
   });
