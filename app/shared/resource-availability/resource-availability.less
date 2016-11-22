@@ -1,11 +1,17 @@
 .resource-availability {
   @reservation-height: 40px;
-  display: flex;
+  width: 1000px;
+  overflow-x: auto;
 
+  .reservations-timeline {
+    display: flex;
+  }
   .reservation, .reservation-slot {
     display: inline-flex;
     margin: 1px;
     border-radius: 2px;
+    flex-grow: 0;
+    flex-shrink: 0;
   }
   .reservation {
     height: @reservation-height;
