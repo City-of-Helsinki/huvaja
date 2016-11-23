@@ -7,8 +7,8 @@ describe('state/reducers/searchFiltersReducer', () => {
   describe('initial state', () => {
     const initialState = searchFiltersReducer(undefined, {});
 
-    it('query is an empty string', () => {
-      expect(initialState.query).to.equal('');
+    it('search is an empty string', () => {
+      expect(initialState.search).to.equal('');
     });
   });
 
@@ -18,14 +18,14 @@ describe('state/reducers/searchFiltersReducer', () => {
 
       it('sets query parameters in payload to filters', () => {
         const currentState = {};
-        const payload = { query: { query: 'some search query' } };
+        const payload = { query: { search: 'search text' } };
         const action = routeChangedAction(payload);
         const nextState = searchFiltersReducer(currentState, action);
         expect(nextState).to.deep.equal(payload.query);
       });
 
       it('overrides previous values of same filters', () => {
-        const payload = { query: { query: 'some search query' } };
+        const payload = { query: { search: 'search text' } };
         const action = routeChangedAction(payload);
         const currentState = { filter: 'old-value' };
         const nextState = searchFiltersReducer(currentState, action);
@@ -37,7 +37,7 @@ describe('state/reducers/searchFiltersReducer', () => {
         const action = routeChangedAction(payload);
         const currentState = { otherFilter: 'some value' };
         const nextState = searchFiltersReducer(currentState, action);
-        const expected = { query: '', otherFilter: 'some search filter' };
+        const expected = { search: '', otherFilter: 'some search filter' };
         expect(nextState).to.deep.equal(expected);
       });
     });

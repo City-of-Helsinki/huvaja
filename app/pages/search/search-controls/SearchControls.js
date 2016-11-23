@@ -34,14 +34,14 @@ class SearchControls extends Component {
     return (
       <div className="search-controls">
         <form onSubmit={this.handleSearch}>
-          <FormGroup controlId="search-query">
+          <FormGroup controlId="search-control-group">
             <ControlLabel>Tekstihaku</ControlLabel>
             <FormControl
               autoFocus
-              onChange={event => this.handleChange({ query: event.target.value })}
+              onChange={event => this.handleChange({ search: event.target.value })}
               placeholder="Hae tilan nimellä, osoitteella..."
               type="text"
-              value={this.state.query}
+              value={this.state.search}
             />
           </FormGroup>
           <Button
@@ -60,7 +60,7 @@ class SearchControls extends Component {
 
 SearchControls.propTypes = {
   initialValues: PropTypes.shape({
-    query: PropTypes.string.isRequired,
+    search: PropTypes.string.isRequired,
   }).isRequired,
 };
 

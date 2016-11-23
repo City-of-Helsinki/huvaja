@@ -13,7 +13,7 @@ import SearchControls from './SearchControls';
 describe('pages/search/search-controls/SearchControls', () => {
   function getWrapper(props) {
     const defaults = {
-      initialValues: { query: '' },
+      initialValues: { search: '' },
     };
     return shallow(<SearchControls {...defaults} {...props} />);
   }
@@ -26,24 +26,24 @@ describe('pages/search/search-controls/SearchControls', () => {
       expect(form.prop('onSubmit')).to.equal(wrapper.instance().handleSearch);
     });
 
-    describe('search query control', () => {
-      const query = 'some query';
+    describe('search control', () => {
+      const search = 'search text';
       let wrapper;
-      let queryContorlWrapper;
+      let searchContorlWrapper;
 
       before(() => {
-        wrapper = getWrapper({ initialValues: { query } });
-        queryContorlWrapper = wrapper.find('[controlId="search-query"]');
+        wrapper = getWrapper({ initialValues: { search } });
+        searchContorlWrapper = wrapper.find('[controlId="search-control-group"]');
       });
 
       it('has correct label', () => {
-        const controlLabel = queryContorlWrapper.find(ControlLabel);
+        const controlLabel = searchContorlWrapper.find(ControlLabel);
         expect(controlLabel.prop('children')).to.equal('Tekstihaku');
       });
 
       it('has correct initial value', () => {
-        const queryControl = queryContorlWrapper.find(FormControl);
-        expect(queryControl.prop('value')).to.equal(query);
+        const searchControl = searchContorlWrapper.find(FormControl);
+        expect(searchControl.prop('value')).to.equal(search);
       });
     });
 
@@ -56,8 +56,8 @@ describe('pages/search/search-controls/SearchControls', () => {
 
   describe('componentWillReceiveProps', () => {
     describe('when initialValues prop changes', () => {
-      const initialValues = { query: 'some query' };
-      const nextProps = { initialValues: { query: 'new query' } };
+      const initialValues = { search: 'search text' };
+      const nextProps = { initialValues: { search: 'new search' } };
       let setStateMock;
 
       before(() => {
@@ -78,7 +78,7 @@ describe('pages/search/search-controls/SearchControls', () => {
     });
 
     describe('when initialValues prop does not change', () => {
-      const initialValues = { query: 'some query' };
+      const initialValues = { search: 'search text' };
       const nextProps = { initialValues };
       let setStateMock;
 
@@ -101,7 +101,7 @@ describe('pages/search/search-controls/SearchControls', () => {
 
   describe('handleSearch', () => {
     const searchFilters = {
-      query: 'some query',
+      search: 'search text',
     };
     const mockSubmitEvent = { preventDefault: () => {} };
     let browserHistoryMock;

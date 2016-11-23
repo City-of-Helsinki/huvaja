@@ -1,5 +1,5 @@
 const initialState = {
-  query: '',
+  search: '',
 };
 
 function searchFiltersReducer(state = initialState, action) {
