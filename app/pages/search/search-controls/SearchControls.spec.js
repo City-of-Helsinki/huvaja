@@ -18,38 +18,85 @@ describe('pages/search/search-controls/SearchControls', () => {
     return shallow(<SearchControls {...defaults} {...props} />);
   }
 
-  it('renders form with correct onSubmit', () => {
-    const wrapper = getWrapper();
-    const form = wrapper.find('form');
-    expect(form).to.have.length(1);
-    expect(form.prop('onSubmit')).to.equal(wrapper.instance().handleSearch);
+  describe('render', () => {
+    it('renders form with correct onSubmit', () => {
+      const wrapper = getWrapper();
+      const form = wrapper.find('form');
+      expect(form).to.have.length(1);
+      expect(form.prop('onSubmit')).to.equal(wrapper.instance().handleSearch);
+    });
+
+    describe('search query control', () => {
+      const query = 'some query';
+      let wrapper;
+      let queryContorlWrapper;
+
+      before(() => {
+        wrapper = getWrapper({ initialValues: { query } });
+        queryContorlWrapper = wrapper.find('[controlId="search-query"]');
+      });
+
+      it('has correct label', () => {
+        const controlLabel = queryContorlWrapper.find(ControlLabel);
+        expect(controlLabel.prop('children')).to.equal('Tekstihaku');
+      });
+
+      it('has correct initial value', () => {
+        const queryControl = queryContorlWrapper.find(FormControl);
+        expect(queryControl.prop('value')).to.equal(query);
+      });
+    });
+
+    it('renders a submit button', () => {
+      const button = getWrapper().find(Button);
+      expect(button).to.have.length(1);
+      expect(button.prop('type')).to.equal('submit');
+    });
   });
 
-  describe('search query control', () => {
-    const query = 'some query';
-    let wrapper;
-    let queryContorlWrapper;
+  describe('componentWillReceiveProps', () => {
+    describe('when initialValues prop changes', () => {
+      const initialValues = { query: 'some query' };
+      const nextProps = { initialValues: { query: 'new query' } };
+      let setStateMock;
 
-    before(() => {
-      wrapper = getWrapper({ initialValues: { query } });
-      queryContorlWrapper = wrapper.find('[controlId="search-query"]');
+      before(() => {
+        const instance = getWrapper({ initialValues }).instance();
+        instance.state = initialValues;
+        setStateMock = simple.mock(instance, 'setState');
+        instance.componentWillReceiveProps(nextProps);
+      });
+
+      after(() => {
+        simple.restore();
+      });
+
+      it('changes state to the new initialValues', () => {
+        expect(setStateMock.callCount).to.equal(1);
+        expect(setStateMock.lastCall.arg).to.deep.equal(nextProps.initialValues);
+      });
     });
 
-    it('has correct label', () => {
-      const controlLabel = queryContorlWrapper.find(ControlLabel);
-      expect(controlLabel.prop('children')).to.equal('Tekstihaku');
-    });
+    describe('when initialValues prop does not change', () => {
+      const initialValues = { query: 'some query' };
+      const nextProps = { initialValues };
+      let setStateMock;
 
-    it('has correct initial value', () => {
-      const queryControl = queryContorlWrapper.find(FormControl);
-      expect(queryControl.prop('value')).to.equal(query);
-    });
-  });
+      before(() => {
+        const instance = getWrapper({ initialValues }).instance();
+        instance.state = initialValues;
+        setStateMock = simple.mock(instance, 'setState');
+        instance.componentWillReceiveProps(nextProps);
+      });
 
-  it('renders a submit button', () => {
-    const button = getWrapper().find(Button);
-    expect(button).to.have.length(1);
-    expect(button.prop('type')).to.equal('submit');
+      after(() => {
+        simple.restore();
+      });
+
+      it('does not change state', () => {
+        expect(setStateMock.callCount).to.equal(0);
+      });
+    });
   });
 
   describe('handleSearch', () => {

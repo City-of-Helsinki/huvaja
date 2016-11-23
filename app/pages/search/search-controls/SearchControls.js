@@ -1,3 +1,4 @@
+import isEqual from 'lodash/isEqual';
 import queryString from 'query-string';
 import React, { Component, PropTypes } from 'react';
 import Button from 'react-bootstrap/lib/Button';
@@ -12,6 +13,12 @@ class SearchControls extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.state = props.initialValues;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(this.props.initialValues, nextProps.initialValues)) {
+      this.setState(nextProps.initialValues);
+    }
   }
 
   handleChange(updatedFilter) {
