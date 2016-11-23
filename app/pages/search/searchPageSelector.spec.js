@@ -7,24 +7,30 @@ describe('pages/search/searchPageSelector', () => {
   const resources = {
     'r-1': { id: 'r-1' },
     'r-2': { id: 'r-2' },
+    'r-3': { id: 'r-3' },
   };
   const searchFilters = { search: 'search text' };
-  const state = getState({
-    'data.resources': resources,
-    'searchPage.searchFilters': searchFilters,
-  });
-  const selected = searchPageSelector(state);
+  const searchResults = ['r-1', 'r-3'];
+
+  function getSelected() {
+    const state = getState({
+      'data.resources': resources,
+      'searchPage.searchFilters': searchFilters,
+      'searchPage.searchResults': searchResults,
+    });
+    return searchPageSelector(state);
+  }
 
   it('returns isFetching', () => {
-    expect(selected.isFetching).to.exist;
+    expect(getSelected().isFetching).to.exist;
   });
 
-  it('returns resources in an array form the state', () => {
-    const expected = [resources['r-1'], resources['r-2']];
-    expect(selected.resources).to.deep.equal(expected);
+  it('returns resources corresponding to search results', () => {
+    const expected = [resources['r-1'], resources['r-3']];
+    expect(getSelected().resources).to.deep.equal(expected);
   });
 
   it('returns searchFilters form the state', () => {
-    expect(selected.searchFilters).to.deep.equal(searchFilters);
+    expect(getSelected().searchFilters).to.deep.equal(searchFilters);
   });
 });
