@@ -1,0 +1,29 @@
+@font-size-h1:            floor((@font-size-base * 2.4));
+@font-size-h2:            floor((@font-size-base * 1.6));
+@font-size-h3:            ceil((@font-size-base * 1.4));
+@font-size-h4:            floor((@font-size-base * 1.1));
+
+h1 {
+  color: black;
+  font-weight: 600;
+  margin-top: @font-size-h1 / 4;
+  margin-bottom: @font-size-h1 / 4;
+}
+
+h2 {
+  color: @gray;
+  font-weight: 600;
+  margin-top: @font-size-h2 / 4;
+  margin-bottom: @font-size-h2 / 4;
+}
+
+h3 {
+  margin-top: @font-size-h3 / 4;
+  margin-bottom: @font-size-h3 / 4;
+}
+
+h4 {
+  color: @gray;
+  margin-top: @font-size-h4 / 4;
+  margin-bottom: @font-size-h4 / 4;
+}
