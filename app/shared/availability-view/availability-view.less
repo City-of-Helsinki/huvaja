@@ -1,26 +1,27 @@
 .availability-view {
-  @slot-height: 40px;
+  @slot-height: 50px;
   @slot-margin: 1px;
   display: flex;
   justify-content: space-between;
-  width: 1000px;
+  width: 100%;
 
   .left {
-    width: 190px;
+    width: 19%;
   }
   .right {
-    width: 800px;
+    width: 80%;
   }
   .top-left, .date-selector {
-    height: 20px;
-    margin-bottom: 10px;
-    background-color: blue;
+    display: flex;
+    align-items: center;
+    height: @line-height-computed;
+    margin-bottom: @padding-base-vertical;
+    background-color: @brand-primary;
     color: white;
-    padding: 2px 5px;
-    font-size: 12px;
+    padding: 0 @padding-small-horizontal;
+    font-size: @font-size-small;
   }
   .date-selector {
-    display: flex;
     justify-content: space-between;
     text-transform: lowercase;
 
@@ -29,19 +30,21 @@
     }
   }
   .group-info {
-    background-color: lightgrey;
-    padding: 0 10px;
+    background-color: @gray-lighter;
+    padding: 0 @padding-base-horizontal;
 
     .group-name, .resource-info {
       height: @slot-height + @slot-margin * 2;
-      padding: 4px;
     }
     .group-name {
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      font-weight: bold;
-      color: blue;
+      font-family: @headings-font-family;
+      line-height: @headings-line-height;
+      font-weight: @headings-font-weight;
+      font-size: @font-size-base;
+      color: @headings-color;
     }
   }
   .resource-info {
@@ -49,14 +52,14 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-end;
-    font-size: 10px;
+    font-size: @font-size-small;
 
     .name {
-      font-size: 12px;
-      font-weight: bold;
+      font-size: @font-size-small;
+      font-weight: @headings-font-weight;
     }
     .capacity {
-      color: grey;
+      color: @gray;
     }
   }
   .timeline-groups {
@@ -66,17 +69,16 @@
   .timeline-group {
     .hours {
       display: flex;
-      background-color: lightgrey;
 
       .hour {
         display: flex;
+        align-items: center;
         height: @slot-height;
         flex-shrink: 0;
         margin: @slot-margin;
-        border-left: 1px solid white;
-        align-items: center;
-        padding: 3px;
-        font-size: 10px;
+        background-color: @gray-lighter;
+        padding: @padding-small-vertical @padding-small-horizontal;
+        font-size: @font-size-small;
       }
     }
   }
@@ -91,14 +93,15 @@
   }
   .reservation {
     height: @slot-height;
-    background-color: lightgreen;
-    font-size: 10px;
+    background-color: @brand-success;
+    color: white;
+    font-size: @font-size-small;
     align-items: center;
-    padding: 3px 5px;
+    padding: @padding-small-vertical @padding-small-horizontal;
     overflow: hidden;
 
     .times {
-      margin-right: 5px;
+      margin-right: @padding-small-horizontal;
     }
     .name {
       overflow: hidden;
@@ -107,6 +110,6 @@
   }
   .reservation-slot {
     height: @slot-height;
-    background-color: lightgrey;
+    background-color: @gray-light;
   }
 }
