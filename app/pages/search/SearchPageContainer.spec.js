@@ -80,11 +80,47 @@ describe('pages/search/SearchPageContainer', () => {
   });
 
   describe('componentDidMount', () => {
-    it('fetches resources', () => {
+    it('fetches resources using search filters', () => {
       const fetchResources = simple.mock();
       const instance = getWrapper({ fetchResources }).instance();
       instance.componentDidMount();
       expect(fetchResources.callCount).to.equal(1);
+      expect(fetchResources.lastCall.arg).to.deep.equal(defaultProps.searchFilters);
+    });
+  });
+
+  describe('componentWillUpdate', () => {
+    describe('when searchFilters prop changes', () => {
+      const fetchResources = simple.mock();
+      const searchFilters = { search: 'search text' };
+      const nextProps = { searchFilters: { search: 'new search' } };
+
+      before(() => {
+        const instance = getWrapper({ fetchResources, searchFilters }).instance();
+        instance.state = searchFilters;
+        instance.componentWillUpdate(nextProps);
+      });
+
+      it('fetches resources using search filters', () => {
+        expect(fetchResources.callCount).to.equal(1);
+        expect(fetchResources.lastCall.arg).to.deep.equal(nextProps.searchFilters);
+      });
+    });
+
+    describe('when searchFilters prop does not change', () => {
+      const fetchResources = simple.mock();
+      const searchFilters = { search: 'search text' };
+      const nextProps = { searchFilters };
+
+      before(() => {
+        const instance = getWrapper({ fetchResources, searchFilters }).instance();
+        instance.state = searchFilters;
+        instance.componentWillUpdate(nextProps);
+      });
+
+      it('does not fetch resources', () => {
+        expect(fetchResources.callCount).to.equal(0);
+      });
     });
   });
 });
