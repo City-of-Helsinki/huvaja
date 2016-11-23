@@ -3,6 +3,7 @@ import { reducer as formReducer } from 'redux-form';
 
 import { activeRequestsReducer, dataReducer } from 'api/reducers';
 import searchFilters from './searchFiltersReducer';
+import searchResults from './searchResultsReducer';
 
 export default combineReducers({
   activeRequests: activeRequestsReducer,
@@ -10,5 +11,6 @@ export default combineReducers({
   form: formReducer,
   searchPage: combineReducers({
     searchFilters,
+    searchResults,
   }),
 });
