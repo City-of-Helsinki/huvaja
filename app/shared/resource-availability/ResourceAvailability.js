@@ -1,11 +1,13 @@
 import React, { PropTypes } from 'react';
 
+import DateSelector from './DateSelector';
 import GroupedTimeline from './GroupedTimeline';
 import Sidebar from './Sidebar';
 
 ResourceAvailability.propTypes = {
   date: PropTypes.object.isRequired,
   groups: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onDateChange: PropTypes.func.isRequired,
 };
 export default function ResourceAvailability(props) {
   return (
@@ -15,7 +17,7 @@ export default function ResourceAvailability(props) {
         <Sidebar groups={props.groups} />
       </div>
       <div className="right">
-        <div className="date-selector">TODO</div>
+        <DateSelector value={props.date} onChange={props.onDateChange} />
         <GroupedTimeline date={props.date} groups={props.groups} />
       </div>
     </div>
