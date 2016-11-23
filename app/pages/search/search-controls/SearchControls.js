@@ -1,8 +1,10 @@
+import queryString from 'query-string';
 import React, { Component, PropTypes } from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
+import { browserHistory } from 'react-router';
 
 class SearchControls extends Component {
   constructor(props) {
@@ -18,7 +20,7 @@ class SearchControls extends Component {
 
   handleSearch(event) {
     event.preventDefault();
-    console.log('Search with', this.state);  // eslint-disable-line no-console
+    browserHistory.push(`/?${queryString.stringify(this.state)}`);
   }
 
   render() {
