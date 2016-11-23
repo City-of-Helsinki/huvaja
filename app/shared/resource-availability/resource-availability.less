@@ -3,9 +3,19 @@
   @slot-margin: 1px;
   display: flex;
 
+  .group-info {
+    .group-name, .resource-info {
+      height: @slot-height + @slot-margin * 2;
+      padding: 4px;
+    }
+    .group-name {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      font-weight: bold;
+    }
+  }
   .resource-info {
-    height: @slot-height + @slot-margin * 2;
-    padding: 4px;
     display: flex;
     flex-direction: column;
     justify-content: center;
