@@ -2,8 +2,27 @@
   @slot-height: 40px;
   @slot-margin: 1px;
   display: flex;
+  justify-content: space-between;
+  width: 1000px;
 
+  .left {
+    width: 190px;
+  }
+  .right {
+    width: 800px;
+  }
+  .top-left, .date-selector {
+    height: 20px;
+    margin-bottom: 10px;
+    background-color: blue;
+    color: white;
+    padding: 2px 5px;
+    font-size: 12px;
+  }
   .group-info {
+    background-color: lightgrey;
+    padding: 0 10px;
+
     .group-name, .resource-info {
       height: @slot-height + @slot-margin * 2;
       padding: 4px;
@@ -13,6 +32,7 @@
       align-items: center;
       justify-content: flex-end;
       font-weight: bold;
+      color: blue;
     }
   }
   .resource-info {
@@ -27,23 +47,24 @@
       font-weight: bold;
     }
     .capacity {
-      color: gray;
+      color: grey;
     }
   }
   .grouped-timeline {
-    width: 1000px;
+    width: 100%;
     overflow-x: auto;
   }
   .group-timeline {
     .hours {
       display: flex;
+      background-color: lightgrey;
 
       .hour {
         display: flex;
         height: @slot-height;
         flex-shrink: 0;
         margin: @slot-margin;
-        border-left: 1px solid lightgrey;
+        border-left: 1px solid white;
         align-items: center;
         padding: 3px;
         font-size: 10px;
