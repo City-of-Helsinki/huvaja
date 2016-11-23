@@ -8,7 +8,7 @@ describe('pages/search/searchPageSelector', () => {
     'r-1': { id: 'r-1' },
     'r-2': { id: 'r-2' },
   };
-  const searchFilters = { query: 'some query' };
+  const searchFilters = { search: 'search text' };
   const state = getState({
     'data.resources': resources,
     'searchPage.searchFilters': searchFilters,

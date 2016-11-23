@@ -13,7 +13,7 @@ describe('pages/search/SearchPageContainer', () => {
     isFetching: false,
     fetchResources: simple.mock(),
     resources: [],
-    searchFilters: { query: 'some query' },
+    searchFilters: { search: 'search text' },
   };
 
   function getWrapper(props) {
