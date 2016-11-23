@@ -1,3 +1,4 @@
+import isEqual from 'lodash/isEqual';
 import React, { Component, PropTypes } from 'react';
 import Loader from 'react-loader';
 import { connect } from 'react-redux';
@@ -19,7 +20,13 @@ function renderResource(resource) {
 
 export class UnconnectedSearchPageContainer extends Component {
   componentDidMount() {
-    this.props.fetchResources();
+    this.props.fetchResources(this.props.searchFilters);
+  }
+
+  componentWillUpdate(nextProps) {
+    if (!isEqual(this.props.searchFilters, nextProps.searchFilters)) {
+      this.props.fetchResources(nextProps.searchFilters);
+    }
   }
 
   render() {
