@@ -111,5 +111,14 @@
   .reservation-slot {
     height: @slot-height;
     background-color: @gray-light;
+    overflow: hidden;
+
+    &:hover {
+      background-color: @brand-primary;
+    }
+    .a11y-text {
+      position: relative;
+      left: 100px;
+    }
   }
 }

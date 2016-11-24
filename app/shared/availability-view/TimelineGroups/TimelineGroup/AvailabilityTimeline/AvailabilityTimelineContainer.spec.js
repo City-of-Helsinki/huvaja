@@ -83,19 +83,23 @@ describe('shared/availability-view/AvailabilityTimelineContainer', () => {
       it('contains reservations and slots', () => {
         const reservations = getState().data.resources['resource-1'].reservations;
         const actual = getSelected().items;
-        expect(actual).to.deep.equal([
-          { key: '0', type: 'reservation-slot' },
-          { key: '1', type: 'reservation-slot' },
-          { key: '2', type: 'reservation-slot' },
-          { key: '3', type: 'reservation-slot' },
+        expect(actual[0].type).to.equal('reservation-slot');
+        expect(actual[1].type).to.equal('reservation-slot');
+        expect(actual[2].type).to.equal('reservation-slot');
+        expect(actual[3].type).to.equal('reservation-slot');
+        expect(actual[4]).to.deep.equal(
           { key: 'reservation-1', type: 'reservation', data: reservations[0] },
-          { key: '5', type: 'reservation-slot' },
-          { key: '6', type: 'reservation-slot' },
-          { key: '7', type: 'reservation-slot' },
+        );
+        expect(actual[5].type).to.equal('reservation-slot');
+        expect(actual[6].type).to.equal('reservation-slot');
+        expect(actual[7].type).to.equal('reservation-slot');
+        expect(actual[8]).to.deep.equal(
           { key: 'reservation-2', type: 'reservation', data: reservations[1] },
+        );
+        expect(actual[9]).to.deep.equal(
           { key: 'reservation-3', type: 'reservation', data: reservations[2] },
-          { key: '10', type: 'reservation-slot' },
-        ]);
+        );
+        expect(actual[10].type).to.equal('reservation-slot');
       });
     });
   });
