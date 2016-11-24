@@ -4,6 +4,7 @@ import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 
 import WrappedText from 'shared/wrapped-text';
+import ImageCarousel from 'shared/image-carousel';
 
 function ResourceInfo({ resource, unit }) {
   return (
@@ -17,7 +18,7 @@ function ResourceInfo({ resource, unit }) {
         <Grid>
           <Row>
             <Col xs={12} sm={6}>
-              <figure />
+              <ImageCarousel images={resource.images} />
             </Col>
             <Col xs={12} sm={6}>
               <aside>
