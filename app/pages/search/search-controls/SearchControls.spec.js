@@ -27,22 +27,19 @@ describe('pages/search/search-controls/SearchControls', () => {
     });
 
     describe('search control', () => {
-      const search = 'search text';
-      let wrapper;
-      let searchContorlWrapper;
-
-      before(() => {
-        wrapper = getWrapper({ initialValues: { search } });
-        searchContorlWrapper = wrapper.find('[controlId="search-control-group"]');
-      });
+      function getSearchControlWrapper(values) {
+        const wrapper = getWrapper({ initialValues: { search: '', ...values } });
+        return wrapper.find('[controlId="search-control-group"]');
+      }
 
       it('has correct label', () => {
-        const controlLabel = searchContorlWrapper.find(ControlLabel);
+        const controlLabel = getSearchControlWrapper().find(ControlLabel);
         expect(controlLabel.prop('children')).to.equal('Tekstihaku');
       });
 
       it('has correct initial value', () => {
-        const searchControl = searchContorlWrapper.find(FormControl);
+        const search = 'search text';
+        const searchControl = getSearchControlWrapper({ search }).find(FormControl);
         expect(searchControl.prop('value')).to.equal(search);
       });
     });
