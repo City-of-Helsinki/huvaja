@@ -13,7 +13,7 @@ describe('shared/resource-availability/utils', () => {
       expect(actual).to.equal(slotWidth - slotMargin);
     });
 
-    it('returns one slot widht for 30 min span', () => {
+    it('returns one slot width for 30 min span', () => {
       const actual = utils.getTimeSlotWidth({
         startTime: moment('2016-01-01T12:00:00Z'),
         endTime: moment('2016-01-01T12:30:00Z'),
