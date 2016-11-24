@@ -1,0 +1,112 @@
+.availability-view {
+  @slot-height: 40px;
+  @slot-margin: 1px;
+  display: flex;
+  justify-content: space-between;
+  width: 1000px;
+
+  .left {
+    width: 190px;
+  }
+  .right {
+    width: 800px;
+  }
+  .top-left, .date-selector {
+    height: 20px;
+    margin-bottom: 10px;
+    background-color: blue;
+    color: white;
+    padding: 2px 5px;
+    font-size: 12px;
+  }
+  .date-selector {
+    display: flex;
+    justify-content: space-between;
+    text-transform: lowercase;
+
+    .previous, .next {
+      color: white;
+    }
+  }
+  .group-info {
+    background-color: lightgrey;
+    padding: 0 10px;
+
+    .group-name, .resource-info {
+      height: @slot-height + @slot-margin * 2;
+      padding: 4px;
+    }
+    .group-name {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      font-weight: bold;
+      color: blue;
+    }
+  }
+  .resource-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    font-size: 10px;
+
+    .name {
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .capacity {
+      color: grey;
+    }
+  }
+  .timeline-groups {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .timeline-group {
+    .hours {
+      display: flex;
+      background-color: lightgrey;
+
+      .hour {
+        display: flex;
+        height: @slot-height;
+        flex-shrink: 0;
+        margin: @slot-margin;
+        border-left: 1px solid white;
+        align-items: center;
+        padding: 3px;
+        font-size: 10px;
+      }
+    }
+  }
+  .availability-timeline {
+    display: flex;
+  }
+  .reservation, .reservation-slot {
+    display: inline-flex;
+    margin: @slot-margin;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .reservation {
+    height: @slot-height;
+    background-color: lightgreen;
+    font-size: 10px;
+    align-items: center;
+    padding: 3px 5px;
+    overflow: hidden;
+
+    .times {
+      margin-right: 5px;
+    }
+    .name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  .reservation-slot {
+    height: @slot-height;
+    background-color: lightgrey;
+  }
+}
