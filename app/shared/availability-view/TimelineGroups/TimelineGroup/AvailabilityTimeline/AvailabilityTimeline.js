@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import Reservation from './Reservation';
 import ReservationSlot from './ReservationSlot';
 
-ReservationsTimeline.propTypes = {
+AvailabilityTimeline.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
       key: PropTypes.string.isRequired,
@@ -13,9 +13,9 @@ ReservationsTimeline.propTypes = {
   ).isRequired,
 };
 
-export default function ReservationsTimeline(props) {
+export default function AvailabilityTimeline(props) {
   return (
-    <div className="reservations-timeline">
+    <div className="availability-timeline">
       {props.items.map((item) => {
         if (item.type === 'reservation-slot') {
           return <ReservationSlot key={item.key} {...item.data} />;

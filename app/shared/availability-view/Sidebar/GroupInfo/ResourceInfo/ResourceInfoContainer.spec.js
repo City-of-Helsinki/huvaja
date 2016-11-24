@@ -19,7 +19,7 @@ function getState() {
   };
 }
 
-describe('shared/resource-availability/ResourceInfoContainer', () => {
+describe('shared/availability-view/ResourceInfoContainer', () => {
   describe('container', () => {
     function getWrapper(props) {
       const defaults = { id: '123456', store: { getState } };

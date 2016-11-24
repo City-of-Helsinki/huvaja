@@ -3,21 +3,21 @@ import { shallow } from 'enzyme';
 import moment from 'moment';
 import React from 'react';
 
-import GroupTimeline from './GroupTimeline';
-import ResourceReservationsTimelineContainer from './ResourceReservationsTimelineContainer';
+import TimelineGroup from './TimelineGroup';
+import AvailabilityTimelineContainer from './AvailabilityTimeline';
 
 function getWrapper(props) {
   const defaults = {
     date: moment('2016-01-01T00:00:00'),
     resources: [],
   };
-  return shallow(<GroupTimeline {...defaults} {...props} />);
+  return shallow(<TimelineGroup {...defaults} {...props} />);
 }
 
-describe('shared/resource-availability/GroupTimeline', () => {
-  it('renders a div.group-timeline', () => {
+describe('shared/availability-view/TimelineGroup', () => {
+  it('renders a div.timeline-group', () => {
     const wrapper = getWrapper();
-    expect(wrapper.is('div.group-timeline')).to.be.true;
+    expect(wrapper.is('div.timeline-group')).to.be.true;
   });
 
   it('renders hours', () => {
@@ -54,14 +54,14 @@ describe('shared/resource-availability/GroupTimeline', () => {
 
   it('renders no resources if none given', () => {
     const wrapper = getWrapper({ resources: [] });
-    const resources = wrapper.find(ResourceReservationsTimelineContainer);
+    const resources = wrapper.find(AvailabilityTimelineContainer);
     expect(resources).to.have.length(0);
   });
 
   it('renders resources', () => {
     const resources = ['1234', '5678', '90ab', 'cdef'];
     const wrapper = getWrapper({ resources });
-    const elements = wrapper.find(ResourceReservationsTimelineContainer);
+    const elements = wrapper.find(AvailabilityTimelineContainer);
     expect(elements).to.have.length(4);
     expect(elements.at(0).prop('id')).to.equal(resources[0]);
     expect(elements.at(1).prop('id')).to.equal(resources[1]);
