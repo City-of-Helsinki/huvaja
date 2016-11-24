@@ -2,13 +2,15 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 
+import WrappedText from 'shared/wrapped-text';
 import ResourceInfo from './ResourceInfo';
 
 describe('pages/resource/info/ResourceInfo', () => {
   const resource = {
+    description: { fi: 'Description text' }
     name: { fi: 'Huone' },
-    type: { name: { fi: 'Työpiste' } },
     peopleCapacity: 3,
+    type: { name: { fi: 'Työpiste' } },
   };
   const unit = {
     name: { fi: 'Rakennus' },
@@ -58,6 +60,12 @@ describe('pages/resource/info/ResourceInfo', () => {
     it('renders resource people capacity', () => {
       const resourceCapacity = section.find('.resource-people-capacity');
       expect(resourceCapacity.text()).to.equal(`Henkilömäärä: ${resource.peopleCapacity}`);
+    });
+
+    it('renders resource description', () => {
+      const resourceDescription = section.find('.resource-description');
+      const wrappedText = resourceDescription.find(WrappedText);
+      expect(wrappedText.prop('text')).to.equal(resource.description.fi);
     });
   });
 });
