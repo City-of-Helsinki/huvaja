@@ -14,7 +14,7 @@ function getWrapper(props) {
   return shallow(<DateSelector {...defaults} {...props} />);
 }
 
-describe('shared/resource-availability/DateSelector', () => {
+describe('shared/availability-view/DateSelector', () => {
   it('renders a div.date-selector', () => {
     const wrapper = getWrapper();
     expect(wrapper.is('div.date-selector')).to.be.true;

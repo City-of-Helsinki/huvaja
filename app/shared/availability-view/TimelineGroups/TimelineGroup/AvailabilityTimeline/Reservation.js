@@ -1,7 +1,7 @@
 import moment from 'moment';
 import React, { PropTypes } from 'react';
 
-import utils from './utils';
+import utils from '../utils';
 
 Reservation.propTypes = {
   end: PropTypes.string.isRequired,

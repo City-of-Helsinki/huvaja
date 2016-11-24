@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-import ResourceReservationsTimelineContainer from './ResourceReservationsTimelineContainer';
+import AvailabilityTimelineContainer from './AvailabilityTimeline';
 import utils from './utils';
 
 function getHourRanges(date) {
@@ -14,13 +14,13 @@ function getHourRanges(date) {
   return ranges;
 }
 
-GroupTimeline.propTypes = {
+TimelineGroup.propTypes = {
   date: PropTypes.object.isRequired,
   resources: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
-export default function GroupTimeline(props) {
+export default function TimelineGroup(props) {
   return (
-    <div className="group-timeline">
+    <div className="timeline-group">
       <div className="hours">
         {getHourRanges(props.date).map(range =>
           <div
@@ -33,7 +33,7 @@ export default function GroupTimeline(props) {
         )}
       </div>
       {props.resources.map(resource =>
-        <ResourceReservationsTimelineContainer date={props.date} id={resource} key={resource} />
+        <AvailabilityTimelineContainer date={props.date} id={resource} key={resource} />
       )}
     </div>
   );

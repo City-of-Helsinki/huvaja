@@ -3,8 +3,8 @@ import { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import ReservationsTimeline from './ReservationsTimeline';
-import utils from './utils';
+import AvailabilityTimeline from './AvailabilityTimeline';
+import utils from '../utils';
 
 export function selector() {
   function dateSelector(state, props) { return props.date; }
@@ -40,10 +40,10 @@ export function selector() {
   );
 }
 
-const ResourceReservationsTimelineContainer = connect(selector)(ReservationsTimeline);
-ResourceReservationsTimelineContainer.propTypes = {
+const AvailabilityTimelineContainer = connect(selector)(AvailabilityTimeline);
+AvailabilityTimelineContainer.propTypes = {
   date: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
 };
 
-export default ResourceReservationsTimelineContainer;
+export default AvailabilityTimelineContainer;

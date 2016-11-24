@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-import ResourceInfoContainer from './ResourceInfoContainer';
+import ResourceInfoContainer from './ResourceInfo';
 
 GroupInfo.propTypes = {
   name: PropTypes.string.isRequired,

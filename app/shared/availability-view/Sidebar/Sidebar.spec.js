@@ -12,7 +12,7 @@ function getWrapper(props) {
   return shallow(<Sidebar {...defaults} {...props} />);
 }
 
-describe('shared/resource-availability/Sidebar', () => {
+describe('shared/availability-view/Sidebar', () => {
   it('renders a div.sidebar', () => {
     const wrapper = getWrapper();
     expect(wrapper.is('div.sidebar')).to.be.true;
