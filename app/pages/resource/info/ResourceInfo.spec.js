@@ -2,12 +2,19 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 
+import ImageCarousel from 'shared/image-carousel';
 import WrappedText from 'shared/wrapped-text';
 import ResourceInfo from './ResourceInfo';
 
 describe('pages/resource/info/ResourceInfo', () => {
+  const image = {
+    url: 'http://api.hel.fi/virkarespa/resource_image/1',
+    type: 'main',
+    caption: { fi: 'Caption for Image 1' },
+  };
   const resource = {
-    description: { fi: 'Description text' }
+    description: { fi: 'Description text' },
+    images: [image],
     name: { fi: 'Huone' },
     peopleCapacity: 3,
     type: { name: { fi: 'Työpiste' } },
@@ -50,6 +57,11 @@ describe('pages/resource/info/ResourceInfo', () => {
     let section;
     before(() => {
       section = getWrapper().find('section.resource-details');
+    });
+
+    it('renders a ImageCarousel with resource images', () => {
+      const imageCarousel = section.find(ImageCarousel);
+      expect(imageCarousel.prop('images')).to.deep.equal(resource.images);
     });
 
     it('renders resource type', () => {
