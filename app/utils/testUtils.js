@@ -6,7 +6,7 @@ import set from 'lodash/set';
 import rootReducer from 'state/reducers';
 
 function getState(extraState = {}) {
-  const initialState = rootReducer(undefined, {});
+  const initialState = rootReducer(undefined, { type: 'NOOP' });
   const newState = {};
 
   forEach(Object.keys(extraState), (key) => {

@@ -5,10 +5,12 @@ import searchFiltersReducer from './searchFiltersReducer';
 
 describe('state/reducers/searchFiltersReducer', () => {
   describe('initial state', () => {
-    const initialState = searchFiltersReducer(undefined, {});
+    function getInitialState() {
+      return searchFiltersReducer(undefined, { type: 'NOOP' });
+    }
 
     it('search is an empty string', () => {
-      expect(initialState.search).to.equal('');
+      expect(getInitialState().search).to.equal('');
     });
   });
 

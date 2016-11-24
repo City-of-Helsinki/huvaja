@@ -7,10 +7,12 @@ import searchResultsReducer from './searchResultsReducer';
 
 describe('state/reducers/searchResultsReducer', () => {
   describe('initial state', () => {
-    const initialState = searchResultsReducer(undefined, {});
+    function getInitialState() {
+      return searchResultsReducer(undefined, { type: 'NOOP' });
+    }
 
     it('is an empty array', () => {
-      expect(initialState).to.deep.equal([]);
+      expect(getInitialState()).to.deep.equal([]);
     });
   });
 

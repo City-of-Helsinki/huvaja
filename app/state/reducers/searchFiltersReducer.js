@@ -1,18 +1,12 @@
+import { handleActions } from 'redux-actions';
+
 const initialState = {
   search: '',
 };
 
-function searchFiltersReducer(state = initialState, action) {
-  switch (action.type) {
-    case 'ENTER_OR_CHANGE_SEARCH_PAGE': {
-      const filters = action.payload.query;
-      return Object.assign({}, initialState, filters);
-    }
-
-    default: {
-      return state;
-    }
-  }
-}
-
-export default searchFiltersReducer;
+export default handleActions({
+  ENTER_OR_CHANGE_SEARCH_PAGE: (state, action) => {
+    const filters = action.payload.query;
+    return { ...initialState, ...filters };
+  },
+}, initialState);
