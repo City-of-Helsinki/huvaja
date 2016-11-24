@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react';
 import Col from 'react-bootstrap/lib/Col';
+import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 
-import WrappedText from 'shared/wrapped-text';
 import ImageCarousel from 'shared/image-carousel';
+import WrappedText from 'shared/wrapped-text';
 
 function ResourceInfo({ resource, unit }) {
   return (
@@ -12,15 +13,17 @@ function ResourceInfo({ resource, unit }) {
       <header>
         <h2 className="unit-name">{unit.name.fi}</h2>
         <h1 className="resource-name">{resource.name.fi}</h1>
-        <h4 className="unit-address">{unit.streetAddress.fi}</h4>
+        <h4 className="unit-address">
+          <Glyphicon glyph="map-marker" className="map-marker" /> {unit.streetAddress.fi}
+        </h4>
       </header>
       <section className="resource-details">
         <Grid>
           <Row>
-            <Col xs={12} sm={6}>
+            <Col xs={12} sm={7}>
               <ImageCarousel images={resource.images} />
             </Col>
-            <Col xs={12} sm={6}>
+            <Col xs={12} sm={5}>
               <aside>
                 <h3 className="resource-type">{resource.type.name.fi}</h3>
                 <div className="details-row resource-people-capacity">
