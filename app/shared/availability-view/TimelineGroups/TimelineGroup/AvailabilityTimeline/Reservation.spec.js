@@ -2,11 +2,13 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import moment from 'moment';
 import React from 'react';
+import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
+import Tooltip from 'react-bootstrap/lib/Tooltip';
 
 import Reservation from './Reservation';
 import utils from '../utils';
 
-function getWrapper(props) {
+function getOverlayTrigger(props) {
   const defaults = {
     end: '2016-01-01T12:00:00Z',
     name: 'Meeting',
@@ -15,10 +17,25 @@ function getWrapper(props) {
   return shallow(<Reservation {...defaults} {...props} />);
 }
 
+function getWrapper(props) {
+  return getOverlayTrigger(props).find('.reservation');
+}
+
 describe('shared/availability-view/Reservation', () => {
   it('renders a div.reservation', () => {
     const wrapper = getWrapper();
     expect(wrapper.is('div.reservation')).to.be.true;
+  });
+
+  it('renders an OverlayTrigger', () => {
+    const wrapper = getOverlayTrigger();
+    expect(wrapper.is(OverlayTrigger)).to.be.true;
+  });
+
+  it('renders a tooltip', () => {
+    const overlayTrigger = getOverlayTrigger();
+    const overlay = overlayTrigger.prop('overlay');
+    expect(overlay.type).to.equal(Tooltip);
   });
 
   it('has correct width', () => {
