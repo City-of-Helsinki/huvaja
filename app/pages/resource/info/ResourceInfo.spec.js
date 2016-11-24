@@ -33,49 +33,47 @@ describe('pages/resource/info/ResourceInfo', () => {
   }
 
   describe('header', () => {
-    let header;
-    before(() => {
-      header = getWrapper().find('header');
-    });
+    function getHeaderWrapper(props) {
+      return getWrapper(props).find('header');
+    }
 
     it('renders unit name', () => {
-      const unitName = header.find('.unit-name');
+      const unitName = getHeaderWrapper().find('.unit-name');
       expect(unitName.text()).to.equal(unit.name.fi);
     });
 
     it('renders resource name', () => {
-      const resourceName = header.find('.resource-name');
+      const resourceName = getHeaderWrapper().find('.resource-name');
       expect(resourceName.text()).to.equal(resource.name.fi);
     });
 
     it('renders resource address', () => {
-      const unitAddress = header.find('.unit-address');
+      const unitAddress = getHeaderWrapper().find('.unit-address');
       expect(unitAddress.text()).to.contain(unit.streetAddress.fi);
     });
   });
   describe('resource-details section', () => {
-    let section;
-    before(() => {
-      section = getWrapper().find('section.resource-details');
-    });
+    function getSectionWrapper(props) {
+      return getWrapper(props).find('section.resource-details');
+    }
 
     it('renders a ImageCarousel with resource images', () => {
-      const imageCarousel = section.find(ImageCarousel);
+      const imageCarousel = getSectionWrapper().find(ImageCarousel);
       expect(imageCarousel.prop('images')).to.deep.equal(resource.images);
     });
 
     it('renders resource type', () => {
-      const resourceType = section.find('.resource-type');
+      const resourceType = getSectionWrapper().find('.resource-type');
       expect(resourceType.text()).to.equal(resource.type.name.fi);
     });
 
     it('renders resource people capacity', () => {
-      const resourceCapacity = section.find('.resource-people-capacity');
+      const resourceCapacity = getSectionWrapper().find('.resource-people-capacity');
       expect(resourceCapacity.text()).to.equal(`Henkilömäärä: ${resource.peopleCapacity}`);
     });
 
     it('renders resource description', () => {
-      const resourceDescription = section.find('.resource-description');
+      const resourceDescription = getSectionWrapper().find('.resource-description');
       const wrappedText = resourceDescription.find(WrappedText);
       expect(wrappedText.prop('text')).to.equal(resource.description.fi);
     });
