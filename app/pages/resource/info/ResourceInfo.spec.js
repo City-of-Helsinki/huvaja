@@ -50,7 +50,7 @@ describe('pages/resource/info/ResourceInfo', () => {
 
     it('renders resource address', () => {
       const unitAddress = header.find('.unit-address');
-      expect(unitAddress.text()).to.equal(unit.streetAddress.fi);
+      expect(unitAddress.text()).to.contain(unit.streetAddress.fi);
     });
   });
   describe('resource-details section', () => {
