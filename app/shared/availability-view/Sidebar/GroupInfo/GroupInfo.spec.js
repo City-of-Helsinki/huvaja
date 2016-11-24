@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 
 import GroupInfo from './GroupInfo';
-import ResourceInfoContainer from './ResourceInfoContainer';
+import ResourceInfoContainer from './ResourceInfo';
 
 function getWrapper(props) {
   const defaults = {
@@ -13,7 +13,7 @@ function getWrapper(props) {
   return shallow(<GroupInfo {...defaults} {...props} />);
 }
 
-describe('shared/resource-availability/GroupInfo', () => {
+describe('shared/availability-view/GroupInfo', () => {
   it('renders a div.group-info', () => {
     const wrapper = getWrapper();
     expect(wrapper.is('div.group-info')).to.be.true;

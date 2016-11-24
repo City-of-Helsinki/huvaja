@@ -4,17 +4,17 @@ import React from 'react';
 
 import Reservation from './Reservation';
 import ReservationSlot from './ReservationSlot';
-import ReservationsTimeline from './ReservationsTimeline';
+import AvailabilityTimeline from './AvailabilityTimeline';
 
 function getWrapper(props) {
   const defaults = { items: [] };
-  return shallow(<ReservationsTimeline {...defaults} {...props} />);
+  return shallow(<AvailabilityTimeline {...defaults} {...props} />);
 }
 
-describe('shared/resource-availability/ReservationsTimeline', () => {
-  it('renders a div.reservations-timeline', () => {
+describe('shared/availability-view/AvailabilityTimeline', () => {
+  it('renders a div.availability-timeline', () => {
     const wrapper = getWrapper();
-    expect(wrapper.is('div.reservations-timeline')).to.be.true;
+    expect(wrapper.is('div.availability-timeline')).to.be.true;
   });
 
   it('renders given reservation slot', () => {

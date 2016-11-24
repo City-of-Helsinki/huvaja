@@ -3,8 +3,8 @@ import { shallow } from 'enzyme';
 import moment from 'moment';
 import React from 'react';
 
-import ReservationsTimeline from './ReservationsTimeline';
-import ResourceReservationsTimelineContainer, { selector } from './ResourceReservationsTimelineContainer';
+import AvailabilityTimeline from './AvailabilityTimeline';
+import AvailabilityTimelineContainer, { selector } from './AvailabilityTimelineContainer';
 
 const slotSize = 30; // minutes
 
@@ -47,18 +47,18 @@ function getWrapper(props) {
     id: 'resource-1',
     store: { getState },
   };
-  return shallow(<ResourceReservationsTimelineContainer {...defaults} {...props} />);
+  return shallow(<AvailabilityTimelineContainer {...defaults} {...props} />);
 }
 
-describe('shared/resource-availability/ResourceReservationsTimelineContainer', () => {
-  it('renders a ReservationsTimeline', () => {
+describe('shared/availability-view/AvailabilityTimelineContainer', () => {
+  it('renders a AvailabilityTimeline', () => {
     const wrapper = getWrapper();
-    expect(wrapper.is(ReservationsTimeline)).to.be.true;
+    expect(wrapper.is(AvailabilityTimeline)).to.be.true;
   });
 
-  it('renders a ReservationsTimeline even if no reservations', () => {
+  it('renders a AvailabilityTimeline even if no reservations', () => {
     const wrapper = getWrapper({ id: 'resource-2' });
-    expect(wrapper.is(ReservationsTimeline)).to.be.true;
+    expect(wrapper.is(AvailabilityTimeline)).to.be.true;
   });
 
   describe('selector', () => {

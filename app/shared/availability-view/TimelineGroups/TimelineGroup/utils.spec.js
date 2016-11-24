@@ -3,7 +3,7 @@ import moment from 'moment';
 
 import utils from './utils';
 
-describe('shared/resource-availability/utils', () => {
+describe('shared/availability-view/utils', () => {
   describe('getTimeSlotWidth', () => {
     const slotWidth = 30;
     const slotMargin = 2;

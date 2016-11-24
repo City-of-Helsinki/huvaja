@@ -3,8 +3,8 @@ import { shallow } from 'enzyme';
 import React from 'react';
 
 import DateSelector from './DateSelector';
-import GroupedTimeline from './GroupedTimeline';
-import ResourceAvailability from './ResourceAvailability';
+import TimelineGroups from './TimelineGroups';
+import AvailabilityView from './AvailabilityView';
 import Sidebar from './Sidebar';
 
 function getWrapper(props) {
@@ -13,13 +13,13 @@ function getWrapper(props) {
     groups: [],
     onDateChange: () => null,
   };
-  return shallow(<ResourceAvailability {...defaults} {...props} />);
+  return shallow(<AvailabilityView {...defaults} {...props} />);
 }
 
-describe('shared/resource-availability/ResourceAvailability', () => {
-  it('renders a div.resource-availability', () => {
+describe('shared/availability-view/AvailabilityView', () => {
+  it('renders a div.availability-view', () => {
     const wrapper = getWrapper();
-    expect(wrapper.is('div.resource-availability')).to.be.true;
+    expect(wrapper.is('div.availability-view')).to.be.true;
   });
 
   it('renders DateSelector', () => {
@@ -38,10 +38,10 @@ describe('shared/resource-availability/ResourceAvailability', () => {
     expect(element.prop('groups')).to.equal(groups);
   });
 
-  it('renders GroupedTimeline', () => {
+  it('renders TimelineGroups', () => {
     const date = {};
     const groups = [];
-    const element = getWrapper({ date, groups }).find(GroupedTimeline);
+    const element = getWrapper({ date, groups }).find(TimelineGroups);
     expect(element).to.have.length(1);
     expect(element.prop('date')).to.equal(date);
     expect(element.prop('groups')).to.equal(groups);

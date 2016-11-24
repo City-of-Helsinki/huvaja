@@ -4,7 +4,7 @@ import moment from 'moment';
 import React from 'react';
 
 import Reservation from './Reservation';
-import utils from './utils';
+import utils from '../utils';
 
 function getWrapper(props) {
   const defaults = {
@@ -15,7 +15,7 @@ function getWrapper(props) {
   return shallow(<Reservation {...defaults} {...props} />);
 }
 
-describe('shared/resource-availability/Reservation', () => {
+describe('shared/availability-view/Reservation', () => {
   it('renders a div.reservation', () => {
     const wrapper = getWrapper();
     expect(wrapper.is('div.reservation')).to.be.true;
