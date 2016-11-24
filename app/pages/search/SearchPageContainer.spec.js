@@ -11,7 +11,7 @@ import SearchControls from './search-controls';
 describe('pages/search/SearchPageContainer', () => {
   const defaultProps = {
     isFetching: false,
-    fetchResources: simple.mock(),
+    fetchResources: () => null,
     resources: [],
     searchFilters: { search: 'search text' },
   };
