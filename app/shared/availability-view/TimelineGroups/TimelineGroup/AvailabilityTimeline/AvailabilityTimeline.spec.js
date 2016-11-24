@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
+import moment from 'moment';
 import React from 'react';
 
 import Reservation from './Reservation';
@@ -18,7 +19,13 @@ describe('shared/availability-view/AvailabilityTimeline', () => {
   });
 
   it('renders given reservation slot', () => {
-    const wrapper = getWrapper({ items: [{ key: '1', type: 'reservation-slot' }] });
+    const wrapper = getWrapper({
+      items: [{
+        key: '1',
+        type: 'reservation-slot',
+        data: { begin: moment(), resourceId: '' },
+      }]
+    });
     const slot = wrapper.find(ReservationSlot);
     expect(slot).to.have.length(1);
   });
@@ -43,9 +50,9 @@ describe('shared/availability-view/AvailabilityTimeline', () => {
   it('renders slots and reservations', () => {
     const wrapper = getWrapper({
       items: [
-        { key: '1', type: 'reservation-slot' },
+        { key: '1', type: 'reservation-slot', data: { begin: moment(), resourceId: '' } },
         { key: '2', type: 'reservation', data: { begin: '', end: '', name: '' } },
-        { key: '3', type: 'reservation-slot' },
+        { key: '3', type: 'reservation-slot', data: { begin: moment(), resourceId: '' } },
       ],
     });
     const children = wrapper.children();

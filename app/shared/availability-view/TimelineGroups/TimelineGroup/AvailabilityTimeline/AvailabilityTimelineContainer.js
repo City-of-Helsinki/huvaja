@@ -31,7 +31,8 @@ export function selector() {
   const itemsSelector = createSelector(
     reservationsSelector,
     dateSelector,
-    (reservations, date) => utils.getTimelineItems(date, reservations)
+    resourceIdSelector,
+    (reservations, date, resourceId) => utils.getTimelineItems(date, reservations, resourceId)
   );
 
   return createSelector(

@@ -11,7 +11,7 @@ function getTimeSlotWidth({ startTime, endTime } = {}) {
   return (slotWidth * slots) - slotMargin;
 }
 
-function getTimelineItems(date, reservations) {
+function getTimelineItems(date, reservations, resourceId) {
   const items = [];
   let reservationPointer = 0;
   let timePointer = date.clone().startOf('day');
@@ -31,6 +31,10 @@ function getTimelineItems(date, reservations) {
       items.push({
         key: String(items.length),
         type: 'reservation-slot',
+        data: {
+          begin: timePointer.clone(),
+          resourceId,
+        },
       });
       timePointer.add(slotSize, 'minutes');
     }
