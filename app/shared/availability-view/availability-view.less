@@ -1,0 +1,115 @@
+.availability-view {
+  @slot-height: 50px;
+  @slot-margin: 1px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  .left {
+    width: 19%;
+  }
+  .right {
+    width: 80%;
+  }
+  .top-left, .date-selector {
+    display: flex;
+    align-items: center;
+    height: @line-height-computed;
+    margin-bottom: @padding-base-vertical;
+    background-color: @brand-primary;
+    color: white;
+    padding: 0 @padding-small-horizontal;
+    font-size: @font-size-small;
+  }
+  .date-selector {
+    justify-content: space-between;
+    text-transform: lowercase;
+
+    .previous, .next {
+      color: white;
+    }
+  }
+  .group-info {
+    background-color: @gray-lighter;
+    padding: 0 @padding-base-horizontal;
+
+    .group-name, .resource-info {
+      height: @slot-height + @slot-margin * 2;
+    }
+    .group-name {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      font-family: @headings-font-family;
+      line-height: @headings-line-height;
+      font-weight: @headings-font-weight;
+      font-size: @font-size-base;
+      color: @headings-color;
+    }
+  }
+  .resource-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    font-size: @font-size-small;
+
+    .name {
+      font-size: @font-size-small;
+      font-weight: @headings-font-weight;
+    }
+    .capacity {
+      color: @gray;
+    }
+  }
+  .timeline-groups {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .timeline-group {
+    .hours {
+      display: flex;
+
+      .hour {
+        display: flex;
+        align-items: center;
+        height: @slot-height;
+        flex-shrink: 0;
+        margin: @slot-margin;
+        background-color: @gray-lighter;
+        padding: @padding-small-vertical @padding-small-horizontal;
+        font-size: @font-size-small;
+      }
+    }
+  }
+  .availability-timeline {
+    display: flex;
+  }
+  .reservation, .reservation-slot {
+    display: inline-flex;
+    margin: @slot-margin;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .reservation {
+    height: @slot-height;
+    background-color: @brand-success;
+    color: white;
+    font-size: @font-size-small;
+    align-items: center;
+    padding: @padding-small-vertical @padding-small-horizontal;
+    overflow: hidden;
+
+    .times {
+      margin-right: @padding-small-horizontal;
+    }
+    .name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  .reservation-slot {
+    height: @slot-height;
+    background-color: @gray-light;
+  }
+}

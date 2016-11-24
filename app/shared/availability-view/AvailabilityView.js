@@ -1,0 +1,26 @@
+import React, { PropTypes } from 'react';
+
+import DateSelector from './DateSelector';
+import TimelineGroups from './TimelineGroups';
+import Sidebar from './Sidebar';
+
+AvailabilityView.propTypes = {
+  date: PropTypes.object.isRequired,
+  groups: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onDateChange: PropTypes.func.isRequired,
+};
+export default function AvailabilityView(props) {
+  return (
+    <div className="availability-view">
+      <div className="left">
+        <div className="top-left" />
+        <Sidebar groups={props.groups} />
+      </div>
+      <div className="right">
+        <DateSelector value={props.date} onChange={props.onDateChange} />
+        <TimelineGroups date={props.date} groups={props.groups} />
+      </div>
+    </div>
+  );
+}
+
