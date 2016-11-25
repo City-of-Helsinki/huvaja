@@ -11,7 +11,7 @@ function fetchFavoritedResources(date) {
 function fetchResource(id, params = {}) {
   return createApiAction({
     endpoint: `resource/${id}`,
-    params,
+    params: getParamsWithTimes(params),
     method: 'GET',
     type: 'RESOURCE',
     options: { schema: schemas.resourceSchema },

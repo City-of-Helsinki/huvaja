@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import types from '../actionTypes';
 import {
   favoriteResource,
+  fetchResource,
   fetchResources,
   unfavoriteResource,
   getParamsWithTimes,
@@ -36,6 +37,29 @@ describe('api/actions/resources', () => {
         },
         error: {
           type: types.RESOURCE_FAVORITE_POST_ERROR,
+        },
+      },
+    });
+  });
+
+  describe('fetchResource', () => {
+    const params = getParamsWithTimes();
+    const resourceId = 'r-1';
+    createApiTest({
+      name: 'fetchResource',
+      action: fetchResource,
+      args: [resourceId],
+      tests: {
+        method: 'GET',
+        endpoint: buildAPIUrl(`resource/${resourceId}`, params),
+        request: {
+          type: types.RESOURCE_GET_REQUEST,
+        },
+        success: {
+          type: types.RESOURCE_GET_SUCCESS,
+        },
+        error: {
+          type: types.RESOURCE_GET_ERROR,
         },
       },
     });
