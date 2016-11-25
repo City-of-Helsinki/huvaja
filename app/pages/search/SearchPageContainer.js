@@ -30,13 +30,20 @@ export class UnconnectedSearchPageContainer extends Component {
   }
 
   render() {
-    const { isFetching, resources, searchFilters } = this.props;
+    const { isFetching, resultsCount, resources, searchFilters } = this.props;
 
+    const searchResultsText = resultsCount === 1 ?
+      `Löytyi ${resultsCount} hakuehdot täyttävä tila.` :
+      `Löytyi ${resultsCount} hakuehdot täyttävää tilaa.`;
     return (
       <div className="search-page">
         <h1>Hae tiloja</h1>
         <SearchControls initialValues={searchFilters} />
         <Loader loaded={!isFetching}>
+          <div className="search-results-count">
+            <span>{searchResultsText} </span>
+            <Link to="/">Tyhjennä haku.</Link>
+          </div>
           <ul>
             {resources.map(renderResource)}
           </ul>
@@ -57,6 +64,7 @@ UnconnectedSearchPageContainer.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   fetchResources: PropTypes.func.isRequired,
   resources: PropTypes.arrayOf(resourceShape).isRequired,
+  resultsCount: PropTypes.number.isRequired,
   searchFilters: PropTypes.object.isRequired,
 };
 

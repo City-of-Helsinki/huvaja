@@ -13,11 +13,16 @@ describe('pages/search/SearchPageContainer', () => {
     isFetching: false,
     fetchResources: () => null,
     resources: [],
+    resultsCount: 0,
     searchFilters: { search: 'search text' },
   };
 
   function getWrapper(props) {
     return shallow(<SearchPageContainer {...defaultProps} {...props} />);
+  }
+
+  function getResultsCountWrapper(props) {
+    return getWrapper(props).find('.search-results-count');
   }
 
   describe('render', () => {
@@ -46,13 +51,37 @@ describe('pages/search/SearchPageContainer', () => {
       });
 
       it('renders a Link with correct props for each resource given in props', () => {
-        const links = wrapper.find(Link);
+        const links = wrapper.find('ul').find(Link);
 
         expect(links).to.have.length(resources.length);
         links.forEach((link, index) => {
           const resource = resources[index];
           expect(link.prop('to')).to.equal(`/resources/${resource.id}`);
           expect(link.prop('children')).to.equal(resource.name.fi);
+        });
+      });
+
+      describe('results count', () => {
+        it('renders correct text if results is 0', () => {
+          const resultsCount = getResultsCountWrapper();
+          expect(resultsCount.text()).to.contain('Löytyi 0 hakuehdot täyttävää tilaa');
+        });
+
+        it('renders correct text if results is 1', () => {
+          const resultsCount = getResultsCountWrapper({ resultsCount: 1 });
+          expect(resultsCount.text()).to.contain('Löytyi 1 hakuehdot täyttävä tila');
+        });
+
+        it('renders correct text if results is greater than 1', () => {
+          const resultsCount = getResultsCountWrapper({ resultsCount: 4 });
+          expect(resultsCount.text()).to.contain('Löytyi 4 hakuehdot täyttävää tilaa');
+        });
+
+        it('renders a Link with correct props for clearing search results', () => {
+          const resultsCount = getResultsCountWrapper();
+          const link = resultsCount.find(Link);
+          expect(link.prop('to')).to.equal('/');
+          expect(link.prop('children')).to.equal('Tyhjennä haku.');
         });
       });
     });
