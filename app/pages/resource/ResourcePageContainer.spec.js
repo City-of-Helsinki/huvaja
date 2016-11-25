@@ -4,70 +4,48 @@ import React from 'react';
 import Loader from 'react-loader';
 import simple from 'simple-mock';
 
-import ResourceInfo from './info';
-import ReservationForm from './reservation-form/';
+import ResourcePage from './ResourcePage';
 import { UnconnectedResourcePageContainer as ResourcePageContainer } from './ResourcePageContainer';
 
 describe('pages/resource/ResourcePageContainer', () => {
   function getWrapper(props) {
     const defaults = {
-      fetchResource: simple.mock(),
+      fetchResource: () => null,
+      isLoaded: true,
       params: { id: 'some-di' },
       resource: { id: 'r-1' },
-      unit: { id: 'u-1' },
+      unit: { name: { fi: 'unit name' } },
     };
     return shallow(<ResourcePageContainer {...defaults} {...props} />);
   }
 
   describe('render', () => {
-    describe('if resource and unit are fetched', () => {
-      let wrapper;
-      const resource = { id: 'r-1' };
-      const unit = { id: 'u-1' };
-
-      before(() => {
-        wrapper = getWrapper({ resource, unit });
+    describe('if isLoaded', () => {
+      it('does not render a Loader', () => {
+        const loader = getWrapper({ isLoaded: true }).find(Loader);
+        expect(loader).to.have.length(0);
       });
 
-      it('renders a ResourceInfo with correct props', () => {
-        const resourceInfo = wrapper.find(ResourceInfo);
-        expect(resourceInfo).to.have.length(1);
-        expect(resourceInfo.prop('resource')).to.deep.equal(resource);
-        expect(resourceInfo.prop('unit')).to.deep.equal(unit);
-      });
-
-      it('renders a ReservationForm with correct props', () => {
-        const reservationForm = wrapper.find(ReservationForm);
-        expect(reservationForm).to.have.length(1);
-        expect(reservationForm.prop('resource')).to.deep.equal(resource);
+      it('renders a ResourcePage', () => {
+        const resource = { id: 'id' };
+        const unit = { name: { fi: 'wow' } };
+        const page = getWrapper({ isLoaded: true, resource, unit }).find(ResourcePage);
+        expect(page).to.have.length(1);
+        expect(page.prop('resource')).to.equal(resource);
+        expect(page.prop('unit')).to.equal(unit);
       });
     });
 
-    describe('if resource is not fetched', () => {
-      let wrapper;
-      const resource = {};
-
-      before(() => {
-        wrapper = getWrapper({ resource });
-      });
-
+    describe('if not isLoaded', () => {
       it('renders a Loader', () => {
-        const loader = wrapper.find(Loader);
+        const loader = getWrapper({ isLoaded: false }).find(Loader);
         expect(loader).to.have.length(1);
-      });
-    });
-
-    describe('if unit is not fetched', () => {
-      let wrapper;
-      const unit = {};
-
-      before(() => {
-        wrapper = getWrapper({ unit });
+        expect(loader.prop('loaded')).to.be.false;
       });
 
-      it('renders a Loader', () => {
-        const loader = wrapper.find(Loader);
-        expect(loader).to.have.length(1);
+      it('does not render a ResourcePage', () => {
+        const wrapper = getWrapper({ isLoaded: false, resource: undefined, unit: undefined });
+        expect(wrapper.find(ResourcePage)).to.have.length(0);
       });
     });
   });

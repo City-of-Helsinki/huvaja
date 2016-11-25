@@ -15,16 +15,23 @@ function resourceIdSelector(state, props) {
 const resourceSelector = createSelector(
   resourcesSelector,
   resourceIdSelector,
-  (resources, id) => resources[id] || {}
+  (resources, id) => resources[id]
 );
 
 const unitSelector = createSelector(
   unitsSelector,
   resourceSelector,
-  (units, resource) => units[resource.unit] || {}
+  (units, resource) => resource && units[resource.unit]
+);
+
+const isLoadedSelector = createSelector(
+  resourceSelector,
+  unitSelector,
+  (resource, unit) => Boolean(resource && unit)
 );
 
 export default createStructuredSelector({
+  isLoaded: isLoadedSelector,
   resource: resourceSelector,
   unit: unitSelector,
 });

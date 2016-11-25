@@ -1,38 +1,36 @@
-import isEmpty from 'lodash/isEmpty';
 import React, { Component, PropTypes } from 'react';
 import Loader from 'react-loader';
 import { connect } from 'react-redux';
 
 import { fetchResource } from 'api/actions';
-import ResourceInfo from './info';
-import ReservationForm from './reservation-form/';
+import ResourcePage from './ResourcePage';
 import selector from './resourcePageSelector';
 
 export class UnconnectedResourcePageContainer extends Component {
+  static propTypes = {
+    fetchResource: PropTypes.func.isRequired,
+    isLoaded: PropTypes.bool.isRequired,
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }).isRequired,
+    resource: PropTypes.object,
+    unit: PropTypes.object,
+  };
+
   componentDidMount() {
     this.props.fetchResource(this.props.params.id);
   }
 
   render() {
-    const { resource, unit } = this.props;
-    const isLoaded = !isEmpty(resource) && !isEmpty(unit);
+    if (!this.props.isLoaded) return <Loader loaded={false} />;
     return (
-      <Loader loaded={isLoaded}>
-        <ResourceInfo resource={resource} unit={unit} />
-        <ReservationForm resource={resource} />
-      </Loader>
+      <ResourcePage
+        resource={this.props.resource}
+        unit={this.props.unit}
+      />
     );
   }
 }
-
-UnconnectedResourcePageContainer.propTypes = {
-  fetchResource: PropTypes.func.isRequired,
-  params: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-  }).isRequired,
-  resource: PropTypes.object.isRequired,
-  unit: PropTypes.object.isRequired,
-};
 
 const actions = { fetchResource };
 
