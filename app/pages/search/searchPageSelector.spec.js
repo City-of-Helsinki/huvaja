@@ -33,4 +33,8 @@ describe('pages/search/searchPageSelector', () => {
   it('returns searchFilters form the state', () => {
     expect(getSelected().searchFilters).to.deep.equal(searchFilters);
   });
+
+  it('returns resultsCount form the state', () => {
+    expect(getSelected().resultsCount).to.deep.equal(searchResults.length);
+  });
 });
