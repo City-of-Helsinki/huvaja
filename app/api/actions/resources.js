@@ -1,13 +1,11 @@
+import moment from 'moment';
+
 import createApiAction from './createApiAction';
 import schemas from './schemas';
 
-function fetchFavoritedResources(timeAsMoment, source) {
-  const params = {
-    end: timeAsMoment.endOf('day').toISOString(),
-    is_favorite: true,
-    start: timeAsMoment.startOf('day').toISOString(),
-  };
-  return fetchResources(params, source);
+function fetchFavoritedResources(date) {
+  const params = { date, is_favorite: true };
+  return fetchResources(params);
 }
 
 function fetchResource(id, params = {}) {
@@ -23,7 +21,7 @@ function fetchResource(id, params = {}) {
 function fetchResources(params = {}) {
   return createApiAction({
     endpoint: 'resource',
-    params: Object.assign({}, params, { pageSize: 100 }),
+    params: { ...getParamsWithTimes(params), pageSize: 100 },
     method: 'GET',
     type: 'RESOURCES',
     options: { schema: schemas.paginatedResourcesSchema },
@@ -48,10 +46,22 @@ function unfavoriteResource(id) {
   });
 }
 
+function getParamsWithTimes(params = {}) {
+  const date = params.date ? moment(params.date) : moment();
+  const times = {
+    end: date.endOf('day').toISOString(),
+    start: date.startOf('day').toISOString(),
+  };
+  const rv = { ...params, ...times };
+  delete rv.date;
+  return rv;
+}
+
 export {
   favoriteResource,
   fetchFavoritedResources,
   fetchResource,
   fetchResources,
+  getParamsWithTimes,
   unfavoriteResource,
 };
