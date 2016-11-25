@@ -7,6 +7,8 @@ import FormControl from 'react-bootstrap/lib/FormControl';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import { browserHistory } from 'react-router';
 
+import DatePicker from 'shared/date-picker';
+
 class SearchControls extends Component {
   constructor(props) {
     super(props);
@@ -44,6 +46,13 @@ class SearchControls extends Component {
               value={this.state.search}
             />
           </FormGroup>
+          <FormGroup className="date-control-group" controlId="date-control-group">
+            <ControlLabel>Päivä</ControlLabel>
+            <DatePicker
+              onChange={date => this.handleChange({ date })}
+              value={this.state.date}
+            />
+          </FormGroup>
           <Button
             block
             bsStyle="primary"
@@ -60,6 +69,7 @@ class SearchControls extends Component {
 
 SearchControls.propTypes = {
   initialValues: PropTypes.shape({
+    date: PropTypes.string.isRequired,
     search: PropTypes.string.isRequired,
   }).isRequired,
 };
