@@ -8,12 +8,13 @@ import FormControl from 'react-bootstrap/lib/FormControl';
 import { browserHistory } from 'react-router';
 import simple from 'simple-mock';
 
+import DatePicker from 'shared/date-picker';
 import SearchControls from './SearchControls';
 
 describe('pages/search/search-controls/SearchControls', () => {
   function getWrapper(props) {
     const defaults = {
-      initialValues: { search: '' },
+      initialValues: { date: '2016-12-12', search: '' },
     };
     return shallow(<SearchControls {...defaults} {...props} />);
   }
@@ -28,7 +29,9 @@ describe('pages/search/search-controls/SearchControls', () => {
 
     describe('search control', () => {
       function getSearchControlWrapper(values) {
-        const wrapper = getWrapper({ initialValues: { search: '', ...values } });
+        const wrapper = getWrapper({
+          initialValues: { date: '2016-12-12', search: '', ...values },
+        });
         return wrapper.find('[controlId="search-control-group"]');
       }
 
@@ -44,6 +47,27 @@ describe('pages/search/search-controls/SearchControls', () => {
       });
     });
 
+    describe('date control', () => {
+      function getDateControlWrapper(values) {
+        const wrapper = getWrapper({
+          initialValues: { date: '2016-12-12', search: '', ...values },
+        });
+        return wrapper.find('[controlId="date-control-group"]');
+      }
+
+      it('has correct label', () => {
+        const controlLabel = getDateControlWrapper().find(ControlLabel);
+        expect(controlLabel.prop('children')).to.equal('Päivä');
+      });
+
+      it('renders DatePicker with correct value', () => {
+        const date = '2016-12-12';
+        const datePicker = getDateControlWrapper({ date }).find(DatePicker);
+        expect(datePicker).to.have.length(1);
+        expect(datePicker.prop('value')).to.equal(date);
+      });
+    });
+
     it('renders a submit button', () => {
       const button = getWrapper().find(Button);
       expect(button).to.have.length(1);
@@ -53,7 +77,7 @@ describe('pages/search/search-controls/SearchControls', () => {
 
   describe('componentWillReceiveProps', () => {
     describe('when initialValues prop changes', () => {
-      const initialValues = { search: 'search text' };
+      const initialValues = { date: '2016-12-12', search: 'search text' };
       const nextProps = { initialValues: { search: 'new search' } };
       let setStateMock;
 
@@ -75,7 +99,7 @@ describe('pages/search/search-controls/SearchControls', () => {
     });
 
     describe('when initialValues prop does not change', () => {
-      const initialValues = { search: 'search text' };
+      const initialValues = { date: '2016-12-12', search: 'search text' };
       const nextProps = { initialValues };
       let setStateMock;
 

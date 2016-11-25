@@ -14,7 +14,7 @@ describe('pages/search/SearchPageContainer', () => {
     fetchResources: () => null,
     resources: [],
     resultsCount: 0,
-    searchFilters: { search: 'search text' },
+    searchFilters: { date: '2016-12-12', search: 'search text' },
   };
 
   function getWrapper(props) {
@@ -121,8 +121,8 @@ describe('pages/search/SearchPageContainer', () => {
   describe('componentWillUpdate', () => {
     describe('when searchFilters prop changes', () => {
       const fetchResources = simple.mock();
-      const searchFilters = { search: 'search text' };
-      const nextProps = { searchFilters: { search: 'new search' } };
+      const searchFilters = { date: '2016-11-11', search: 'search text' };
+      const nextProps = { searchFilters: { date: '2016-12-12', search: 'new search' } };
 
       before(() => {
         const instance = getWrapper({ fetchResources, searchFilters }).instance();
@@ -138,7 +138,7 @@ describe('pages/search/SearchPageContainer', () => {
 
     describe('when searchFilters prop does not change', () => {
       const fetchResources = simple.mock();
-      const searchFilters = { search: 'search text' };
+      const searchFilters = { date: '2016-12-12', search: 'search text' };
       const nextProps = { searchFilters };
 
       before(() => {

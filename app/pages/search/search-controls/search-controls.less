@@ -1,3 +1,19 @@
 .search-controls {
   margin-bottom: 20px;
+
+  .date-control-group {
+    label {
+      display: block;
+    }
+
+    .date-picker {
+      width: 200px;
+      border: 2px solid @input-border;
+      .input-size(@input-height-base; @padding-base-vertical; @padding-base-horizontal; @font-size-base; @line-height-base; @input-border-radius);
+
+      input {
+        padding: 0;
+      }
+    }
+  }
 }
