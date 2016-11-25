@@ -3,9 +3,9 @@ import { shallow } from 'enzyme';
 import moment from 'moment';
 import React from 'react';
 
+import AvailabilityTimeline from './AvailabilityTimeline';
 import Reservation from './Reservation';
 import ReservationSlot from './ReservationSlot';
-import AvailabilityTimeline from './AvailabilityTimeline';
 
 function getWrapper(props) {
   const defaults = { items: [] };
@@ -24,7 +24,7 @@ describe('shared/availability-view/AvailabilityTimeline', () => {
         key: '1',
         type: 'reservation-slot',
         data: { begin: moment(), resourceId: '' },
-      }]
+      }],
     });
     const slot = wrapper.find(ReservationSlot);
     expect(slot).to.have.length(1);
