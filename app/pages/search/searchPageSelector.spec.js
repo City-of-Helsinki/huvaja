@@ -9,7 +9,7 @@ describe('pages/search/searchPageSelector', () => {
     'r-2': { id: 'r-2' },
     'r-3': { id: 'r-3' },
   };
-  const searchFilters = { search: 'search text' };
+  const searchFilters = { date: '2016-12-12', search: 'search text' };
   const searchResults = ['r-1', 'r-3'];
 
   function getSelected() {

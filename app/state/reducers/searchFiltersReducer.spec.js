@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import moment from 'moment';
 import { createAction } from 'redux-actions';
 
 import searchFiltersReducer from './searchFiltersReducer';
@@ -8,6 +9,11 @@ describe('state/reducers/searchFiltersReducer', () => {
     function getInitialState() {
       return searchFiltersReducer(undefined, { type: 'NOOP' });
     }
+
+    it('date is the current date', () => {
+      const expected = moment().format('YYYY-MM-DD');
+      expect(getInitialState().date).to.equal(expected);
+    });
 
     it('search is an empty string', () => {
       expect(getInitialState().search).to.equal('');
@@ -20,26 +26,26 @@ describe('state/reducers/searchFiltersReducer', () => {
 
       it('sets query parameters in payload to filters', () => {
         const currentState = {};
-        const payload = { query: { search: 'search text' } };
+        const payload = { query: { date: '2016-12-12', search: 'search text' } };
         const action = routeChangedAction(payload);
         const nextState = searchFiltersReducer(currentState, action);
         expect(nextState).to.deep.equal(payload.query);
       });
 
       it('overrides previous values of same filters', () => {
-        const payload = { query: { search: 'search text' } };
+        const payload = { query: { date: '2016-12-12', search: 'search text' } };
         const action = routeChangedAction(payload);
-        const currentState = { filter: 'old-value' };
+        const currentState = { search: 'old-value' };
         const nextState = searchFiltersReducer(currentState, action);
         expect(nextState).to.deep.equal(payload.query);
       });
 
       it('use initial reducer state for filters that are not in the payload', () => {
-        const payload = { query: { otherFilter: 'some search filter' } };
+        const payload = { query: { date: '2016-12-12' } };
         const action = routeChangedAction(payload);
-        const currentState = { otherFilter: 'some value' };
+        const currentState = { date: '2016-11-11' };
         const nextState = searchFiltersReducer(currentState, action);
-        const expected = { search: '', otherFilter: 'some search filter' };
+        const expected = { search: '', date: '2016-12-12' };
         expect(nextState).to.deep.equal(expected);
       });
     });
