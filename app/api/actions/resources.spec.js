@@ -3,8 +3,9 @@ import { expect } from 'chai';
 import types from '../actionTypes';
 import {
   favoriteResource,
-  unfavoriteResource,
   fetchResources,
+  unfavoriteResource,
+  getParamsWithTimes,
 } from './resources';
 import { createApiTest } from './testUtils';
 import { buildAPIUrl } from './createApiAction';
@@ -41,13 +42,14 @@ describe('api/actions/resources', () => {
   });
 
   describe('fetchResources', () => {
+    const params = getParamsWithTimes({ pageSize: 100 });
     createApiTest({
       name: 'fetchResources',
       action: fetchResources,
       args: [],
       tests: {
         method: 'GET',
-        endpoint: buildAPIUrl('resource', { pageSize: 100 }),
+        endpoint: buildAPIUrl('resource', params),
         request: {
           type: types.RESOURCES_GET_REQUEST,
         },
