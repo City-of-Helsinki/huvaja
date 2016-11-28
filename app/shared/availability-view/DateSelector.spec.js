@@ -50,7 +50,7 @@ describe('shared/availability-view/DateSelector', () => {
       expect(onChange.callCount).to.equal(1);
       const args = onChange.lastCall.args;
       expect(args).to.have.length(1);
-      expect(args[0].format('YYYY-MM-DD')).to.equal('2016-01-02');
+      expect(args[0]).to.equal('2016-01-02');
     });
   });
 
@@ -63,7 +63,7 @@ describe('shared/availability-view/DateSelector', () => {
       expect(onChange.callCount).to.equal(1);
       const args = onChange.lastCall.args;
       expect(args).to.have.length(1);
-      expect(args[0].format('YYYY-MM-DD')).to.equal('2015-12-31');
+      expect(args[0]).to.equal('2015-12-31');
     });
   });
 });
