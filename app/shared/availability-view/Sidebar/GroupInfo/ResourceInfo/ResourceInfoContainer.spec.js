@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
+import { Link } from 'react-router';
 
 import ResourceInfoContainer, { ResourceInfo, selector } from './ResourceInfoContainer';
 
@@ -34,7 +35,7 @@ describe('shared/availability-view/ResourceInfoContainer', () => {
 
   describe('component', () => {
     function getWrapper(props) {
-      const defaults = { name: 'Resource name', peopleCapacity: 19 };
+      const defaults = { id: 'r-1', name: 'Resource name', peopleCapacity: 19 };
       return shallow(<ResourceInfo {...defaults} {...props} />);
     }
 
@@ -43,10 +44,11 @@ describe('shared/availability-view/ResourceInfoContainer', () => {
       expect(wrapper.is('div.resource-info')).to.be.true;
     });
 
-    it('renders the name', () => {
-      const name = getWrapper({ name: 'Room 1' }).find('.name');
-      expect(name).to.have.length(1);
-      expect(name.text()).to.equal('Room 1');
+    it('renders the name and link to resource page', () => {
+      const link = getWrapper({ id: 'r-1', name: 'Room 1' }).find(Link);
+      expect(link).to.have.length(1);
+      expect(link.prop('to')).to.contain('r-1');
+      expect(link.prop('children')).to.equal('Room 1');
     });
 
     it('renders the capacity', () => {
