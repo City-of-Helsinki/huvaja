@@ -16,19 +16,19 @@ function getState() {
           id: 'resource-1',
           reservations: [
             {
-              id: 'reservation-1',
+              id: 111,
               name: 'Reservation 1',
               begin: moment('2016-01-01T02:00:00').format(),
               end: moment('2016-01-01T10:00:00').format(),
             },
             {
-              id: 'reservation-2',
+              id: 222,
               name: 'Reservation 2',
               begin: moment('2016-01-01T11:30:00').format(),
               end: moment('2016-01-01T18:00:00').format(),
             },
             {
-              id: 'reservation-3',
+              id: 333,
               name: 'Reservation 3',
               begin: moment('2016-01-01T18:00:00').format(),
               end: moment('2016-01-01T23:30:00').format(),
@@ -88,16 +88,16 @@ describe('shared/availability-view/AvailabilityTimelineContainer', () => {
         expect(actual[2].type).to.equal('reservation-slot');
         expect(actual[3].type).to.equal('reservation-slot');
         expect(actual[4]).to.deep.equal(
-          { key: 'reservation-1', type: 'reservation', data: reservations[0] },
+          { key: '4', type: 'reservation', data: reservations[0] },
         );
         expect(actual[5].type).to.equal('reservation-slot');
         expect(actual[6].type).to.equal('reservation-slot');
         expect(actual[7].type).to.equal('reservation-slot');
         expect(actual[8]).to.deep.equal(
-          { key: 'reservation-2', type: 'reservation', data: reservations[1] },
+          { key: '8', type: 'reservation', data: reservations[1] },
         );
         expect(actual[9]).to.deep.equal(
-          { key: 'reservation-3', type: 'reservation', data: reservations[2] },
+          { key: '9', type: 'reservation', data: reservations[2] },
         );
         expect(actual[10].type).to.equal('reservation-slot');
       });

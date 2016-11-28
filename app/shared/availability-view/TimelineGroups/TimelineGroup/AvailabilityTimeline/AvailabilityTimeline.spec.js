@@ -38,6 +38,7 @@ describe('shared/availability-view/AvailabilityTimeline', () => {
         data: {
           begin: '',
           end: '',
+          id: 12345,
           name: 'My Reservation',
         },
       }],
@@ -51,7 +52,7 @@ describe('shared/availability-view/AvailabilityTimeline', () => {
     const wrapper = getWrapper({
       items: [
         { key: '1', type: 'reservation-slot', data: { begin: moment(), resourceId: '' } },
-        { key: '2', type: 'reservation', data: { begin: '', end: '', name: '' } },
+        { key: '2', type: 'reservation', data: { begin: '', end: '', id: 12345, name: '' } },
         { key: '3', type: 'reservation-slot', data: { begin: moment(), resourceId: '' } },
       ],
     });

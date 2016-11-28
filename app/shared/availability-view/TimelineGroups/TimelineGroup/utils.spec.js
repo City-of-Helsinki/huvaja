@@ -52,11 +52,11 @@ describe('shared/availability-view/utils', () => {
     });
 
     it('returns one reservation if entire day is a reservation', () => {
-      const reservation = { id: '1', begin: '2016-01-01T00:00:00', end: '2016-01-02T00:00:00' };
+      const reservation = { id: 11, begin: '2016-01-01T00:00:00', end: '2016-01-02T00:00:00' };
       const actual = utils.getTimelineItems(moment('2016-01-01T00:00:00'), [reservation], '1');
       expect(actual).to.have.length(1);
       expect(actual[0]).to.deep.equal({
-        key: '1',
+        key: '0',
         type: 'reservation',
         data: reservation,
       });
@@ -64,9 +64,9 @@ describe('shared/availability-view/utils', () => {
 
     it('returns reservations and slots', () => {
       const reservations = [
-        { id: 'r1', begin: '2016-01-01T02:00:00', end: '2016-01-01T10:00:00' },
-        { id: 'r2', begin: '2016-01-01T12:30:00', end: '2016-01-01T20:00:00' },
-        { id: 'r3', begin: '2016-01-01T20:00:00', end: '2016-01-01T20:30:00' },
+        { id: 11, begin: '2016-01-01T02:00:00', end: '2016-01-01T10:00:00' },
+        { id: 12, begin: '2016-01-01T12:30:00', end: '2016-01-01T20:00:00' },
+        { id: 13, begin: '2016-01-01T20:00:00', end: '2016-01-01T20:30:00' },
       ];
       const actual = utils.getTimelineItems(moment('2016-01-01T00:00:00'), reservations, '1');
       const actualFormatted = actual.map((item) => {
@@ -106,7 +106,7 @@ describe('shared/availability-view/utils', () => {
             resourceId: '1',
           },
         },
-        { key: 'r1', type: 'reservation', data: reservations[0] },
+        { key: '4', type: 'reservation', data: reservations[0] },
         {
           key: '5',
           type: 'reservation-slot',
@@ -147,8 +147,8 @@ describe('shared/availability-view/utils', () => {
             resourceId: '1',
           },
         },
-        { key: 'r2', type: 'reservation', data: reservations[1] },
-        { key: 'r3', type: 'reservation', data: reservations[2] },
+        { key: '10', type: 'reservation', data: reservations[1] },
+        { key: '11', type: 'reservation', data: reservations[2] },
         {
           key: '12',
           type: 'reservation-slot',

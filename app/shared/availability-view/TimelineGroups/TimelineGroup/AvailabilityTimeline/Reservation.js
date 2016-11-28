@@ -5,15 +5,10 @@ import Tooltip from 'react-bootstrap/lib/Tooltip';
 
 import utils from '../utils';
 
-function getTooltipId(startTime, endTime, name) {
-  const start = startTime.format('HHmm');
-  const end = endTime.format('HHmm');
-  return `tooltip-${start}-${end}-${name.replace(/\s/g, '-')}`;
-}
-
 Reservation.propTypes = {
+  id: PropTypes.number.isRequired,
   end: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   begin: PropTypes.string.isRequired,
 };
 export default function Reservation(props) {
@@ -21,7 +16,7 @@ export default function Reservation(props) {
   const endTime = moment(props.end);
   const width = utils.getTimeSlotWidth({ startTime, endTime });
   const tooltip = (
-    <Tooltip id={getTooltipId(startTime, endTime, props.name)}>
+    <Tooltip id={`tooltip-${props.id}`}>
       {startTime.format('HH:mm')} - {endTime.format('HH:mm')} {props.name}
     </Tooltip>
   );
