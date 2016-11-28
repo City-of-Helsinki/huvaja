@@ -54,4 +54,14 @@ describe('pages/resource/resourcePageSelector', () => {
       expect(actual).to.be.false;
     });
   });
+
+  describe('date', () => {
+    it('returns date from state', () => {
+      const state = getState({
+        resourcePage: { begin: '2016-01-01T10:00:00' },
+      });
+      const actual = selector(state, { params: { id: 'test' } }).date;
+      expect(actual).to.equal('2016-01-01');
+    });
+  });
 });

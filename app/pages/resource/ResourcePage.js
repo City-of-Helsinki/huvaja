@@ -4,9 +4,9 @@ import AvailabilityView from 'shared/availability-view';
 import ResourceInfo from './info';
 import ReservationForm from './reservation-form/';
 
-function noop() {}
-
 ResourcePage.propTypes = {
+  date: PropTypes.string.isRequired,
+  onDateChange: PropTypes.func.isRequired,
   resource: PropTypes.shape({
     id: PropTypes.string.isRequired,
   }).isRequired,
@@ -21,11 +21,11 @@ export default function ResourcePage(props) {
     <div>
       <ResourceInfo resource={props.resource} unit={props.unit} />
       <AvailabilityView
-        date="2016-11-25"
+        date={props.date}
         groups={[
           { name: props.unit.name.fi, resources: [props.resource.id] },
         ]}
-        onDateChange={noop}
+        onDateChange={props.onDateChange}
       />
       <ReservationForm resource={props.resource} />
     </div>

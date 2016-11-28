@@ -9,6 +9,8 @@ import ReservationForm from './reservation-form';
 
 function getWrapper(props) {
   const defaults = {
+    date: '2016-01-01',
+    onDateChange: () => null,
     resource: { id: 'ham' },
     unit: { name: { fi: 'Foobar' } },
   };
@@ -26,13 +28,17 @@ describe('pages/resource/ResourcePage', () => {
   });
 
   it('renders AvailabilityView', () => {
+    const date = '2016-10-10';
+    const onDateChange = () => null;
     const resource = { id: 'foo-1' };
     const unit = { name: { fi: 'unit-3' } };
-    const view = getWrapper({ resource, unit }).find(AvailabilityView);
+    const view = getWrapper({ date, resource, unit, onDateChange }).find(AvailabilityView);
     expect(view).to.have.length(1);
     expect(view.prop('groups')).to.deep.equal([
       { name: 'unit-3', resources: ['foo-1'] },
     ]);
+    expect(view.prop('date')).to.equal(date);
+    expect(view.prop('onDateChange')).to.equal(onDateChange);
   });
 
   it('renders ReservationForm', () => {
