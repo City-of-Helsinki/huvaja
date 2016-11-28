@@ -1,15 +1,21 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { createSelector } from 'reselect';
 
 ResourceInfo.propTypes = {
+  id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   peopleCapacity: PropTypes.number.isRequired,
 };
 export function ResourceInfo(props) {
   return (
     <div className="resource-info">
-      <div className="name">{props.name}</div>
+      <div className="name">
+        <Link to={`/resources/${props.id}`}>
+          {props.name}
+        </Link>
+      </div>
       <div className="capacity">{props.peopleCapacity}</div>
     </div>
   );
