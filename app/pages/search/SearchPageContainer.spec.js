@@ -5,14 +5,17 @@ import Loader from 'react-loader';
 import { Link } from 'react-router';
 import simple from 'simple-mock';
 
+import AvailabilityView from 'shared/availability-view';
 import { UnconnectedSearchPageContainer as SearchPageContainer } from './SearchPageContainer';
 import SearchControls from './search-controls';
 
 describe('pages/search/SearchPageContainer', () => {
   const defaultProps = {
+    availabilityGroups: [
+      { name: 'Group 1', resources: ['r-1', 'r-2'] },
+    ],
     isFetching: false,
     fetchResources: () => null,
-    resources: [],
     resultsCount: 0,
     searchFilters: { date: '2016-12-12', search: 'search text' },
   };
@@ -50,15 +53,10 @@ describe('pages/search/SearchPageContainer', () => {
         expect(searchControls.prop('initialValues')).to.deep.equal(defaultProps.searchFilters);
       });
 
-      it('renders a Link with correct props for each resource given in props', () => {
-        const links = wrapper.find('ul').find(Link);
-
-        expect(links).to.have.length(resources.length);
-        links.forEach((link, index) => {
-          const resource = resources[index];
-          expect(link.prop('to')).to.equal(`/resources/${resource.id}`);
-          expect(link.prop('children')).to.equal(resource.name.fi);
-        });
+      it('renders AvailabilityView with correct props', () => {
+        const availabilityView = wrapper.find(AvailabilityView);
+        expect(availabilityView).to.have.length(1);
+        expect(availabilityView.prop('groups')).to.deep.equal(defaultProps.availabilityGroups);
       });
 
       describe('results count', () => {
