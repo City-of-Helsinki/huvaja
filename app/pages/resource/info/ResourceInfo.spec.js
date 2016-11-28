@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
+import Label from 'react-bootstrap/lib/Label';
 
 import ImageCarousel from 'shared/image-carousel';
 import WrappedText from 'shared/wrapped-text';
@@ -14,6 +15,7 @@ describe('pages/resource/info/ResourceInfo', () => {
   };
   const resource = {
     description: { fi: 'Description text' },
+    equipment: [{ name: { fi: 'projector' } }, { name: { fi: 'whiteboard' } }],
     images: [image],
     name: { fi: 'Huone' },
     peopleCapacity: 3,
@@ -80,6 +82,24 @@ describe('pages/resource/info/ResourceInfo', () => {
       const resourceDescription = getSectionWrapper().find('.resource-description');
       const wrappedText = resourceDescription.find(WrappedText);
       expect(wrappedText.prop('text')).to.equal(resource.description.fi);
+    });
+
+    it('renders resource equipment', () => {
+      const resourceEquipment = getSectionWrapper().find('.resource-equipment');
+      const nameLabel = resourceEquipment.find('.details-label');
+      expect(nameLabel.text()).to.equal('Varustelu: ');
+      const equipmentLabels = resourceEquipment.find(Label);
+      expect(equipmentLabels).to.have.length(2);
+      expect(equipmentLabels.children().get(0)).to.equal('projector');
+      expect(equipmentLabels.children().get(1)).to.equal('whiteboard');
+    });
+
+    it('does not render resource equipment if empty', () => {
+      const unequipedResource = Object.assign({}, resource, { equipment: undefined });
+      const resourceEquipment = (
+        getSectionWrapper({ resource: unequipedResource }).find('.resource-equipment')
+      );
+      expect(resourceEquipment).to.have.length(0);
     });
   });
 });
