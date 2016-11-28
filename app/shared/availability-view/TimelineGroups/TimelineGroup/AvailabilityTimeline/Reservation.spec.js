@@ -10,6 +10,7 @@ import utils from '../utils';
 
 function getOverlayTrigger(props) {
   const defaults = {
+    id: 12345,
     end: '2016-01-01T12:00:00Z',
     name: 'Meeting',
     begin: '2016-01-01T10:00:00Z',

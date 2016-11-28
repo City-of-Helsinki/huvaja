@@ -21,7 +21,7 @@ function getTimelineItems(date, reservations, resourceId) {
     const isSlotReservation = reservation && timePointer.isSame(reservation.begin);
     if (isSlotReservation) {
       items.push({
-        key: reservation.id,
+        key: String(items.length),
         type: 'reservation',
         data: reservation,
       });
