@@ -1,3 +1,4 @@
+import capitalize from 'lodash/capitalize';
 import React, { PropTypes } from 'react';
 import Col from 'react-bootstrap/lib/Col';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon';
@@ -7,13 +8,18 @@ import ImageCarousel from 'shared/image-carousel';
 import WrappedText from 'shared/wrapped-text';
 
 function ResourceInfo({ resource, unit }) {
+  const streetAddress = unit.streetAddress ? unit.streetAddress.fi : '';
+  const zip = unit.addressZip;
+  const city = capitalize(unit.municipality);
+  const address = `${streetAddress}, ${zip} ${city}`;
+
   return (
     <div className="resource-info">
       <header>
         <h2 className="unit-name">{unit.name.fi}</h2>
         <h1 className="resource-name">{resource.name.fi}</h1>
         <h4 className="unit-address">
-          <Glyphicon glyph="map-marker" className="map-marker" /> {unit.streetAddress.fi}
+          <Glyphicon glyph="map-marker" className="map-marker" /> {address}
         </h4>
       </header>
       <section className="resource-details">
@@ -23,13 +29,17 @@ function ResourceInfo({ resource, unit }) {
           </Col>
           <Col xs={12} sm={5}>
             <aside>
-              <h3 className="resource-type">{resource.type.name.fi}</h3>
+              {resource.type && resource.type.name &&
+                <h3 className="resource-type">{resource.type.name.fi}</h3>
+              }
               <div className="details-row resource-people-capacity">
                 <span className="details-label">Henkilömäärä: </span>
                 <span className="details-value">{resource.peopleCapacity}</span>
               </div>
               <div className="resource-description">
-                <WrappedText text={resource.description.fi} />
+                {resource.description &&
+                  <WrappedText text={resource.description.fi} />
+                }
               </div>
             </aside>
           </Col>

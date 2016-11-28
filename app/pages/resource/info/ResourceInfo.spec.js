@@ -20,6 +20,8 @@ describe('pages/resource/info/ResourceInfo', () => {
     type: { name: { fi: 'Työpiste' } },
   };
   const unit = {
+    addressZip: '99999',
+    municipality: 'Helsinki',
     name: { fi: 'Rakennus' },
     streetAddress: { fi: 'Testinkatu' },
   };
@@ -50,6 +52,8 @@ describe('pages/resource/info/ResourceInfo', () => {
     it('renders resource address', () => {
       const unitAddress = getHeaderWrapper().find('.unit-address');
       expect(unitAddress.text()).to.contain(unit.streetAddress.fi);
+      expect(unitAddress.text()).to.contain(unit.municipality);
+      expect(unitAddress.text()).to.contain(unit.addressZip);
     });
   });
   describe('resource-details section', () => {
