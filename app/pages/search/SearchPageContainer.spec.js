@@ -1,8 +1,9 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
+import queryString from 'query-string';
 import React from 'react';
 import Loader from 'react-loader';
-import { Link } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import simple from 'simple-mock';
 
 import AvailabilityView from 'shared/availability-view';
@@ -57,6 +58,7 @@ describe('pages/search/SearchPageContainer', () => {
         const availabilityView = wrapper.find(AvailabilityView);
         expect(availabilityView).to.have.length(1);
         expect(availabilityView.prop('groups')).to.deep.equal(defaultProps.availabilityGroups);
+        expect(availabilityView.prop('onDateChange')).to.equal(wrapper.instance().handleDateChange);
       });
 
       describe('results count', () => {
@@ -148,6 +150,36 @@ describe('pages/search/SearchPageContainer', () => {
       it('does not fetch resources', () => {
         expect(fetchResources.callCount).to.equal(0);
       });
+    });
+  });
+
+  describe('handleDateChange', () => {
+    const searchFilters = {
+      date: '2016-12-12',
+      search: 'search text',
+    };
+    const newDate = '2016-12-13';
+    let browserHistoryMock;
+    let instance;
+
+    before(() => {
+      browserHistoryMock = simple.mock(browserHistory, 'push');
+      instance = getWrapper().instance();
+      instance.state = searchFilters;
+      instance.handleDateChange(newDate);
+    });
+
+    after(() => {
+      simple.restore();
+    });
+
+    it('changes the url with current search filters and new date', () => {
+      const actualPath = browserHistoryMock.lastCall.args[0];
+      const expectedFilters = { ...searchFilters, date: newDate };
+      const expectedPath = `/?${queryString.stringify(expectedFilters)}`;
+
+      expect(browserHistoryMock.callCount).to.equal(1);
+      expect(actualPath).to.equal(expectedPath);
     });
   });
 });

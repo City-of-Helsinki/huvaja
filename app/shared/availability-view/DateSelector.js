@@ -17,11 +17,11 @@ export default class DateSelector extends React.Component {
   }
 
   handleNextClick() {
-    this.handleChange(this.props.value.clone().add(1, 'day'));
+    this.handleChange(this.props.value.clone().add(1, 'day').format('YYYY-MM-DD'));
   }
 
   handlePreviousClick() {
-    this.handleChange(this.props.value.clone().subtract(1, 'day'));
+    this.handleChange(this.props.value.clone().subtract(1, 'day').format('YYYY-MM-DD'));
   }
 
   render() {

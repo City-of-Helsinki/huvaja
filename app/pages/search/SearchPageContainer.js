@@ -1,9 +1,10 @@
 import isEqual from 'lodash/isEqual';
 import moment from 'moment';
+import queryString from 'query-string';
 import React, { Component, PropTypes } from 'react';
 import Loader from 'react-loader';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 
 import { fetchResources } from 'api/actions';
 import AvailabilityView from 'shared/availability-view';
@@ -11,6 +12,11 @@ import SearchControls from './search-controls';
 import selector from './searchPageSelector';
 
 export class UnconnectedSearchPageContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.handleDateChange = this.handleDateChange.bind(this);
+  }
+
   componentDidMount() {
     this.props.fetchResources(this.props.searchFilters);
   }
@@ -19,6 +25,11 @@ export class UnconnectedSearchPageContainer extends Component {
     if (!isEqual(this.props.searchFilters, nextProps.searchFilters)) {
       this.props.fetchResources(nextProps.searchFilters);
     }
+  }
+
+  handleDateChange(date) {
+    const filters = { ...this.props.searchFilters, date };
+    browserHistory.push(`/?${queryString.stringify(filters)}`);
   }
 
   render() {
@@ -44,7 +55,7 @@ export class UnconnectedSearchPageContainer extends Component {
           <AvailabilityView
             date={moment(searchFilters.date)}
             groups={availabilityGroups}
-            onDateChange={() => null}
+            onDateChange={this.handleDateChange}
           />
         </Loader>
       </div>
