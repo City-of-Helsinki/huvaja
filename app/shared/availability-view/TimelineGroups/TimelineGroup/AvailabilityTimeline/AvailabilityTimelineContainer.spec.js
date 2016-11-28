@@ -43,7 +43,7 @@ function getState() {
 
 function getWrapper(props) {
   const defaults = {
-    date: moment('2016-01-01T00:00:00'),
+    date: '2016-01-01T00:00:00',
     id: 'resource-1',
     store: { getState },
   };
@@ -63,7 +63,7 @@ describe('shared/availability-view/AvailabilityTimelineContainer', () => {
 
   describe('selector', () => {
     function getSelected(props) {
-      const defaults = { id: 'resource-1', date: moment('2016-01-01T00:00:00') };
+      const defaults = { id: 'resource-1', date: '2016-01-01T00:00:00' };
       return selector()(getState(), { ...defaults, ...props });
     }
 
@@ -75,14 +75,16 @@ describe('shared/availability-view/AvailabilityTimelineContainer', () => {
       });
 
       it('contains slots if no reservations for date', () => {
-        const actual = getSelected({ date: moment('2016-01-02T00:00:00') }).items;
+        const actual = getSelected({ date: '2016-01-02T00:00:00' }).items;
         expect(actual).to.have.length((24 * 60) / slotSize);
         actual.forEach(slot => expect(slot.type).to.equal('reservation-slot'));
       });
 
       it('contains reservations and slots', () => {
-        const reservations = getState().data.resources['resource-1'].reservations;
-        const actual = getSelected().items;
+        const state = getState();
+        const reservations = state.data.resources['resource-1'].reservations;
+        const props = { id: 'resource-1', date: '2016-01-01' };
+        const actual = selector()(state, props).items;
         expect(actual[0].type).to.equal('reservation-slot');
         expect(actual[1].type).to.equal('reservation-slot');
         expect(actual[2].type).to.equal('reservation-slot');

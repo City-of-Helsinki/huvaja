@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, { PropTypes } from 'react';
 
 import AvailabilityTimelineContainer from './AvailabilityTimeline';
@@ -5,8 +6,8 @@ import utils from './utils';
 
 function getHourRanges(date) {
   const ranges = [];
-  const current = date.clone();
-  const end = date.clone().add(1, 'day');
+  const current = moment(date);
+  const end = moment(date).add(1, 'day');
   while (current.isBefore(end)) {
     ranges.push({ startTime: current.clone(), endTime: current.clone().add(1, 'hour') });
     current.add(1, 'hour');
@@ -15,7 +16,7 @@ function getHourRanges(date) {
 }
 
 TimelineGroup.propTypes = {
-  date: PropTypes.object.isRequired,
+  date: PropTypes.string.isRequired,
   resources: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 export default function TimelineGroup(props) {

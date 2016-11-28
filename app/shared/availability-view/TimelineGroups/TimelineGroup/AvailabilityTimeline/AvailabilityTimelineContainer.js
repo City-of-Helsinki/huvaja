@@ -1,4 +1,5 @@
 import sortBy from 'lodash/sortBy';
+import moment from 'moment';
 import { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -11,10 +12,6 @@ export function selector() {
   function resourceIdSelector(state, props) { return props.id; }
   function resourcesSelector(state) { return state.data.resources; }
 
-  const formattedDateSelector = createSelector(
-    dateSelector,
-    date => date.format('YYYY-MM-DD')
-  );
   const resourceSelector = createSelector(
     resourcesSelector,
     resourceIdSelector,
@@ -22,7 +19,7 @@ export function selector() {
   );
   const reservationsSelector = createSelector(
     resourceSelector,
-    formattedDateSelector,
+    dateSelector,
     (resource, date) => resource.reservations && sortBy(
       resource.reservations.filter(reservation => reservation.begin.slice(0, 10) === date),
       'begin'
@@ -32,7 +29,8 @@ export function selector() {
     reservationsSelector,
     dateSelector,
     resourceIdSelector,
-    (reservations, date, resourceId) => utils.getTimelineItems(date, reservations, resourceId)
+    (reservations, date, resourceId) =>
+      utils.getTimelineItems(moment(date), reservations, resourceId)
   );
 
   return createSelector(
@@ -43,7 +41,7 @@ export function selector() {
 
 const AvailabilityTimelineContainer = connect(selector)(AvailabilityTimeline);
 AvailabilityTimelineContainer.propTypes = {
-  date: PropTypes.object.isRequired,
+  date: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
 };
 

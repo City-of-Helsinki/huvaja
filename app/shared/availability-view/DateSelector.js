@@ -1,8 +1,9 @@
+import moment from 'moment';
 import React, { PropTypes } from 'react';
 
 export default class DateSelector extends React.Component {
   static propTypes = {
-    value: PropTypes.object.isRequired,
+    value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
   };
 
@@ -17,11 +18,11 @@ export default class DateSelector extends React.Component {
   }
 
   handleNextClick() {
-    this.handleChange(this.props.value.clone().add(1, 'day').format('YYYY-MM-DD'));
+    this.handleChange(moment(this.props.value).add(1, 'day').format('YYYY-MM-DD'));
   }
 
   handlePreviousClick() {
-    this.handleChange(this.props.value.clone().subtract(1, 'day').format('YYYY-MM-DD'));
+    this.handleChange(moment(this.props.value).subtract(1, 'day').format('YYYY-MM-DD'));
   }
 
   render() {
@@ -31,7 +32,7 @@ export default class DateSelector extends React.Component {
           Edellinen päivä
         </a>
         <div className="current-value">
-          {this.props.value.format('dd D.M.YYYY')}
+          {moment(this.props.value).format('dd D.M.YYYY')}
         </div>
         <a className="next" onClick={this.handleNextClick} tabIndex="0">
           Seuraava päivä

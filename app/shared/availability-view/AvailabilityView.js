@@ -5,7 +5,7 @@ import TimelineGroups from './TimelineGroups';
 import Sidebar from './Sidebar';
 
 AvailabilityView.propTypes = {
-  date: PropTypes.object.isRequired,
+  date: PropTypes.string.isRequired,
   groups: PropTypes.arrayOf(PropTypes.object).isRequired,
   onDateChange: PropTypes.func.isRequired,
 };

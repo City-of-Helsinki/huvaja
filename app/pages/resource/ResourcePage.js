@@ -1,4 +1,3 @@
-import moment from 'moment';
 import React, { PropTypes } from 'react';
 
 import AvailabilityView from 'shared/availability-view';
@@ -22,7 +21,7 @@ export default function ResourcePage(props) {
     <div>
       <ResourceInfo resource={props.resource} unit={props.unit} />
       <AvailabilityView
-        date={moment('2016-11-25')}
+        date="2016-11-25"
         groups={[
           { name: props.unit.name.fi, resources: [props.resource.id] },
         ]}
