@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-import moment from 'moment';
 import React from 'react';
 
 import TimelineGroups from './TimelineGroups';
@@ -8,7 +7,7 @@ import TimelineGroup from './TimelineGroup';
 
 function getWrapper(props) {
   const defaults = {
-    date: moment('2016-01-01'),
+    date: '2016-01-01',
     groups: [],
   };
   return shallow(<TimelineGroups {...defaults} {...props} />);

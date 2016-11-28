@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import TimelineGroup from './TimelineGroup';
 
 TimelineGroups.propTypes = {
-  date: PropTypes.object.isRequired,
+  date: PropTypes.string.isRequired,
   groups: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,

@@ -8,7 +8,7 @@ import DateSelector from './DateSelector';
 
 function getWrapper(props) {
   const defaults = {
-    value: moment().startOf('day'),
+    value: '2016-11-01',
     onChange: () => null,
   };
   return shallow(<DateSelector {...defaults} {...props} />);
@@ -35,15 +35,15 @@ describe('shared/availability-view/DateSelector', () => {
   });
 
   it('renders current value', () => {
-    const value = moment();
+    const value = '2016-11-28';
     const date = getWrapper({ value }).find('.current-value');
     expect(date).to.have.length(1);
-    expect(date.text()).to.equal(value.format('dd D.M.YYYY'));
+    expect(date.text()).to.equal(moment(value).format('dd D.M.YYYY'));
   });
 
   describe('handleNextClick', () => {
     it('calls onChange with next date', () => {
-      const value = moment('2016-01-01');
+      const value = '2016-01-01';
       const onChange = simple.mock();
       const wrapper = getWrapper({ value, onChange });
       wrapper.instance().handleNextClick();
@@ -56,7 +56,7 @@ describe('shared/availability-view/DateSelector', () => {
 
   describe('handlePreviousClick', () => {
     it('calls onChange with previous date', () => {
-      const value = moment('2016-01-01');
+      const value = '2016-01-01';
       const onChange = simple.mock();
       const wrapper = getWrapper({ value, onChange });
       wrapper.instance().handlePreviousClick();

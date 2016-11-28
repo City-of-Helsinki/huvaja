@@ -1,5 +1,4 @@
 import isEqual from 'lodash/isEqual';
-import moment from 'moment';
 import queryString from 'query-string';
 import React, { Component, PropTypes } from 'react';
 import Loader from 'react-loader';
@@ -53,7 +52,7 @@ export class UnconnectedSearchPageContainer extends Component {
             <Link to="/">Tyhjennä haku.</Link>
           </div>
           <AvailabilityView
-            date={moment(searchFilters.date)}
+            date={searchFilters.date}
             groups={availabilityGroups}
             onDateChange={this.handleDateChange}
           />

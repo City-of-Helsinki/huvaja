@@ -9,7 +9,7 @@ import Sidebar from './Sidebar';
 
 function getWrapper(props) {
   const defaults = {
-    date: {},
+    date: '2016-01-01',
     groups: [],
     onDateChange: () => null,
   };
@@ -23,7 +23,7 @@ describe('shared/availability-view/AvailabilityView', () => {
   });
 
   it('renders DateSelector', () => {
-    const date = {};
+    const date = '2016-11-12';
     const onDateChange = () => null;
     const element = getWrapper({ date, onDateChange }).find(DateSelector);
     expect(element).to.have.length(1);
@@ -39,7 +39,7 @@ describe('shared/availability-view/AvailabilityView', () => {
   });
 
   it('renders TimelineGroups', () => {
-    const date = {};
+    const date = '2016-11-12';
     const groups = [];
     const element = getWrapper({ date, groups }).find(TimelineGroups);
     expect(element).to.have.length(1);
