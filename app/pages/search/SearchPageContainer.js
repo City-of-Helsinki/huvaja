@@ -1,22 +1,14 @@
 import isEqual from 'lodash/isEqual';
+import moment from 'moment';
 import React, { Component, PropTypes } from 'react';
 import Loader from 'react-loader';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 import { fetchResources } from 'api/actions';
+import AvailabilityView from 'shared/availability-view';
 import SearchControls from './search-controls';
 import selector from './searchPageSelector';
-
-function renderResource(resource) {
-  return (
-    <li key={resource.id}>
-      <Link to={`/resources/${resource.id}`}>
-        {resource.name.fi}
-      </Link>
-    </li>
-  );
-}
 
 export class UnconnectedSearchPageContainer extends Component {
   componentDidMount() {
@@ -30,7 +22,12 @@ export class UnconnectedSearchPageContainer extends Component {
   }
 
   render() {
-    const { isFetching, resultsCount, resources, searchFilters } = this.props;
+    const {
+      availabilityGroups,
+      isFetching,
+      resultsCount,
+      searchFilters,
+    } = this.props;
 
     const searchResultsText = resultsCount === 1 ?
       `Löytyi ${resultsCount} hakuehdot täyttävä tila.` :
@@ -44,26 +41,26 @@ export class UnconnectedSearchPageContainer extends Component {
             <span>{searchResultsText} </span>
             <Link to="/">Tyhjennä haku.</Link>
           </div>
-          <ul>
-            {resources.map(renderResource)}
-          </ul>
+          <AvailabilityView
+            date={moment(searchFilters.date)}
+            groups={availabilityGroups}
+            onDateChange={() => null}
+          />
         </Loader>
       </div>
     );
   }
 }
 
-const resourceShape = PropTypes.shape({
-  id: PropTypes.string.isRequired,
-  name: PropTypes.shape({
-    fi: PropTypes.string.isRequired,
-  }).isRequired,
+const availabilityGroupShape = PropTypes.shape({
+  name: PropTypes.string.isRequired,
+  resources: PropTypes.array.isRequired,
 });
 
 UnconnectedSearchPageContainer.propTypes = {
+  availabilityGroups: PropTypes.arrayOf(availabilityGroupShape).isRequired,
   isFetching: PropTypes.bool.isRequired,
   fetchResources: PropTypes.func.isRequired,
-  resources: PropTypes.arrayOf(resourceShape).isRequired,
   resultsCount: PropTypes.number.isRequired,
   searchFilters: PropTypes.object.isRequired,
 };
