@@ -10,7 +10,9 @@ import { UnconnectedResourcePageContainer as ResourcePageContainer } from './Res
 describe('pages/resource/ResourcePageContainer', () => {
   function getWrapper(props) {
     const defaults = {
+      date: '2016-01-01',
       fetchResource: () => null,
+      location: { query: {} },
       isLoaded: true,
       params: { id: 'some-di' },
       resource: { id: 'r-1' },
@@ -27,12 +29,15 @@ describe('pages/resource/ResourcePageContainer', () => {
       });
 
       it('renders a ResourcePage', () => {
+        const date = '2016-10-10';
         const resource = { id: 'id' };
         const unit = { name: { fi: 'wow' } };
-        const page = getWrapper({ isLoaded: true, resource, unit }).find(ResourcePage);
+        const wrapper = getWrapper({ date, isLoaded: true, resource, unit });
+        const page = wrapper.find(ResourcePage);
         expect(page).to.have.length(1);
         expect(page.prop('resource')).to.equal(resource);
         expect(page.prop('unit')).to.equal(unit);
+        expect(page.prop('date')).to.equal(date);
       });
     });
 

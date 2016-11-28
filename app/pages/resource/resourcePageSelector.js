@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { createSelector, createStructuredSelector } from 'reselect';
 
 function resourcesSelector(state) {
@@ -11,6 +12,15 @@ function unitsSelector(state) {
 function resourceIdSelector(state, props) {
   return props.params.id;
 }
+
+function beginSelector(state) {
+  return state.resourcePage.begin;
+}
+
+const dateSelector = createSelector(
+  beginSelector,
+  begin => moment(begin).format('YYYY-MM-DD')
+);
 
 const resourceSelector = createSelector(
   resourcesSelector,
@@ -31,6 +41,7 @@ const isLoadedSelector = createSelector(
 );
 
 export default createStructuredSelector({
+  date: dateSelector,
   isLoaded: isLoadedSelector,
   resource: resourceSelector,
   unit: unitSelector,
