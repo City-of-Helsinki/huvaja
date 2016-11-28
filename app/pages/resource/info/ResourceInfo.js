@@ -2,6 +2,7 @@ import capitalize from 'lodash/capitalize';
 import React, { PropTypes } from 'react';
 import Col from 'react-bootstrap/lib/Col';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import Label from 'react-bootstrap/lib/Label';
 import Row from 'react-bootstrap/lib/Row';
 
 import ImageCarousel from 'shared/image-carousel';
@@ -36,6 +37,16 @@ function ResourceInfo({ resource, unit }) {
                 <span className="details-label">Henkilömäärä: </span>
                 <span className="details-value">{resource.peopleCapacity}</span>
               </div>
+              {resource.equipment &&
+                <div className="details-row resource-equipment">
+                  <div className="details-label">Varustelu: </div>
+                  {
+                    resource.equipment.map(item =>
+                      <Label bsStyle="primary" key={`label-${item.id}`}>{item.name.fi}</Label>
+                    )
+                  }
+                </div>
+              }
               <div className="resource-description">
                 {resource.description &&
                   <WrappedText text={resource.description.fi} />
