@@ -54,7 +54,7 @@ describe('shared/availability-view/ResourceInfoContainer', () => {
     it('renders the capacity', () => {
       const capacity = getWrapper({ peopleCapacity: 3 }).find('.capacity');
       expect(capacity).to.have.length(1);
-      expect(capacity.text()).to.equal('3');
+      expect(capacity.text()).to.contain('3');
     });
   });
 
