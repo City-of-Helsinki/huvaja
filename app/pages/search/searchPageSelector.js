@@ -1,5 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
 import groupBy from 'lodash/groupBy';
+import sortBy from 'lodash/sortBy';
 import { createSelector, createStructuredSelector } from 'reselect';
 
 import { resourcesGetIsActiveSelector } from 'api/selectors';
@@ -30,16 +31,17 @@ const availabilityGroupsSelector = createSelector(
     if (!resources.length || isEmpty(units)) {
       return [];
     }
-    const groups = groupBy(resources, resource => resource.unit);
-    return Object.keys(groups).map((unitId) => {
+    const groupedResources = groupBy(resources, resource => resource.unit);
+    const groups = Object.keys(groupedResources).map((unitId) => {
       const unit = units[unitId];
       const name = unit.name ? unit.name.fi : '';
-      const resourceIds = groups[unitId].map(resource => resource.id);
+      const resourceIds = sortBy(groupedResources[unitId], 'name.fi').map(resource => resource.id);
       return {
         name,
         resources: resourceIds,
       };
     });
+    return sortBy(groups, 'name');
   }
 );
 
