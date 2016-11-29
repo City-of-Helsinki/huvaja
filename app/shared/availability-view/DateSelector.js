@@ -1,5 +1,7 @@
-import moment from 'moment';
 import React, { PropTypes } from 'react';
+import moment from 'moment';
+
+import DatePicker from 'shared/date-picker';
 
 export default class DateSelector extends React.Component {
   static propTypes = {
@@ -14,7 +16,9 @@ export default class DateSelector extends React.Component {
   }
 
   handleChange(newValue) {
-    this.props.onChange(newValue);
+    if (moment(newValue).isValid()) {
+      this.props.onChange(newValue);
+    }
   }
 
   handleNextClick() {
@@ -31,8 +35,12 @@ export default class DateSelector extends React.Component {
         <a className="previous" onClick={this.handlePreviousClick} tabIndex="0">
           Edellinen päivä
         </a>
-        <div className="current-value">
-          {moment(this.props.value).format('dd D.M.YYYY')}
+        <div className="current-value" >
+          <DatePicker
+            dateFormat="dd D.M.YYYY"
+            onChange={date => this.handleChange(date)}
+            value={this.props.value}
+          />
         </div>
         <a className="next" onClick={this.handleNextClick} tabIndex="0">
           Seuraava päivä

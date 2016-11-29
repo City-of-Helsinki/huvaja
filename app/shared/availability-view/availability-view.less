@@ -37,6 +37,23 @@
       cursor: pointer;
     }
   }
+
+  .date-picker {
+    border: none;
+    color: black;
+    cursor: pointer;
+    input {
+      background: none;
+      color: white;
+      cursor: pointer;
+    }
+    .react-date-field__calendar-icon {
+      border-color: white;
+      &:before, &:after, .react-date-field__calendar-icon-inner {
+        background: white;
+      }
+    }
+  }
   .group-info {
     background-color: @gray-lighter;
     padding: 0 @padding-base-horizontal;
