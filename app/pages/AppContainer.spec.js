@@ -12,7 +12,8 @@ describe('pages/AppContainer', () => {
   const content = <p className="children">Some content</p>;
   function getWrapper(props) {
     const defaults = {
-      fetchUnits: simple.mock,
+      fetchAuthState: () => null,
+      fetchUnits: () => null,
     };
     return shallow(<AppContainer {...defaults} {...props}>{content}</AppContainer>);
   }
@@ -52,7 +53,14 @@ describe('pages/AppContainer', () => {
   });
 
   describe('componentDidMount', () => {
-    it('fetches resources', () => {
+    it('fetches auth state', () => {
+      const fetchAuthState = simple.mock();
+      const instance = getWrapper({ fetchAuthState }).instance();
+      instance.componentDidMount();
+      expect(fetchAuthState.callCount).to.equal(1);
+    });
+
+    it('fetches units', () => {
       const fetchUnits = simple.mock();
       const instance = getWrapper({ fetchUnits }).instance();
       instance.componentDidMount();
