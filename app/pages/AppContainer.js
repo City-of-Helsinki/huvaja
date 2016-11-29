@@ -4,10 +4,12 @@ import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 
 import { fetchUnits } from 'api/actions';
+import { fetchAuthState } from 'auth/actions';
 import Navbar from 'shared/navbar';
 
 export class UnconnectedAppContainer extends Component {
   componentDidMount() {
+    this.props.fetchAuthState();
     this.props.fetchUnits();
   }
 
@@ -26,9 +28,10 @@ export class UnconnectedAppContainer extends Component {
 
 UnconnectedAppContainer.propTypes = {
   children: PropTypes.element,
+  fetchAuthState: PropTypes.func.isRequired,
   fetchUnits: PropTypes.func.isRequired,
 };
 
-const actions = { fetchUnits };
+const actions = { fetchAuthState, fetchUnits };
 
 export default connect(null, actions)(UnconnectedAppContainer);
