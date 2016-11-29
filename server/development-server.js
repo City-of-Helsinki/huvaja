@@ -5,6 +5,7 @@ const webpackMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 
 const config = require('../config/webpack.development');
+const auth = require('./auth');
 
 const app = express();
 const compiler = webpack(config);
@@ -30,6 +31,8 @@ console.log('Starting development server...');
 const devMiddleware = webpackMiddleware(compiler, serverSettings);
 app.use(devMiddleware);
 app.use(webpackHotMiddleware(compiler));
+
+app.use('/', auth);
 
 app.use((req, res, next) => {
   if (req.method === 'GET' && req.accepts('html')) {
