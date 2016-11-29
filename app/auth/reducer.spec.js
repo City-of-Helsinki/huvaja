@@ -14,8 +14,8 @@ describe('auth/reducer', () => {
       expect(getInitialState().token).to.equal(null);
     });
 
-    it('userId is null', () => {
-      expect(getInitialState().userId).to.equal(null);
+    it('user is null', () => {
+      expect(getInitialState().user).to.equal(null);
     });
   });
 
@@ -24,9 +24,14 @@ describe('auth/reducer', () => {
       const authGetSuccess = createAction(actionTypes.AUTH_GET_SUCCESS);
 
       it('sets state to payload.auth', () => {
-        const payload = { auth: { token: 'some-token', userId: 'u-123' } };
+        const payload = {
+          auth: {
+            token: 'some-token',
+            user: { id: 'u-1' },
+          },
+        };
         const action = authGetSuccess(payload);
-        const initialState = { token: null, userId: null };
+        const initialState = { token: null, user: null };
         const nextState = authReducer(initialState, action);
         expect(nextState).to.deep.equal(payload.auth);
       });

@@ -1,13 +1,8 @@
 function getAuthState(req) {
   const user = req.user;
-  if (user && user.id && user.token) {
+  if (user && user.token) {
     return {
-      auth: { userId: user.id, token: user.token },
-      data: {
-        users: {
-          [user.id]: user,
-        },
-      },
+      auth: { token: user.token, user },
     };
   }
   return {};
