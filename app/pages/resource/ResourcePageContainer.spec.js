@@ -56,13 +56,43 @@ describe('pages/resource/ResourcePageContainer', () => {
   });
 
   describe('componentDidMount', () => {
-    it('fetches resource with correct id', () => {
+    it('fetches resource with correct id and date', () => {
+      const date = '2016-11-01';
       const params = { id: 'resource-id' };
       const fetchResource = simple.mock();
-      const instance = getWrapper({ fetchResource, params }).instance();
+      const instance = getWrapper({ fetchResource, params, date }).instance();
       instance.componentDidMount();
       expect(fetchResource.callCount).to.equal(1);
-      expect(fetchResource.lastCall.arg).to.equal(params.id);
+      expect(fetchResource.lastCall.args).to.deep.equal([params.id, { date }]);
+    });
+  });
+
+  describe('componentDidUpdate', () => {
+    describe('if date changes', () => {
+      it('fetches resource with correct id and date', () => {
+        const date = '2016-11-01';
+        const params = { id: 'resource-id' };
+        const fetchResource = simple.mock();
+        const wrapper = getWrapper({ fetchResource, params, date });
+        const instance = wrapper.instance();
+        const oldProps = wrapper.props();
+        wrapper.setProps({ ...oldProps, date: '2016-12-12' });
+        instance.componentDidUpdate(oldProps);
+        expect(fetchResource.callCount).to.equal(1);
+        expect(fetchResource.lastCall.args).to.deep.equal([
+          params.id, { date: '2016-12-12' },
+        ]);
+      });
+    });
+
+    describe('if date does not change', () => {
+      it('does not fetch resource', () => {
+        const fetchResource = simple.mock();
+        const wrapper = getWrapper({ fetchResource });
+        const instance = wrapper.instance();
+        instance.componentDidUpdate(wrapper.props());
+        expect(fetchResource.called).to.be.false;
+      });
     });
   });
 });

@@ -29,7 +29,17 @@ export class UnconnectedResourcePageContainer extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchResource(this.props.params.id);
+    this.fetchResource();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.date !== this.props.date) {
+      this.fetchResource();
+    }
+  }
+
+  fetchResource() {
+    this.props.fetchResource(this.props.params.id, { date: this.props.date });
   }
 
   handleDateChange(date) {
