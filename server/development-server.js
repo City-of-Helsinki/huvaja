@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 const express = require('express');
+const morgan = require('morgan');
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
@@ -31,6 +32,10 @@ console.log('Starting development server...');
 const devMiddleware = webpackMiddleware(compiler, serverSettings);
 app.use(devMiddleware);
 app.use(webpackHotMiddleware(compiler));
+
+
+// Request logging
+app.use(morgan('combined'));
 
 app.use('/', auth);
 

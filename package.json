@@ -38,6 +38,7 @@
     "lodash": "4.17.0",
     "moment": "2.16.0",
     "moment-range": "2.2.0",
+    "morgan": "1.7.0",
     "normalizr": "2.2.1",
     "passport": "0.3.2",
     "passport-helsinki": "git://github.com/City-of-Helsinki/passport-helsinki.git",
