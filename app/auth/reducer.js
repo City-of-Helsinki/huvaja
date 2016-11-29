@@ -4,7 +4,7 @@ import actionTypes from 'auth/actionTypes';
 
 const initialState = {
   token: null,
-  userId: null,
+  user: null,
 };
 
 export default handleActions({
