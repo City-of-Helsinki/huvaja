@@ -30,6 +30,13 @@ describe('shared/date-picker/DatePicker', () => {
       expect(getDateFieldWrapper({ value }).prop('value')).to.equal(expected);
     });
 
+    it('has value custom date format', () => {
+      const dateFormat = 'YYYY.MM.DD';
+      const value = '2016-12-12';
+      const expected = '2016.12.12';
+      expect(getDateFieldWrapper({ dateFormat, value }).prop('value')).to.equal(expected);
+    });
+
     it('changing date calls onChange with date in correct format', () => {
       const onChange = simple.mock();
       const dateField = getDateFieldWrapper({ onChange });

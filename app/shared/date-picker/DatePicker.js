@@ -5,26 +5,28 @@ import { DateField, DatePicker as RDPDatePicker } from 'react-date-picker';
 const dateFormat = 'YYYY-MM-DD';
 const localizedDateFormat = 'D.M.YYYY';
 
-function formatDate(date) {
-  return moment(date, localizedDateFormat).format(dateFormat);
-}
 
 DatePicker.propTypes = {
+  dateFormat: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
 };
 
 function DatePicker(props) {
+  const pickerDateFormat = props.dateFormat || localizedDateFormat;
+  function formatDate(date) {
+    return moment(date, pickerDateFormat).format(dateFormat);
+  }
   return (
     <DateField
       className="date-picker"
       clearIcon={false}
       collapseOnDateClick
-      dateFormat={localizedDateFormat}
+      dateFormat={pickerDateFormat}
       footer={false}
       onChange={date => props.onChange(formatDate(date))}
       updateOnDateClick
-      value={moment(props.value).format(localizedDateFormat)}
+      value={moment(props.value).format(pickerDateFormat)}
     >
       <RDPDatePicker
         highlightWeekends={false}
