@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-import AvailabilityView from 'shared/availability-view';
+import SingleAvailabilityView from 'shared/availability-view/SingleAvailabilityView';
 import ResourceInfo from './info';
 import ReservationForm from './reservation-form/';
 
@@ -20,11 +20,9 @@ export default function ResourcePage(props) {
   return (
     <div>
       <ResourceInfo resource={props.resource} unit={props.unit} />
-      <AvailabilityView
+      <SingleAvailabilityView
         date={props.date}
-        groups={[
-          { name: props.unit.name.fi, resources: [props.resource.id] },
-        ]}
+        resource={props.resource.id}
         onDateChange={props.onDateChange}
       />
       <ReservationForm resource={props.resource} />
