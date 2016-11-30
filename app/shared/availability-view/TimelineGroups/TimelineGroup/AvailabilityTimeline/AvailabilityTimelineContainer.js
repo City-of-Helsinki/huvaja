@@ -44,6 +44,7 @@ AvailabilityTimelineContainer.propTypes = {
   date: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   onReservationSlotClick: PropTypes.func,
+  selection: PropTypes.object,
 };
 
 export default AvailabilityTimelineContainer;

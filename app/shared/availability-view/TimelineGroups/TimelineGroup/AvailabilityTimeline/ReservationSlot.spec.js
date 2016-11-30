@@ -9,13 +9,13 @@ import { Link } from 'react-router';
 import ReservationSlot from './ReservationSlot';
 import utils from '../utils';
 
-function getWrapper(props, context) {
+function getWrapper(props) {
   const defaults = {
     begin: moment(),
     end: moment().add(30, 'minutes'),
     resourceId: '1',
   };
-  return shallow(<ReservationSlot {...defaults} {...props} />, { context });
+  return shallow(<ReservationSlot {...defaults} {...props} />);
 }
 
 describe('shared/availability-view/ReservationSlot', () => {
@@ -45,13 +45,52 @@ describe('shared/availability-view/ReservationSlot', () => {
     expect(wrapper.prop('onClick')).to.equal(instance.handleClick);
   });
 
+  describe('selection', () => {
+    function isSelected(props, selection) {
+      const defaultProps = {
+        begin: moment('2016-01-01T10:00:00'),
+        end: moment('2016-01-01T10:30:00'),
+        selection: {
+          begin: '2016-01-01T10:00:00',
+          end: '2016-01-01T11:00:00',
+          ...selection,
+        },
+      };
+      const wrapper = getWrapper({ ...defaultProps, ...props });
+      return wrapper.hasClass('reservation-slot-selected');
+    }
+
+    it('is selected if begin and end are same as selected', () => {
+      const actual = isSelected({}, { end: '2016-01-01T10:30:00' });
+      expect(actual).to.be.true;
+    });
+
+    it('is selected if begin and end are inside selected', () => {
+      const actual = isSelected({}, { begin: '2016-01-01T09:00:00' });
+      expect(actual).to.be.true;
+    });
+
+    it('is not selected if begin before selection', () => {
+      const actual = isSelected({}, { begin: '2016-01-01T10:15:00' });
+      expect(actual).to.be.false;
+    });
+
+    it('is not selected if end after selection', () => {
+      const actual = isSelected({}, { end: '2016-01-01T10:15:00' });
+      expect(actual).to.be.false;
+    });
+
+    it('is not selected if no selection', () => {
+      const wrapper = getWrapper();
+      const actual = wrapper.hasClass('reservation-slot-selected');
+      expect(actual).to.be.false;
+    });
+  });
+
   describe('handleClick', () => {
     describe('if onReservationSlotClick given', () => {
       function callHandleClick({ preventDefault }, props) {
-        const wrapper = getWrapper(
-          { onClick: () => null, ...props },
-          context
-        );
+        const wrapper = getWrapper({ onClick: () => null, ...props });
         const event = { preventDefault: preventDefault || (() => null) };
         return wrapper.instance().handleClick(event);
       }

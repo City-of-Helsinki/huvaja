@@ -19,8 +19,10 @@ TimelineGroup.propTypes = {
   date: PropTypes.string.isRequired,
   onReservationSlotClick: PropTypes.func,
   resources: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selection: PropTypes.object,
 };
 export default function TimelineGroup(props) {
+  const { onReservationSlotClick, selection } = props;
   return (
     <div className="timeline-group">
       <div className="hours">
@@ -39,7 +41,8 @@ export default function TimelineGroup(props) {
           date={props.date}
           id={resource}
           key={resource}
-          onReservationSlotClick={props.onReservationSlotClick}
+          onReservationSlotClick={onReservationSlotClick}
+          selection={selection}
         />
       )}
     </div>
