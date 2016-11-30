@@ -17,6 +17,7 @@ function getHourRanges(date) {
 
 TimelineGroup.propTypes = {
   date: PropTypes.string.isRequired,
+  onReservationSlotClick: PropTypes.func,
   resources: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 export default function TimelineGroup(props) {
@@ -34,7 +35,12 @@ export default function TimelineGroup(props) {
         )}
       </div>
       {props.resources.map(resource =>
-        <AvailabilityTimelineContainer date={props.date} id={resource} key={resource} />
+        <AvailabilityTimelineContainer
+          date={props.date}
+          id={resource}
+          key={resource}
+          onReservationSlotClick={props.onReservationSlotClick}
+        />
       )}
     </div>
   );
