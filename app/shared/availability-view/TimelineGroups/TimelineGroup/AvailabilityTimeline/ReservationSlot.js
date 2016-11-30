@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import queryString from 'query-string';
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
@@ -8,12 +9,18 @@ export default class ReservationSlot extends React.Component {
   static propTypes = {
     begin: PropTypes.shape({
       format: PropTypes.func.isRequired,
+      isSameOrAfter: PropTypes.func.isRequired,
     }).isRequired,
     end: PropTypes.shape({
       format: PropTypes.func.isRequired,
+      isSameOrBefore: PropTypes.func.isRequired,
     }).isRequired,
     onClick: PropTypes.func,
     resourceId: PropTypes.string.isRequired,
+    selection: PropTypes.shape({
+      begin: PropTypes.string.isRequired,
+      end: PropTypes.string.isRequired,
+    }),
   };
 
   constructor(props) {
@@ -36,9 +43,13 @@ export default class ReservationSlot extends React.Component {
       begin: this.props.begin.format(),
       reserve: true,
     });
+    const isSelected = this.props.selection && (
+      this.props.begin.isSameOrAfter(this.props.selection.begin) &&
+      this.props.end.isSameOrBefore(this.props.selection.end)
+    );
     return (
       <Link
-        className="reservation-slot"
+        className={classNames('reservation-slot', { 'reservation-slot-selected': isSelected })}
         onClick={this.handleClick}
         style={{ width: utils.getTimeSlotWidth() }}
         to={`/resources/${this.props.resourceId}?${query}`}
