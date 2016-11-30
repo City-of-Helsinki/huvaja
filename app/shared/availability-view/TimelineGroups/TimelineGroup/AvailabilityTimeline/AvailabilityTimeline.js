@@ -11,14 +11,22 @@ AvailabilityTimeline.propTypes = {
       data: PropTypes.object,
     })
   ).isRequired,
+  onReservationSlotClick: PropTypes.func,
 };
 
 export default function AvailabilityTimeline(props) {
+  const { onReservationSlotClick } = props;
   return (
     <div className="availability-timeline">
       {props.items.map((item) => {
         if (item.type === 'reservation-slot') {
-          return <ReservationSlot key={item.key} {...item.data} />;
+          return (
+            <ReservationSlot
+              key={item.key}
+              {...item.data}
+              onClick={onReservationSlotClick}
+            />
+          );
         }
         return <Reservation key={item.key} {...item.data} />;
       })}

@@ -43,6 +43,7 @@ const AvailabilityTimelineContainer = connect(selector)(AvailabilityTimeline);
 AvailabilityTimelineContainer.propTypes = {
   date: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
+  onReservationSlotClick: PropTypes.func,
 };
 
 export default AvailabilityTimelineContainer;

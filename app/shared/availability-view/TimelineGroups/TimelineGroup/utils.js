@@ -33,6 +33,7 @@ function getTimelineItems(date, reservations, resourceId) {
         type: 'reservation-slot',
         data: {
           begin: timePointer.clone(),
+          end: timePointer.clone().add(slotSize, 'minutes'),
           resourceId,
         },
       });
