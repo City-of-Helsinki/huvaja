@@ -1,0 +1,27 @@
+.favorite-button {
+  float: right;
+  border: 1px solid @gray-light;
+  border-radius: 5px;
+  background-color: transparent;
+  padding: 0;
+  overflow: hidden;
+  @media (max-width: @screen-sm) {
+    float: none;
+  }
+  .favorite-text {
+    position: relative;
+    padding: 0 10px;
+    top: -3px;
+  }
+  .favorite-icon {
+    top: 0;
+    border-left: 1px solid @gray-light;
+    padding: 10px;
+  }
+  .favorited {
+    .favorite-icon {
+      color: #BF0863;
+      background: linear-gradient(@gray-light, @gray-lighter, @gray-light);
+    }
+  }
+}
