@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import Label from 'react-bootstrap/lib/Label';
 
+import FavoriteButton from 'shared/favorite-button';
 import ImageCarousel from 'shared/image-carousel';
 import WrappedText from 'shared/wrapped-text';
 import ResourceInfo from './ResourceInfo';
@@ -30,6 +31,7 @@ describe('pages/resource/info/ResourceInfo', () => {
 
   function getWrapper(props) {
     const defaults = {
+      isLoggedIn: true,
       resource,
       unit,
     };
@@ -57,7 +59,34 @@ describe('pages/resource/info/ResourceInfo', () => {
       expect(unitAddress.text()).to.contain(unit.municipality);
       expect(unitAddress.text()).to.contain(unit.addressZip);
     });
+
+    it('is rendered when user is logged in', () => {
+      expect(getHeaderWrapper({ isLoggedIn: true })).to.have.length(1);
+    });
+
+    it('is rendered when user is not logged in', () => {
+      expect(getHeaderWrapper({ isLoggedIn: false })).to.have.length(1);
+    });
   });
+
+  describe('FavoriteButton', () => {
+    function getFavoriteWrapper(props) {
+      return getWrapper(props).find(FavoriteButton);
+    }
+
+    it('gets rendered if user is logged in', () => {
+      expect(getFavoriteWrapper({ isLoggedIn: true })).to.have.length(1);
+    });
+
+    it('gets resource prop', () => {
+      expect(getFavoriteWrapper({ isLoggedIn: true }).prop('resource')).to.deep.equal(resource);
+    });
+
+    it('does not get rendered if user is not logged in', () => {
+      expect(getFavoriteWrapper({ isLoggedIn: false })).to.have.length(0);
+    });
+  });
+
   describe('resource-details section', () => {
     function getSectionWrapper(props) {
       return getWrapper(props).find('section.resource-details');

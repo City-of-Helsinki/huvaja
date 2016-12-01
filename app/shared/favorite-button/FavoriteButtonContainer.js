@@ -7,11 +7,11 @@ import FavoriteButton from './FavoriteButton';
 export class UnconnectedFavoriteButtonContainer extends Component {
   static propTypes = {
     favoriteResource: PropTypes.func.isRequired,
-    unfavoriteResource: PropTypes.func.isRequired,
     resource: PropTypes.shape({
       id: PropTypes.string.isRequired,
       isFavorite: PropTypes.bool.isRequired,
     }).isRequired,
+    unfavoriteResource: PropTypes.func.isRequired,
   }
 
   constructor(props) {
