@@ -10,6 +10,7 @@ import selector from './resourcePageSelector';
 
 export class UnconnectedResourcePageContainer extends Component {
   static propTypes = {
+    currentUser: PropTypes.object,
     date: PropTypes.string.isRequired,
     fetchResource: PropTypes.func.isRequired,
     isLoaded: PropTypes.bool.isRequired,
@@ -54,6 +55,7 @@ export class UnconnectedResourcePageContainer extends Component {
     if (!this.props.isLoaded) return <Loader loaded={false} />;
     return (
       <ResourcePage
+        currentUser={this.props.currentUser}
         date={this.props.date}
         onDateChange={this.handleDateChange}
         resource={this.props.resource}

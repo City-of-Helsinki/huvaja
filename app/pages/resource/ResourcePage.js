@@ -5,6 +5,7 @@ import ResourceInfo from './info';
 import ReservationForm from './reservation-form/';
 
 ResourcePage.propTypes = {
+  currentUser: PropTypes.object,
   date: PropTypes.string.isRequired,
   onDateChange: PropTypes.func.isRequired,
   resource: PropTypes.shape({
@@ -19,7 +20,11 @@ ResourcePage.propTypes = {
 export default function ResourcePage(props) {
   return (
     <div>
-      <ResourceInfo resource={props.resource} unit={props.unit} />
+      <ResourceInfo
+        isLoggedIn={Boolean(props.currentUser)}
+        resource={props.resource}
+        unit={props.unit}
+      />
       <SingleAvailabilityView
         date={props.date}
         resource={props.resource.id}
@@ -29,4 +34,3 @@ export default function ResourcePage(props) {
     </div>
   );
 }
-
