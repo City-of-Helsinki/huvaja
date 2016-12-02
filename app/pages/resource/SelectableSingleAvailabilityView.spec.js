@@ -1,6 +1,9 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
+import moment from 'moment';
 import React from 'react';
+import { browserHistory } from 'react-router';
+import simple from 'simple-mock';
 
 import SingleAvailabilityView from 'shared/availability-view/SingleAvailabilityView';
 import SelectableSingleAvailabilityView from './SelectableSingleAvailabilityView';
@@ -15,6 +18,10 @@ function getWrapper(props) {
 }
 
 describe('pages/resources/SelectableSingleAvailabilityView', () => {
+  afterEach(() => {
+    simple.restore();
+  });
+
   it('renders a div.selectable-availability-view', () => {
     const wrapper = getWrapper();
     expect(wrapper.is('div.selectable-availability-view')).to.be.true;
@@ -39,6 +46,31 @@ describe('pages/resources/SelectableSingleAvailabilityView', () => {
     expect(wrapper.state()).to.deep.equal({
       mode: 'begin',
       selection: undefined,
+    });
+  });
+
+  it('has correct initial state if query.begin is a date', () => {
+    simple.mock(browserHistory, 'getCurrentLocation', () => ({
+      query: { begin: '2016-01-01' },
+    }));
+    const wrapper = getWrapper();
+    expect(wrapper.state()).to.deep.equal({
+      mode: 'begin',
+      selection: undefined,
+    });
+  });
+
+  it('has correct initial state if query.begin is a datetime', () => {
+    simple.mock(browserHistory, 'getCurrentLocation', () => ({
+      query: { begin: '2016-01-01T10:00:00' },
+    }));
+    const wrapper = getWrapper();
+    expect(wrapper.state()).to.deep.equal({
+      mode: 'end',
+      selection: {
+        begin: '2016-01-01T10:00:00',
+        end: moment('2016-01-01T10:30:00').format(),
+      },
     });
   });
 
