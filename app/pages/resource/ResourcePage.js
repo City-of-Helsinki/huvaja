@@ -1,21 +1,15 @@
 import React, { PropTypes } from 'react';
 
-import SingleAvailabilityView from 'shared/availability-view/SingleAvailabilityView';
 import ResourceInfo from './info';
 import ReservationForm from './reservation-form/';
+import SelectableSingleAvailabilityView from './SelectableSingleAvailabilityView';
 
 ResourcePage.propTypes = {
   currentUser: PropTypes.object,
   date: PropTypes.string.isRequired,
   onDateChange: PropTypes.func.isRequired,
-  resource: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-  }).isRequired,
-  unit: PropTypes.shape({
-    name: PropTypes.shape({
-      fi: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
+  resource: PropTypes.object.isRequired,
+  unit: PropTypes.object.isRequired,
 };
 export default function ResourcePage(props) {
   return (
@@ -25,9 +19,9 @@ export default function ResourcePage(props) {
         resource={props.resource}
         unit={props.unit}
       />
-      <SingleAvailabilityView
+      <SelectableSingleAvailabilityView
         date={props.date}
-        resource={props.resource.id}
+        resource={props.resource}
         onDateChange={props.onDateChange}
       />
       <ReservationForm resource={props.resource} />
