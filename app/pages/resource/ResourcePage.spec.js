@@ -2,10 +2,10 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import SingleAvailabilityView from 'shared/availability-view/SingleAvailabilityView';
 import ResourceInfo from './info';
 import ResourcePage from './ResourcePage';
 import ReservationForm from './reservation-form';
+import SelectableSingleAvailabilityView from './SelectableSingleAvailabilityView';
 
 function getWrapper(props) {
   const defaults = {
@@ -31,9 +31,10 @@ describe('pages/resource/ResourcePage', () => {
     const date = '2016-10-10';
     const onDateChange = () => null;
     const resource = { id: 'foo-1' };
-    const view = getWrapper({ date, resource, onDateChange }).find(SingleAvailabilityView);
+    const wrapper = getWrapper({ date, resource, onDateChange });
+    const view = wrapper.find(SelectableSingleAvailabilityView);
     expect(view).to.have.length(1);
-    expect(view.prop('resource')).to.equal('foo-1');
+    expect(view.prop('resource')).to.equal(resource);
     expect(view.prop('date')).to.equal(date);
     expect(view.prop('onDateChange')).to.equal(onDateChange);
   });
