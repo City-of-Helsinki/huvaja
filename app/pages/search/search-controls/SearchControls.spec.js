@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import queryString from 'query-string';
 import React from 'react';
 import Button from 'react-bootstrap/lib/Button';
+import Checkbox from 'react-bootstrap/lib/Checkbox';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import { browserHistory } from 'react-router';
@@ -12,9 +13,10 @@ import DatePicker from 'shared/date-picker';
 import SearchControls from './SearchControls';
 
 describe('pages/search/search-controls/SearchControls', () => {
+  const defaultInitialValues = { date: '2016-12-12', search: '', isFavorite: 'false' };
   function getWrapper(props) {
     const defaults = {
-      initialValues: { date: '2016-12-12', search: '' },
+      initialValues: defaultInitialValues,
     };
     return shallow(<SearchControls {...defaults} {...props} />);
   }
@@ -30,7 +32,7 @@ describe('pages/search/search-controls/SearchControls', () => {
     describe('search control', () => {
       function getSearchControlWrapper(values) {
         const wrapper = getWrapper({
-          initialValues: { date: '2016-12-12', search: '', ...values },
+          initialValues: Object.assign({}, defaultInitialValues, values),
         });
         return wrapper.find('[controlId="search-control-group"]');
       }
@@ -47,10 +49,32 @@ describe('pages/search/search-controls/SearchControls', () => {
       });
     });
 
+    describe('isFavorite control', () => {
+      function getIsFavoriteCheckboxWrapper(values) {
+        const wrapper = getWrapper({
+          initialValues: Object.assign({}, defaultInitialValues, values),
+        });
+        return wrapper.find('.is-favorite-checkbox');
+      }
+
+      it('has correct label', () => {
+        const label = getIsFavoriteCheckboxWrapper().prop('children');
+        expect(label).to.equal('Näytä vain suosikit');
+      });
+
+      it('renders CheckBox with correct value', () => {
+        const isFavoriteCheckbox = getIsFavoriteCheckboxWrapper(
+          { isFavorite: 'true' }
+        ).find(Checkbox);
+        expect(isFavoriteCheckbox).to.have.length(1);
+        expect(isFavoriteCheckbox.prop('checked')).to.equal(true);
+      });
+    });
+
     describe('date control', () => {
       function getDateControlWrapper(values) {
         const wrapper = getWrapper({
-          initialValues: { date: '2016-12-12', search: '', ...values },
+          initialValues: Object.assign({}, defaultInitialValues, values),
         });
         return wrapper.find('[controlId="date-control-group"]');
       }
@@ -77,7 +101,7 @@ describe('pages/search/search-controls/SearchControls', () => {
 
   describe('componentWillReceiveProps', () => {
     describe('when initialValues prop changes', () => {
-      const initialValues = { date: '2016-12-12', search: 'search text' };
+      const initialValues = defaultInitialValues;
       const nextProps = { initialValues: { search: 'new search' } };
       let setStateMock;
 
@@ -98,14 +122,14 @@ describe('pages/search/search-controls/SearchControls', () => {
       });
     });
 
-    describe('when initialValues prop does not change', () => {
-      const initialValues = { date: '2016-12-12', search: 'search text' };
-      const nextProps = { initialValues };
+    describe('when initialValues prop is the same than current state', () => {
+      const state = Object({}, defaultInitialValues, { search: 'test' });
+      const nextProps = { initialValues: state };
       let setStateMock;
 
       before(() => {
-        const instance = getWrapper({ initialValues }).instance();
-        instance.state = initialValues;
+        const instance = getWrapper().instance();
+        instance.state = state;
         setStateMock = simple.mock(instance, 'setState');
         instance.componentWillReceiveProps(nextProps);
       });
@@ -126,22 +150,35 @@ describe('pages/search/search-controls/SearchControls', () => {
     };
     const mockSubmitEvent = { preventDefault: () => {} };
     let browserHistoryMock;
-    let instance;
 
-    before(() => {
-      browserHistoryMock = simple.mock(browserHistory, 'push');
-      instance = getWrapper().instance();
-      instance.state = searchFilters;
+    function callSearch(filters, props) {
+      const instance = getWrapper(props).instance();
+      instance.state = filters || searchFilters;
       instance.handleSearch(mockSubmitEvent);
+    }
+
+    beforeEach(() => {
+      browserHistoryMock = simple.mock(browserHistory, 'push');
     });
 
-    after(() => {
+    afterEach(() => {
       simple.restore();
     });
 
     it('changes the url with current search filters', () => {
+      callSearch();
       const actualPath = browserHistoryMock.lastCall.args[0];
       const expectedPath = `/?${queryString.stringify(searchFilters)}`;
+
+      expect(browserHistoryMock.callCount).to.equal(1);
+      expect(actualPath).to.equal(expectedPath);
+    });
+
+    it('decamelize camelized keys', () => {
+      callSearch({ ...searchFilters, isFavorite: 'true' });
+      const actualPath = browserHistoryMock.lastCall.args[0];
+      const expectedFilters = { ...searchFilters, is_favorite: 'true' };
+      const expectedPath = `/?${queryString.stringify(expectedFilters)}`;
 
       expect(browserHistoryMock.callCount).to.equal(1);
       expect(actualPath).to.equal(expectedPath);

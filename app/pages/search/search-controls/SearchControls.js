@@ -1,7 +1,9 @@
+import { decamelizeKeys } from 'humps';
 import isEqual from 'lodash/isEqual';
 import queryString from 'query-string';
 import React, { Component, PropTypes } from 'react';
 import Button from 'react-bootstrap/lib/Button';
+import Checkbox from 'react-bootstrap/lib/Checkbox';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
@@ -10,6 +12,14 @@ import { browserHistory } from 'react-router';
 import DatePicker from 'shared/date-picker';
 
 class SearchControls extends Component {
+  static propTypes = {
+    initialValues: PropTypes.shape({
+      date: PropTypes.string.isRequired,
+      isFavorite: PropTypes.string.isRequired,
+      search: PropTypes.string.isRequired,
+    }).isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -18,7 +28,7 @@ class SearchControls extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!isEqual(this.props.initialValues, nextProps.initialValues)) {
+    if (!isEqual(this.state, nextProps.initialValues)) {
       this.setState(nextProps.initialValues);
     }
   }
@@ -29,7 +39,8 @@ class SearchControls extends Component {
 
   handleSearch(event) {
     event.preventDefault();
-    browserHistory.push(`/?${queryString.stringify(this.state)}`);
+    const filters = decamelizeKeys(this.state);
+    browserHistory.push(`/?${queryString.stringify(filters)}`);
   }
 
   render() {
@@ -53,6 +64,15 @@ class SearchControls extends Component {
               value={this.state.date}
             />
           </FormGroup>
+          <Checkbox
+            className="is-favorite-checkbox"
+            onChange={event =>
+              this.handleChange({ isFavorite: event.target.checked.toString() })
+            }
+            checked={this.state.isFavorite === 'true'}
+          >
+            Näytä vain suosikit
+          </Checkbox>
           <Button
             block
             bsStyle="primary"
@@ -66,12 +86,5 @@ class SearchControls extends Component {
     );
   }
 }
-
-SearchControls.propTypes = {
-  initialValues: PropTypes.shape({
-    date: PropTypes.string.isRequired,
-    search: PropTypes.string.isRequired,
-  }).isRequired,
-};
 
 export default SearchControls;
