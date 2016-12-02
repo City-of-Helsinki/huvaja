@@ -1,3 +1,4 @@
+import { decamelizeKeys } from 'humps';
 import isEqual from 'lodash/isEqual';
 import queryString from 'query-string';
 import React, { Component, PropTypes } from 'react';
@@ -27,7 +28,7 @@ export class UnconnectedSearchPageContainer extends Component {
   }
 
   handleDateChange(date) {
-    const filters = { ...this.props.searchFilters, date };
+    const filters = decamelizeKeys({ ...this.props.searchFilters, date });
     browserHistory.push(`/?${queryString.stringify(filters)}`);
   }
 

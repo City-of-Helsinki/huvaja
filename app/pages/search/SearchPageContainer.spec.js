@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
+import { decamelizeKeys } from 'humps';
 import queryString from 'query-string';
 import React from 'react';
 import Loader from 'react-loader';
@@ -18,7 +19,7 @@ describe('pages/search/SearchPageContainer', () => {
     isFetching: false,
     fetchResources: () => null,
     resultsCount: 0,
-    searchFilters: { date: '2016-12-12', search: 'search text' },
+    searchFilters: { date: '2016-12-12', search: 'search text', isFavorite: 'false' },
   };
 
   function getWrapper(props) {
@@ -121,8 +122,14 @@ describe('pages/search/SearchPageContainer', () => {
   describe('componentWillUpdate', () => {
     describe('when searchFilters prop changes', () => {
       const fetchResources = simple.mock();
-      const searchFilters = { date: '2016-11-11', search: 'search text' };
-      const nextProps = { searchFilters: { date: '2016-12-12', search: 'new search' } };
+      const searchFilters = { date: '2016-11-11', search: 'search text', isFavorite: 'false' };
+      const nextProps = {
+        searchFilters: {
+          date: '2016-12-12',
+          search: 'new search',
+          isFavorite: 'true',
+        },
+      };
 
       before(() => {
         const instance = getWrapper({ fetchResources, searchFilters }).instance();
@@ -138,7 +145,7 @@ describe('pages/search/SearchPageContainer', () => {
 
     describe('when searchFilters prop does not change', () => {
       const fetchResources = simple.mock();
-      const searchFilters = { date: '2016-12-12', search: 'search text' };
+      const searchFilters = { date: '2016-12-12', search: 'search text', isFavorite: 'false' };
       const nextProps = { searchFilters };
 
       before(() => {
@@ -157,6 +164,7 @@ describe('pages/search/SearchPageContainer', () => {
     const searchFilters = {
       date: '2016-12-12',
       search: 'search text',
+      isFavorite: 'false',
     };
     const newDate = '2016-12-13';
     let browserHistoryMock;
@@ -164,8 +172,7 @@ describe('pages/search/SearchPageContainer', () => {
 
     before(() => {
       browserHistoryMock = simple.mock(browserHistory, 'push');
-      instance = getWrapper().instance();
-      instance.state = searchFilters;
+      instance = getWrapper({ searchFilters }).instance();
       instance.handleDateChange(newDate);
     });
 
@@ -175,7 +182,7 @@ describe('pages/search/SearchPageContainer', () => {
 
     it('changes the url with current search filters and new date', () => {
       const actualPath = browserHistoryMock.lastCall.args[0];
-      const expectedFilters = { ...searchFilters, date: newDate };
+      const expectedFilters = decamelizeKeys({ ...searchFilters, date: newDate });
       const expectedPath = `/?${queryString.stringify(expectedFilters)}`;
 
       expect(browserHistoryMock.callCount).to.equal(1);

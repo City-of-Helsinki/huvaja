@@ -18,6 +18,10 @@ describe('state/reducers/searchFiltersReducer', () => {
     it('search is an empty string', () => {
       expect(getInitialState().search).to.equal('');
     });
+
+    it('isFavorite is false', () => {
+      expect(getInitialState().isFavorite).to.equal('false');
+    });
   });
 
   describe('handling actions', () => {
@@ -26,18 +30,38 @@ describe('state/reducers/searchFiltersReducer', () => {
 
       it('sets query parameters in payload to filters', () => {
         const currentState = {};
-        const payload = { query: { date: '2016-12-12', search: 'search text' } };
+        const payload = {
+          query: {
+            date: '2016-12-12',
+            is_favorite: 'false',
+            search: 'search text',
+          },
+        };
         const action = routeChangedAction(payload);
         const nextState = searchFiltersReducer(currentState, action);
-        expect(nextState).to.deep.equal(payload.query);
+        expect(nextState).to.deep.equal({
+          date: '2016-12-12',
+          isFavorite: 'false',
+          search: 'search text',
+        });
       });
 
       it('overrides previous values of same filters', () => {
-        const payload = { query: { date: '2016-12-12', search: 'search text' } };
+        const payload = {
+          query: {
+            date: '2016-12-12',
+            is_favorite: 'false',
+            search: 'search text',
+          },
+        };
         const action = routeChangedAction(payload);
         const currentState = { search: 'old-value' };
         const nextState = searchFiltersReducer(currentState, action);
-        expect(nextState).to.deep.equal(payload.query);
+        expect(nextState).to.deep.equal({
+          date: '2016-12-12',
+          isFavorite: 'false',
+          search: 'search text',
+        });
       });
 
       it('use initial reducer state for filters that are not in the payload', () => {
@@ -45,7 +69,7 @@ describe('state/reducers/searchFiltersReducer', () => {
         const action = routeChangedAction(payload);
         const currentState = { date: '2016-11-11' };
         const nextState = searchFiltersReducer(currentState, action);
-        const expected = { search: '', date: '2016-12-12' };
+        const expected = { isFavorite: 'false', search: '', date: '2016-12-12' };
         expect(nextState).to.deep.equal(expected);
       });
     });
