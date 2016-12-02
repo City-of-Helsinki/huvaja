@@ -1,5 +1,8 @@
+import moment from 'moment';
 import React, { PropTypes } from 'react';
+import { browserHistory } from 'react-router';
 
+import { slotSize } from 'shared/availability-view';
 import SingleAvailabilityView from 'shared/availability-view/SingleAvailabilityView';
 
 export default class SelectableSingleAvailabilityView extends React.Component {
@@ -14,10 +17,21 @@ export default class SelectableSingleAvailabilityView extends React.Component {
   constructor(props) {
     super(props);
     this.handleReservationSlotClick = this.handleReservationSlotClick.bind(this);
-    this.state = {
-      mode: 'begin',
-      selection: undefined,
-    };
+    const query = browserHistory.getCurrentLocation().query;
+    if (query.begin && query.begin.indexOf('T') !== -1) {
+      this.state = {
+        mode: 'end',
+        selection: {
+          begin: query.begin,
+          end: moment(query.begin).add(slotSize, 'minutes').format(),
+        },
+      };
+    } else {
+      this.state = {
+        mode: 'begin',
+        selection: undefined,
+      };
+    }
   }
 
   componentWillReceiveProps(nextProps) {

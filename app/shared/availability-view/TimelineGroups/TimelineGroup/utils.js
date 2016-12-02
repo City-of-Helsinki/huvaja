@@ -1,8 +1,6 @@
 import moment from 'moment';
 
-const slotSize = 30; // minutes
-const slotWidth = 30; // pixels
-const slotMargin = 2; // pixels
+import { slotSize, slotWidth, slotMargin } from 'shared/availability-view';
 
 function getTimeSlotWidth({ startTime, endTime } = {}) {
   const diff = endTime ? endTime.diff(startTime, 'minutes') : slotSize;
