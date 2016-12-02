@@ -14,6 +14,7 @@ function getState() {
           name: { fi: 'Resource Name' },
           peopleCapacity: 9,
           extra: 'attribute',
+          isFavorite: false,
         },
       },
     },
@@ -35,7 +36,7 @@ describe('shared/availability-view/ResourceInfoContainer', () => {
 
   describe('component', () => {
     function getWrapper(props) {
-      const defaults = { id: 'r-1', name: 'Resource name', peopleCapacity: 19 };
+      const defaults = { id: 'r-1', isFavorite: false, name: 'Resource name', peopleCapacity: 19 };
       return shallow(<ResourceInfo {...defaults} {...props} />);
     }
 
@@ -56,6 +57,19 @@ describe('shared/availability-view/ResourceInfoContainer', () => {
       expect(capacity).to.have.length(1);
       expect(capacity.text()).to.contain('3');
     });
+
+    describe('favorite-icon', () => {
+      it('is rendered if isFavorite prop is true', () => {
+        const favoriteIcon = getWrapper({ isFavorite: true }).find('.favorite-icon');
+        expect(favoriteIcon).to.have.length(1);
+        expect(favoriteIcon.prop('glyph')).to.equal('heart');
+      });
+
+      it('is not rendered if isFavorite prop is false', () => {
+        const favoriteIcon = getWrapper({ isFavorite: false }).find('.favorite-icon');
+        expect(favoriteIcon).to.have.length(0);
+      });
+    });
   });
 
   describe('selector', () => {
@@ -67,6 +81,7 @@ describe('shared/availability-view/ResourceInfoContainer', () => {
     it('returns resource info', () => {
       const actual = getSelected();
       expect(actual).to.deep.equal({
+        isFavorite: false,
         name: 'Resource Name',
         peopleCapacity: 9,
       });

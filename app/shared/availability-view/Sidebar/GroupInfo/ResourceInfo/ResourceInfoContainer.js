@@ -6,6 +6,7 @@ import { createSelector } from 'reselect';
 
 ResourceInfo.propTypes = {
   id: PropTypes.string.isRequired,
+  isFavorite: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
   peopleCapacity: PropTypes.number.isRequired,
 };
@@ -13,6 +14,7 @@ export function ResourceInfo(props) {
   return (
     <div className="resource-info">
       <div className="name">
+        { props.isFavorite && <Glyphicon className="favorite-icon" glyph="heart" /> }
         <Link to={`/resources/${props.id}`}>
           {props.name}
         </Link>
@@ -37,6 +39,7 @@ export function selector() {
   return createSelector(
     resourceSelector,
     resource => ({
+      isFavorite: resource.isFavorite,
       name: resource.name.fi,
       peopleCapacity: resource.peopleCapacity,
     })
