@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 
 import Checkbox from './Checkbox';
 import FormControl from './FormControl';
+import ReservationTime from './reservation-time';
 
 function ReduxFormField({ controlProps = {}, help, input, label, meta, name, type }) {
   const showError = meta.error && meta.touched;
@@ -16,6 +17,9 @@ function ReduxFormField({ controlProps = {}, help, input, label, meta, name, typ
 
   if (type === 'checkbox') {
     return <Checkbox {...props} />;
+  }
+  if (type === 'reservation-time') {
+    return <ReservationTime {...props} />;
   }
 
   return <FormControl {...props} />;

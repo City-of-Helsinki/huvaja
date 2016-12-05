@@ -5,7 +5,6 @@ import React from 'react';
 import ResourceInfo from './info';
 import ResourcePage from './ResourcePage';
 import ReservationForm from './reservation-form';
-import SelectableSingleAvailabilityView from './SelectableSingleAvailabilityView';
 
 function getWrapper(props) {
   const defaults = {
@@ -25,18 +24,6 @@ describe('pages/resource/ResourcePage', () => {
     expect(info).to.have.length(1);
     expect(info.prop('resource')).to.equal(resource);
     expect(info.prop('unit')).to.equal(unit);
-  });
-
-  it('renders SingleAvailabilityView', () => {
-    const date = '2016-10-10';
-    const onDateChange = () => null;
-    const resource = { id: 'foo-1' };
-    const wrapper = getWrapper({ date, resource, onDateChange });
-    const view = wrapper.find(SelectableSingleAvailabilityView);
-    expect(view).to.have.length(1);
-    expect(view.prop('resource')).to.equal(resource);
-    expect(view.prop('date')).to.equal(date);
-    expect(view.prop('onDateChange')).to.equal(onDateChange);
   });
 
   it('renders ReservationForm', () => {

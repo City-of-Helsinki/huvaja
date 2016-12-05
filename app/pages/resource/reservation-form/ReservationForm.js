@@ -5,7 +5,7 @@ import { Field, reduxForm } from 'redux-form';
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
 
 
-const requiredFields = ['resource', 'eventName', 'numberOfParticipants'];
+const requiredFields = ['time', 'resource', 'eventName', 'numberOfParticipants'];
 
 export function validate(values) {
   const errors = {};
@@ -30,10 +30,20 @@ function renderField(name, type, label, controlProps = {}) {
   );
 }
 
-export function UnconnectedReservationForm({ handleSubmit }) {
+export function UnconnectedReservationForm(props) {
   return (
     <div>
-      <form className="reservation-form" onSubmit={handleSubmit}>
+      <form className="reservation-form" onSubmit={props.handleSubmit}>
+        {renderField(
+          'time',
+          'reservation-time',
+          'Aika',
+          {
+            date: props.date,
+            resource: props.resource,
+            onDateChange: props.onDateChange,
+          }
+        )}
         {renderField(
           'resource',
           'text',
@@ -69,7 +79,10 @@ export function UnconnectedReservationForm({ handleSubmit }) {
 }
 
 UnconnectedReservationForm.propTypes = {
+  date: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  resource: PropTypes.object.isRequired,
+  onDateChange: PropTypes.func.isRequired,
 };
 
 export default reduxForm({

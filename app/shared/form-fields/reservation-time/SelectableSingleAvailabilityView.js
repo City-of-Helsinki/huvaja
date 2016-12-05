@@ -1,5 +1,6 @@
 import moment from 'moment';
 import React, { PropTypes } from 'react';
+import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import { browserHistory } from 'react-router';
 
 import { slotSize } from 'shared/availability-view';
@@ -8,6 +9,8 @@ import SingleAvailabilityView from 'shared/availability-view/SingleAvailabilityV
 export default class SelectableSingleAvailabilityView extends React.Component {
   static propTypes = {
     date: PropTypes.string.isRequired,
+    help: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
     onDateChange: PropTypes.func.isRequired,
     resource: PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -34,6 +37,12 @@ export default class SelectableSingleAvailabilityView extends React.Component {
     }
   }
 
+  componentDidMount() {
+    if (this.state.selection) {
+      this.props.onChange(this.state.selection);
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.date !== nextProps.date) {
       this.setState({ mode: 'begin' });
@@ -42,31 +51,25 @@ export default class SelectableSingleAvailabilityView extends React.Component {
 
   handleReservationSlotClick(slot) {
     if (this.state.mode === 'begin') {
-      this.setState({
-        mode: 'end',
-        selection: {
-          begin: slot.begin,
-          end: slot.end,
-        },
-      });
+      const selection = { begin: slot.begin, end: slot.end };
+      this.setState({ mode: 'end', selection });
+      this.props.onChange(selection);
     } else {
       if (this.state.selection.begin >= slot.end) return;
-      this.setState({
-        mode: 'begin',
-        selection: {
-          begin: this.state.selection.begin,
-          end: slot.end,
-        },
-      });
+      const selection = { begin: this.state.selection.begin, end: slot.end };
+      this.setState({ mode: 'begin', selection });
+      this.props.onChange(selection);
     }
   }
 
   render() {
+    const help = this.props.help || (
+      this.state.mode === 'end'
+      ? 'Valitse loppumisaika'
+      : (this.state.selection === undefined && 'Valitse alkamisaika')
+    );
     return (
       <div className="selectable-availability-view">
-        {this.state.mode === 'end'
-          ? 'Valitse loppumisaika'
-          : (this.state.selection === undefined && 'Valitse alkamisaika')}
         <SingleAvailabilityView
           date={this.props.date}
           resource={this.props.resource.id}
@@ -74,6 +77,7 @@ export default class SelectableSingleAvailabilityView extends React.Component {
           onDateChange={this.props.onDateChange}
           selection={this.state.selection}
         />
+        {help && <HelpBlock>{help}</HelpBlock>}
       </div>
     );
   }

@@ -11,6 +11,7 @@ import SelectableSingleAvailabilityView from './SelectableSingleAvailabilityView
 function getWrapper(props) {
   const defaults = {
     date: '2016-01-01',
+    onChange: () => null,
     onDateChange: () => null,
     resource: { id: 'r-1' },
   };
@@ -110,84 +111,80 @@ describe('pages/resources/SelectableSingleAvailabilityView', () => {
     }
 
     it('updates state if current mode is begin', () => {
+      const onChange = simple.mock();
       const slot = { begin: '2016-01-01T10:00:00', end: '2016-01-01T10:30:00' };
       const initialState = { mode: 'begin', selection: undefined };
-      const state = getState({}, initialState, slot);
-      expect(state).to.deep.equal({
-        mode: 'end',
-        selection: {
-          begin: slot.begin,
-          end: slot.end,
-        },
-      });
+      const state = getState({ onChange }, initialState, slot);
+      const selection = { begin: slot.begin, end: slot.end };
+      expect(state).to.deep.equal({ mode: 'end', selection });
+      expect(onChange.callCount).to.equal(1);
+      expect(onChange.lastCall.args).to.deep.equal([selection]);
     });
 
     it('updates state if current mode is begin and has a selection', () => {
+      const onChange = simple.mock();
       const slot = { begin: '2016-01-01T10:00:00', end: '2016-01-01T10:30:00' };
       const initialState = {
         mode: 'begin',
         selection: { begin: 'foo', end: 'bar' },
       };
-      const state = getState({}, initialState, slot);
-      expect(state).to.deep.equal({
-        mode: 'end',
-        selection: {
-          begin: slot.begin,
-          end: slot.end,
-        },
-      });
+      const state = getState({ onChange }, initialState, slot);
+      const selection = { begin: slot.begin, end: slot.end };
+      expect(state).to.deep.equal({ mode: 'end', selection });
+      expect(onChange.callCount).to.equal(1);
+      expect(onChange.lastCall.args).to.deep.equal([selection]);
     });
 
     it('updates state if current mode is end and slot ends after current begin', () => {
+      const onChange = simple.mock();
       const slot = { begin: '2016-01-01T10:00:00', end: '2016-01-01T10:30:00' };
       const initialState = {
         mode: 'end',
         selection: { begin: '2016-01-01T09:00:00', end: '2016-01-01T09:30:00' },
       };
-      const state = getState({}, initialState, slot);
-      expect(state).to.deep.equal({
-        mode: 'begin',
-        selection: {
-          begin: initialState.selection.begin,
-          end: slot.end,
-        },
-      });
+      const state = getState({ onChange }, initialState, slot);
+      const selection = { begin: initialState.selection.begin, end: slot.end };
+      expect(state).to.deep.equal({ mode: 'begin', selection });
+      expect(onChange.callCount).to.equal(1);
+      expect(onChange.lastCall.args).to.deep.equal([selection]);
     });
 
     it('updates state if current mode is end and same slot selected', () => {
+      const onChange = simple.mock();
       const slot = { begin: '2016-01-01T10:00:00', end: '2016-01-01T10:30:00' };
       const initialState = {
         mode: 'end',
         selection: { begin: '2016-01-01T10:00:00', end: '2016-01-01T10:30:00' },
       };
-      const state = getState({}, initialState, slot);
-      expect(state).to.deep.equal({
-        mode: 'begin',
-        selection: {
-          begin: slot.begin,
-          end: slot.end,
-        },
-      });
+      const state = getState({ onChange }, initialState, slot);
+      const selection = { begin: slot.begin, end: slot.end };
+      expect(state).to.deep.equal({ mode: 'begin', selection });
+      expect(onChange.callCount).to.equal(1);
+      expect(onChange.lastCall.args).to.deep.equal([selection]);
     });
 
     it('does not update if mode is end and slot ends at current begin', () => {
+      const onChange = simple.mock();
       const slot = { begin: '2016-01-01T09:30:00', end: '2016-01-01T10:00:00' };
       const initialState = {
         mode: 'end',
         selection: { begin: '2016-01-01T10:00:00', end: '2016-01-01T10:30:00' },
       };
-      const state = getState({}, initialState, slot);
+      const state = getState({ onChange }, initialState, slot);
       expect(state).to.deep.equal(initialState);
+      expect(onChange.called).to.be.false;
     });
 
     it('does not update if mode is end and slot ends before current begin', () => {
+      const onChange = simple.mock();
       const slot = { begin: '2016-01-01T09:00:00', end: '2016-01-01T09:30:00' };
       const initialState = {
         mode: 'end',
         selection: { begin: '2016-01-01T10:00:00', end: '2016-01-01T10:30:00' },
       };
-      const state = getState({}, initialState, slot);
+      const state = getState({ onChange }, initialState, slot);
       expect(state).to.deep.equal(initialState);
+      expect(onChange.called).to.be.false;
     });
   });
 });

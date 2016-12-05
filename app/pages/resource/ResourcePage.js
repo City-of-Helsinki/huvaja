@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 
 import ResourceInfo from './info';
 import ReservationForm from './reservation-form/';
-import SelectableSingleAvailabilityView from './SelectableSingleAvailabilityView';
 
 ResourcePage.propTypes = {
   currentUser: PropTypes.object,
@@ -19,12 +18,11 @@ export default function ResourcePage(props) {
         resource={props.resource}
         unit={props.unit}
       />
-      <SelectableSingleAvailabilityView
+      <ReservationForm
         date={props.date}
         resource={props.resource}
         onDateChange={props.onDateChange}
       />
-      <ReservationForm resource={props.resource} />
     </div>
   );
 }
