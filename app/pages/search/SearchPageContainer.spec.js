@@ -19,7 +19,7 @@ describe('pages/search/SearchPageContainer', () => {
     isFetching: false,
     fetchResources: () => null,
     resultsCount: 0,
-    searchFilters: { date: '2016-12-12', search: 'search text', isFavorite: 'false' },
+    searchFilters: { date: '2016-12-12', search: 'search text', isFavorite: '' },
   };
 
   function getWrapper(props) {
@@ -122,7 +122,7 @@ describe('pages/search/SearchPageContainer', () => {
   describe('componentWillUpdate', () => {
     describe('when searchFilters prop changes', () => {
       const fetchResources = simple.mock();
-      const searchFilters = { date: '2016-11-11', search: 'search text', isFavorite: 'false' };
+      const searchFilters = { date: '2016-11-11', search: 'search text', isFavorite: '' };
       const nextProps = {
         searchFilters: {
           date: '2016-12-12',
@@ -145,7 +145,7 @@ describe('pages/search/SearchPageContainer', () => {
 
     describe('when searchFilters prop does not change', () => {
       const fetchResources = simple.mock();
-      const searchFilters = { date: '2016-12-12', search: 'search text', isFavorite: 'false' };
+      const searchFilters = { date: '2016-12-12', search: 'search text', isFavorite: '' };
       const nextProps = { searchFilters };
 
       before(() => {
@@ -164,7 +164,7 @@ describe('pages/search/SearchPageContainer', () => {
     const searchFilters = {
       date: '2016-12-12',
       search: 'search text',
-      isFavorite: 'false',
+      isFavorite: '',
     };
     const newDate = '2016-12-13';
     let browserHistoryMock;

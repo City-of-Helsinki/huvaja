@@ -14,7 +14,7 @@ describe('pages/search/searchPageSelector', () => {
     'u-1': { id: 'u-1', name: { fi: 'Unit 1' } },
     'u-2': { id: 'u-2', name: { fi: 'Unit 2' } },
   };
-  const searchFilters = { date: '2016-12-12', search: 'search text', isFavorite: 'false' };
+  const searchFilters = { date: '2016-12-12', search: 'search text', isFavorite: '' };
   const searchResults = ['r-1', 'r-2', 'r-3'];
 
   function getSelected() {

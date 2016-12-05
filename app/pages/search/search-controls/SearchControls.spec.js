@@ -13,7 +13,7 @@ import DatePicker from 'shared/date-picker';
 import SearchControls from './SearchControls';
 
 describe('pages/search/search-controls/SearchControls', () => {
-  const defaultInitialValues = { date: '2016-12-12', search: '', isFavorite: 'false' };
+  const defaultInitialValues = { date: '2016-12-12', search: '', isFavorite: '' };
   function getWrapper(props) {
     const defaults = {
       initialValues: defaultInitialValues,

@@ -19,8 +19,8 @@ describe('state/reducers/searchFiltersReducer', () => {
       expect(getInitialState().search).to.equal('');
     });
 
-    it('isFavorite is false', () => {
-      expect(getInitialState().isFavorite).to.equal('false');
+    it('isFavorite is empty string', () => {
+      expect(getInitialState().isFavorite).to.equal('');
     });
   });
 
@@ -33,7 +33,7 @@ describe('state/reducers/searchFiltersReducer', () => {
         const payload = {
           query: {
             date: '2016-12-12',
-            is_favorite: 'false',
+            is_favorite: '',
             search: 'search text',
           },
         };
@@ -41,7 +41,7 @@ describe('state/reducers/searchFiltersReducer', () => {
         const nextState = searchFiltersReducer(currentState, action);
         expect(nextState).to.deep.equal({
           date: '2016-12-12',
-          isFavorite: 'false',
+          isFavorite: '',
           search: 'search text',
         });
       });
@@ -50,7 +50,7 @@ describe('state/reducers/searchFiltersReducer', () => {
         const payload = {
           query: {
             date: '2016-12-12',
-            is_favorite: 'false',
+            is_favorite: '',
             search: 'search text',
           },
         };
@@ -59,7 +59,7 @@ describe('state/reducers/searchFiltersReducer', () => {
         const nextState = searchFiltersReducer(currentState, action);
         expect(nextState).to.deep.equal({
           date: '2016-12-12',
-          isFavorite: 'false',
+          isFavorite: '',
           search: 'search text',
         });
       });
@@ -69,7 +69,7 @@ describe('state/reducers/searchFiltersReducer', () => {
         const action = routeChangedAction(payload);
         const currentState = { date: '2016-11-11' };
         const nextState = searchFiltersReducer(currentState, action);
-        const expected = { isFavorite: 'false', search: '', date: '2016-12-12' };
+        const expected = { isFavorite: '', search: '', date: '2016-12-12' };
         expect(nextState).to.deep.equal(expected);
       });
     });

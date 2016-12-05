@@ -6,7 +6,7 @@ function getInitialState() {
   return {
     date: moment().format('YYYY-MM-DD'),
     search: '',
-    isFavorite: 'false',
+    isFavorite: '',
   };
 }
 
