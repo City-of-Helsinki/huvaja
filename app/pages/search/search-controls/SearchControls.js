@@ -67,7 +67,7 @@ class SearchControls extends Component {
           <Checkbox
             className="is-favorite-checkbox"
             onChange={event =>
-              this.handleChange({ isFavorite: event.target.checked.toString() })
+              this.handleChange({ isFavorite: event.target.checked ? 'true' : '' })
             }
             checked={this.state.isFavorite === 'true'}
           >
