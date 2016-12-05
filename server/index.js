@@ -36,4 +36,11 @@ app.listen(port, (error) => {
     console.log(error);
   }
   console.log(`Listening at http://localhost:${port}/`);
+  // This will start NGINX in Heroku. More details:
+  // https://github.com/ryandotsmith/nginx-buildpack#applicationdyno-coordination
+  if (isProduction) {
+    const fs = require('fs');
+
+    fs.openSync('/tmp/app-initialized', 'w');
+  }
 });
