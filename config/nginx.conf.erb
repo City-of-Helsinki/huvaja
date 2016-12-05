@@ -112,7 +112,9 @@ http {
         return 301 https://$host$request_uri;
       }
       root dist;
-      try_files $uri /index.html;
+      location / {
+        proxy_pass http://localhost:8080/;
+      }
 
       # Caching
 

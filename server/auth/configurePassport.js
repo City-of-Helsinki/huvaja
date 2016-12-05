@@ -6,7 +6,7 @@ function configurePassport() {
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: '/login/helsinki/return',
+      callbackURL: process.env.LOGIN_CALLBACK_URL || '/login/helsinki/return',
       proxy: Boolean(process.env.PROXY),
     },
     (accessToken, refreshToken, profile, cb) => {
