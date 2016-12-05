@@ -17,6 +17,10 @@ describe('auth/reducer', () => {
     it('user is null', () => {
       expect(getInitialState().user).to.equal(null);
     });
+
+    it('isFetched is false', () => {
+      expect(getInitialState().isFetched).to.equal(false);
+    });
   });
 
   describe('handling actions', () => {
@@ -33,7 +37,21 @@ describe('auth/reducer', () => {
         const action = authGetSuccess(payload);
         const initialState = { token: null, user: null };
         const nextState = authReducer(initialState, action);
-        expect(nextState).to.deep.equal(payload.auth);
+        expect(nextState.token).to.equal(payload.auth.token);
+        expect(nextState.user).to.equal(payload.auth.user);
+      });
+
+      it('sets isFetched to true', () => {
+        const payload = {
+          auth: {
+            token: 'some-token',
+            user: { id: 'u-1' },
+          },
+        };
+        const action = authGetSuccess(payload);
+        const initialState = { token: null, user: null, isFetched: false };
+        const nextState = authReducer(initialState, action);
+        expect(nextState.isFetched).to.equal(true);
       });
     });
   });
