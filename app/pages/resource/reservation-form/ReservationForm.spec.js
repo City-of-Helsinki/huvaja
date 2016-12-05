@@ -14,6 +14,7 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
 
       it('returns an error if field is in requiredFields', () => {
         const errors = validate(values);
+        expect(errors.time).to.equal('Pakollinen tieto');
         expect(errors.resource).to.equal('Pakollinen tieto');
         expect(errors.eventName).to.equal('Pakollinen tieto');
         expect(errors.numberOfParticipants).to.equal('Pakollinen tieto');
@@ -23,11 +24,13 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
     describe('if field has a value', () => {
       it('does not return an error even if field is required', () => {
         const values = {
+          time: { begin: '2016-01-01T10:00:00', end: '2016-01-01T11:00:00' },
           resource: '123',
           eventName: 'name',
           numberOfParticipants: 21,
         };
         const errors = validate(values);
+        expect(errors.time).to.not.exist;
         expect(errors.resource).to.not.exist;
         expect(errors.eventName).to.not.exist;
         expect(errors.numberOfParticipants).to.not.exist;
@@ -37,8 +40,13 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
 
   describe('rendering', () => {
     function getWrapper() {
-      const handleSubmit = () => {};
-      return shallow(<ReservationForm handleSubmit={handleSubmit} />);
+      const defaults = {
+        date: '2016-01-01',
+        handleSubmit: () => null,
+        resource: {},
+        onDateChange: () => null,
+      };
+      return shallow(<ReservationForm {...defaults} />);
     }
 
     it('renders a Form component', () => {
@@ -53,10 +61,19 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
         fields = getWrapper().find(Field);
       });
 
-      it('lenght is 3', () => {
-        expect(fields).to.have.length(3);
+      it('lenght is 4', () => {
+        expect(fields).to.have.length(4);
       });
 
+      it('has a reservation time field', () => {
+        const field = fields.filter({
+          component: ReduxFormField,
+          label: 'Aika*',
+          name: 'time',
+          type: 'reservation-time',
+        });
+        expect(field).to.have.length(1);
+      });
       it('has a resource field', () => {
         const field = fields.filter({
           component: ReduxFormField,
@@ -90,25 +107,25 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
     });
 
     describe('form buttons', () => {
-      const buttons = getWrapper().find(Button);
+      let buttons;
+
+      before(() => {
+        buttons = getWrapper().find(Button);
+      });
 
       it('renders two buttons', () => {
         expect(buttons.length).to.equal(2);
       });
 
       describe('the first button', () => {
-        const button = buttons.at(0);
-
         it('has text "Takaisin"', () => {
-          expect(button.props().children).to.equal('Tallena varaus');
+          expect(buttons.at(0).props().children).to.equal('Tallena varaus');
         });
       });
 
       describe('the second button', () => {
-        const button = buttons.at(1);
-
         it('has text "Tallenna"', () => {
-          expect(button.props().children).to.equal('Peruuta');
+          expect(buttons.at(1).props().children).to.equal('Peruuta');
         });
       });
     });

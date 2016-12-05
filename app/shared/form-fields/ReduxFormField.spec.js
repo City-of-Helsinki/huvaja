@@ -5,6 +5,7 @@ import React from 'react';
 import Checkbox from './Checkbox';
 import FormControl from './FormControl';
 import ReduxFormField from './ReduxFormField';
+import ReservationTime from './reservation-time';
 
 describe('shared/form-fields/ReduxFormField', () => {
   const defaultProps = {
@@ -25,6 +26,14 @@ describe('shared/form-fields/ReduxFormField', () => {
       const wrapper = getWrapper({ type: 'checkbox' });
       const checkbox = wrapper.find(Checkbox);
       expect(checkbox.length).to.equal(1);
+    });
+  });
+
+  describe('if type is "reservation-time"', () => {
+    it('renders a ReservationTime component', () => {
+      const wrapper = getWrapper({ type: 'reservation-time' });
+      const time = wrapper.find(ReservationTime);
+      expect(time).to.have.length(1);
     });
   });
 
