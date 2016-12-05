@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import Grid from 'react-bootstrap/lib/Grid';
 import DocumentTitle from 'react-document-title';
+import Loader from 'react-loader';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 
 import { fetchUnits } from 'api/actions';
 import { fetchAuthState } from 'auth/actions';
@@ -19,7 +21,9 @@ export class UnconnectedAppContainer extends Component {
         <Navbar />
         <DocumentTitle title="Huonevarausjärjestelmä" />
         <Grid>
-          {this.props.children}
+          <Loader loaded={this.props.isAuthFetched}>
+            {this.props.children}
+          </Loader>
         </Grid>
       </div>
     );
@@ -29,9 +33,15 @@ export class UnconnectedAppContainer extends Component {
 UnconnectedAppContainer.propTypes = {
   children: PropTypes.element,
   fetchAuthState: PropTypes.func.isRequired,
+  isAuthFetched: PropTypes.bool.isRequired,
   fetchUnits: PropTypes.func.isRequired,
 };
 
 const actions = { fetchAuthState, fetchUnits };
 
-export default connect(null, actions)(UnconnectedAppContainer);
+export const selector = createSelector(
+  state => state.auth.isFetched,
+  isAuthFetched => ({ isAuthFetched })
+);
+
+export default connect(selector, actions)(UnconnectedAppContainer);
