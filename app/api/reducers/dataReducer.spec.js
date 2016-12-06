@@ -4,21 +4,28 @@ import immutable from 'seamless-immutable';
 
 import actionTypes from '../actionTypes';
 import dataReducer, { handleData } from './dataReducer';
+import cateringMenuItemsExampleData from './cateringMenuItemsExampleData';
 
 describe('api/reducers/dataReducer', () => {
   describe('initial state', () => {
-    const initialState = dataReducer(undefined, {});
+    function getInitialState() {
+      return dataReducer(undefined, {});
+    }
+
+    it('cateringMenuItems contain example data', () => {
+      expect(getInitialState().cateringMenuItems).to.deep.equal(cateringMenuItemsExampleData);
+    });
 
     it('reservations is an empty object', () => {
-      expect(initialState.reservations).to.deep.equal({});
+      expect(getInitialState().reservations).to.deep.equal({});
     });
 
     it('resources is an empty object', () => {
-      expect(initialState.resources).to.deep.equal({});
+      expect(getInitialState().resources).to.deep.equal({});
     });
 
     it('units is an empty object', () => {
-      expect(initialState.units).to.deep.equal({});
+      expect(getInitialState().units).to.deep.equal({});
     });
   });
 
