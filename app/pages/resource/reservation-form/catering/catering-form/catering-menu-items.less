@@ -1,0 +1,27 @@
+.catering-menu-items {
+  background-color: @gray-light;
+  padding: 10px;
+
+  .catering-menu-item {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    border: none;
+    background-color: @gray-lighter;
+    text-align: left;
+    border-radius: 5px;
+    font-weight: bolder;
+
+    &.selected {
+      background-color: lighten(@brand-primary, 50%);
+    }
+
+    .price {
+      color: @gray;
+    }
+  }
+
+  .catering-menu-item + .catering-menu-item {
+    margin-top: 10px;
+  }
+}
