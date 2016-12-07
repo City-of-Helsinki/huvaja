@@ -6,6 +6,7 @@ import authReducer from 'auth/reducer';
 import cateringReducer from './cateringReducer';
 import formPlugins from './formPlugins';
 import resourcePage from './resourcePageReducer';
+import reservationInfo from './reservationInfoModalReducer';
 import searchFilters from './searchFiltersReducer';
 import searchResults from './searchResultsReducer';
 
@@ -15,6 +16,9 @@ export default combineReducers({
   catering: cateringReducer,
   data: dataReducer,
   form: formReducer.plugin(formPlugins),
+  modals: combineReducers({
+    reservationInfo,
+  }),
   resourcePage,
   searchPage: combineReducers({
     searchFilters,
