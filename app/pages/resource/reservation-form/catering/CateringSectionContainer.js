@@ -48,7 +48,10 @@ class CateringSectionContainer extends Component {
           <p>Ei tarjoilua</p>
         }
         {orderMade &&
-          <CateringOrderTable items={orderItems} />
+          <div>
+            <p>Tilatut tuotteet tarjoillaan klo {cateringData.time}.</p>
+            <CateringOrderTable items={orderItems} />
+          </div>
         }
         <Button onClick={this.openCateringModal}>
           {orderMade ? 'Muokkaa tarjoiluja' : 'Tilaa tarjoilut'}

@@ -1,7 +1,14 @@
+import isEqual from 'lodash/isEqual';
 import values from 'lodash/values';
+import moment from 'moment';
 import React, { Component, PropTypes } from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import Col from 'react-bootstrap/lib/Col';
+import ControlLabel from 'react-bootstrap/lib/ControlLabel';
+import FormControl from 'react-bootstrap/lib/FormControl';
+import FormGroup from 'react-bootstrap/lib/FormGroup';
+import Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import InputGroup from 'react-bootstrap/lib/InputGroup';
 import Row from 'react-bootstrap/lib/Row';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -11,13 +18,20 @@ import CateringMenuItems from './CateringMenuItems';
 import CateringOrderTable from '../CateringOrderTable';
 import cateringUtils from '../utils';
 
+const defaultCateringTimeSelector = (state) => {
+  const reservationTimes = state.form.resourceReservation.values.time;
+  return reservationTimes ? moment(reservationTimes.begin).format('HH:mm') : '12:00';
+};
+
 export const selector = createSelector(
   state => state.catering,
   state => state.data.cateringMenuItems || {},
+  defaultCateringTimeSelector,
   state => Number(state.form.resourceReservation.values.numberOfParticipants || 1),
-  (cateringData, cateringMenuItems, defaultItemQuantity) => ({
+  (cateringData, cateringMenuItems, defaultCateringTime, defaultItemQuantity) => ({
     cateringData,
     cateringMenuItems,
+    defaultCateringTime,
     defaultItemQuantity,
   })
 );
@@ -26,6 +40,7 @@ class CateringFormContainer extends Component {
   static propTypes = {
     cateringData: PropTypes.object.isRequired,
     cateringMenuItems: PropTypes.object.isRequired,
+    defaultCateringTime: PropTypes.string.isRequired,
     defaultItemQuantity: PropTypes.number.isRequired,
     onCancelCallback: PropTypes.func,
     onSubmitCallback: PropTypes.func,
@@ -39,8 +54,22 @@ class CateringFormContainer extends Component {
     this.addOrRemoveItem = this.addOrRemoveItem.bind(this);
     this.updateOrder = this.updateOrder.bind(this);
     this.state = {
+      additionalInfo: props.cateringData.additionalInfo,
       order: props.cateringData.order,
+      projectNumber: props.cateringData.projectNumber,
+      time: props.cateringData.time || props.defaultCateringTime,
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(this.props.cateringData, nextProps.cateringData)) {
+      this.setState({
+        additionalInfo: this.props.cateringData.additionalInfo,
+        order: this.props.cateringData.order,
+        projectNumber: this.props.cateringData.projectNumber,
+        time: this.props.cateringData.time || this.props.defaultCateringTime,
+      });
+    }
   }
 
   handleCancel() {
@@ -72,8 +101,37 @@ class CateringFormContainer extends Component {
       <div className="catering-form">
         <Row>
           <Col xs={12} sm={6} md={6}>
-            <p>Päivä</p>
-            <p>Aika</p>
+            <FormGroup controlId="time">
+              <ControlLabel>Tarjoiluaika</ControlLabel>
+              <InputGroup>
+                <InputGroup.Addon>
+                  <Glyphicon glyph="time" />
+                </InputGroup.Addon>
+                <FormControl
+                  onChange={event => this.setState({ time: event.target.value })}
+                  step={5 * 60}
+                  type="time"
+                  value={this.state.time}
+                />
+              </InputGroup>
+            </FormGroup>
+            <FormGroup controlId="projectNumber">
+              <ControlLabel>Projektinumero (laskutustieto)</ControlLabel>
+              <FormControl
+                onChange={event => this.setState({ projectNumber: event.target.value })}
+                type="text"
+                value={this.state.projectNumber}
+              />
+            </FormGroup>
+            <FormGroup controlId="projectNumber">
+              <ControlLabel>Viesti tarjoilun toimittajalle</ControlLabel>
+              <FormControl
+                componentClass="textarea"
+                onChange={event => this.setState({ additionalInfo: event.target.value })}
+                rows="7"
+                value={this.state.additionalInfo}
+              />
+            </FormGroup>
           </Col>
           <Col xs={12} sm={6} md={6}>
             <h3>Tarjoiluvaihtoehdot</h3>
