@@ -13,12 +13,14 @@ import CateringOrderTable from '../CateringOrderTable';
 import cateringUtils from '../utils';
 
 export const selector = createSelector(
+  state => state.catering,
   state => state.data.cateringMenuItems || {},
-  cateringMenuItems => ({ cateringMenuItems })
+  (cateringData, cateringMenuItems) => ({ cateringData, cateringMenuItems })
 );
 
 class CateringFormContainer extends Component {
   static propTypes = {
+    cateringData: PropTypes.object.isRequired,
     cateringMenuItems: PropTypes.object.isRequired,
     onCancelCallback: PropTypes.func,
     onSubmitCallback: PropTypes.func,
@@ -31,7 +33,7 @@ class CateringFormContainer extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.updateOrder = this.updateOrder.bind(this);
     this.state = {
-      order: {},
+      order: props.cateringData.order,
     };
   }
 
