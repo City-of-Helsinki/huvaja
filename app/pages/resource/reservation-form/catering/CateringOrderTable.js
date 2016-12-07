@@ -1,7 +1,9 @@
 import React, { PropTypes } from 'react';
+import FormControl from 'react-bootstrap/lib/FormControl';
 import Table from 'react-bootstrap/lib/Table';
 
 CateringOrderTable.propTypes = {
+  editOrder: PropTypes.func,
   items: PropTypes.array.isRequired,
 };
 
@@ -22,7 +24,17 @@ function CateringOrderTable(props) {
           <tr key={item.id}>
             <td className="product">{item.name}</td>
             <td className="number">{item.price.toFixed(2)} €</td>
-            <td className="number">{item.quantity}</td>
+            <td className="number">
+              {props.editOrder &&
+                <FormControl
+                  min="1"
+                  onChange={event => props.editOrder(item.id, event.target.value)}
+                  type="number"
+                  value={item.quantity}
+                />
+              }
+              {!props.editOrder && item.quantity}
+            </td>
             <td className="number">{(item.quantity * item.price).toFixed(2)} €</td>
           </tr>
         )}
