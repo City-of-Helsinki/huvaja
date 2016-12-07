@@ -1,4 +1,3 @@
-import omit from 'lodash/omit';
 import values from 'lodash/values';
 import React, { Component, PropTypes } from 'react';
 import Button from 'react-bootstrap/lib/Button';
@@ -46,16 +45,10 @@ class CateringFormContainer extends Component {
     this.props.onSubmitCallback && this.props.onSubmitCallback();
   }
 
-  updateOrder(itemId) {
-    if (this.state.order[itemId]) {
-      this.setState({
-        order: omit(this.state.order, itemId),
-      });
-    } else {
-      this.setState({
-        order: { ...this.state.order, [itemId]: 1 },
-      });
-    }
+  updateOrder(itemId, quantity = 1) {
+    this.setState({
+      order: { ...this.state.order, [itemId]: quantity },
+    });
   }
 
   render() {
@@ -81,7 +74,7 @@ class CateringFormContainer extends Component {
           </Col>
         </Row>
         <h3>Tilaus</h3>
-        <CateringOrderTable items={orderItems} />
+        <CateringOrderTable editOrder={this.updateOrder} items={orderItems} />
         <div className="controls">
           <Button
             bsStyle="primary"

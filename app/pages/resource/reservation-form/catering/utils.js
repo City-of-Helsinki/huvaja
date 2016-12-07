@@ -5,7 +5,10 @@ function getOrderItems(cateringMenuItems, order) {
     ...cateringMenuItems[itemId],
     quantity: order[itemId],
   }));
-  return sortBy(orderItems, 'name');
+  return sortBy(
+    orderItems.filter(item => item.quantity),
+    'name'
+  );
 }
 
 export default {

@@ -16,7 +16,8 @@ class CateringMenuItem extends Component {
 
   handleClick(event) {
     event.preventDefault();
-    this.props.onClick(this.props.item.id);
+    const quantity = this.props.selected ? 0 : 1;
+    this.props.onClick(this.props.item.id, quantity);
   }
 
   render() {
