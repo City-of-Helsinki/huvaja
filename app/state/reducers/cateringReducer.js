@@ -3,7 +3,10 @@ import { handleActions } from 'redux-actions';
 import uiActions from 'actions/uiActions';
 
 const initialState = {
+  additionalInfo: '',
   order: {},
+  projectNumber: '',
+  time: '',
 };
 
 export default handleActions({
