@@ -73,6 +73,7 @@ class CateringFormContainer extends Component {
   }
 
   handleCancel() {
+    this.props.saveCateringData({});
     this.props.onCancelCallback && this.props.onCancelCallback();
   }
 
