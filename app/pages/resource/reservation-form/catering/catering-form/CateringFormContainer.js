@@ -14,13 +14,19 @@ import cateringUtils from '../utils';
 export const selector = createSelector(
   state => state.catering,
   state => state.data.cateringMenuItems || {},
-  (cateringData, cateringMenuItems) => ({ cateringData, cateringMenuItems })
+  state => Number(state.form.resourceReservation.values.numberOfParticipants || 1),
+  (cateringData, cateringMenuItems, defaultItemQuantity) => ({
+    cateringData,
+    cateringMenuItems,
+    defaultItemQuantity,
+  })
 );
 
 class CateringFormContainer extends Component {
   static propTypes = {
     cateringData: PropTypes.object.isRequired,
     cateringMenuItems: PropTypes.object.isRequired,
+    defaultItemQuantity: PropTypes.number.isRequired,
     onCancelCallback: PropTypes.func,
     onSubmitCallback: PropTypes.func,
     saveCateringData: PropTypes.func.isRequired,
@@ -30,6 +36,7 @@ class CateringFormContainer extends Component {
     super(props);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.addOrRemoveItem = this.addOrRemoveItem.bind(this);
     this.updateOrder = this.updateOrder.bind(this);
     this.state = {
       order: props.cateringData.order,
@@ -43,6 +50,14 @@ class CateringFormContainer extends Component {
   handleSubmit() {
     this.props.saveCateringData(this.state);
     this.props.onSubmitCallback && this.props.onSubmitCallback();
+  }
+
+  addOrRemoveItem(itemId) {
+    if (this.state.order[itemId]) {
+      this.updateOrder(itemId, 0);
+    } else {
+      this.updateOrder(itemId, this.props.defaultItemQuantity);
+    }
   }
 
   updateOrder(itemId, quantity = 1) {
@@ -68,7 +83,7 @@ class CateringFormContainer extends Component {
             </p>
             <CateringMenuItems
               items={values(this.props.cateringMenuItems)}
-              onItemClick={this.updateOrder}
+              onItemClick={this.addOrRemoveItem}
               order={this.state.order}
             />
           </Col>
