@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/lib/Row';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
+import uiActions from 'actions/uiActions';
 import CateringMenuItems from './CateringMenuItems';
 import CateringOrderTable from '../CateringOrderTable';
 import cateringUtils from '../utils';
@@ -21,6 +22,7 @@ class CateringFormContainer extends Component {
     cateringMenuItems: PropTypes.object.isRequired,
     onCancelCallback: PropTypes.func,
     onSubmitCallback: PropTypes.func,
+    saveCateringData: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -30,7 +32,6 @@ class CateringFormContainer extends Component {
     this.updateOrder = this.updateOrder.bind(this);
     this.state = {
       order: {},
-      time: '',
     };
   }
 
@@ -39,6 +40,7 @@ class CateringFormContainer extends Component {
   }
 
   handleSubmit() {
+    this.props.saveCateringData(this.state);
     this.props.onSubmitCallback && this.props.onSubmitCallback();
   }
 
@@ -98,4 +100,8 @@ class CateringFormContainer extends Component {
   }
 }
 
-export default connect(selector, null)(CateringFormContainer);
+const actions = {
+  saveCateringData: uiActions.saveCateringData,
+};
+
+export default connect(selector, actions)(CateringFormContainer);
