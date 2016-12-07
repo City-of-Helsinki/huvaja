@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/lib/Button';
 import { Field } from 'redux-form';
 
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
+import CateringSection from './catering';
 import { UnconnectedReservationForm as ReservationForm, validate } from './ReservationForm';
 
 describe('pages/resource/reservation-form/ReservationForm', () => {
@@ -133,6 +134,11 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
         });
         expect(field).to.have.length(1);
       });
+    });
+
+    it('renders CateringSection', () => {
+      const cateringSection = getWrapper().find(CateringSection);
+      expect(cateringSection).to.have.length(1);
     });
 
     describe('form buttons', () => {
