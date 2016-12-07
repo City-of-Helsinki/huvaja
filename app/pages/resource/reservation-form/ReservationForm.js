@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Button from 'react-bootstrap/lib/Button';
+import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import { Field, reduxForm } from 'redux-form';
 
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
@@ -60,6 +61,11 @@ export function UnconnectedReservationForm(props) {
           'number',
           'Osallistujia',
         )}
+        {props.error && (
+          <div className="has-error">
+            <HelpBlock>{props.error}</HelpBlock>
+          </div>
+        )}
         <div className="form-controls">
           <Button
             bsStyle="primary"
@@ -80,6 +86,7 @@ export function UnconnectedReservationForm(props) {
 
 UnconnectedReservationForm.propTypes = {
   date: PropTypes.string.isRequired,
+  error: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
   resource: PropTypes.object.isRequired,
   onDateChange: PropTypes.func.isRequired,

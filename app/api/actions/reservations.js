@@ -34,12 +34,13 @@ function fetchReservations(params = {}) {
   });
 }
 
-function makeReservation(reservation) {
+function makeReservation(reservation, options) {
   return createApiAction({
     endpoint: 'reservation',
     method: 'POST',
     type: 'RESERVATION',
     body: parseReservationData(reservation),
+    options,
   });
 }
 

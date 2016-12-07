@@ -38,13 +38,15 @@ describe('pages/resource/reservation-form/ReservationFormContainer', () => {
         };
         callOnSubmit(props, values);
         expect(makeReservation.callCount).to.equal(1);
-        expect(makeReservation.lastCall.args).to.deep.equal([{
+        const args = makeReservation.lastCall.args;
+        expect(args).to.have.length(2);
+        expect(args[0]).to.deep.equal({
           begin: values.time.begin,
           end: values.time.end,
           resource: props.resource.id,
           event_subject: values.eventName,
           number_of_participants: values.numberOfParticipants,
-        }]);
+        });
       });
     });
   });
