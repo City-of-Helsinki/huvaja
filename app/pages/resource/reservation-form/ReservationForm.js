@@ -4,6 +4,7 @@ import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import { Field, reduxForm } from 'redux-form';
 
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
+import CateringSection from './catering';
 
 const requiredFields = [
   'eventName',
@@ -72,6 +73,7 @@ export function UnconnectedReservationForm(props) {
             'number',
             'Osallistujia',
           )}
+          <CateringSection />
           {props.error && (
             <div className="has-error">
               <HelpBlock>{props.error}</HelpBlock>
