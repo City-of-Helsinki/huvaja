@@ -17,9 +17,14 @@ import CateringMenuItems from './CateringMenuItems';
 import CateringOrderTable from '../CateringOrderTable';
 import cateringUtils from '../utils';
 
-class CateringFormContainer extends Component {
+export class UnconnectedCateringFormContainer extends Component {
   static propTypes = {
-    cateringData: PropTypes.object.isRequired,
+    cateringData: PropTypes.shape({
+      additionalInfo: PropTypes.string.isRequired,
+      order: PropTypes.object.isRequired,
+      projectNumber: PropTypes.string.isRequired,
+      time: PropTypes.string.isRequired,
+    }).isRequired,
     cateringMenuItems: PropTypes.object.isRequired,
     defaultCateringTime: PropTypes.string.isRequired,
     defaultItemQuantity: PropTypes.number.isRequired,
@@ -45,10 +50,10 @@ class CateringFormContainer extends Component {
   componentWillReceiveProps(nextProps) {
     if (!isEqual(this.props.cateringData, nextProps.cateringData)) {
       this.setState({
-        additionalInfo: this.props.cateringData.additionalInfo,
-        order: this.props.cateringData.order,
-        projectNumber: this.props.cateringData.projectNumber,
-        time: this.props.cateringData.time || this.props.defaultCateringTime,
+        additionalInfo: nextProps.cateringData.additionalInfo,
+        order: nextProps.cateringData.order,
+        projectNumber: nextProps.cateringData.projectNumber,
+        time: nextProps.cateringData.time || nextProps.defaultCateringTime,
       });
     }
   }
@@ -83,7 +88,7 @@ class CateringFormContainer extends Component {
       <div className="catering-form">
         <Row>
           <Col xs={12} sm={6} md={6}>
-            <FormGroup controlId="time">
+            <FormGroup controlId="time-control">
               <ControlLabel>Tarjoiluaika</ControlLabel>
               <InputGroup>
                 <InputGroup.Addon>
@@ -97,7 +102,7 @@ class CateringFormContainer extends Component {
                 />
               </InputGroup>
             </FormGroup>
-            <FormGroup controlId="projectNumber">
+            <FormGroup controlId="project-number-control">
               <ControlLabel>Projektinumero (laskutustieto)</ControlLabel>
               <FormControl
                 onChange={event => this.setState({ projectNumber: event.target.value })}
@@ -105,7 +110,7 @@ class CateringFormContainer extends Component {
                 value={this.state.projectNumber}
               />
             </FormGroup>
-            <FormGroup controlId="projectNumber">
+            <FormGroup controlId="additional-info-control">
               <ControlLabel>Viesti tarjoilun toimittajalle</ControlLabel>
               <FormControl
                 componentClass="textarea"
@@ -154,4 +159,4 @@ const actions = {
   saveCateringData: uiActions.saveCateringData,
 };
 
-export default connect(selector, actions)(CateringFormContainer);
+export default connect(selector, actions)(UnconnectedCateringFormContainer);
