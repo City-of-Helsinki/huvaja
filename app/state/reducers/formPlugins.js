@@ -7,7 +7,10 @@ export default {
       ...state,
       anyTouched: undefined,
       fields: undefined,
-      values: { resource: state.values.resource },
+      values: {
+        reserverName: state.values.reserverName,
+        resource: state.values.resource,
+      },
     }),
   }),
 };

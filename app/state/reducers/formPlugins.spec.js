@@ -21,10 +21,16 @@ describe('state/reducers/formPlugins', () => {
         expect(actual.fields).to.be.undefined;
       });
 
-      it('resets values', () => {
-        const initial = { values: { some: 'value', resource: '13' } };
+      it('resets values other than reserverName and resource', () => {
+        const initial = {
+          values: {
+            reserverName: 'Luke Skywalker',
+            resource: '13',
+            some: 'value',
+          },
+        };
         const actual = plugin(initial, action);
-        expect(actual.values).to.deep.equal({ resource: '13' });
+        expect(actual.values).to.deep.equal({ reserverName: 'Luke Skywalker', resource: '13' });
       });
     });
   });

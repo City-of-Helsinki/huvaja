@@ -1,9 +1,45 @@
 import { expect } from 'chai';
 import simple from 'simple-mock';
 
-import { mergeProps } from './ReservationFormContainer';
+import { getState } from 'utils/testUtils';
+import { mergeProps, selector } from './ReservationFormContainer';
 
 describe('pages/resource/reservation-form/ReservationFormContainer', () => {
+  describe('selector', () => {
+    const props = { resource: { name: { fi: 'Resource name' } } };
+    function getSelected(extraState) {
+      const state = getState(extraState);
+      return selector(state, props);
+    }
+
+    describe('hasTime', () => {
+      it('return true if reservationForm time is specified', () => {
+        const extraState = { 'form.resourceReservation.values': { time: { begin: '...' } } };
+        expect(getSelected(extraState).hasTime).to.be.true;
+      });
+
+      it('return false if reservationForm time is not specified', () => {
+        expect(getSelected().hasTime).to.be.false;
+      });
+    });
+
+    describe('initialValues', () => {
+      it('reserverName is emptry string if user is not logged in', () => {
+        expect(getSelected().initialValues.reserverName).to.equal('');
+      });
+
+      it('reserverName is display name of logged in user', () => {
+        const extraState = { 'auth.user': { firstName: 'Luke', lastName: 'Skywalker' } };
+        expect(getSelected(extraState).initialValues.reserverName).to.equal('Luke Skywalker');
+      });
+
+      it('resource equals resource name from props', () => {
+        const expected = props.resource.name.fi;
+        expect(getSelected().initialValues.resource).to.equal(expected);
+      });
+    });
+  });
+
   describe('mergeProps', () => {
     it('merges arguments and adds an onSubmit', () => {
       const actual = mergeProps(
