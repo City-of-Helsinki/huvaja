@@ -6,9 +6,9 @@ import Col from 'react-bootstrap/lib/Col';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import InputGroup from 'react-bootstrap/lib/InputGroup';
 import Row from 'react-bootstrap/lib/Row';
+import FontAwesome from 'react-fontawesome';
 import { connect } from 'react-redux';
 
 import uiActions from 'actions/uiActions';
@@ -92,7 +92,7 @@ export class UnconnectedCateringFormContainer extends Component {
               <ControlLabel>Tarjoiluaika</ControlLabel>
               <InputGroup>
                 <InputGroup.Addon>
-                  <Glyphicon glyph="time" />
+                  <FontAwesome name="clock-o" />
                 </InputGroup.Addon>
                 <FormControl
                   onChange={event => this.setState({ time: event.target.value })}

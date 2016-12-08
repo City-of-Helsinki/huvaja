@@ -62,7 +62,7 @@ describe('shared/availability-view/ResourceInfoContainer', () => {
       it('is rendered if isFavorite prop is true', () => {
         const favoriteIcon = getWrapper({ isFavorite: true }).find('.favorite-icon');
         expect(favoriteIcon).to.have.length(1);
-        expect(favoriteIcon.prop('glyph')).to.equal('heart');
+        expect(favoriteIcon.prop('name')).to.equal('heart');
       });
 
       it('is not rendered if isFavorite prop is false', () => {

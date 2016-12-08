@@ -1,8 +1,8 @@
 import moment from 'moment';
 import React, { PropTypes } from 'react';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import Popover from 'react-bootstrap/lib/Popover';
+import FontAwesome from 'react-fontawesome';
 
 import utils from '../utils';
 
@@ -22,11 +22,11 @@ export default function Reservation(props) {
   const popover = (
     <Popover id={`popover-${props.id}`} title={props.eventSubject}>
       <div>
-        <Glyphicon glyph="time" />{' '}
+        <FontAwesome fixedWidth name="clock-o" />{' '}
         {startTime.format('HH:mm')} - {endTime.format('HH:mm')}
       </div>
-      <div>{props.reserverName}</div>
-      <div><Glyphicon glyph="user" /> {props.numberOfParticipants}</div>
+      <div><FontAwesome fixedWidth name="user" /> {props.reserverName}</div>
+      <div><FontAwesome fixedWidth name="users" /> {props.numberOfParticipants}</div>
     </Popover>
   );
   return (

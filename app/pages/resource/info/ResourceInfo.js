@@ -1,9 +1,9 @@
 import capitalize from 'lodash/capitalize';
 import React, { PropTypes } from 'react';
 import Col from 'react-bootstrap/lib/Col';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import Label from 'react-bootstrap/lib/Label';
 import Row from 'react-bootstrap/lib/Row';
+import FontAwesome from 'react-fontawesome';
 
 import FavoriteButton from 'shared/favorite-button';
 import ImageCarousel from 'shared/image-carousel';
@@ -25,7 +25,7 @@ function renderHeader(unit, resource) {
       <h2 className="unit-name">{unit.name.fi}</h2>
       <h1 className="resource-name">{resource.name.fi}</h1>
       <h4 className="unit-address">
-        <Glyphicon glyph="map-marker" className="map-marker" /> {address}
+        <FontAwesome name="map-marker" className="map-marker" /> {address}
       </h4>
     </header>
   );

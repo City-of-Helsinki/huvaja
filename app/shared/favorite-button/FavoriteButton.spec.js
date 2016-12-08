@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import FontAwesome from 'react-fontawesome';
 import simple from 'simple-mock';
 
 import FavoriteButton from './FavoriteButton';
@@ -32,9 +32,10 @@ describe('shared/favorite-button/FavoriteButton', () => {
     it('has correct text', () => {
       expect(getWrapper().find('.favorite-text').text()).to.equal('Poista suosikeista');
     });
-    it('has a heart glyphicon', () => {
-      expect(getWrapper().find(Glyphicon)).to.have.length(1);
-      expect(getWrapper().find(Glyphicon).prop('glyph')).to.equal('heart');
+
+    it('has a heart icon', () => {
+      expect(getWrapper().find(FontAwesome)).to.have.length(1);
+      expect(getWrapper().find(FontAwesome).prop('name')).to.equal('heart');
     });
   });
 
@@ -43,10 +44,11 @@ describe('shared/favorite-button/FavoriteButton', () => {
       const customWrapper = getWrapper({ favorited: false });
       expect(customWrapper.find('.favorite-text').text()).to.equal('Lisää suosikkeihin');
     });
-    it('has a heart-empty glyphicon', () => {
+
+    it('has an empty heart icon', () => {
       const customWrapper = getWrapper({ favorited: false });
-      expect(customWrapper.find(Glyphicon)).to.have.length(1);
-      expect(customWrapper.find(Glyphicon).prop('glyph')).to.equal('heart-empty');
+      expect(customWrapper.find(FontAwesome)).to.have.length(1);
+      expect(customWrapper.find(FontAwesome).prop('name')).to.equal('heart-o');
     });
   });
 });

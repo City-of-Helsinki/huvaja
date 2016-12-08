@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { Component, PropTypes } from 'react';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import FontAwesome from 'react-fontawesome';
 
 class CateringMenuItem extends Component {
   static propTypes = {
@@ -27,7 +27,7 @@ class CateringMenuItem extends Component {
       >
         <div className="name">{item.name}</div>
         <div className="price">{item.price.toFixed(2)} €</div>
-        <Glyphicon glyph={selected ? 'minus' : 'plus'} />
+        <FontAwesome name={selected ? 'minus' : 'plus'} />
       </button>
     );
   }
