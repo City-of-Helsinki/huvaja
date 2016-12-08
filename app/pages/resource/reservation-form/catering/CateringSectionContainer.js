@@ -10,13 +10,19 @@ import cateringUtils from './utils';
 export const selector = createSelector(
   state => state.catering,
   state => state.data.cateringMenuItems,
-  (cateringData, cateringMenuItems) => ({ cateringData, cateringMenuItems })
+  (cateringData, cateringMenuItems) => {
+    const orderItems = cateringUtils.getOrderItems(cateringMenuItems, cateringData.order);
+    return {
+      cateringTime: cateringData.time,
+      orderItems,
+    };
+  }
 );
 
-class CateringSectionContainer extends Component {
+export class UnconnectedCateringSectionContainer extends Component {
   static propTypes = {
-    cateringData: PropTypes.object.isRequired,
-    cateringMenuItems: PropTypes.object.isRequired,
+    cateringTime: PropTypes.string.isRequired,
+    orderItems: PropTypes.array.isRequired,
   }
 
   constructor(props) {
@@ -37,8 +43,7 @@ class CateringSectionContainer extends Component {
   }
 
   render() {
-    const { cateringData, cateringMenuItems } = this.props;
-    const orderItems = cateringUtils.getOrderItems(cateringMenuItems, cateringData.order);
+    const { cateringTime, orderItems } = this.props;
     const orderMade = Boolean(orderItems.length);
 
     return (
@@ -49,7 +54,7 @@ class CateringSectionContainer extends Component {
         }
         {orderMade &&
           <div>
-            <p>Tilatut tuotteet tarjoillaan klo {cateringData.time}.</p>
+            <p>Tilatut tuotteet tarjoillaan klo {cateringTime}.</p>
             <CateringOrderTable items={orderItems} />
           </div>
         }
@@ -62,4 +67,4 @@ class CateringSectionContainer extends Component {
   }
 }
 
-export default connect(selector, null)(CateringSectionContainer);
+export default connect(selector, null)(UnconnectedCateringSectionContainer);
