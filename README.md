@@ -33,7 +33,16 @@ By default the running app can be found at `localhost:3000`.
     $ npm install
     ```
 
-2. Start the development server:
+2. Make sure you have the following env variables set in an .env file in the root of the project:
+
+    ```
+    CLIENT_ID
+    CLIENT_SECRET
+    SESSION_SECRET
+    TARGET_APP
+    ```
+
+3. Start the development server:
 
     ```
     $ npm start
