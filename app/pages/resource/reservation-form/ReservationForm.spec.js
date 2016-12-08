@@ -147,13 +147,13 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
       });
 
       describe('the first button', () => {
-        it('has text "Takaisin"', () => {
-          expect(buttons.at(0).props().children).to.equal('Tallena varaus');
+        it('has text "Tallenna varaus"', () => {
+          expect(buttons.at(0).props().children).to.equal('Tallenna varaus');
         });
       });
 
       describe('the second button', () => {
-        it('has text "Tallenna"', () => {
+        it('has text "Peruuta"', () => {
           expect(buttons.at(1).props().children).to.equal('Peruuta');
         });
       });
