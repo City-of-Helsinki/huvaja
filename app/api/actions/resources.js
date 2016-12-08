@@ -19,9 +19,13 @@ function fetchResource(id, params = {}) {
 }
 
 function fetchResources(params = {}) {
+  const defaultParams = {
+    group: 'kanslia',
+    pageSize: 100,
+  };
   return createApiAction({
     endpoint: 'resource',
-    params: { ...getParamsWithTimes(params), pageSize: 100 },
+    params: { ...defaultParams, ...getParamsWithTimes(params) },
     method: 'GET',
     type: 'RESOURCES',
     options: { schema: schemas.paginatedResourcesSchema },
