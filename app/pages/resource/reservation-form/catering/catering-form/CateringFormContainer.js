@@ -1,6 +1,5 @@
 import isEqual from 'lodash/isEqual';
 import values from 'lodash/values';
-import moment from 'moment';
 import React, { Component, PropTypes } from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import Col from 'react-bootstrap/lib/Col';
@@ -11,30 +10,12 @@ import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import InputGroup from 'react-bootstrap/lib/InputGroup';
 import Row from 'react-bootstrap/lib/Row';
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 
 import uiActions from 'actions/uiActions';
+import selector from './cateringFormSelector';
 import CateringMenuItems from './CateringMenuItems';
 import CateringOrderTable from '../CateringOrderTable';
 import cateringUtils from '../utils';
-
-const defaultCateringTimeSelector = (state) => {
-  const reservationTimes = state.form.resourceReservation.values.time;
-  return reservationTimes ? moment(reservationTimes.begin).format('HH:mm') : '12:00';
-};
-
-export const selector = createSelector(
-  state => state.catering,
-  state => state.data.cateringMenuItems || {},
-  defaultCateringTimeSelector,
-  state => Number(state.form.resourceReservation.values.numberOfParticipants || 1),
-  (cateringData, cateringMenuItems, defaultCateringTime, defaultItemQuantity) => ({
-    cateringData,
-    cateringMenuItems,
-    defaultCateringTime,
-    defaultItemQuantity,
-  })
-);
 
 class CateringFormContainer extends Component {
   static propTypes = {
