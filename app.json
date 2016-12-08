@@ -3,7 +3,23 @@
   "scripts": {
     "postdeploy": "npm run build"
   },
-  "env": {},
+  "env": {
+    "CLIENT_ID": {
+      "required": true
+    },
+    "CLIENT_SECRET": {
+      "required": true
+    },
+    "LOGIN_CALLBACK_URL": {
+      "required": true
+    },
+    "SESSION_SECRET": {
+      "required": true
+    },
+    "TARGET_APP": {
+      "required": true
+    }
+  },
   "formation": {
     "web": {
       "quantity": 1
