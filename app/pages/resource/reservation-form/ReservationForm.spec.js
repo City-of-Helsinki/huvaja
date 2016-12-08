@@ -62,8 +62,8 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
         fields = getWrapper().find(Field);
       });
 
-      it('length is 4', () => {
-        expect(fields).to.have.length(4);
+      it('length is 5', () => {
+        expect(fields).to.have.length(5);
       });
 
       it('length is 1 if does not have time', () => {
@@ -80,6 +80,7 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
         });
         expect(field).to.have.length(1);
       });
+
       it('has a time field if not hasTime', () => {
         const wrapper = getWrapper({ hasTime: false });
         const field = wrapper.find(Field);
@@ -88,6 +89,7 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
         expect(field.prop('name')).to.equal('time');
         expect(field.prop('type')).to.equal('reservation-time');
       });
+
       it('has a resource field', () => {
         const field = fields.filter({
           component: ReduxFormField,
@@ -98,6 +100,7 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
         });
         expect(field).to.have.length(1);
       });
+
       it('has a eventName field', () => {
         const field = fields.filter({
           component: ReduxFormField,
@@ -108,6 +111,18 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
         });
         expect(field).to.have.length(1);
       });
+
+      it('has a reserverName field', () => {
+        const field = fields.filter({
+          component: ReduxFormField,
+          controlProps: {},
+          label: 'Varaaja*',
+          name: 'reserverName',
+          type: 'text',
+        });
+        expect(field).to.have.length(1);
+      });
+
       it('has a numberOfParticipants field', () => {
         const field = fields.filter({
           component: ReduxFormField,
