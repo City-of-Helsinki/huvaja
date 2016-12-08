@@ -78,17 +78,8 @@ export function UnconnectedReservationForm(props) {
             </div>
           )}
           <div className="form-controls">
-            <Button
-              bsStyle="primary"
-              type="submit"
-            >
-              Tallena varaus
-            </Button>
-            <Button
-              bsStyle="default"
-            >
-              Peruuta
-            </Button>
+            <Button bsStyle="primary" type="submit">Tallenna varaus</Button>
+            <Button bsStyle="default">Peruuta</Button>
           </div>
         </div>}
       </form>
