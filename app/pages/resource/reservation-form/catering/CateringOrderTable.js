@@ -39,7 +39,7 @@ function CateringOrderTable(props) {
           </tr>
         )}
       </tbody>
-      {Boolean(totalPrice) &&
+      {Boolean(props.items.length) &&
         <tfoot>
           <tr>
             <th className="product">Yhteensä</th>
