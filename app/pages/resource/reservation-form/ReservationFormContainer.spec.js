@@ -30,6 +30,7 @@ describe('pages/resource/reservation-form/ReservationFormContainer', () => {
           },
           eventName: 'Tapaaminen',
           numberOfParticipants: 8,
+          reserverName: 'Luke Skywalker',
         };
         const makeReservation = simple.mock();
         const props = {
@@ -43,9 +44,10 @@ describe('pages/resource/reservation-form/ReservationFormContainer', () => {
         expect(args[0]).to.deep.equal({
           begin: values.time.begin,
           end: values.time.end,
-          resource: props.resource.id,
           event_subject: values.eventName,
           number_of_participants: values.numberOfParticipants,
+          reserver_name: values.reserverName,
+          resource: props.resource.id,
         });
       });
     });

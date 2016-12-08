@@ -5,8 +5,13 @@ import { Field, reduxForm } from 'redux-form';
 
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
 
-
-const requiredFields = ['time', 'resource', 'eventName', 'numberOfParticipants'];
+const requiredFields = [
+  'eventName',
+  'numberOfParticipants',
+  'reserverName',
+  'resource',
+  'time',
+];
 
 export function validate(values) {
   const errors = {};
@@ -56,6 +61,11 @@ export function UnconnectedReservationForm(props) {
             'eventName',
             'text',
             'Tapahtuma',
+          )}
+          {renderField(
+            'reserverName',
+            'text',
+            'Varaaja',
           )}
           {renderField(
             'numberOfParticipants',
