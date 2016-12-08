@@ -14,8 +14,7 @@ class CateringMenuItem extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(event) {
-    event.preventDefault();
+  handleClick() {
     this.props.onClick(this.props.item.id);
   }
 

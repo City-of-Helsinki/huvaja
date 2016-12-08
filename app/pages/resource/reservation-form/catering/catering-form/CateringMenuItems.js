@@ -16,7 +16,7 @@ function CateringMenuItems(props) {
           item={item}
           key={item.id}
           onClick={props.onItemClick}
-          selected={Boolean(props.order[item.id])}
+          selected={Boolean(props.order[item.id] || props.order[item.id] === '')}
         />
       )}
     </div>
