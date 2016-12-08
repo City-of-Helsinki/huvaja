@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
+import { createSelector, createStructuredSelector } from 'reselect';
 
 import { makeReservation } from 'api/actions/reservations';
+import { currentUserSelector } from 'auth/selectors';
 import createFormSubmitHandler from 'utils/createFormSubmitHandler';
 import ReservationForm from './ReservationForm';
 
@@ -9,19 +10,24 @@ function hasTimeSelector(state) {
   const form = state.form.resourceReservation;
   return Boolean(form && form.values.time);
 }
+
 function resourceSelector(state, props) {
   return props.resource;
 }
 
 const initialValuesSelector = createSelector(
+  currentUserSelector,
   resourceSelector,
-  resource => ({ resource: resource.name.fi })
+  (currentUser, resource) => ({
+    reserverName: currentUser ? currentUser.displayName : '',
+    resource: resource.name.fi,
+  })
 );
-const selector = createSelector(
-  hasTimeSelector,
-  initialValuesSelector,
-  (hasTime, initialValues) => ({ hasTime, initialValues })
-);
+
+export const selector = createStructuredSelector({
+  hasTime: hasTimeSelector,
+  initialValues: initialValuesSelector,
+});
 
 const actions = {
   makeReservation,
