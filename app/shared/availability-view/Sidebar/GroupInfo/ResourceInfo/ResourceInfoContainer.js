@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import FontAwesome from 'react-fontawesome';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { createSelector } from 'reselect';
@@ -14,13 +14,13 @@ export function ResourceInfo(props) {
   return (
     <div className="resource-info">
       <div className="name">
-        { props.isFavorite && <Glyphicon className="favorite-icon" glyph="heart" /> }
+        { props.isFavorite && <FontAwesome className="favorite-icon" name="heart" /> }
         <Link to={`/resources/${props.id}`}>
           {props.name}
         </Link>
       </div>
       <div className="capacity">
-        <Glyphicon glyph="user" /> {props.peopleCapacity}
+        <FontAwesome name="users" /> {props.peopleCapacity}
       </div>
     </div>
   );

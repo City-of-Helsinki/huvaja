@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import FontAwesome from 'react-fontawesome';
 
 FavoriteButton.propTypes = {
   favorited: PropTypes.bool.isRequired,
@@ -15,11 +15,11 @@ function FavoriteButton({ favorited, onClick }) {
       { favorited ?
         <span className="favorited">
           <span className="favorite-text">Poista suosikeista</span>
-          <Glyphicon className="favorite-icon" glyph="heart" />
+          <FontAwesome className="favorite-icon" name="heart" />
         </span> :
         <span className="unfavorited">
           <span className="favorite-text">Lisää suosikkeihin</span>
-          <Glyphicon className="favorite-icon" glyph="heart-empty" />
+          <FontAwesome className="favorite-icon" name="heart-o" />
         </span>
       }
     </button>

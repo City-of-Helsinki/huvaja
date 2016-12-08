@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import FontAwesome from 'react-fontawesome';
 import simple from 'simple-mock';
 
 import CateringMenuItem from './CateringMenuItem';
@@ -42,15 +42,15 @@ describe('pages/resource/reservation-form/catering/catering-form/CateringMenuIte
     expect(price.text()).to.equal('1.20 €');
   });
 
-  it('renders a "plus" glyphicon if item is not selected', () => {
-    const glyphicon = getWrapper({ selected: false }).find(Glyphicon);
-    expect(glyphicon).to.have.length(1);
-    expect(glyphicon.prop('glyph')).to.equal('plus');
+  it('renders a "plus" icon if item is not selected', () => {
+    const icon = getWrapper({ selected: false }).find(FontAwesome);
+    expect(icon).to.have.length(1);
+    expect(icon.prop('name')).to.equal('plus');
   });
 
-  it('renders a "minus" glyphicon if item is selected', () => {
-    const glyphicon = getWrapper({ selected: true }).find(Glyphicon);
-    expect(glyphicon).to.have.length(1);
-    expect(glyphicon.prop('glyph')).to.equal('minus');
+  it('renders a "minus" icon if item is selected', () => {
+    const icon = getWrapper({ selected: true }).find(FontAwesome);
+    expect(icon).to.have.length(1);
+    expect(icon.prop('name')).to.equal('minus');
   });
 });
