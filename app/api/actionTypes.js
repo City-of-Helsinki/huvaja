@@ -12,7 +12,7 @@ function create(name, methods = []) {
 
 export default Object.assign(
   {},
-  create('RESERVATION', ['DELETE', 'POST', 'PUT']),
+  create('RESERVATION', ['GET', 'DELETE', 'POST', 'PUT']),
   create('RESERVATIONS', ['GET']),
   create('RESOURCE', ['GET']),
   create('RESOURCE_FAVORITE', ['POST']),

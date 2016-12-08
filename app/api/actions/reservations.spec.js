@@ -3,6 +3,7 @@ import { buildAPIUrl } from './createApiAction';
 import {
   cancelReservation,
   editReservation,
+  fetchReservation,
   fetchReservations,
   makeReservation,
 } from './reservations';
@@ -52,6 +53,28 @@ describe('api/actions/reservations', () => {
         },
         error: {
           type: types.RESERVATION_PUT_ERROR,
+        },
+      },
+    });
+  });
+
+  describe('fetchReservations', () => {
+    const reservationId = 123;
+    createApiTest({
+      name: 'fetchReservation',
+      action: fetchReservation,
+      args: [reservationId],
+      tests: {
+        method: 'GET',
+        endpoint: buildAPIUrl(`reservation/${reservationId}`, { all: true }),
+        request: {
+          type: types.RESERVATION_GET_REQUEST,
+        },
+        success: {
+          type: types.RESERVATION_GET_SUCCESS,
+        },
+        error: {
+          type: types.RESERVATION_GET_ERROR,
         },
       },
     });

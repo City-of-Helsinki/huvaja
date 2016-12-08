@@ -1,7 +1,7 @@
 import { arrayOf, Schema } from 'normalizr';
 
 const purposeSchema = new Schema('purposes');
-const reservationSchema = new Schema('reservations', { idAttribute: 'url' });
+const reservationSchema = new Schema('reservations');
 const resourceSchema = new Schema('resources');
 const unitSchema = new Schema('units');
 
@@ -41,6 +41,7 @@ export default {
   paginatedResourcesSchema,
   paginatedUnitsSchema,
   purposeSchema,
+  reservationSchema,
   resourceSchema,
   unitSchema,
 };
