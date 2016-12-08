@@ -39,14 +39,15 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
   });
 
   describe('rendering', () => {
-    function getWrapper() {
+    function getWrapper(props) {
       const defaults = {
         date: '2016-01-01',
         handleSubmit: () => null,
         resource: {},
         onDateChange: () => null,
+        hasTime: true,
       };
-      return shallow(<ReservationForm {...defaults} />);
+      return shallow(<ReservationForm {...defaults} {...props} />);
     }
 
     it('renders a Form component', () => {
@@ -61,8 +62,13 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
         fields = getWrapper().find(Field);
       });
 
-      it('lenght is 4', () => {
+      it('length is 4', () => {
         expect(fields).to.have.length(4);
+      });
+
+      it('length is 1 if does not have time', () => {
+        const wrapper = getWrapper({ hasTime: false });
+        expect(wrapper.find(Field)).to.have.length(1);
       });
 
       it('has a reservation time field', () => {
@@ -73,6 +79,14 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
           type: 'reservation-time',
         });
         expect(field).to.have.length(1);
+      });
+      it('has a time field if not hasTime', () => {
+        const wrapper = getWrapper({ hasTime: false });
+        const field = wrapper.find(Field);
+        expect(field.prop('label')).to.equal('Aika*');
+        expect(field.prop('component')).to.equal(ReduxFormField);
+        expect(field.prop('name')).to.equal('time');
+        expect(field.prop('type')).to.equal('reservation-time');
       });
       it('has a resource field', () => {
         const field = fields.filter({
