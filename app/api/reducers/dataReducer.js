@@ -42,6 +42,7 @@ function dataReducer(state = initialState, action) {
   switch (action.type) {
 
     case actionTypes.RESERVATIONS_GET_SUCCESS:
+    case actionTypes.RESERVATION_GET_SUCCESS:
     case actionTypes.RESOURCE_GET_SUCCESS:
     case actionTypes.UNITS_GET_SUCCESS: {
       return handleData(state, action.payload.entities);

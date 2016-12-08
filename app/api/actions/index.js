@@ -1,6 +1,7 @@
 import {
   cancelReservation,
   editReservation,
+  fetchReservation,
   fetchReservations,
   makeReservation,
 } from './reservations';
@@ -18,6 +19,7 @@ export {
   editReservation,
   favoriteResource,
   fetchFavoritedResources,
+  fetchReservation,
   fetchReservations,
   fetchResource,
   fetchResources,

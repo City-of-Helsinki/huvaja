@@ -24,6 +24,16 @@ function editReservation(reservation) {
   });
 }
 
+function fetchReservation(id) {
+  return createApiAction({
+    endpoint: `reservation/${id}`,
+    params: { all: true },
+    method: 'GET',
+    type: 'RESERVATION',
+    options: { schema: schemas.reservationSchema },
+  });
+}
+
 function fetchReservations(params = {}) {
   return createApiAction({
     endpoint: 'reservation',
@@ -52,6 +62,7 @@ function parseReservationData(reservation) {
 export {
   cancelReservation,
   editReservation,
+  fetchReservation,
   fetchReservations,
   makeReservation,
 };
