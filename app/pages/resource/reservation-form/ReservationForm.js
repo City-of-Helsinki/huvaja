@@ -45,40 +45,42 @@ export function UnconnectedReservationForm(props) {
             onDateChange: props.onDateChange,
           }
         )}
-        {renderField(
-          'resource',
-          'text',
-          'Tila',
-          { disabled: true }
-        )}
-        {renderField(
-          'eventName',
-          'text',
-          'Tapahtuma',
-        )}
-        {renderField(
-          'numberOfParticipants',
-          'number',
-          'Osallistujia',
-        )}
-        {props.error && (
-          <div className="has-error">
-            <HelpBlock>{props.error}</HelpBlock>
+        {props.hasTime && <div>
+          {renderField(
+            'resource',
+            'text',
+            'Tila',
+            { disabled: true }
+          )}
+          {renderField(
+            'eventName',
+            'text',
+            'Tapahtuma',
+          )}
+          {renderField(
+            'numberOfParticipants',
+            'number',
+            'Osallistujia',
+          )}
+          {props.error && (
+            <div className="has-error">
+              <HelpBlock>{props.error}</HelpBlock>
+            </div>
+          )}
+          <div className="form-controls">
+            <Button
+              bsStyle="primary"
+              type="submit"
+            >
+              Tallena varaus
+            </Button>
+            <Button
+              bsStyle="default"
+            >
+              Peruuta
+            </Button>
           </div>
-        )}
-        <div className="form-controls">
-          <Button
-            bsStyle="primary"
-            type="submit"
-          >
-            Tallena varaus
-          </Button>
-          <Button
-            bsStyle="default"
-          >
-            Peruuta
-          </Button>
-        </div>
+        </div>}
       </form>
     </div>
   );
@@ -88,6 +90,7 @@ UnconnectedReservationForm.propTypes = {
   date: PropTypes.string.isRequired,
   error: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
+  hasTime: PropTypes.bool.isRequired,
   resource: PropTypes.object.isRequired,
   onDateChange: PropTypes.func.isRequired,
 };

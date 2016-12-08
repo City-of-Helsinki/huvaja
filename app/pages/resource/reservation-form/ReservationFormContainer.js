@@ -5,15 +5,22 @@ import { makeReservation } from 'api/actions/reservations';
 import createFormSubmitHandler from 'utils/createFormSubmitHandler';
 import ReservationForm from './ReservationForm';
 
-const resourceSelector = (state, props) => props.resource;
+function hasTimeSelector(state) {
+  const form = state.form.resourceReservation;
+  return Boolean(form && form.values.time);
+}
+function resourceSelector(state, props) {
+  return props.resource;
+}
 
-const reservationFormSelector = createSelector(
+const initialValuesSelector = createSelector(
   resourceSelector,
-  resource => ({
-    initialValues: {
-      resource: resource.name.fi,
-    },
-  })
+  resource => ({ resource: resource.name.fi })
+);
+const selector = createSelector(
+  hasTimeSelector,
+  initialValuesSelector,
+  (hasTime, initialValues) => ({ hasTime, initialValues })
 );
 
 const actions = {
@@ -39,4 +46,4 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
   };
 }
 
-export default connect(reservationFormSelector, actions, mergeProps)(ReservationForm);
+export default connect(selector, actions, mergeProps)(ReservationForm);
