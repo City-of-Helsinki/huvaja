@@ -6,7 +6,7 @@ function getOrderItems(cateringMenuItems, order) {
     quantity: order[itemId],
   }));
   return sortBy(
-    orderItems.filter(item => item.quantity),
+    orderItems.filter(item => item.quantity !== 0),
     'name'
   );
 }
