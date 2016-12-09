@@ -39,10 +39,7 @@ export default class ReservationSlot extends React.Component {
   }
 
   render() {
-    const query = queryString.stringify({
-      begin: this.props.begin.format(),
-      reserve: true,
-    });
+    const query = queryString.stringify({ begin: this.props.begin.format() });
     const isSelected = this.props.selection && (
       this.props.begin.isSameOrAfter(this.props.selection.begin) &&
       this.props.end.isSameOrBefore(this.props.selection.end)
