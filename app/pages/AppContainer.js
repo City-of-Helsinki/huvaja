@@ -7,6 +7,7 @@ import { createSelector } from 'reselect';
 
 import { fetchUnits } from 'api/actions';
 import { fetchAuthState } from 'auth/actions';
+import ReservationInfoModal from 'shared/modals/reservation-info';
 import Navbar from 'shared/navbar';
 
 export class UnconnectedAppContainer extends Component {
@@ -25,6 +26,7 @@ export class UnconnectedAppContainer extends Component {
             {this.props.children}
           </Loader>
         </Grid>
+        <ReservationInfoModal />
       </div>
     );
   }
