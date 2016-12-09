@@ -68,10 +68,17 @@ export function UnconnectedReservationForm(props) {
             'text',
             'Varaaja',
           )}
+          <h3>Osallistujat</h3>
           {renderField(
             'numberOfParticipants',
             'number',
-            'Osallistujia',
+            'Osallistujamäärä',
+          )}
+          {renderField(
+            'participantList',
+            'textarea',
+            'Lista osallistujista',
+            { rows: 6 },
           )}
           <CateringSection />
           {props.error && (
