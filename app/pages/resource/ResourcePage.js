@@ -12,12 +12,14 @@ ResourcePage.propTypes = {
 };
 export default function ResourcePage(props) {
   return (
-    <div>
+    <div className="resource-page">
       <ResourceInfo
         isLoggedIn={Boolean(props.currentUser)}
         resource={props.resource}
         unit={props.unit}
       />
+      <h3>Varaustilanne</h3>
+      <p className="help-text">Klikkaa vapaata aikaa varauksen aloittamiseksi</p>
       <ReservationForm
         date={props.date}
         resource={props.resource}
