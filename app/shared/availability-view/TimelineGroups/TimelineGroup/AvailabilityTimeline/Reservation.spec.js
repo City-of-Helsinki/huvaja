@@ -4,8 +4,9 @@ import moment from 'moment';
 import React from 'react';
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import Popover from 'react-bootstrap/lib/Popover';
+import simple from 'simple-mock';
 
-import Reservation from './Reservation';
+import { UnconnectedReservation as Reservation } from './Reservation';
 import utils from '../utils';
 
 function getOverlayTrigger(props) {
@@ -14,6 +15,7 @@ function getOverlayTrigger(props) {
     end: '2016-01-01T12:00:00Z',
     eventSubject: 'Meeting',
     id: 12345,
+    showReservationInfoModal: () => {},
   };
   return shallow(<Reservation {...defaults} {...props} />);
 }
@@ -37,6 +39,16 @@ describe('shared/availability-view/Reservation', () => {
     const overlayTrigger = getOverlayTrigger();
     const overlay = overlayTrigger.prop('overlay');
     expect(overlay.type).to.equal(Popover);
+  });
+
+  it('onClick it calls showReservationInfoModal prop and passes id', () => {
+    const showReservationInfoModal = simple.mock();
+    const wrapper = getOverlayTrigger({ id: 123, showReservationInfoModal });
+    const onClickProp = wrapper.prop('onClick');
+    expect(showReservationInfoModal.callCount).to.equal(0);
+    onClickProp();
+    expect(showReservationInfoModal.callCount).to.equal(1);
+    expect(showReservationInfoModal.lastCall.args[0]).to.equal(123);
   });
 
   it('has correct width', () => {
