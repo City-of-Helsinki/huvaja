@@ -54,6 +54,7 @@ export function UnconnectedReservationForm(props) {
         )}
         {props.hasTime && <div>
           <Panel bsStyle="primary" header={<h4>Uusi varaus</h4>}>
+            <h3>Perustiedot</h3>
             {renderField(
               'resource',
               'text',
