@@ -4,7 +4,6 @@ import { handleActions } from 'redux-actions';
 function getInitialState() {
   return {
     begin: moment().format('YYYY-MM-DD'),
-    reserve: false,
   };
 }
 
