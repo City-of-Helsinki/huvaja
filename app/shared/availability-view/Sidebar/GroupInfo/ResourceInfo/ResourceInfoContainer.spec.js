@@ -41,7 +41,7 @@ describe('shared/availability-view/ResourceInfoContainer', () => {
         id: 'r-1',
         isFavorite: false,
         name: 'Resource name',
-        peopleCapacity: 19
+        peopleCapacity: 19,
       };
       return shallow(<ResourceInfo {...defaults} {...props} />);
     }
