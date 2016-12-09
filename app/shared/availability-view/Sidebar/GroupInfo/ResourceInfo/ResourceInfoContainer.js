@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import { createSelector } from 'reselect';
 
 ResourceInfo.propTypes = {
+  date: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   isFavorite: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
@@ -15,7 +16,7 @@ export function ResourceInfo(props) {
     <div className="resource-info">
       <div className="name">
         { props.isFavorite && <FontAwesome className="favorite-icon" name="heart" /> }
-        <Link to={`/resources/${props.id}`}>
+        <Link to={`/resources/${props.id}?begin=${props.date}`}>
           {props.name}
         </Link>
       </div>
