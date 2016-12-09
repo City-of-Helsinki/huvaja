@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
+import Panel from 'react-bootstrap/lib/Panel';
 import { Field, reduxForm } from 'redux-form';
 
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
@@ -52,44 +53,46 @@ export function UnconnectedReservationForm(props) {
           }
         )}
         {props.hasTime && <div>
-          {renderField(
-            'resource',
-            'text',
-            'Tila',
-            { disabled: true }
-          )}
-          {renderField(
-            'eventName',
-            'text',
-            'Tapahtuma',
-          )}
-          {renderField(
-            'reserverName',
-            'text',
-            'Varaaja',
-          )}
-          <h3>Osallistujat</h3>
-          {renderField(
-            'numberOfParticipants',
-            'number',
-            'Osallistujamäärä',
-          )}
-          {renderField(
-            'participantList',
-            'textarea',
-            'Lista osallistujista',
-            { rows: 6 },
-          )}
-          <CateringSection />
-          {props.error && (
-            <div className="has-error">
-              <HelpBlock>{props.error}</HelpBlock>
+          <Panel bsStyle="primary" header={<h4>Uusi varaus</h4>}>
+            {renderField(
+              'resource',
+              'text',
+              'Tila',
+              { disabled: true }
+            )}
+            {renderField(
+              'eventName',
+              'text',
+              'Tapahtuma',
+            )}
+            {renderField(
+              'reserverName',
+              'text',
+              'Varaaja',
+            )}
+            <h3>Osallistujat</h3>
+            {renderField(
+              'numberOfParticipants',
+              'number',
+              'Osallistujamäärä',
+            )}
+            {renderField(
+              'participantList',
+              'textarea',
+              'Lista osallistujista',
+              { rows: 6 },
+            )}
+            <CateringSection />
+            {props.error && (
+              <div className="has-error">
+                <HelpBlock>{props.error}</HelpBlock>
+              </div>
+            )}
+            <div className="form-controls">
+              <Button bsStyle="primary" type="submit">Tallenna varaus</Button>
+              <Button bsStyle="default">Peruuta</Button>
             </div>
-          )}
-          <div className="form-controls">
-            <Button bsStyle="primary" type="submit">Tallenna varaus</Button>
-            <Button bsStyle="default">Peruuta</Button>
-          </div>
+          </Panel>
         </div>}
       </form>
     </div>

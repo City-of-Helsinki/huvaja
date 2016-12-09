@@ -1,6 +1,17 @@
 @import 'catering/catering';
 
 .reservation-form {
+  .panel {
+    .panel-title {
+      text-transform: none;
+    }
+    .panel-body {
+      @media (min-width: @screen-sm-min) {
+        padding: 20px 40px;
+      }
+    }
+  }
+
   .catering-section {
     margin-bottom: 20px;
   }
