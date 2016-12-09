@@ -15,6 +15,7 @@ export default class SelectableSingleAvailabilityView extends React.Component {
     resource: PropTypes.shape({
       id: PropTypes.string.isRequired,
     }).isRequired,
+    value: PropTypes.oneOfType([PropTypes.object, PropTypes.oneOf([''])]),
   };
 
   constructor(props) {
@@ -44,8 +45,14 @@ export default class SelectableSingleAvailabilityView extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.date !== nextProps.date) {
-      this.setState({ mode: 'begin' });
+    const shouldReset = (
+      this.props.date !== nextProps.date || (
+        this.props.value !== nextProps.value &&
+        nextProps.value === ''
+      )
+    );
+    if (shouldReset) {
+      this.setState({ mode: 'begin', selection: undefined });
     }
   }
 

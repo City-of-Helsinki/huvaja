@@ -100,6 +100,15 @@ describe('pages/resources/SelectableSingleAvailabilityView', () => {
       );
       expect(state.mode).to.equal('end');
     });
+
+    it('sets mode = begin if value changes to ""', () => {
+      const state = getState(
+        { date: '2016-01-01', value: { begin: '', end: '' } },
+        { mode: 'end' },
+        { date: '2016-01-01', value: '' },
+      );
+      expect(state.mode).to.equal('begin');
+    });
   });
 
   describe('handleReservationSlotClick', () => {
