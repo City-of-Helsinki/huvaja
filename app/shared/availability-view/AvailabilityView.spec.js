@@ -32,9 +32,11 @@ describe('shared/availability-view/AvailabilityView', () => {
   });
 
   it('renders Sidebar', () => {
+    const date = '2016-11-12';
     const groups = [];
-    const element = getWrapper({ groups }).find(Sidebar);
+    const element = getWrapper({ date, groups }).find(Sidebar);
     expect(element).to.have.length(1);
+    expect(element.prop('date')).to.equal(date);
     expect(element.prop('groups')).to.equal(groups);
   });
 

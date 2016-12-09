@@ -14,7 +14,7 @@ export default function AvailabilityView(props) {
     <div className="availability-view">
       <div className="left">
         <div className="top-left" />
-        <Sidebar groups={props.groups} />
+        <Sidebar date={props.date} groups={props.groups} />
       </div>
       <div className="right">
         <DateSelector value={props.date} onChange={props.onDateChange} />
