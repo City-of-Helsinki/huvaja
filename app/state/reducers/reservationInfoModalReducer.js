@@ -1,21 +1,21 @@
 import { handleActions } from 'redux-actions';
 
-function getInitialState() {
-  return {
-    reservationId: null,
-    show: false,
-  };
-}
+import uiActions from 'actions/uiActions';
+
+const initialState = {
+  reservationId: null,
+  show: false,
+};
 
 export default handleActions({
-  SHOW_RESERVATION_INFO_MODAL: (state, action) => ({
+  [uiActions.showReservationInfoModal]: (state, action) => ({
     ...state,
     reservationId: action.payload,
     show: true,
   }),
-  HIDE_RESERVATION_INFO_MODAL: state => ({
+  [uiActions.hideReservationInfoModal]: state => ({
     ...state,
     reservationId: null,
     show: false,
   }),
-}, getInitialState());
+}, initialState);

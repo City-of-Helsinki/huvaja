@@ -14,7 +14,7 @@ describe('shared/modal/ReservationInfo', () => {
   };
   const reservation = {
     id: 11,
-    eventName: 'Reserved room',
+    eventSubject: 'Awesome meeting',
     numberOfParticipants: 12,
     reserverName: 'Mr reserver',
     begin: '2016-01-01T08:00:00',
@@ -53,13 +53,11 @@ describe('shared/modal/ReservationInfo', () => {
 
     it('renders unit name', () => {
       const unitName = getHeaderWrapper().find('.unit-name');
-      expect(unitName.is('h2')).to.be.true;
       expect(unitName.text()).to.equal(unit.name.fi);
     });
 
     it('renders resource name', () => {
       const resourceName = getHeaderWrapper().find('.resource-name');
-      expect(resourceName.is('h1')).to.be.true;
       expect(resourceName.text()).to.equal(resource.name.fi);
     });
 
@@ -78,6 +76,11 @@ describe('shared/modal/ReservationInfo', () => {
     function getBodyWrapper(props) {
       return getWrapper(props).find(Modal.Body);
     }
+
+    it('renders event subject', () => {
+      const eventSubject = getBodyWrapper().find('.event-subject');
+      expect(eventSubject.text()).to.equal(reservation.eventSubject);
+    });
 
     it('renders reservation participants number', () => {
       const reservationParticipants = getBodyWrapper().find('.reservation-participants-number');

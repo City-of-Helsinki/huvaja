@@ -3,22 +3,20 @@ import React, { PropTypes } from 'react';
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import Popover from 'react-bootstrap/lib/Popover';
 import FontAwesome from 'react-fontawesome';
-import { connect } from 'react-redux';
 
-import actionsUI from 'actions';
 import utils from '../utils';
 
-UnconnectedReservation.propTypes = {
+Reservation.propTypes = {
   begin: PropTypes.string.isRequired,
   end: PropTypes.string.isRequired,
   eventSubject: PropTypes.string,
   id: PropTypes.number.isRequired,
   numberOfParticipants: PropTypes.number,
+  onClick: PropTypes.func.isRequired,
   reserverName: PropTypes.string,
-  showReservationInfoModal: PropTypes.func.isRequired,
 };
 
-export function UnconnectedReservation(props) {
+function Reservation(props) {
   const startTime = moment(props.begin);
   const endTime = moment(props.end);
   const width = utils.getTimeSlotWidth({ startTime, endTime });
@@ -34,7 +32,7 @@ export function UnconnectedReservation(props) {
   );
   return (
     <OverlayTrigger
-      onClick={() => props.showReservationInfoModal(props.id)}
+      onClick={() => props.onClick(props.id)}
       overlay={popover}
       placement="top"
       trigger={['hover', 'focus']}
@@ -53,6 +51,4 @@ export function UnconnectedReservation(props) {
   );
 }
 
-const actions = { showReservationInfoModal: actionsUI.showReservationInfoModal };
-
-export default connect(null, actions)(UnconnectedReservation);
+export default Reservation;

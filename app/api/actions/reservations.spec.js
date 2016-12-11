@@ -58,7 +58,7 @@ describe('api/actions/reservations', () => {
     });
   });
 
-  describe('fetchReservations', () => {
+  describe('fetchReservation', () => {
     const reservationId = 123;
     createApiTest({
       name: 'fetchReservation',

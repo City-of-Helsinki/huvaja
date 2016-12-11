@@ -8,7 +8,10 @@ import Reservation from './Reservation';
 import ReservationSlot from './ReservationSlot';
 
 function getWrapper(props) {
-  const defaults = { items: [] };
+  const defaults = {
+    items: [],
+    onReservationClick: () => null,
+  };
   return shallow(<AvailabilityTimeline {...defaults} {...props} />);
 }
 

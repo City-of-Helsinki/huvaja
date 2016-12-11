@@ -4,6 +4,7 @@ import { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
+import uiActions from 'actions/uiActions';
 import AvailabilityTimeline from './AvailabilityTimeline';
 import utils from '../utils';
 
@@ -39,7 +40,11 @@ export function selector() {
   );
 }
 
-const AvailabilityTimelineContainer = connect(selector)(AvailabilityTimeline);
+const actions = {
+  onReservationClick: uiActions.showReservationInfoModal,
+};
+
+const AvailabilityTimelineContainer = connect(selector, actions)(AvailabilityTimeline);
 AvailabilityTimelineContainer.propTypes = {
   date: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
