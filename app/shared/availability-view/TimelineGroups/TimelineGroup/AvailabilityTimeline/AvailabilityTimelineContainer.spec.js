@@ -45,6 +45,7 @@ function getWrapper(props) {
   const defaults = {
     date: '2016-01-01T00:00:00',
     id: 'resource-1',
+    onReservationClick: () => null,
     store: { getState },
   };
   return shallow(<AvailabilityTimelineContainer {...defaults} {...props} />);

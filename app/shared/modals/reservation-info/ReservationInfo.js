@@ -40,7 +40,7 @@ export default function ReservationInfoModal(props) {
   );
   return (
     <Modal
-      className="reservation-info"
+      className="reservation-info-modal"
       onHide={onHide}
       show={show}
     >
@@ -58,7 +58,7 @@ export default function ReservationInfoModal(props) {
       </Modal.Header>
 
       <Modal.Body>
-        <h2>{reservation.eventName}</h2>
+        <h1 className="event-subject">{reservation.eventSubject}</h1>
         <hr />
         <Row>
           <Col className="details-row reservation-participants-number" xs={6}>

@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import actionsUI from 'actions';
+import uiActions from 'actions/uiActions';
 import { fetchReservation } from 'api/actions';
 import reservationModalSelector from './reservationInfoSelector';
 import ReservationInfo from './ReservationInfo';
@@ -12,7 +12,7 @@ export class UnconnectedReservationInfoContainer extends React.Component {
     fetchReservation: PropTypes.func.isRequired,
     onHide: PropTypes.func.isRequired,
     reservation: PropTypes.object,
-    reservationId: PropTypes.number, // eslint-disable-line
+    reservationId: PropTypes.number, // eslint-disable-line react/no-unused-prop-types
     resource: PropTypes.object,
     show: PropTypes.bool.isRequired,
     unit: PropTypes.object,
@@ -41,7 +41,7 @@ export class UnconnectedReservationInfoContainer extends React.Component {
 
 const actions = {
   fetchReservation,
-  onHide: actionsUI.hideReservationInfoModal,
+  onHide: uiActions.hideReservationInfoModal,
 };
 
 export default connect(reservationModalSelector, actions)(

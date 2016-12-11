@@ -9,8 +9,6 @@ import { UnconnectedReservationInfoContainer as ReservationInfoContainer } from 
 describe('shared/modals/reservation-info/ReservationInfoContainer', () => {
   const defaults = {
     fetchReservation: () => null,
-    isLoaded: true,
-    location: { query: {} },
     onHide: () => null,
     reservation: {},
     reservationId: 1,

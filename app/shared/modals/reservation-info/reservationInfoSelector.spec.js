@@ -4,6 +4,14 @@ import { getState } from 'utils/testUtils';
 import selector from './reservationInfoSelector';
 
 describe('shared/modals/reservation-info/reservationInfoSelector', () => {
+  it('returns reservationId from the state', () => {
+    const state = getState({
+      'modals.reservationInfo': { reservationId: 'abcd' },
+    });
+    const actual = selector(state).reservationId;
+    expect(actual).to.equal(state.modals.reservationInfo.reservationId);
+  });
+
   describe('reservation', () => {
     it('returns reservation', () => {
       const state = getState({
@@ -22,7 +30,6 @@ describe('shared/modals/reservation-info/reservationInfoSelector', () => {
       expect(actual).to.be.undefined;
     });
   });
-
 
   describe('resource', () => {
     it('returns resource from reservation', () => {
