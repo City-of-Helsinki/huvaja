@@ -64,20 +64,6 @@ describe('shared/availability-view/Reservation', () => {
     expect(actual).to.deep.equal({ width: expected });
   });
 
-  it('renders start time', () => {
-    const begin = '2016-01-01T10:30:00Z';
-    const element = getWrapper({ begin }).find('.start-time');
-    expect(element).to.have.length(1);
-    expect(element.text()).to.equal(moment(begin).format('HH:mm'));
-  });
-
-  it('renders end time', () => {
-    const end = '2016-01-01T10:30:00Z';
-    const element = getWrapper({ end }).find('.end-time');
-    expect(element).to.have.length(1);
-    expect(element.text()).to.equal(moment(end).format('HH:mm'));
-  });
-
   it('renders eventSubject', () => {
     const eventSubject = 'Meeting GUQ';
     const element = getWrapper({ eventSubject }).find('.event-subject');
