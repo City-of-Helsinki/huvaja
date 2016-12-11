@@ -38,10 +38,6 @@ function Reservation(props) {
       trigger={['hover', 'focus']}
     >
       <div className="reservation" style={{ width }}>
-        <div className="times">
-          <div className="start-time">{startTime.format('HH:mm')}</div>
-          <div className="end-time">{endTime.format('HH:mm')}</div>
-        </div>
         <div className="names">
           <div className="event-subject">{props.eventSubject}</div>
           <div className="reserver-name">{props.reserverName}</div>

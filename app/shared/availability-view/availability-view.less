@@ -133,12 +133,11 @@
     overflow: hidden;
     cursor: pointer;
 
-    .times {
-      margin-right: @padding-small-horizontal;
-    }
     .names {
+      height: 100%;
       overflow: hidden;
-      text-overflow: ellipsis;
+      text-overflow: clip;
+      white-space: nowrap;
     }
   }
   .reservation-slot {
