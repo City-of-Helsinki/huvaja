@@ -48,10 +48,9 @@ By default the running app can be found at `localhost:3000`.
     $ npm start
     ```
 
-### Starting production server
+### Building production bundle
 
-Follow the instructions below to build and start production server.
-By default the production app uses port `8080`.
+Follow the instructions below to build the production bundle.
 
 1. Install npm dependencies:
 
@@ -65,10 +64,24 @@ By default the production app uses port `8080`.
     $ npm run build
     ```
 
-3. Start the production server:
+### Running tests
+
+- Run tests:
 
     ```
-    $ npm run start:production
+    $ npm test
+    ```
+
+- Run tests in watch mode:
+
+    ```
+    $ npm run test:watch
+    ```
+
+- Run tests with coverage:
+
+    ```
+    $ npm run test:coverage
     ```
 
 ### Running code linter
