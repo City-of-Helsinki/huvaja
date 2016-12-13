@@ -1,7 +1,7 @@
 huvaja
 ======
 
-[![Circle CI](https://circleci.com/gh/fastmonkeys/huvaja.svg?style=svg)](https://circleci.com/gh/fastmonkeys/huvaja)
+[![Circle CI](https://circleci.com/gh/City-of-Helsinki/huvaja.svg?style=svg)](https://circleci.com/gh/City-of-Helsinki/huvaja)
 
 Requirements
 ------------
