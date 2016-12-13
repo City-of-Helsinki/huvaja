@@ -13,7 +13,7 @@ ResourceInfo.propTypes = {
 };
 export function ResourceInfo(props) {
   return (
-    <div className="resource-info">
+    <div className="resource-info" title={props.name}>
       <div className="name">
         { props.isFavorite && <FontAwesome className="favorite-icon" name="heart" /> }
         <Link to={`/resources/${props.id}?begin=${props.date}`}>

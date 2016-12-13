@@ -9,8 +9,8 @@ GroupInfo.propTypes = {
 };
 export default function GroupInfo(props) {
   return (
-    <div className="group-info">
-      <div className="group-name">{props.name}</div>
+    <div className="group-info" title={props.name}>
+      <div className="group-name"><div className="name">{props.name}</div></div>
       {props.resources.map(resource =>
         <ResourceInfoContainer date={props.date} key={resource} id={resource} />
       )}
