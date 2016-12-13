@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import queryString from 'query-string';
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
 
 import utils from '../utils';
+import Link from './Link';
 
 export default class ReservationSlot extends React.Component {
   static propTypes = {

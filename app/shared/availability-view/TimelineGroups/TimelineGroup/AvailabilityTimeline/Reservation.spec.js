@@ -7,9 +7,10 @@ import Popover from 'react-bootstrap/lib/Popover';
 import simple from 'simple-mock';
 
 import Reservation from './Reservation';
+import Link from './Link';
 import utils from '../utils';
 
-function getOverlayTrigger(props) {
+function getOuterWrapper(props) {
   const defaults = {
     begin: '2016-01-01T10:00:00Z',
     end: '2016-01-01T12:00:00Z',
@@ -21,7 +22,7 @@ function getOverlayTrigger(props) {
 }
 
 function getWrapper(props) {
-  return getOverlayTrigger(props).find('.reservation');
+  return getOuterWrapper(props).find('.reservation');
 }
 
 describe('shared/availability-view/Reservation', () => {
@@ -30,20 +31,25 @@ describe('shared/availability-view/Reservation', () => {
     expect(wrapper.is('div.reservation')).to.be.true;
   });
 
+  it('renders a link', () => {
+    const wrapper = getOuterWrapper();
+    expect(wrapper.is(Link)).to.be.true;
+  });
+
   it('renders an OverlayTrigger', () => {
-    const wrapper = getOverlayTrigger();
-    expect(wrapper.is(OverlayTrigger)).to.be.true;
+    const trigger = getOuterWrapper().find(OverlayTrigger);
+    expect(trigger).to.have.length(1);
   });
 
   it('renders a popover', () => {
-    const overlayTrigger = getOverlayTrigger();
+    const overlayTrigger = getOuterWrapper().find(OverlayTrigger);
     const overlay = overlayTrigger.prop('overlay');
     expect(overlay.type).to.equal(Popover);
   });
 
-  it('onClick it calls prop.onClick and passes id', () => {
+  it('on click it calls prop.onClick and passes id', () => {
     const onClick = simple.mock();
-    const wrapper = getOverlayTrigger({ id: 123, onClick });
+    const wrapper = getOuterWrapper({ id: 123, onClick });
     const onClickProp = wrapper.prop('onClick');
     expect(onClick.callCount).to.equal(0);
     onClickProp();
