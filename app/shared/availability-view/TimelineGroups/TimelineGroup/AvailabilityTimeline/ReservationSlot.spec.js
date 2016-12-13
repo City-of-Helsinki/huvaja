@@ -4,9 +4,9 @@ import moment from 'moment';
 import queryString from 'query-string';
 import simple from 'simple-mock';
 import React from 'react';
-import { Link } from 'react-router';
 
 import ReservationSlot from './ReservationSlot';
+import Link from './Link';
 import utils from '../utils';
 
 function getWrapper(props) {

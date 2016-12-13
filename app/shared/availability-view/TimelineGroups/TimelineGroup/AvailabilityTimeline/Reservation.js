@@ -5,6 +5,7 @@ import Popover from 'react-bootstrap/lib/Popover';
 import FontAwesome from 'react-fontawesome';
 
 import utils from '../utils';
+import Link from './Link';
 
 Reservation.propTypes = {
   begin: PropTypes.string.isRequired,
@@ -31,19 +32,20 @@ function Reservation(props) {
     </Popover>
   );
   return (
-    <OverlayTrigger
-      onClick={() => props.onClick(props.id)}
-      overlay={popover}
-      placement="top"
-      trigger={['hover', 'focus']}
-    >
-      <div className="reservation" style={{ width }}>
-        <div className="names">
-          <div className="event-subject">{props.eventSubject}</div>
-          <div className="reserver-name">{props.reserverName}</div>
+    <Link className="reservation-link" onClick={() => props.onClick(props.id)}>
+      <OverlayTrigger
+        overlay={popover}
+        placement="top"
+        trigger={['hover', 'focus']}
+      >
+        <div className="reservation" style={{ width }}>
+          <div className="names">
+            <div className="event-subject">{props.eventSubject}</div>
+            <div className="reserver-name">{props.reserverName}</div>
+          </div>
         </div>
-      </div>
-    </OverlayTrigger>
+      </OverlayTrigger>
+    </Link>
   );
 }
 
