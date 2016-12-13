@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import moment from 'moment';
 import React, { PropTypes } from 'react';
 
@@ -16,6 +17,7 @@ function getHourRanges(date) {
 }
 
 TimelineGroup.propTypes = {
+  className: PropTypes.string,
   date: PropTypes.string.isRequired,
   onReservationSlotClick: PropTypes.func,
   resources: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -24,7 +26,7 @@ TimelineGroup.propTypes = {
 export default function TimelineGroup(props) {
   const { onReservationSlotClick, selection } = props;
   return (
-    <div className="timeline-group">
+    <div className={classNames('timeline-group', props.className)}>
       <div className="hours">
         {getHourRanges(props.date).map(range =>
           <div
