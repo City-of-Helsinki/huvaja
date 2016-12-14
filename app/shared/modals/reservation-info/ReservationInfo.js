@@ -73,7 +73,7 @@ export default function ReservationInfoModal(props) {
           </Col>
           <Col className="details-row reservation-host" xs={6}>
             <div className="details-label">Tilaisuuden isäntä: </div>
-            <div className="details-value">Ivana Isäntä</div>
+            <div className="details-value">{reservation.hostName}</div>
           </Col>
         </Row>
         <hr />
