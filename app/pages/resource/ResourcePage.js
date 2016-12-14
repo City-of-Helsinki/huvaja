@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 
+import ResourceDailyReportButton from 'shared/resource-daily-report-button';
 import ResourceInfo from './info';
 import ReservationForm from './reservation-form/';
 
@@ -24,6 +25,10 @@ export default function ResourcePage(props) {
         date={props.date}
         resource={props.resource}
         onDateChange={props.onDateChange}
+      />
+      <ResourceDailyReportButton
+        resourceIds={[props.resource.id]}
+        date={props.date}
       />
     </div>
   );
