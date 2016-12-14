@@ -8,6 +8,7 @@ import { browserHistory, Link } from 'react-router';
 import simple from 'simple-mock';
 
 import AvailabilityView from 'shared/availability-view';
+import ResourceDailyReportButton from 'shared/resource-daily-report-button';
 import { UnconnectedSearchPageContainer as SearchPageContainer } from './SearchPageContainer';
 import SearchControls from './search-controls';
 
@@ -28,6 +29,10 @@ describe('pages/search/SearchPageContainer', () => {
 
   function getResultsCountWrapper(props) {
     return getWrapper(props).find('.search-results-count');
+  }
+
+  function getReportButtonWrapper(props) {
+    return getWrapper(props).find(ResourceDailyReportButton);
   }
 
   describe('render', () => {
@@ -85,15 +90,38 @@ describe('pages/search/SearchPageContainer', () => {
           expect(link.prop('children')).to.equal('Tyhjennä haku.');
         });
       });
+
+      describe('ResourceDailyReportButton', () => {
+        it('is rendered', () => {
+          expect(getReportButtonWrapper()).to.have.length(1);
+        });
+
+        it('gets the selected date', () => {
+          expect(getReportButtonWrapper().prop('date')).to.equal('2016-12-12');
+        });
+
+        it('gets the availabilityGroups resourcesIds', () => {
+          expect(getReportButtonWrapper().prop('resourceIds')).to.deep.equal(['r-1', 'r-2']);
+        });
+
+        it('gets resourcesIds from diferent availabilityGroups', () => {
+          expect(getReportButtonWrapper({
+            availabilityGroups: [
+              { name: 'Group 1', resources: ['r-1', 'r-2'] },
+              { name: 'Group 2', resources: ['r-3', 'r-4'] },
+            ],
+          }).prop('resourceIds')).to.deep.equal(['r-1', 'r-2', 'r-3', 'r-4']);
+        });
+      });
     });
 
     describe('when resources are not fetched', () => {
       let wrapper;
       const isFetching = false;
-      const resources = [];
+      const availabilityGroups = [];
 
       before(() => {
-        wrapper = getWrapper({ isFetching, resources });
+        wrapper = getWrapper({ isFetching, availabilityGroups });
       });
 
       it('renders a Loader', () => {
@@ -105,6 +133,12 @@ describe('pages/search/SearchPageContainer', () => {
         const searchControls = wrapper.find(SearchControls);
         expect(searchControls).to.have.length(1);
         expect(searchControls.prop('initialValues')).to.deep.equal(defaultProps.searchFilters);
+      });
+
+      describe('ResourceDailyReportButton', () => {
+        it('is not rendered', () => {
+          expect(getReportButtonWrapper({ isFetching, availabilityGroups })).to.have.length(0);
+        });
       });
     });
   });
