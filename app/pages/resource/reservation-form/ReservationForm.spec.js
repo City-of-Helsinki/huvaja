@@ -63,8 +63,8 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
         fields = getWrapper().find(Field);
       });
 
-      it('length is 6', () => {
-        expect(fields).to.have.length(6);
+      it('length is 7', () => {
+        expect(fields).to.have.length(7);
       });
 
       it('length is 1 if does not have time', () => {
@@ -119,6 +119,17 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
           controlProps: {},
           label: 'Varaaja*',
           name: 'reserverName',
+          type: 'text',
+        });
+        expect(field).to.have.length(1);
+      });
+
+      it('has a hostName field', () => {
+        const field = fields.filter({
+          component: ReduxFormField,
+          controlProps: {},
+          label: 'Isäntä*',
+          name: 'hostName',
           type: 'text',
         });
         expect(field).to.have.length(1);

@@ -24,6 +24,15 @@ describe('pages/resource/reservation-form/ReservationFormContainer', () => {
     });
 
     describe('initialValues', () => {
+      it('hostName is emptry string if user is not logged in', () => {
+        expect(getSelected().initialValues.hostName).to.equal('');
+      });
+
+      it('hostName is display name of logged in user', () => {
+        const extraState = { 'auth.user': { firstName: 'Luke', lastName: 'Skywalker' } };
+        expect(getSelected(extraState).initialValues.hostName).to.equal('Luke Skywalker');
+      });
+
       it('reserverName is emptry string if user is not logged in', () => {
         expect(getSelected().initialValues.reserverName).to.equal('');
       });

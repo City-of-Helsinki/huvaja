@@ -19,6 +19,7 @@ const initialValuesSelector = createSelector(
   currentUserSelector,
   resourceSelector,
   (currentUser, resource) => ({
+    hostName: currentUser ? currentUser.displayName : '',
     reserverName: currentUser ? currentUser.displayName : '',
     resource: resource.name.fi,
   })

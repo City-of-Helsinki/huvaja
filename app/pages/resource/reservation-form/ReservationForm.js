@@ -9,6 +9,7 @@ import CateringSection from './catering';
 
 const requiredFields = [
   'eventName',
+  'hostName',
   'numberOfParticipants',
   'reserverName',
   'resource',
@@ -70,6 +71,11 @@ export function UnconnectedReservationForm(props) {
               'reserverName',
               'text',
               'Varaaja',
+            )}
+            {renderField(
+              'hostName',
+              'text',
+              'Isäntä',
             )}
             <h3>Osallistujat</h3>
             {renderField(
