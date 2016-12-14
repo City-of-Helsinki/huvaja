@@ -1,9 +1,8 @@
-import React from 'react';
-import Button from 'react-bootstrap/lib/Button';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
+import React from 'react';
+import Button from 'react-bootstrap/lib/Button';
 
-// import { buildAPIUrl } from 'api/actions/createApiAction';
 import ResourceDailyReportButton from './ResourceDailyReportButton';
 
 describe('shared/resource-daily-report-button/ResourceDailyReportButton', () => {
@@ -31,7 +30,7 @@ describe('shared/resource-daily-report-button/ResourceDailyReportButton', () => 
   describe('href', () => {
     it('points to correct endpoint', () => {
       expect(getWrapper().prop('href')).to.equal(
-        `${SETTINGS.API_URL}reports/day_events/?day=2016-12-12&resource=1%2C2%2C3`
+        `${SETTINGS.API_URL}reports/daily_reservations/?day=2016-12-12&resource=1%2C2%2C3`
       );
     });
   });

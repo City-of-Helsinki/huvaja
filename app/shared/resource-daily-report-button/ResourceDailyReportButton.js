@@ -10,14 +10,12 @@ ResourceDailyReportButton.propTypes = {
 };
 
 function ResourceDailyReportButton({ date, resourceIds }) {
-  function getReportLink() {
-    return buildAPIUrl('reports/day_events', {
-      resource: resourceIds.join(','),
-      day: moment(date).format('YYYY-MM-DD'),
-    });
-  }
+  const reportLink = buildAPIUrl('reports/daily_reservations', {
+    resource: resourceIds.join(','),
+    day: moment(date).format('YYYY-MM-DD'),
+  });
   return (
-    <Button bsStyle="primary" className="resource-daily-report-button" href={getReportLink()}>
+    <Button bsStyle="primary" className="resource-daily-report-button" href={reportLink}>
       Lataa päiväraportti
     </Button>
   );
