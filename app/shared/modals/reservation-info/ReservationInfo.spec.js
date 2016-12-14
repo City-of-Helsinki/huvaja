@@ -15,6 +15,7 @@ describe('shared/modal/ReservationInfo', () => {
   const reservation = {
     id: 11,
     eventSubject: 'Awesome meeting',
+    hostName: 'Mr host',
     numberOfParticipants: 12,
     reserverName: 'Mr reserver',
     begin: '2016-01-01T08:00:00',
@@ -82,22 +83,22 @@ describe('shared/modal/ReservationInfo', () => {
       expect(eventSubject.text()).to.equal(reservation.eventSubject);
     });
 
-    it('renders reservation participants number', () => {
+    it('renders number of participants', () => {
       const reservationParticipants = getBodyWrapper().find('.reservation-participants-number');
       expect(reservationParticipants.html()).to.contain('Osallistujamäärä: ');
-      expect(reservationParticipants.html()).to.contain(`${reservation.numberOfParticipants}`);
+      expect(reservationParticipants.html()).to.contain(reservation.numberOfParticipants);
     });
 
     it('renders reservation reserver', () => {
       const reservationReserver = getBodyWrapper().find('.reservation-reserver');
       expect(reservationReserver.html()).to.contain('Varaaja: ');
-      expect(reservationReserver.html()).to.contain(`${reservation.reserverName}`);
+      expect(reservationReserver.html()).to.contain(reservation.reserverName);
     });
 
-    it('renders reservation reserver', () => {
+    it('renders reservation host', () => {
       const reservationHost = getBodyWrapper().find('.reservation-host');
       expect(reservationHost.html()).to.contain('Tilaisuuden isäntä:');
-      expect(reservationHost.html()).to.contain('Ivana Isäntä');
+      expect(reservationHost.html()).to.contain(reservation.hostName);
     });
   });
 });
