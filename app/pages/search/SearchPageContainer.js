@@ -1,4 +1,5 @@
 import { decamelizeKeys } from 'humps';
+import flatten from 'lodash/flatten';
 import isEqual from 'lodash/isEqual';
 import queryString from 'query-string';
 import React, { Component, PropTypes } from 'react';
@@ -7,6 +8,7 @@ import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
 
 import { fetchResources } from 'api/actions';
+import ResourceDailyReportButton from 'shared/resource-daily-report-button';
 import AvailabilityView from 'shared/availability-view';
 import SearchControls from './search-controls';
 import selector from './searchPageSelector';
@@ -43,6 +45,7 @@ export class UnconnectedSearchPageContainer extends Component {
     const searchResultsText = resultsCount === 1 ?
       `Löytyi ${resultsCount} hakuehdot täyttävä tila.` :
       `Löytyi ${resultsCount} hakuehdot täyttävää tilaa.`;
+    const resourceIds = flatten(availabilityGroups.map(group => group.resources));
     return (
       <div className="search-page">
         <h1>Hae tiloja</h1>
@@ -57,6 +60,12 @@ export class UnconnectedSearchPageContainer extends Component {
             groups={availabilityGroups}
             onDateChange={this.handleDateChange}
           />
+          {resourceIds.length !== 0 &&
+            <ResourceDailyReportButton
+              resourceIds={resourceIds}
+              date={searchFilters.date}
+            />
+          }
         </Loader>
       </div>
     );
