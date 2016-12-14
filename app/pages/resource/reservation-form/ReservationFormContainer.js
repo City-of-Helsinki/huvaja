@@ -44,6 +44,7 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
           begin: values.time.begin,
           end: values.time.end,
           event_subject: values.eventName,
+          host_name: values.hostName,
           number_of_participants: values.numberOfParticipants,
           reserver_name: values.reserverName,
           resource: props.resource.id,
