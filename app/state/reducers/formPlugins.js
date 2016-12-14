@@ -8,6 +8,7 @@ export default {
       anyTouched: undefined,
       fields: undefined,
       values: {
+        hostName: state.values.hostName,
         reserverName: state.values.reserverName,
         resource: state.values.resource,
       },
