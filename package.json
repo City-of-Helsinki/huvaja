@@ -37,6 +37,7 @@
     "less": "2.7.1",
     "less-loader": "2.2.3",
     "lodash": "4.17.0",
+    "mockdate": "2.0.1",
     "moment": "2.16.0",
     "moment-range": "2.2.0",
     "morgan": "1.7.0",

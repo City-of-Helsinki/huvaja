@@ -122,6 +122,13 @@
     overflow-x: auto;
   }
   .timeline-group {
+    position: relative;
+    &-current-time {
+      position: absolute;
+      height: 100%;
+      width: 2px;
+      background-color: #FF4E00;
+    }
     .sticky {
       overflow: hidden;
     }
