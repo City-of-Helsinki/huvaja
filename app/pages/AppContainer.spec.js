@@ -7,6 +7,7 @@ import Loader from 'react-loader';
 import simple from 'simple-mock';
 
 import Navbar from 'shared/navbar';
+import locationUtils from 'utils/locationUtils';
 import { getState } from 'utils/testUtils';
 import { UnconnectedAppContainer as AppContainer, selector } from './AppContainer';
 
@@ -17,6 +18,7 @@ describe('pages/AppContainer', () => {
       fetchAuthState: () => null,
       fetchUnits: () => null,
       isAuthFetched: true,
+      isLoggedIn: true,
     };
     return shallow(<AppContainer {...defaults} {...props}>{content}</AppContainer>);
   }
@@ -54,13 +56,18 @@ describe('pages/AppContainer', () => {
     });
 
     describe('loader', () => {
-      it('gets loaded if isAuthFetched is true', () => {
-        const loader = getWrapper({ isAuthFetched: true }).find(Loader);
+      it('gets loaded if isAuthFetched and isLoggedIn', () => {
+        const loader = getWrapper({ isAuthFetched: true, isLoggedIn: true }).find(Loader);
         expect(loader.prop('loaded')).to.be.true;
       });
 
       it('does not get loaded if isAuthFetched is false', () => {
-        const loader = getWrapper({ isAuthFetched: false }).find(Loader);
+        const loader = getWrapper({ isAuthFetched: false, isLoggedIn: true }).find(Loader);
+        expect(loader.prop('loaded')).to.be.false;
+      });
+
+      it('does not get loaded if isLoggedIn is false', () => {
+        const loader = getWrapper({ isAuthFetched: true, isLoggedIn: false }).find(Loader);
         expect(loader.prop('loaded')).to.be.false;
       });
     });
@@ -82,12 +89,69 @@ describe('pages/AppContainer', () => {
     });
   });
 
+  describe('componentWillReceiveProps', () => {
+    beforeEach(() => {
+      simple.mock(locationUtils, 'redirect').returnWith(null);
+    });
+
+    afterEach(() => {
+      simple.restore();
+    });
+
+    function callsRedirect(props) {
+      const wrapper = getWrapper({ isAuthFetched: false, isLoggedIn: false });
+      wrapper.instance().componentWillReceiveProps(props);
+      return locationUtils.redirect.called;
+    }
+
+    describe('when isAuthFetched is false', () => {
+      it('does not redirect if isLoggedIn is false', () => {
+        const redirected = callsRedirect({ isAuthFetched: false, isLoggedIn: false });
+        expect(redirected).to.be.false;
+      });
+
+      it('does not redirect if isLoggedIn is true', () => {
+        const redirected = callsRedirect({ isAuthFetched: false, isLoggedIn: true });
+        expect(redirected).to.be.false;
+      });
+    });
+
+    describe('when isAuthFetched is true', () => {
+      it('does redirect if isLoggedIn is false', () => {
+        const redirected = callsRedirect({ isAuthFetched: true, isLoggedIn: false });
+        expect(redirected).to.be.true;
+        expect(locationUtils.redirect.lastCall.args).to.deep.equal(['/login']);
+      });
+
+      it('does not redirect if isLoggedIn is true', () => {
+        const redirected = callsRedirect({ isAuthFetched: true, isLoggedIn: true });
+        expect(redirected).to.be.false;
+      });
+    });
+  });
+
   describe('selector', () => {
     it('returns isFetched from auth state', () => {
       const state = getState({
         auth: { isFetched: true },
       });
       expect(selector(state).isAuthFetched).to.be.true;
+    });
+
+    describe('isLoggedIn', () => {
+      it('is true if token', () => {
+        const state = getState({
+          auth: { isFetched: true, token: 'token' },
+        });
+        expect(selector(state).isLoggedIn).to.be.true;
+      });
+
+      it('is false if no token', () => {
+        const state = getState({
+          auth: { isFetched: true },
+        });
+        expect(selector(state).isLoggedIn).to.be.false;
+      });
     });
   });
 });
