@@ -5,18 +5,20 @@ import ResourceInfo from './info';
 import ReservationForm from './reservation-form/';
 
 ResourcePage.propTypes = {
-  currentUser: PropTypes.object,
   date: PropTypes.string.isRequired,
+  hideResourceImages: PropTypes.func.isRequired,
   onDateChange: PropTypes.func.isRequired,
   resource: PropTypes.object.isRequired,
+  showResourceImages: PropTypes.func.isRequired,
   unit: PropTypes.object.isRequired,
 };
 export default function ResourcePage(props) {
   return (
     <div className="resource-page">
       <ResourceInfo
-        isLoggedIn={Boolean(props.currentUser)}
+        hideResourceImages={props.hideResourceImages}
         resource={props.resource}
+        showResourceImages={props.showResourceImages}
         unit={props.unit}
       />
       <h3>Varaustilanne</h3>

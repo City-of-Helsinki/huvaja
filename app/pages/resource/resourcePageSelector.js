@@ -17,10 +17,6 @@ function beginSelector(state) {
   return state.resourcePage.begin;
 }
 
-function currentUserSelector(state) {
-  return state.auth.user;
-}
-
 const dateSelector = createSelector(
   beginSelector,
   begin => moment(begin).format('YYYY-MM-DD')
@@ -45,7 +41,6 @@ const isLoadedSelector = createSelector(
 );
 
 export default createStructuredSelector({
-  currentUser: currentUserSelector,
   date: dateSelector,
   isLoaded: isLoadedSelector,
   resource: resourceSelector,

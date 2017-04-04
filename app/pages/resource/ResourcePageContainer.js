@@ -4,15 +4,16 @@ import Loader from 'react-loader';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
+import uiActions from 'actions/uiActions';
 import { fetchResource } from 'api/actions';
 import ResourcePage from './ResourcePage';
 import selector from './resourcePageSelector';
 
 export class UnconnectedResourcePageContainer extends Component {
   static propTypes = {
-    currentUser: PropTypes.object,
     date: PropTypes.string.isRequired,
     fetchResource: PropTypes.func.isRequired,
+    hideResourceImages: PropTypes.func.isRequired,
     isLoaded: PropTypes.bool.isRequired,
     location: PropTypes.shape({
       query: PropTypes.object.isRequired,
@@ -21,6 +22,7 @@ export class UnconnectedResourcePageContainer extends Component {
       id: PropTypes.string.isRequired,
     }).isRequired,
     resource: PropTypes.object,
+    showResourceImages: PropTypes.func.isRequired,
     unit: PropTypes.object,
   };
 
@@ -55,10 +57,11 @@ export class UnconnectedResourcePageContainer extends Component {
     if (!this.props.isLoaded) return <Loader loaded={false} />;
     return (
       <ResourcePage
-        currentUser={this.props.currentUser}
         date={this.props.date}
+        hideResourceImages={this.props.hideResourceImages}
         onDateChange={this.handleDateChange}
         resource={this.props.resource}
+        showResourceImages={this.props.showResourceImages}
         unit={this.props.unit}
       />
     );
@@ -67,6 +70,8 @@ export class UnconnectedResourcePageContainer extends Component {
 
 const actions = {
   fetchResource,
+  hideResourceImages: uiActions.hideResourceImagesModal,
+  showResourceImages: uiActions.showResourceImagesModal,
 };
 
 export default connect(selector, actions)(UnconnectedResourcePageContainer);

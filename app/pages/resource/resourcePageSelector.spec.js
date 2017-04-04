@@ -64,21 +64,4 @@ describe('pages/resource/resourcePageSelector', () => {
       expect(actual).to.equal('2016-01-01');
     });
   });
-
-  describe('currentUser', () => {
-    it('returns currentUser from auth', () => {
-      const state = getState({
-        auth: { user: { id: 123 } },
-      });
-      const actual = selector(state, { params: { id: 'abcd' } }).currentUser;
-      expect(actual).to.exist;
-      expect(actual).to.deep.equal(state.auth.user);
-    });
-
-    it('returns undefined if user is not authenticated', () => {
-      const state = getState();
-      const actual = selector(state, { params: { id: 'abcd' } }).currentUser;
-      expect(actual).to.be.null;
-    });
-  });
 });

@@ -8,16 +8,19 @@ import ResourcePage from './ResourcePage';
 import { UnconnectedResourcePageContainer as ResourcePageContainer } from './ResourcePageContainer';
 
 describe('pages/resource/ResourcePageContainer', () => {
+  const defaults = {
+    date: '2016-01-01',
+    fetchResource: () => null,
+    hideResourceImages: () => null,
+    location: { query: {} },
+    isLoaded: true,
+    params: { id: 'some-di' },
+    resource: { id: 'r-1' },
+    showResourceImages: () => null,
+    unit: { name: { fi: 'unit name' } },
+  };
+
   function getWrapper(props) {
-    const defaults = {
-      date: '2016-01-01',
-      fetchResource: () => null,
-      location: { query: {} },
-      isLoaded: true,
-      params: { id: 'some-di' },
-      resource: { id: 'r-1' },
-      unit: { name: { fi: 'unit name' } },
-    };
     return shallow(<ResourcePageContainer {...defaults} {...props} />);
   }
 
@@ -29,15 +32,13 @@ describe('pages/resource/ResourcePageContainer', () => {
       });
 
       it('renders a ResourcePage', () => {
-        const date = '2016-10-10';
-        const resource = { id: 'id' };
-        const unit = { name: { fi: 'wow' } };
-        const wrapper = getWrapper({ date, isLoaded: true, resource, unit });
-        const page = wrapper.find(ResourcePage);
+        const page = getWrapper().find(ResourcePage);
         expect(page).to.have.length(1);
-        expect(page.prop('resource')).to.equal(resource);
-        expect(page.prop('unit')).to.equal(unit);
-        expect(page.prop('date')).to.equal(date);
+        expect(page.prop('resource')).to.equal(defaults.resource);
+        expect(page.prop('unit')).to.equal(defaults.unit);
+        expect(page.prop('date')).to.equal(defaults.date);
+        expect(page.prop('hideResourceImages')).to.equal(defaults.hideResourceImages);
+        expect(page.prop('showResourceImages')).to.equal(defaults.showResourceImages);
       });
     });
 
