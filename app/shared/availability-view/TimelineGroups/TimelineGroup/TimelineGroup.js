@@ -22,6 +22,7 @@ export default class TimelineGroup extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     date: PropTypes.string.isRequired,
+    noStickyHours: PropTypes.bool,
     onReservationSlotClick: PropTypes.func,
     resources: PropTypes.arrayOf(PropTypes.string).isRequired,
     selection: PropTypes.object,
@@ -69,6 +70,19 @@ export default class TimelineGroup extends React.Component {
 
   render() {
     const { onReservationSlotClick, selection } = this.props;
+    const hours = (
+      <div className="hours">
+        {getHourRanges(this.props.date).map(range =>
+          <div
+            className="hour"
+            key={range.startTime.format('HH')}
+            style={{ width: utils.getTimeSlotWidth(range) }}
+          >
+            {range.startTime.format('HH:mm')}
+          </div>
+        )}
+      </div>
+    );
     return (
       <div
         className={classNames('timeline-group', this.props.className)}
@@ -80,19 +94,7 @@ export default class TimelineGroup extends React.Component {
             style={{ left: this.state.timeOffset }}
           />
         )}
-        <Sticky>
-          <div className="hours">
-            {getHourRanges(this.props.date).map(range =>
-              <div
-                className="hour"
-                key={range.startTime.format('HH')}
-                style={{ width: utils.getTimeSlotWidth(range) }}
-              >
-                {range.startTime.format('HH:mm')}
-              </div>
-            )}
-          </div>
-        </Sticky>
+        {this.props.noStickyHours ? hours : <Sticky>{hours}</Sticky>}
         {this.props.resources.map(resource =>
           <AvailabilityTimelineContainer
             date={this.props.date}

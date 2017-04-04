@@ -51,6 +51,7 @@ export default class SingleAvailabilityView extends React.Component {
         <TimelineGroup
           className="dragscroll"
           date={this.props.date}
+          noStickyHours
           onReservationSlotClick={this.props.onReservationSlotClick}
           ref={this.scrollToInitial}
           resources={[this.props.resource]}
