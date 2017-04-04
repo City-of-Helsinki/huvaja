@@ -4,14 +4,15 @@ import Col from 'react-bootstrap/lib/Col';
 import Label from 'react-bootstrap/lib/Label';
 import Row from 'react-bootstrap/lib/Row';
 import FontAwesome from 'react-fontawesome';
+import Button from 'react-bootstrap/lib/Button';
+import { Link } from 'react-router';
 
 import FavoriteButton from 'shared/favorite-button';
-import ImageCarousel from 'shared/image-carousel';
 import WrappedText from 'shared/wrapped-text';
 
 ResourceInfo.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
   resource: PropTypes.object.isRequired,
+  showResourceImages: PropTypes.func.isRequired,
   unit: PropTypes.object.isRequired,
 };
 
@@ -22,6 +23,7 @@ function renderHeader(unit, resource) {
   const address = `${streetAddress}, ${zip} ${city}`;
   return (
     <header>
+      <Link className="btn btn-sm back-link" to="/">{'<< Tilahaku'}</Link>
       <h2 className="unit-name">{unit.name.fi}</h2>
       <h1 className="resource-name">{resource.name.fi}</h1>
       <h4 className="unit-address">
@@ -32,53 +34,64 @@ function renderHeader(unit, resource) {
 }
 
 
-function ResourceInfo({ isLoggedIn, resource, unit }) {
+function ResourceInfo({ resource, showResourceImages, unit }) {
+  const showImages = () => showResourceImages(resource.id);
   return (
     <div className="resource-info">
-      { isLoggedIn ?
-        <Row>
-          <Col xs={12} sm={8} md={9}>
-            {renderHeader(unit, resource)}
-          </Col>
-          <Col xs={12} sm={4} md={3}>
-            <FavoriteButton resource={resource} />
-          </Col>
-        </Row> :
-        renderHeader(unit, resource)
-      }
-      <section className="resource-details">
-        <Row>
-          <Col xs={12} sm={7}>
-            <ImageCarousel images={resource.images} />
-          </Col>
-          <Col xs={12} sm={5}>
+      <Row>
+        <Col xs={12} sm={8} md={9}>
+          {renderHeader(unit, resource, showResourceImages)}
+          <section className="resource-details">
             <aside>
-              {resource.type && resource.type.name &&
-                <h3 className="resource-type">{resource.type.name.fi}</h3>
-              }
+              <div className="details-row">
+                <span className="details-label">Tyyppi: </span>
+                <Label className="resource-type" bsStyle="primary">
+                  {resource.type.name.fi}
+                </Label>
+              </div>
               <div className="details-row resource-people-capacity">
-                <span className="details-label">Henkilömäärä: </span>
+                <span className="details-label">Paikkoja: </span>
                 <span className="details-value">{resource.peopleCapacity}</span>
               </div>
               {resource.equipment &&
                 <div className="details-row resource-equipment">
-                  <div className="details-label">Varustelu: </div>
+                  <span className="details-label">Varustelu: </span>
                   {
                     resource.equipment.map(item =>
-                      <Label bsStyle="primary" key={`label-${item.id}`}>{item.name.fi}</Label>
+                      <Label bsStyle="success" key={`label-${item.id}`}>{item.name.fi}</Label>
                     )
                   }
                 </div>
               }
-              <div className="resource-description">
-                {resource.description &&
-                  <WrappedText text={resource.description.fi} />
-                }
-              </div>
             </aside>
-          </Col>
-        </Row>
-      </section>
+          </section>
+        </Col>
+        <Col className="sidebar" xs={12} sm={4} md={3}>
+          <FavoriteButton className="favorite-button" resource={resource} />
+          {resource.images.length ?
+            <Button bsSize="small" className="show-images-mobile visible-xs" onClick={showImages}>
+              Katso kuvat
+            </Button> :
+            null
+          }
+          {resource.images.length ?
+            <a className="resource-image-container hidden-xs" onClick={showImages} tabIndex="0">
+              <img alt="Tila" className="resource-image" src={resource.images[0].url} />
+              <div className="caption">Katso kuvat</div>
+            </a> :
+            null
+          }
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={12}>
+          <div className="resource-description">
+            {resource.description &&
+              <WrappedText text={resource.description.fi} />
+            }
+          </div>
+        </Col>
+      </Row>
     </div>
   );
 }
