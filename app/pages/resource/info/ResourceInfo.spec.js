@@ -2,9 +2,9 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 import Label from 'react-bootstrap/lib/Label';
+import simple from 'simple-mock';
 
 import FavoriteButton from 'shared/favorite-button';
-import ImageCarousel from 'shared/image-carousel';
 import WrappedText from 'shared/wrapped-text';
 import ResourceInfo from './ResourceInfo';
 
@@ -17,6 +17,7 @@ describe('pages/resource/info/ResourceInfo', () => {
   const resource = {
     description: { fi: 'Description text' },
     equipment: [{ name: { fi: 'projector' } }, { name: { fi: 'whiteboard' } }],
+    id: 'asdf',
     images: [image],
     name: { fi: 'Huone' },
     peopleCapacity: 3,
@@ -31,8 +32,8 @@ describe('pages/resource/info/ResourceInfo', () => {
 
   function getWrapper(props) {
     const defaults = {
-      isLoggedIn: true,
       resource,
+      showResourceImages: () => null,
       unit,
     };
     return shallow(<ResourceInfo {...defaults} {...props} />);
@@ -60,12 +61,10 @@ describe('pages/resource/info/ResourceInfo', () => {
       expect(unitAddress.text()).to.contain(unit.addressZip);
     });
 
-    it('is rendered when user is logged in', () => {
-      expect(getHeaderWrapper({ isLoggedIn: true })).to.have.length(1);
-    });
-
-    it('is rendered when user is not logged in', () => {
-      expect(getHeaderWrapper({ isLoggedIn: false })).to.have.length(1);
+    it('renders resource description', () => {
+      const resourceDescription = getWrapper().find('.resource-description');
+      const wrappedText = resourceDescription.find(WrappedText);
+      expect(wrappedText.prop('text')).to.equal(resource.description.fi);
     });
   });
 
@@ -81,10 +80,6 @@ describe('pages/resource/info/ResourceInfo', () => {
     it('gets resource prop', () => {
       expect(getFavoriteWrapper({ isLoggedIn: true }).prop('resource')).to.deep.equal(resource);
     });
-
-    it('does not get rendered if user is not logged in', () => {
-      expect(getFavoriteWrapper({ isLoggedIn: false })).to.have.length(0);
-    });
   });
 
   describe('resource-details section', () => {
@@ -92,25 +87,14 @@ describe('pages/resource/info/ResourceInfo', () => {
       return getWrapper(props).find('section.resource-details');
     }
 
-    it('renders a ImageCarousel with resource images', () => {
-      const imageCarousel = getSectionWrapper().find(ImageCarousel);
-      expect(imageCarousel.prop('images')).to.deep.equal(resource.images);
-    });
-
     it('renders resource type', () => {
       const resourceType = getSectionWrapper().find('.resource-type');
-      expect(resourceType.text()).to.equal(resource.type.name.fi);
+      expect(resourceType.children().text()).to.equal(resource.type.name.fi);
     });
 
     it('renders resource people capacity', () => {
       const resourceCapacity = getSectionWrapper().find('.resource-people-capacity');
-      expect(resourceCapacity.text()).to.equal(`Henkilömäärä: ${resource.peopleCapacity}`);
-    });
-
-    it('renders resource description', () => {
-      const resourceDescription = getSectionWrapper().find('.resource-description');
-      const wrappedText = resourceDescription.find(WrappedText);
-      expect(wrappedText.prop('text')).to.equal(resource.description.fi);
+      expect(resourceCapacity.text()).to.equal(`Paikkoja: ${resource.peopleCapacity}`);
     });
 
     it('renders resource equipment', () => {
@@ -129,6 +113,75 @@ describe('pages/resource/info/ResourceInfo', () => {
         getSectionWrapper({ resource: unequipedResource }).find('.resource-equipment')
       );
       expect(resourceEquipment).to.have.length(0);
+    });
+  });
+
+  describe('image container', () => {
+    function getImageContainerWrapper(props) {
+      return getWrapper(props).find('.resource-image-container');
+    }
+
+    it('is rendered if resource has images', () => {
+      expect(getImageContainerWrapper()).to.have.length(1);
+    });
+
+    it('is not rendered on mobile', () => {
+      expect(getImageContainerWrapper().hasClass('hidden-xs')).to.be.true;
+    });
+
+    it('is not rendered if resource has no images', () => {
+      const props = {
+        resource: {
+          ...resource,
+          images: [],
+        },
+      };
+      expect(getImageContainerWrapper(props)).to.have.length(0);
+    });
+
+    it('renders first resource image', () => {
+      const imageWrapper = getImageContainerWrapper().find('.resource-image');
+      expect(imageWrapper.prop('src')).to.deep.equal(resource.images[0].url);
+    });
+
+    it('opens modal on click', () => {
+      const showResourceImages = simple.mock();
+      const wrapper = getImageContainerWrapper({ showResourceImages });
+      wrapper.simulate('click');
+      expect(showResourceImages.callCount).to.equal(1);
+      expect(showResourceImages.lastCall.arg).to.equal(resource.id);
+    });
+  });
+
+  describe('"show images" button', () => {
+    function getButtonWrapper(props) {
+      return getWrapper(props).find('.show-images-mobile');
+    }
+
+    it('is rendered if resource has images', () => {
+      expect(getButtonWrapper()).to.have.length(1);
+    });
+
+    it('is only rendered on mobile', () => {
+      expect(getButtonWrapper().hasClass('visible-xs')).to.be.true;
+    });
+
+    it('is not rendered if resource has no images', () => {
+      const props = {
+        resource: {
+          ...resource,
+          images: [],
+        },
+      };
+      expect(getButtonWrapper(props)).to.have.length(0);
+    });
+
+    it('opens modal on click', () => {
+      const showResourceImages = simple.mock();
+      const wrapper = getButtonWrapper({ showResourceImages });
+      wrapper.simulate('click');
+      expect(showResourceImages.callCount).to.equal(1);
+      expect(showResourceImages.lastCall.arg).to.equal(resource.id);
     });
   });
 });
