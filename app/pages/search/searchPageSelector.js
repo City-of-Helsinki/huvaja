@@ -50,4 +50,5 @@ export default createStructuredSelector({
   isFetching: resourcesGetIsActiveSelector,
   resultsCount: resultCountSelector,
   searchFilters: searchFiltersSelector,
+  units: unitsSelector,
 });

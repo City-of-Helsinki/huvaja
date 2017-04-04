@@ -11,13 +11,27 @@ import { browserHistory } from 'react-router';
 
 import DatePicker from 'shared/date-picker';
 
+function getUnitOption(id, name) {
+  return <option key={id} value={id}>{name}</option>;
+}
+
+function renderUnitOptions(units) {
+  const defaultOption = getUnitOption('', 'Kaikki kiinteistöt');
+  const options = Object.keys(units).map(id =>
+    getUnitOption(id, units[id].name.fi)
+  );
+  return [defaultOption].concat(options);
+}
+
 class SearchControls extends Component {
   static propTypes = {
     initialValues: PropTypes.shape({
       date: PropTypes.string.isRequired,
       isFavorite: PropTypes.string.isRequired,
       search: PropTypes.string.isRequired,
+      unit: PropTypes.string.isRequired,
     }).isRequired,
+    units: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -47,6 +61,17 @@ class SearchControls extends Component {
     return (
       <div className="search-controls">
         <form onSubmit={this.handleSearch}>
+          <FormGroup controlId="unit-control-group">
+            <ControlLabel>Kiinteistö</ControlLabel>
+            <FormControl
+              componentClass="select"
+              onChange={event => this.handleChange({ unit: event.target.value })}
+              type="select"
+              value={this.state.unit}
+            >
+              {renderUnitOptions(this.props.units)}
+            </FormControl>
+          </FormGroup>
           <FormGroup controlId="search-control-group">
             <ControlLabel>Tilan nimi</ControlLabel>
             <FormControl
