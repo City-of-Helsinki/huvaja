@@ -48,20 +48,12 @@ class SearchControls extends Component {
       <div className="search-controls">
         <form onSubmit={this.handleSearch}>
           <FormGroup controlId="search-control-group">
-            <ControlLabel>Tekstihaku</ControlLabel>
+            <ControlLabel>Tilan nimi</ControlLabel>
             <FormControl
               autoFocus
               onChange={event => this.handleChange({ search: event.target.value })}
-              placeholder="Hae tilan nimellä, osoitteella..."
               type="text"
               value={this.state.search}
-            />
-          </FormGroup>
-          <FormGroup className="date-control-group" controlId="date-control-group">
-            <ControlLabel>Päivä</ControlLabel>
-            <DatePicker
-              onChange={date => this.handleChange({ date })}
-              value={this.state.date}
             />
           </FormGroup>
           <Checkbox
@@ -71,8 +63,15 @@ class SearchControls extends Component {
             }
             checked={this.state.isFavorite === 'true'}
           >
-            Näytä vain suosikit
+            Näytä vain omat suosikit
           </Checkbox>
+          <FormGroup className="date-control-group" controlId="date-control-group">
+            <ControlLabel>Päivä</ControlLabel>
+            <DatePicker
+              onChange={date => this.handleChange({ date })}
+              value={this.state.date}
+            />
+          </FormGroup>
           <Button
             block
             bsStyle="primary"
