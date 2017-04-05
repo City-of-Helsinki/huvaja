@@ -12,6 +12,7 @@ import {
   fetchResources,
   unfavoriteResource,
 } from './resources';
+import { fetchTypes } from './types';
 import { fetchUnits } from './units';
 
 export {
@@ -23,6 +24,7 @@ export {
   fetchReservations,
   fetchResource,
   fetchResources,
+  fetchTypes,
   fetchUnits,
   makeReservation,
   unfavoriteResource,

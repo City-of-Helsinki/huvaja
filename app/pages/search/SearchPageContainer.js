@@ -40,6 +40,7 @@ export class UnconnectedSearchPageContainer extends Component {
       isFetching,
       resultsCount,
       searchFilters,
+      types,
       units,
     } = this.props;
 
@@ -50,7 +51,11 @@ export class UnconnectedSearchPageContainer extends Component {
     return (
       <div className="search-page">
         <h1>Hae tiloja</h1>
-        <SearchControls initialValues={searchFilters} units={units} />
+        <SearchControls
+          initialValues={searchFilters}
+          units={units}
+          types={types}
+        />
         <Loader loaded={!isFetching}>
           <div className="search-results-count">
             <span>{searchResultsText} </span>
@@ -84,6 +89,7 @@ UnconnectedSearchPageContainer.propTypes = {
   fetchResources: PropTypes.func.isRequired,
   resultsCount: PropTypes.number.isRequired,
   searchFilters: PropTypes.object.isRequired,
+  types: PropTypes.object.isRequired,
   units: PropTypes.object.isRequired,
 };
 
