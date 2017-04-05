@@ -9,6 +9,10 @@ function searchFiltersSelector(state) {
   return state.searchPage.searchFilters;
 }
 
+function typesSelector(state) {
+  return state.data.types;
+}
+
 function unitsSelector(state) {
   return state.data.units;
 }
@@ -50,5 +54,6 @@ export default createStructuredSelector({
   isFetching: resourcesGetIsActiveSelector,
   resultsCount: resultCountSelector,
   searchFilters: searchFiltersSelector,
+  types: typesSelector,
   units: unitsSelector,
 });

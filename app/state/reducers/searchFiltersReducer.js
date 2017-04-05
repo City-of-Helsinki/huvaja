@@ -8,6 +8,7 @@ function getInitialState() {
     isFavorite: '',
     people: '',
     search: '',
+    type: '',
     unit: '',
   };
 }

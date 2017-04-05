@@ -10,6 +10,7 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 import { browserHistory } from 'react-router';
 
 import DatePicker from 'shared/date-picker';
+import LabelSelect from 'shared/form-fields/label-select/LabelSelect';
 
 function getUnitOption(id, name) {
   return <option key={id} value={id}>{name}</option>;
@@ -29,8 +30,10 @@ class SearchControls extends Component {
       date: PropTypes.string.isRequired,
       isFavorite: PropTypes.string.isRequired,
       search: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
       unit: PropTypes.string.isRequired,
     }).isRequired,
+    types: PropTypes.object.isRequired,
     units: PropTypes.object.isRequired,
   };
 
@@ -45,6 +48,12 @@ class SearchControls extends Component {
     if (!isEqual(this.state, nextProps.initialValues)) {
       this.setState(nextProps.initialValues);
     }
+  }
+
+  getTypeOptions() {
+    return Object.keys(this.props.types).map(id => (
+      { id, name: this.props.types[id].name.fi }
+    ));
   }
 
   handleChange(updatedFilter) {
@@ -106,6 +115,14 @@ class SearchControls extends Component {
               value={this.state.people}
             />
           </FormGroup>
+          <LabelSelect
+            id="type-control-group"
+            label="Tilan tyyppi"
+            onChange={value => this.handleChange({ type: value })}
+            options={this.getTypeOptions()}
+            selectedStyle="primary"
+            value={this.state.type}
+          />
           <Button
             block
             bsStyle="primary"
