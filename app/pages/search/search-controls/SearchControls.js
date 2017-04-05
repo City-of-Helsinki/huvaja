@@ -97,6 +97,15 @@ class SearchControls extends Component {
               value={this.state.date}
             />
           </FormGroup>
+          <FormGroup controlId="people-control-group">
+            <ControlLabel>Paikkoja vähintään</ControlLabel>
+            <FormControl
+              min="0"
+              onChange={event => this.handleChange({ people: event.target.value })}
+              type="number"
+              value={this.state.people}
+            />
+          </FormGroup>
           <Button
             block
             bsStyle="primary"
