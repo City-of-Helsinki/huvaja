@@ -18,5 +18,6 @@ export default Object.assign(
   create('RESOURCE_FAVORITE', ['POST']),
   create('RESOURCE_UNFAVORITE', ['POST']),
   create('RESOURCES', ['GET']),
+  create('TYPES', ['GET']),
   create('UNITS', ['GET']),
 );
