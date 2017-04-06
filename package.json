@@ -40,6 +40,7 @@
     "mockdate": "2.0.1",
     "moment": "2.16.0",
     "moment-range": "2.2.0",
+    "moment-timezone": "0.5.13",
     "morgan": "1.7.0",
     "normalizr": "2.2.1",
     "passport": "0.3.2",
