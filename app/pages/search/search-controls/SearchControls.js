@@ -26,6 +26,7 @@ function renderUnitOptions(units) {
 
 class SearchControls extends Component {
   static propTypes = {
+    equipment: PropTypes.object.isRequired,
     initialValues: PropTypes.shape({
       date: PropTypes.string.isRequired,
       isFavorite: PropTypes.string.isRequired,
@@ -48,6 +49,12 @@ class SearchControls extends Component {
     if (!isEqual(this.state, nextProps.initialValues)) {
       this.setState(nextProps.initialValues);
     }
+  }
+
+  getEquipmentOptions() {
+    return Object.keys(this.props.equipment).map(id => (
+      { id, name: this.props.equipment[id].name.fi }
+    ));
   }
 
   getTypeOptions() {
@@ -115,6 +122,14 @@ class SearchControls extends Component {
               value={this.state.people}
             />
           </FormGroup>
+          <LabelSelect
+            id="equipment-control-group"
+            label="Saatavilla olevat varusteet"
+            onChange={value => this.handleChange({ equipment: value })}
+            options={this.getEquipmentOptions()}
+            selectedStyle="success"
+            value={this.state.equipment}
+          />
           <LabelSelect
             id="type-control-group"
             label="Tilan tyyppi"

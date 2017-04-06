@@ -9,6 +9,10 @@ function searchFiltersSelector(state) {
   return state.searchPage.searchFilters;
 }
 
+function equipmentSelector(state) {
+  return state.data.equipment;
+}
+
 function typesSelector(state) {
   return state.data.types;
 }
@@ -51,6 +55,7 @@ const availabilityGroupsSelector = createSelector(
 
 export default createStructuredSelector({
   availabilityGroups: availabilityGroupsSelector,
+  equipment: equipmentSelector,
   isFetching: resourcesGetIsActiveSelector,
   resultsCount: resultCountSelector,
   searchFilters: searchFiltersSelector,

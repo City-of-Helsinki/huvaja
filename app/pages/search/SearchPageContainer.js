@@ -37,6 +37,7 @@ export class UnconnectedSearchPageContainer extends Component {
   render() {
     const {
       availabilityGroups,
+      equipment,
       isFetching,
       resultsCount,
       searchFilters,
@@ -52,6 +53,7 @@ export class UnconnectedSearchPageContainer extends Component {
       <div className="search-page">
         <h1>Hae tiloja</h1>
         <SearchControls
+          equipment={equipment}
           initialValues={searchFilters}
           units={units}
           types={types}
@@ -85,6 +87,7 @@ const availabilityGroupShape = PropTypes.shape({
 
 UnconnectedSearchPageContainer.propTypes = {
   availabilityGroups: PropTypes.arrayOf(availabilityGroupShape).isRequired,
+  equipment: PropTypes.object.isRequired,
   isFetching: PropTypes.bool.isRequired,
   fetchResources: PropTypes.func.isRequired,
   resultsCount: PropTypes.number.isRequired,
