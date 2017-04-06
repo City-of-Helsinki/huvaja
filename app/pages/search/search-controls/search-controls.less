@@ -1,6 +1,12 @@
 .search-controls {
   margin-bottom: 20px;
 
+  .advanced-controls,
+  .basic-controls {
+    background-color: @gray-lighter;
+    padding: 10px;
+  }
+
   .date-control-group {
     label {
       display: block;
@@ -10,11 +16,23 @@
       width: 200px;
       border: 2px solid @input-border;
       .input-size(@input-height-base; @padding-base-vertical; @padding-base-horizontal; @font-size-base; @line-height-base; @input-border-radius);
+      background-color: #fff;
 
       input {
         padding: 0;
       }
     }
+  }
+
+  @media (min-width: @screen-md-min) {
+    .is-favorite-checkbox {
+      position: relative;
+      top: 28px;
+    }
+  }
+
+  .people-input {
+    width: 80px;
   }
 
   .toggle-container {
@@ -31,6 +49,11 @@
 
       .icon {
         color: @brand-primary;
+        font-size: 26px;
+        margin-left: 4px;
+        margin-top: 3px;
+        position: relative;
+        top: 3px;
       }
     }
   }

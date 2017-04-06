@@ -9,6 +9,8 @@ import Checkbox from 'react-bootstrap/lib/Checkbox';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
+import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
 import { browserHistory } from 'react-router';
 
 import DatePicker from 'shared/date-picker';
@@ -89,39 +91,48 @@ class SearchControls extends Component {
 
   renderAdvanced() {
     return (
-      <div>
-        <FormGroup className="date-control-group" controlId="date-control-group">
-          <ControlLabel>Päivä</ControlLabel>
-          <DatePicker
-            onChange={date => this.handleChange({ date })}
-            value={this.state.date}
-          />
-        </FormGroup>
-        <FormGroup controlId="people-control-group">
-          <ControlLabel>Paikkoja vähintään</ControlLabel>
-          <FormControl
-            min="0"
-            onChange={event => this.handleChange({ people: event.target.value })}
-            type="number"
-            value={this.state.people}
-          />
-        </FormGroup>
-        <LabelSelect
-          id="equipment-control-group"
-          label="Saatavilla olevat varusteet"
-          onChange={value => this.handleChange({ equipment: value })}
-          options={this.getEquipmentOptions()}
-          selectedStyle="success"
-          value={this.state.equipment}
-        />
-        <LabelSelect
-          id="type-control-group"
-          label="Tilan tyyppi"
-          onChange={value => this.handleChange({ type: value })}
-          options={this.getTypeOptions()}
-          selectedStyle="primary"
-          value={this.state.type}
-        />
+      <div className="advanced-controls">
+        <Row>
+          <Col md={4}>
+            <FormGroup className="date-control-group" controlId="date-control-group">
+              <ControlLabel>Päivä</ControlLabel>
+              <DatePicker
+                onChange={date => this.handleChange({ date })}
+                value={this.state.date}
+              />
+            </FormGroup>
+          </Col>
+          <Col md={2}>
+            <FormGroup controlId="people-control-group">
+              <ControlLabel>Paikkoja vähintään</ControlLabel>
+              <FormControl
+                className="people-input"
+                min="0"
+                onChange={event => this.handleChange({ people: event.target.value })}
+                type="number"
+                value={this.state.people}
+              />
+            </FormGroup>
+          </Col>
+          <Col md={6}>
+            <LabelSelect
+              id="equipment-control-group"
+              label="Saatavilla olevat varusteet"
+              onChange={value => this.handleChange({ equipment: value })}
+              options={this.getEquipmentOptions()}
+              selectedStyle="success"
+              value={this.state.equipment}
+            />
+            <LabelSelect
+              id="type-control-group"
+              label="Tilan tyyppi"
+              onChange={value => this.handleChange({ type: value })}
+              options={this.getTypeOptions()}
+              selectedStyle="primary"
+              value={this.state.type}
+            />
+          </Col>
+        </Row>
       </div>
     );
   }
@@ -131,35 +142,45 @@ class SearchControls extends Component {
     return (
       <div className="search-controls">
         <form onSubmit={this.handleSearch}>
-          <FormGroup controlId="unit-control-group">
-            <ControlLabel>Kiinteistö</ControlLabel>
-            <FormControl
-              componentClass="select"
-              onChange={event => this.handleChange({ unit: event.target.value })}
-              type="select"
-              value={this.state.unit}
-            >
-              {renderUnitOptions(this.props.units)}
-            </FormControl>
-          </FormGroup>
-          <FormGroup controlId="search-control-group">
-            <ControlLabel>Tilan nimi</ControlLabel>
-            <FormControl
-              autoFocus
-              onChange={event => this.handleChange({ search: event.target.value })}
-              type="text"
-              value={this.state.search}
-            />
-          </FormGroup>
-          <Checkbox
-            className="is-favorite-checkbox"
-            onChange={event =>
-              this.handleChange({ isFavorite: event.target.checked ? 'true' : '' })
-            }
-            checked={this.state.isFavorite === 'true'}
-          >
-            Näytä vain omat suosikit
-          </Checkbox>
+          <div className="basic-controls">
+            <Row>
+              <Col md={4}>
+                <FormGroup controlId="unit-control-group">
+                  <ControlLabel>Kiinteistö</ControlLabel>
+                  <FormControl
+                    componentClass="select"
+                    onChange={event => this.handleChange({ unit: event.target.value })}
+                    type="select"
+                    value={this.state.unit}
+                  >
+                    {renderUnitOptions(this.props.units)}
+                  </FormControl>
+                </FormGroup>
+              </Col>
+              <Col md={4}>
+                <FormGroup controlId="search-control-group">
+                  <ControlLabel>Tilan nimi</ControlLabel>
+                  <FormControl
+                    autoFocus
+                    onChange={event => this.handleChange({ search: event.target.value })}
+                    type="text"
+                    value={this.state.search}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md={4}>
+                <Checkbox
+                  className="is-favorite-checkbox"
+                  onChange={event =>
+                    this.handleChange({ isFavorite: event.target.checked ? 'true' : '' })
+                  }
+                  checked={this.state.isFavorite === 'true'}
+                >
+                  Näytä vain omat suosikit
+                </Checkbox>
+              </Col>
+            </Row>
+          </div>
           <div className="toggle-container">
             <a className="toggle-advanced" onClick={this.toggleAdvanced} tabIndex="0">
               Tarkemmat rajaukset <FontAwesome className="icon" name={advancedIconName} />
