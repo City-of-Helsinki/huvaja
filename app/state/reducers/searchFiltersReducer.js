@@ -5,6 +5,7 @@ import { handleActions } from 'redux-actions';
 function getInitialState() {
   return {
     date: moment().format('YYYY-MM-DD'),
+    equipment: '',
     isFavorite: '',
     people: '',
     search: '',
