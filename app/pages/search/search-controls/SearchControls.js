@@ -14,15 +14,17 @@ import { browserHistory } from 'react-router';
 import DatePicker from 'shared/date-picker';
 import LabelSelect from 'shared/form-fields/label-select/LabelSelect';
 
-function getUnitOption(id, name) {
-  return <option key={id} value={id}>{name}</option>;
+function getUnitOption(id, label) {
+  return <option key={id} value={id}>{label}</option>;
 }
 
 function renderUnitOptions(units) {
   const defaultOption = getUnitOption('', 'Kaikki kiinteistöt');
-  const options = Object.keys(units).map(id =>
-    getUnitOption(id, units[id].name.fi)
-  );
+  const options = Object.keys(units).map((id) => {
+    const unit = units[id];
+    const label = `${unit.name.fi} - ${unit.streetAddress.fi}`;
+    return getUnitOption(id, label);
+  });
   return [defaultOption].concat(options);
 }
 
