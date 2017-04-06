@@ -1,5 +1,7 @@
+import FontAwesome from 'react-fontawesome';
 import { decamelizeKeys } from 'humps';
 import isEqual from 'lodash/isEqual';
+import omit from 'lodash/omit';
 import queryString from 'query-string';
 import React, { Component, PropTypes } from 'react';
 import Button from 'react-bootstrap/lib/Button';
@@ -42,7 +44,11 @@ class SearchControls extends Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
-    this.state = props.initialValues;
+    this.toggleAdvanced = this.toggleAdvanced.bind(this);
+    this.state = {
+      showAdvanced: false,
+      ...props.initialValues,
+    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -69,11 +75,57 @@ class SearchControls extends Component {
 
   handleSearch(event) {
     event.preventDefault();
-    const filters = decamelizeKeys(this.state);
+    const filters = decamelizeKeys(
+      omit(this.state, ['showAdvanced'])
+    );
     browserHistory.push(`/?${queryString.stringify(filters)}`);
   }
 
+  toggleAdvanced() {
+    this.setState({ showAdvanced: !this.state.showAdvanced });
+  }
+
+  renderAdvanced() {
+    return (
+      <div>
+        <FormGroup className="date-control-group" controlId="date-control-group">
+          <ControlLabel>Päivä</ControlLabel>
+          <DatePicker
+            onChange={date => this.handleChange({ date })}
+            value={this.state.date}
+          />
+        </FormGroup>
+        <FormGroup controlId="people-control-group">
+          <ControlLabel>Paikkoja vähintään</ControlLabel>
+          <FormControl
+            min="0"
+            onChange={event => this.handleChange({ people: event.target.value })}
+            type="number"
+            value={this.state.people}
+          />
+        </FormGroup>
+        <LabelSelect
+          id="equipment-control-group"
+          label="Saatavilla olevat varusteet"
+          onChange={value => this.handleChange({ equipment: value })}
+          options={this.getEquipmentOptions()}
+          selectedStyle="success"
+          value={this.state.equipment}
+        />
+        <LabelSelect
+          id="type-control-group"
+          label="Tilan tyyppi"
+          onChange={value => this.handleChange({ type: value })}
+          options={this.getTypeOptions()}
+          selectedStyle="primary"
+          value={this.state.type}
+        />
+      </div>
+    );
+  }
+
   render() {
+    const advancedIconName = this.state.showAdvanced ? 'caret-down' : 'caret-right';
     return (
       <div className="search-controls">
         <form onSubmit={this.handleSearch}>
@@ -106,38 +158,12 @@ class SearchControls extends Component {
           >
             Näytä vain omat suosikit
           </Checkbox>
-          <FormGroup className="date-control-group" controlId="date-control-group">
-            <ControlLabel>Päivä</ControlLabel>
-            <DatePicker
-              onChange={date => this.handleChange({ date })}
-              value={this.state.date}
-            />
-          </FormGroup>
-          <FormGroup controlId="people-control-group">
-            <ControlLabel>Paikkoja vähintään</ControlLabel>
-            <FormControl
-              min="0"
-              onChange={event => this.handleChange({ people: event.target.value })}
-              type="number"
-              value={this.state.people}
-            />
-          </FormGroup>
-          <LabelSelect
-            id="equipment-control-group"
-            label="Saatavilla olevat varusteet"
-            onChange={value => this.handleChange({ equipment: value })}
-            options={this.getEquipmentOptions()}
-            selectedStyle="success"
-            value={this.state.equipment}
-          />
-          <LabelSelect
-            id="type-control-group"
-            label="Tilan tyyppi"
-            onChange={value => this.handleChange({ type: value })}
-            options={this.getTypeOptions()}
-            selectedStyle="primary"
-            value={this.state.type}
-          />
+          <div className="toggle-container">
+            <a className="toggle-advanced" onClick={this.toggleAdvanced} tabIndex="0">
+              Tarkemmat rajaukset <FontAwesome className="icon" name={advancedIconName} />
+            </a>
+          </div>
+          {this.state.showAdvanced ? this.renderAdvanced() : null}
           <Button
             block
             bsStyle="primary"
