@@ -1,3 +1,4 @@
+import { fetchEquipment } from './equipment';
 import {
   cancelReservation,
   editReservation,
@@ -19,6 +20,7 @@ export {
   cancelReservation,
   editReservation,
   favoriteResource,
+  fetchEquipment,
   fetchFavoritedResources,
   fetchReservation,
   fetchReservations,

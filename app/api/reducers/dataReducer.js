@@ -7,6 +7,7 @@ import actionTypes from '../actionTypes';
 
 const initialState = immutable({
   cateringMenuItems,
+  equipment: {},
   reservations: {},
   resources: {},
   types: {},
@@ -42,6 +43,7 @@ function handleReservation(state, reservation) {
 function dataReducer(state = initialState, action) {
   switch (action.type) {
 
+    case actionTypes.EQUIPMENT_GET_SUCCESS:
     case actionTypes.RESERVATIONS_GET_SUCCESS:
     case actionTypes.RESERVATION_GET_SUCCESS:
     case actionTypes.RESOURCE_GET_SUCCESS:
