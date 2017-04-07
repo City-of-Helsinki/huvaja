@@ -1,6 +1,8 @@
 .availability-view {
-  @slot-height: 50px;
+  @group-row-height: 30px;
+  @resource-row-height: 50px;
   @slot-border: 1px solid white;
+  @hovered-siblings-color: @gray-light;
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -66,20 +68,23 @@
   }
   .group-info {
     background-color: @gray-lighter;
-    padding: 0 @padding-base-horizontal;
 
     .group-name, .resource-info {
-      height: @slot-height;
+      padding: 0 @padding-base-horizontal;
     }
     .group-name {
       display: flex;
       align-items: center;
       justify-content: flex-end;
+      height: @group-row-height;
       line-height: @headings-line-height;
       font-weight: @headings-font-weight;
       font-size: @font-size-base;
-      color: @headings-color;
-      background-color: @gray-lighter;
+      background-color: @brand-primary;
+      color: white;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
       .name {
         text-align: right;
@@ -93,9 +98,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-end;
+    height: @resource-row-height;
     font-size: @font-size-small;
     line-height: 1;
 
+    &-highlighted {
+      background-color: @hovered-siblings-color;
+    }
     .favorite-icon {
       color: @favorite-color;
       padding: 3px;
@@ -138,11 +147,12 @@
       .hour {
         display: flex;
         align-items: center;
-        height: @slot-height;
+        height: @group-row-height;
         flex-shrink: 0;
         margin: 0;
         border: @slot-border;
-        background-color: @gray-lighter;
+        background-color: @brand-primary;
+        color: white;
         padding: @padding-small-vertical @padding-small-horizontal;
         font-size: @font-size-small;
       }
@@ -150,9 +160,15 @@
   }
   .availability-timeline {
     display: flex;
+
+    &:hover {
+      .reservation-slot:not(:hover):not(.reservation-slot-selected) {
+        background-color: @hovered-siblings-color;
+      }
+    }
   }
   .reservation-link, .reservation-slot {
-    height: @slot-height;
+    height: @resource-row-height;
   }
   .reservation, .reservation-slot {
     display: inline-flex;
@@ -162,7 +178,7 @@
     flex-shrink: 0;
   }
   .reservation {
-    height: @slot-height;
+    height: @resource-row-height;
     background-color: @brand-success;
     color: white;
     font-size: @font-size-small;
@@ -182,7 +198,7 @@
     }
   }
   .reservation-slot {
-    background-color: @gray-light;
+    background-color: @gray-lighter;
     overflow: hidden;
 
     &-selected {

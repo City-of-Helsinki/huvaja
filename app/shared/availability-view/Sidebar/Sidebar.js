@@ -7,11 +7,20 @@ Sidebar.propTypes = {
   groups: PropTypes.arrayOf(
     PropTypes.shape({ name: PropTypes.string.isRequired })
   ).isRequired,
+  highlightedResourceId: PropTypes.string,
 };
 export default function Sidebar(props) {
+  const { date, highlightedResourceId } = props;
   return (
     <div className="sidebar">
-      {props.groups.map(group => <GroupInfo date={props.date} key={group.name} {...group} />)}
+      {props.groups.map(group => (
+        <GroupInfo
+          date={date}
+          highlightedResourceId={highlightedResourceId}
+          key={group.name}
+          {...group}
+        />
+      ))}
     </div>
   );
 }

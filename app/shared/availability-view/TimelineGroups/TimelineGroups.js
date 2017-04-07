@@ -34,6 +34,8 @@ export default class TimelineGroups extends React.Component {
         name: PropTypes.string.isRequired,
       })
     ).isRequired,
+    onAvailabilityViewMouseEnter: PropTypes.func,
+    onAvailabilityViewMouseLeave: PropTypes.func,
   };
 
   constructor(props) {
@@ -71,7 +73,13 @@ export default class TimelineGroups extends React.Component {
         ref={this.setElement}
       >
         {this.props.groups.map(group =>
-          <TimelineGroup date={this.props.date} key={group.name} {...group} />
+          <TimelineGroup
+            date={this.props.date}
+            key={group.name}
+            onAvailabilityViewMouseEnter={this.props.onAvailabilityViewMouseEnter}
+            onAvailabilityViewMouseLeave={this.props.onAvailabilityViewMouseLeave}
+            {...group}
+          />
         )}
       </div>
     );

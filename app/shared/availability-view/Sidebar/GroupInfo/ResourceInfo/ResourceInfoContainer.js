@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { PropTypes } from 'react';
 import FontAwesome from 'react-fontawesome';
 import { connect } from 'react-redux';
@@ -8,12 +9,19 @@ ResourceInfo.propTypes = {
   date: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   isFavorite: PropTypes.bool.isRequired,
+  isHighlighted: PropTypes.bool,
   name: PropTypes.string.isRequired,
   peopleCapacity: PropTypes.number.isRequired,
 };
 export function ResourceInfo(props) {
   return (
-    <div className="resource-info" title={props.name}>
+    <div
+      className={classNames(
+        'resource-info',
+        { 'resource-info-highlighted': props.isHighlighted },
+      )}
+      title={props.name}
+    >
       <div className="name">
         { props.isFavorite && <FontAwesome className="favorite-icon" name="heart" /> }
         <Link to={`/resources/${props.id}?begin=${props.date}`}>
