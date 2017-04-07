@@ -22,6 +22,22 @@ describe('state/reducers/searchFiltersReducer', () => {
     it('isFavorite is empty string', () => {
       expect(getInitialState().isFavorite).to.equal('');
     });
+
+    it('equipment is empty string', () => {
+      expect(getInitialState().equipment).to.equal('');
+    });
+
+    it('type is empty string', () => {
+      expect(getInitialState().type).to.equal('');
+    });
+
+    it('unit is empty string', () => {
+      expect(getInitialState().unit).to.equal('');
+    });
+
+    it('people is empty string', () => {
+      expect(getInitialState().people).to.equal('');
+    });
   });
 
   describe('handling actions', () => {
@@ -33,16 +49,24 @@ describe('state/reducers/searchFiltersReducer', () => {
         const payload = {
           query: {
             date: '2016-12-12',
+            equipment: '',
             is_favorite: '',
+            people: '',
             search: 'search text',
+            type: '',
+            unit: '',
           },
         };
         const action = routeChangedAction(payload);
         const nextState = searchFiltersReducer(currentState, action);
         expect(nextState).to.deep.equal({
           date: '2016-12-12',
+          equipment: '',
           isFavorite: '',
+          people: '',
           search: 'search text',
+          type: '',
+          unit: '',
         });
       });
 
@@ -59,8 +83,12 @@ describe('state/reducers/searchFiltersReducer', () => {
         const nextState = searchFiltersReducer(currentState, action);
         expect(nextState).to.deep.equal({
           date: '2016-12-12',
+          equipment: '',
           isFavorite: '',
+          people: '',
           search: 'search text',
+          type: '',
+          unit: '',
         });
       });
 
@@ -69,7 +97,15 @@ describe('state/reducers/searchFiltersReducer', () => {
         const action = routeChangedAction(payload);
         const currentState = { date: '2016-11-11' };
         const nextState = searchFiltersReducer(currentState, action);
-        const expected = { isFavorite: '', search: '', date: '2016-12-12' };
+        const expected = {
+          date: '2016-12-12',
+          equipment: '',
+          isFavorite: '',
+          people: '',
+          search: '',
+          type: '',
+          unit: '',
+        };
         expect(nextState).to.deep.equal(expected);
       });
     });
