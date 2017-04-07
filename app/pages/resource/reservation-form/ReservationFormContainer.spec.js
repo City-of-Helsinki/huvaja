@@ -74,6 +74,7 @@ describe('pages/resource/reservation-form/ReservationFormContainer', () => {
             end: '2016-01-01T12:00:00',
           },
           hostName: 'Han Solo',
+          eventDescription: 'Description',
           eventName: 'Tapaaminen',
           numberOfParticipants: 8,
           reserverName: 'Luke Skywalker',
@@ -90,6 +91,7 @@ describe('pages/resource/reservation-form/ReservationFormContainer', () => {
         expect(args[0]).to.deep.equal({
           begin: values.time.begin,
           end: values.time.end,
+          event_description: values.eventDescription,
           event_subject: values.eventName,
           host_name: values.hostName,
           number_of_participants: values.numberOfParticipants,

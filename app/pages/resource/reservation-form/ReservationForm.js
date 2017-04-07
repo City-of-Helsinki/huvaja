@@ -90,6 +90,12 @@ export function UnconnectedReservationForm(props) {
               { rows: 6 },
             )}
             <CateringSection />
+            {renderField(
+              'eventDescription',
+              'textarea',
+              'Lisätietoja',
+              { rows: 6 },
+            )}
             {props.error && (
               <div className="has-error">
                 <HelpBlock>{props.error}</HelpBlock>
