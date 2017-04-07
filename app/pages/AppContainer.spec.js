@@ -16,6 +16,8 @@ describe('pages/AppContainer', () => {
   function getWrapper(props) {
     const defaults = {
       fetchAuthState: () => null,
+      fetchEquipment: () => null,
+      fetchTypes: () => null,
       fetchUnits: () => null,
       isAuthFetched: true,
       isLoggedIn: true,
@@ -86,6 +88,20 @@ describe('pages/AppContainer', () => {
       const instance = getWrapper({ fetchUnits }).instance();
       instance.componentDidMount();
       expect(fetchUnits.callCount).to.equal(1);
+    });
+
+    it('fetches types', () => {
+      const fetchTypes = simple.mock();
+      const instance = getWrapper({ fetchTypes }).instance();
+      instance.componentDidMount();
+      expect(fetchTypes.callCount).to.equal(1);
+    });
+
+    it('fetches equipment', () => {
+      const fetchEquipment = simple.mock();
+      const instance = getWrapper({ fetchEquipment }).instance();
+      instance.componentDidMount();
+      expect(fetchEquipment.callCount).to.equal(1);
     });
   });
 
