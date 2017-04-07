@@ -13,12 +13,41 @@ import DatePicker from 'shared/date-picker';
 import SearchControls from './SearchControls';
 
 describe('pages/search/search-controls/SearchControls', () => {
-  const defaultInitialValues = { date: '2016-12-12', search: '', isFavorite: '' };
-  function getWrapper(props) {
+  const defaultInitialValues = {
+    date: '2016-12-12',
+    equipment: '',
+    isFavorite: '',
+    people: '',
+    search: '',
+    type: '',
+    unit: '',
+  };
+  const units = {
+    abc: {
+      name: { fi: 'Bockin talo' },
+      streetAddress: { fi: 'Aleksanterinkatu 20' },
+    },
+  };
+  const equipment = {
+    qwerty: {
+      name: { fi: 'Videoprojektori' },
+    },
+  };
+  const types = {
+    asdf: {
+      name: { fi: 'Neuvotteluhuone' },
+    },
+  };
+  function getWrapper(props, showAdvanced = true) {
     const defaults = {
+      equipment,
       initialValues: defaultInitialValues,
+      types,
+      units,
     };
-    return shallow(<SearchControls {...defaults} {...props} />);
+    const wrapper = shallow(<SearchControls {...defaults} {...props} />);
+    if (showAdvanced) wrapper.setState({ showAdvanced: true });
+    return wrapper;
   }
 
   describe('render', () => {
@@ -39,7 +68,7 @@ describe('pages/search/search-controls/SearchControls', () => {
 
       it('has correct label', () => {
         const controlLabel = getSearchControlWrapper().find(ControlLabel);
-        expect(controlLabel.prop('children')).to.equal('Tekstihaku');
+        expect(controlLabel.prop('children')).to.equal('Tilan nimi');
       });
 
       it('has correct initial value', () => {
@@ -59,7 +88,7 @@ describe('pages/search/search-controls/SearchControls', () => {
 
       it('has correct label', () => {
         const label = getIsFavoriteCheckboxWrapper().prop('children');
-        expect(label).to.equal('Näytä vain suosikit');
+        expect(label).to.equal('Näytä vain omat suosikit');
       });
 
       it('renders CheckBox with correct value', () => {
@@ -92,10 +121,140 @@ describe('pages/search/search-controls/SearchControls', () => {
       });
     });
 
+    describe('unit control', () => {
+      function getUnitControlWrapper(values) {
+        const wrapper = getWrapper({
+          initialValues: Object.assign({}, defaultInitialValues, values),
+        });
+        return wrapper.find('[controlId="unit-control-group"]');
+      }
+
+      it('has correct label', () => {
+        const controlLabel = getUnitControlWrapper().find(ControlLabel);
+        expect(controlLabel.prop('children')).to.equal('Kiinteistö');
+      });
+
+      it('renders select field with correct value', () => {
+        const unit = 'abc';
+        const field = getUnitControlWrapper({ unit }).find(FormControl);
+        expect(field).to.have.length(1);
+        expect(field.prop('value')).to.equal(unit);
+      });
+
+      it('renders correct options', () => {
+        const field = getUnitControlWrapper().find(FormControl);
+        const option = field.find('option');
+        expect(option).to.have.length(2);
+
+        expect(option.at(0).prop('value')).to.equal('');
+        expect(option.at(0).text()).to.equal('Kaikki kiinteistöt');
+
+        expect(option.at(1).prop('value')).to.equal('abc');
+        expect(option.at(1).text()).to.equal('Bockin talo - Aleksanterinkatu 20');
+      });
+    });
+
+    describe('people control', () => {
+      function getPeopleControlWrapper(values) {
+        const wrapper = getWrapper({
+          initialValues: Object.assign({}, defaultInitialValues, values),
+        });
+        return wrapper.find('[controlId="people-control-group"]');
+      }
+
+      it('has correct label', () => {
+        const controlLabel = getPeopleControlWrapper().find(ControlLabel);
+        expect(controlLabel.prop('children')).to.equal('Paikkoja vähintään');
+      });
+
+      it('has correct initial value', () => {
+        const people = '15';
+        const peopleControl = getPeopleControlWrapper({ people }).find(FormControl);
+        expect(peopleControl.prop('value')).to.equal(people);
+      });
+    });
+
+    describe('equipment control', () => {
+      function getEquipmentWrapper(values) {
+        const wrapper = getWrapper({
+          initialValues: Object.assign({}, defaultInitialValues, values),
+        });
+        return wrapper.find('[id="equipment-control-group"]');
+      }
+
+      it('has correct label', () => {
+        const equipmentWrapper = getEquipmentWrapper();
+        expect(equipmentWrapper.prop('label')).to.equal('Saatavilla olevat varusteet');
+      });
+
+      it('has correct initial value', () => {
+        const eq = 'qwerty';
+        const equipmentWrapper = getEquipmentWrapper({ equipment: eq });
+        expect(equipmentWrapper.prop('value')).to.equal(eq);
+      });
+
+      it('has correct options', () => {
+        const equipmentWrapper = getEquipmentWrapper();
+        const expected = [{
+          id: 'qwerty',
+          name: 'Videoprojektori',
+        }];
+        expect(equipmentWrapper.prop('options')).to.deep.equal(expected);
+      });
+    });
+
+    describe('type control', () => {
+      function getTypeWrapper(values) {
+        const wrapper = getWrapper({
+          initialValues: Object.assign({}, defaultInitialValues, values),
+        });
+        return wrapper.find('[id="type-control-group"]');
+      }
+
+      it('has correct label', () => {
+        const typeWrapper = getTypeWrapper();
+        expect(typeWrapper.prop('label')).to.equal('Tilan tyyppi');
+      });
+
+      it('has correct initial value', () => {
+        const type = 'asdf';
+        const typeWrapper = getTypeWrapper({ type });
+        expect(typeWrapper.prop('value')).to.equal(type);
+      });
+
+      it('has correct options', () => {
+        const typeWrapper = getTypeWrapper();
+        const expected = [{
+          id: 'asdf',
+          name: 'Neuvotteluhuone',
+        }];
+        expect(typeWrapper.prop('options')).to.deep.equal(expected);
+      });
+    });
+
+    describe('advanced search link', () => {
+      it('is rendered', () => {
+        const link = getWrapper().find('.toggle-advanced');
+        expect(link).to.have.length(1);
+      });
+
+      it('has onClick prop', () => {
+        const link = getWrapper().find('.toggle-advanced');
+        expect(link.prop('onClick')).to.be.a('function');
+      });
+    });
+
     it('renders a submit button', () => {
       const button = getWrapper().find(Button);
       expect(button).to.have.length(1);
       expect(button.prop('type')).to.equal('submit');
+    });
+  });
+
+  describe('constructor function', () => {
+    it('hides advanced search', () => {
+      const instance = getWrapper(null, false).instance();
+      expect(instance.state.showAdvanced).to.be.false;
     });
   });
 
@@ -144,6 +303,26 @@ describe('pages/search/search-controls/SearchControls', () => {
     });
   });
 
+  describe('toggleAdvanced', () => {
+    it('changes showAdvanced in state', () => {
+      const initialState = {
+        ...defaultInitialValues,
+        showAdvanced: false,
+      };
+      const instance = getWrapper().instance();
+      instance.state = initialState;
+      simple.mock(instance, 'setState');
+
+      instance.toggleAdvanced();
+      expect(instance.setState.callCount).to.equal(1);
+      expect(instance.setState.lastCall.arg).to.deep.equal({ showAdvanced: true });
+      instance.toggleAdvanced();
+      expect(instance.setState.callCount).to.equal(2);
+      expect(instance.setState.lastCall.arg).to.deep.equal({ showAdvanced: false });
+      simple.restore();
+    });
+  });
+
   describe('handleSearch', () => {
     const searchFilters = {
       search: 'search text',
@@ -153,7 +332,10 @@ describe('pages/search/search-controls/SearchControls', () => {
 
     function callSearch(filters, props) {
       const instance = getWrapper(props).instance();
-      instance.state = filters || searchFilters;
+      instance.state = {
+        ...(filters || searchFilters),
+        showAdvanced: true,
+      };
       instance.handleSearch(mockSubmitEvent);
     }
 
