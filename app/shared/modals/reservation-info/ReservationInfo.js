@@ -32,12 +32,6 @@ export default function ReservationInfoModal(props) {
   const endTime = moment(reservation.end);
   const date = startTime.format('dd D.M.YYYY');
   const time = `${startTime.format('HH:mm')} - ${endTime.format('HH:mm')}`;
-  const additionalInfoText = (
-    'Viel\' on muitaki sanoja, ongelmoita oppimia: tieohesta tempomia,' +
-    'kanervoista katkomia, risukoista riipomia, vesoista vetelemiä, päästä heinän hieromia, ' +
-    'raitiolta ratkomia, paimenessa käyessäni, lasna karjanlaitumilla, metisillä mättähillä, ' +
-    'kultaisilla kunnahilla, mustan Muurikin jälessä, Kimmon kirjavan keralla.'
-  );
   return (
     <Modal
       className="reservation-info-modal"
@@ -95,12 +89,14 @@ export default function ReservationInfoModal(props) {
           </Col>
         </Row>
         <hr />
-        <Row>
-          <Col className="details-row reservation-additional-info" xs={6}>
-            <div className="details-label">Lisätiedot: </div>
-            <WrappedText className="details-text" text={additionalInfoText} />
-          </Col>
-        </Row>
+        {reservation.eventDescription && (
+          <Row>
+            <Col className="details-row reservation-additional-info" xs={6}>
+              <div className="details-label">Lisätiedot: </div>
+              <WrappedText className="details-text" text={reservation.eventDescription} />
+            </Col>
+          </Row>
+        )}
       </Modal.Body>
     </Modal>
   );
