@@ -35,6 +35,7 @@ class SearchControls extends Component {
     equipment: PropTypes.object.isRequired,
     initialValues: PropTypes.shape({
       date: PropTypes.string.isRequired,
+      equipment: PropTypes.string.isRequired,
       isFavorite: PropTypes.string.isRequired,
       search: PropTypes.string.isRequired,
       type: PropTypes.string.isRequired,
