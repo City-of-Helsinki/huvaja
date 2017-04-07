@@ -13,14 +13,26 @@ import { UnconnectedSearchPageContainer as SearchPageContainer } from './SearchP
 import SearchControls from './search-controls';
 
 describe('pages/search/SearchPageContainer', () => {
+  const searchFilters = {
+    date: '2016-12-12',
+    equipment: '',
+    isFavorite: '',
+    people: '',
+    search: 'search text',
+    type: '',
+    unit: '',
+  };
   const defaultProps = {
     availabilityGroups: [
       { name: 'Group 1', resources: ['r-1', 'r-2'] },
     ],
+    equipment: { 123: {} },
     isFetching: false,
     fetchResources: () => null,
     resultsCount: 0,
-    searchFilters: { date: '2016-12-12', search: 'search text', isFavorite: '' },
+    searchFilters,
+    types: { 124: {} },
+    units: { 125: {} },
   };
 
   function getWrapper(props) {
@@ -58,6 +70,9 @@ describe('pages/search/SearchPageContainer', () => {
         const searchControls = wrapper.find(SearchControls);
         expect(searchControls).to.have.length(1);
         expect(searchControls.prop('initialValues')).to.deep.equal(defaultProps.searchFilters);
+        expect(searchControls.prop('equipment')).to.deep.equal(defaultProps.equipment);
+        expect(searchControls.prop('types')).to.deep.equal(defaultProps.types);
+        expect(searchControls.prop('units')).to.deep.equal(defaultProps.units);
       });
 
       it('renders AvailabilityView with correct props', () => {
@@ -132,7 +147,7 @@ describe('pages/search/SearchPageContainer', () => {
       it('renders SearchControls with correct props', () => {
         const searchControls = wrapper.find(SearchControls);
         expect(searchControls).to.have.length(1);
-        expect(searchControls.prop('initialValues')).to.deep.equal(defaultProps.searchFilters);
+        expect(searchControls.prop('initialValues')).to.deep.equal(searchFilters);
       });
 
       describe('ResourceDailyReportButton', () => {
@@ -149,17 +164,17 @@ describe('pages/search/SearchPageContainer', () => {
       const instance = getWrapper({ fetchResources }).instance();
       instance.componentDidMount();
       expect(fetchResources.callCount).to.equal(1);
-      expect(fetchResources.lastCall.arg).to.deep.equal(defaultProps.searchFilters);
+      expect(fetchResources.lastCall.arg).to.deep.equal(searchFilters);
     });
   });
 
   describe('componentWillUpdate', () => {
     describe('when searchFilters prop changes', () => {
       const fetchResources = simple.mock();
-      const searchFilters = { date: '2016-11-11', search: 'search text', isFavorite: '' };
       const nextProps = {
         searchFilters: {
-          date: '2016-12-12',
+          ...searchFilters,
+          date: '2016-12-13',
           search: 'new search',
           isFavorite: 'true',
         },
@@ -179,7 +194,6 @@ describe('pages/search/SearchPageContainer', () => {
 
     describe('when searchFilters prop does not change', () => {
       const fetchResources = simple.mock();
-      const searchFilters = { date: '2016-12-12', search: 'search text', isFavorite: '' };
       const nextProps = { searchFilters };
 
       before(() => {
@@ -195,11 +209,6 @@ describe('pages/search/SearchPageContainer', () => {
   });
 
   describe('handleDateChange', () => {
-    const searchFilters = {
-      date: '2016-12-12',
-      search: 'search text',
-      isFavorite: '',
-    };
     const newDate = '2016-12-13';
     let browserHistoryMock;
     let instance;
