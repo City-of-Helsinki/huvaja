@@ -47,6 +47,18 @@ describe('shared/modal/ReservationInfo', () => {
     expect(getWrapper().prop('onHide')).to.equal(defaults.onHide);
   });
 
+  it('renders event description', () => {
+    const eventDescription = 'Some text describing the event.';
+    const wrapper = getWrapper({
+      reservation: {
+        ...reservation,
+        eventDescription,
+      },
+    });
+    const text = wrapper.find('.details-text');
+    expect(text.prop('text')).to.equal(eventDescription);
+  });
+
   describe('Modal header', () => {
     function getHeaderWrapper(props) {
       return getWrapper(props).find(Modal.Header);
