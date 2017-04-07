@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
+import simple from 'simple-mock';
 
 import DateSelector from './DateSelector';
 import TimelineGroups from './TimelineGroups';
@@ -47,5 +48,56 @@ describe('shared/availability-view/AvailabilityView', () => {
     expect(element).to.have.length(1);
     expect(element.prop('date')).to.equal(date);
     expect(element.prop('groups')).to.equal(groups);
+  });
+
+  describe('handleAvailabilityTimelineMouseEnter', () => {
+    beforeEach(() => {
+      simple.mock(window, 'clearTimeout').returnWith();
+    });
+
+    afterEach(() => {
+      simple.restore();
+    });
+
+    it('sets the resource id to the state', () => {
+      const wrapper = getWrapper();
+      wrapper.instance().handleAvailabilityTimelineMouseEnter('some-id');
+      expect(wrapper.state('highlightedResourceId')).to.equal('some-id');
+      expect(window.clearTimeout.called).to.be.false;
+    });
+
+    it('clears the timeout', () => {
+      const wrapper = getWrapper();
+      const timeoutId = 3981;
+      const instance = wrapper.instance();
+      instance.clearHighlightedTimeTimeout = timeoutId;
+      instance.handleAvailabilityTimelineMouseEnter('some-id');
+      expect(window.clearTimeout.callCount).to.equal(1);
+      expect(window.clearTimeout.lastCall.arg).to.equal(timeoutId);
+      expect(instance.clearHighlightedTimeTimeout).to.be.null;
+    });
+  });
+
+  describe('handleAvailabilityTimelineMouseLeave', () => {
+    const timeoutId = 7563;
+
+    beforeEach(() => {
+      simple.mock(window, 'setTimeout').returnWith(timeoutId);
+    });
+
+    afterEach(() => {
+      simple.restore();
+    });
+
+    it('calls setTimeout', () => {
+      const wrapper = getWrapper();
+      wrapper.instance().handleAvailabilityTimelineMouseLeave();
+      expect(window.setTimeout.callCount).to.equal(1);
+      expect(wrapper.instance().clearHighlightedTimeTimeout).to.equal(timeoutId);
+      const args = window.setTimeout.lastCall.args;
+      expect(args).to.have.length(2);
+      expect(args[0]).to.be.a('function');
+      expect(args[1]).to.equal(50);
+    });
   });
 });

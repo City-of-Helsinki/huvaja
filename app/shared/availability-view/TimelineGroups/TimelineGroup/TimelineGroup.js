@@ -23,6 +23,8 @@ export default class TimelineGroup extends React.Component {
     className: PropTypes.string,
     date: PropTypes.string.isRequired,
     noStickyHours: PropTypes.bool,
+    onAvailabilityViewMouseEnter: PropTypes.func,
+    onAvailabilityViewMouseLeave: PropTypes.func,
     onReservationSlotClick: PropTypes.func,
     resources: PropTypes.arrayOf(PropTypes.string).isRequired,
     selection: PropTypes.object,
@@ -100,6 +102,8 @@ export default class TimelineGroup extends React.Component {
             date={this.props.date}
             id={resource}
             key={resource}
+            onMouseEnter={this.props.onAvailabilityViewMouseEnter}
+            onMouseLeave={this.props.onAvailabilityViewMouseLeave}
             onReservationSlotClick={onReservationSlotClick}
             selection={selection}
           />
