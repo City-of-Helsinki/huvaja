@@ -1,11 +1,18 @@
 import { handleActions } from 'redux-actions';
 
 import uiActions from 'actions/uiActions';
+import actionTypes from 'api/actionTypes';
 
 const initialState = {
   reservationId: null,
   show: false,
 };
+
+const hide = state => ({
+  ...state,
+  reservationId: null,
+  show: false,
+});
 
 export default handleActions({
   [uiActions.showReservationInfoModal]: (state, action) => ({
@@ -13,9 +20,6 @@ export default handleActions({
     reservationId: action.payload,
     show: true,
   }),
-  [uiActions.hideReservationInfoModal]: state => ({
-    ...state,
-    reservationId: null,
-    show: false,
-  }),
+  [actionTypes.RESERVATION_DELETE_SUCCESS]: hide,
+  [uiActions.hideReservationInfoModal]: hide,
 }, initialState);
