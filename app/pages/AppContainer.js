@@ -7,6 +7,7 @@ import { createStructuredSelector } from 'reselect';
 
 import { fetchEquipment, fetchTypes, fetchUnits } from 'api/actions';
 import { fetchAuthState } from 'auth/actions';
+import ReservationCancelModal from 'shared/modals/reservation-cancel';
 import ReservationInfoModal from 'shared/modals/reservation-info';
 import ResourceImagesModal from 'shared/modals/resource-images';
 import Navbar from 'shared/navbar';
@@ -37,6 +38,7 @@ export class UnconnectedAppContainer extends Component {
           </Grid>
         </Loader>
         <ReservationInfoModal />
+        <ReservationCancelModal />
         <ResourceImagesModal />
       </div>
     );

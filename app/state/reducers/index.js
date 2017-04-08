@@ -6,6 +6,7 @@ import authReducer from 'auth/reducer';
 import cateringReducer from './cateringReducer';
 import formPlugins from './formPlugins';
 import resourcePage from './resourcePageReducer';
+import reservationCancel from './reservationCancelModalReducer';
 import reservationInfo from './reservationInfoModalReducer';
 import resourceImages from './resourceImagesModalReducer';
 import searchFilters from './searchFiltersReducer';
@@ -18,6 +19,7 @@ export default combineReducers({
   data: dataReducer,
   form: formReducer.plugin(formPlugins),
   modals: combineReducers({
+    reservationCancel,
     reservationInfo,
     resourceImages,
   }),
