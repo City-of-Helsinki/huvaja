@@ -17,7 +17,12 @@ const unitsGetIsActiveSelector = createRequestIsActiveSelector(
   actionTypes.UNITS_GET_REQUEST
 );
 
+const reservationDeleteIsActiveSelector = createRequestIsActiveSelector(
+  actionTypes.RESERVATION_DELETE_REQUEST
+);
+
 export {
+  reservationDeleteIsActiveSelector,
   resourceGetIsActiveSelector,
   resourcePostIsActiveSelector,
   resourcesGetIsActiveSelector,
