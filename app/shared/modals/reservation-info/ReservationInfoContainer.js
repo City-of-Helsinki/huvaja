@@ -15,6 +15,7 @@ export class UnconnectedReservationInfoContainer extends React.Component {
     reservationId: PropTypes.number, // eslint-disable-line react/no-unused-prop-types
     resource: PropTypes.object,
     show: PropTypes.bool.isRequired,
+    showReservationCancelModal: PropTypes.func.isRequired,
     unit: PropTypes.object,
   };
 
@@ -31,6 +32,7 @@ export class UnconnectedReservationInfoContainer extends React.Component {
         reservation={this.props.reservation}
         resource={this.props.resource}
         show={this.props.show}
+        showReservationCancelModal={this.props.showReservationCancelModal}
         unit={this.props.unit}
       /> :
       <div />
@@ -42,6 +44,7 @@ export class UnconnectedReservationInfoContainer extends React.Component {
 const actions = {
   fetchReservation,
   onHide: uiActions.hideReservationInfoModal,
+  showReservationCancelModal: uiActions.showReservationCancelModal,
 };
 
 export default connect(reservationModalSelector, actions)(
