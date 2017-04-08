@@ -14,6 +14,7 @@ describe('shared/modals/reservation-info/ReservationInfoContainer', () => {
     reservationId: 1,
     resource: {},
     show: true,
+    showReservationCancelModal: () => null,
     unit: {},
   };
   function getWrapper(props) {
@@ -28,6 +29,9 @@ describe('shared/modals/reservation-info/ReservationInfoContainer', () => {
       expect(reservationInfo.prop('reservation')).to.equal(defaults.reservation);
       expect(reservationInfo.prop('resource')).to.equal(defaults.resource);
       expect(reservationInfo.prop('show')).to.equal(defaults.show);
+      expect(reservationInfo.prop('showReservationCancelModal')).to.equal(
+        defaults.showReservationCancelModal
+      );
       expect(reservationInfo.prop('unit')).to.equal(defaults.unit);
     });
   });

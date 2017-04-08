@@ -1,5 +1,6 @@
 import moment from 'moment';
 import React, { PropTypes } from 'react';
+import Button from 'react-bootstrap/lib/Button';
 import Col from 'react-bootstrap/lib/Col';
 import Label from 'react-bootstrap/lib/Label';
 import Modal from 'react-bootstrap/lib/Modal';
@@ -12,6 +13,7 @@ ReservationInfoModal.propTypes = {
   reservation: PropTypes.object.isRequired,
   resource: PropTypes.object.isRequired,
   show: PropTypes.bool.isRequired,
+  showReservationCancelModal: PropTypes.func.isRequired,
   unit: PropTypes.object.isRequired,
 };
 
@@ -21,6 +23,7 @@ export default function ReservationInfoModal(props) {
     reservation,
     resource,
     show,
+    showReservationCancelModal,
     unit,
   } = props;
 
@@ -32,6 +35,7 @@ export default function ReservationInfoModal(props) {
   const endTime = moment(reservation.end);
   const date = startTime.format('dd D.M.YYYY');
   const time = `${startTime.format('HH:mm')} - ${endTime.format('HH:mm')}`;
+  const cancelReservation = () => showReservationCancelModal(reservation.id);
   return (
     <Modal
       className="reservation-info-modal"
@@ -98,6 +102,15 @@ export default function ReservationInfoModal(props) {
           </Row>
         )}
       </Modal.Body>
+      <Modal.Footer>
+        <Button
+          className="reservation-cancel"
+          bsStyle="default"
+          onClick={cancelReservation}
+        >
+          Poista
+        </Button>
+      </Modal.Footer>
     </Modal>
   );
 }

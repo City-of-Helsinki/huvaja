@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 import Modal from 'react-bootstrap/lib/Modal';
+import simple from 'simple-mock';
 
 import ReservationInfo from './ReservationInfo';
 
@@ -28,6 +29,7 @@ describe('shared/modal/ReservationInfo', () => {
     resource,
     unit,
     show: true,
+    showReservationCancelModal: () => null,
   };
 
   function getWrapper(props) {
@@ -111,6 +113,30 @@ describe('shared/modal/ReservationInfo', () => {
       const reservationHost = getBodyWrapper().find('.reservation-host');
       expect(reservationHost.html()).to.contain('Tilaisuuden isäntä:');
       expect(reservationHost.html()).to.contain(reservation.hostName);
+    });
+  });
+
+  describe('Modal footer', () => {
+    function getFooterWrapper(props) {
+      return getWrapper(props).find(Modal.Footer);
+    }
+
+    describe('cancel reservation button', () => {
+      function getButtonWrapper(props) {
+        return getFooterWrapper(props).find('.reservation-cancel');
+      }
+
+      it('is rendered', () => {
+        expect(getButtonWrapper()).to.have.length(1);
+      });
+
+      it('opens modal on click', () => {
+        const showReservationCancelModal = simple.mock();
+        const wrapper = getButtonWrapper({ showReservationCancelModal });
+        wrapper.simulate('click');
+        expect(showReservationCancelModal.callCount).to.equal(1);
+        expect(showReservationCancelModal.lastCall.arg).to.equal(reservation.id);
+      });
     });
   });
 });
