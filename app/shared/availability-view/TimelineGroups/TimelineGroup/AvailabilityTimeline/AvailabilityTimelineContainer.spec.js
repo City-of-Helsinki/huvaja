@@ -36,6 +36,18 @@ function getState() {
           ],
         },
         'resource-2': { id: 'resource-2' },
+        'resource-3': {
+          id: 'resource-3',
+          reservations: [
+            {
+              id: 444,
+              name: 'Reservation 4',
+              begin: moment('2016-01-01T18:00:00').format(),
+              end: moment('2016-01-01T23:30:00').format(),
+              state: 'cancelled',
+            },
+          ],
+        },
       },
     },
   };
@@ -77,6 +89,12 @@ describe('shared/availability-view/AvailabilityTimelineContainer', () => {
 
       it('contains slots if no reservations for date', () => {
         const actual = getSelected({ date: '2016-01-02T00:00:00' }).items;
+        expect(actual).to.have.length((24 * 60) / slotSize);
+        actual.forEach(slot => expect(slot.type).to.equal('reservation-slot'));
+      });
+
+      it('does not contain cancelled reservations', () => {
+        const actual = getSelected({ id: 'resource-3', date: '2016-01-01' }).items;
         expect(actual).to.have.length((24 * 60) / slotSize);
         actual.forEach(slot => expect(slot.type).to.equal('reservation-slot'));
       });
