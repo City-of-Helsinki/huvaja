@@ -2,6 +2,7 @@ import FontAwesome from 'react-fontawesome';
 import { decamelizeKeys } from 'humps';
 import isEqual from 'lodash/isEqual';
 import omit from 'lodash/omit';
+import sortBy from 'lodash/sortBy';
 import queryString from 'query-string';
 import React, { Component, PropTypes } from 'react';
 import Button from 'react-bootstrap/lib/Button';
@@ -22,11 +23,13 @@ function getUnitOption(id, label) {
 
 function renderUnitOptions(units) {
   const defaultOption = getUnitOption('', 'Kaikki kiinteistöt');
-  const options = Object.keys(units).map((id) => {
+  const optionData = Object.keys(units).map((id) => {
     const unit = units[id];
     const label = `${unit.name.fi} - ${unit.streetAddress.fi}`;
-    return getUnitOption(id, label);
+    return { id, label };
   });
+  const sortedOptionData = sortBy(optionData, 'label');
+  const options = sortedOptionData.map(unit => getUnitOption(unit.id, unit.label));
   return [defaultOption].concat(options);
 }
 
@@ -63,15 +66,17 @@ class SearchControls extends Component {
   }
 
   getEquipmentOptions() {
-    return Object.keys(this.props.equipment).map(id => (
+    const options = Object.keys(this.props.equipment).map(id => (
       { id, name: this.props.equipment[id].name.fi }
     ));
+    return sortBy(options, 'name');
   }
 
   getTypeOptions() {
-    return Object.keys(this.props.types).map(id => (
+    const options = Object.keys(this.props.types).map(id => (
       { id, name: this.props.types[id].name.fi }
     ));
+    return sortBy(options, 'name');
   }
 
   handleChange(updatedFilter) {
