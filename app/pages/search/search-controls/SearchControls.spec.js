@@ -23,6 +23,10 @@ describe('pages/search/search-controls/SearchControls', () => {
     unit: '',
   };
   const units = {
+    abd: {
+      name: { fi: 'Some unit' },
+      streetAddress: { fi: 'Aleksanterinkatu 22' },
+    },
     abc: {
       name: { fi: 'Bockin talo' },
       streetAddress: { fi: 'Aleksanterinkatu 20' },
@@ -32,8 +36,14 @@ describe('pages/search/search-controls/SearchControls', () => {
     qwerty: {
       name: { fi: 'Videoprojektori' },
     },
+    qwertx: {
+      name: { fi: 'Some equipment' },
+    },
   };
   const types = {
+    asde: {
+      name: { fi: 'Some type' },
+    },
     asdf: {
       name: { fi: 'Neuvotteluhuone' },
     },
@@ -141,16 +151,19 @@ describe('pages/search/search-controls/SearchControls', () => {
         expect(field.prop('value')).to.equal(unit);
       });
 
-      it('renders correct options', () => {
+      it('renders correct options sorted by label', () => {
         const field = getUnitControlWrapper().find(FormControl);
         const option = field.find('option');
-        expect(option).to.have.length(2);
+        expect(option).to.have.length(3);
 
         expect(option.at(0).prop('value')).to.equal('');
         expect(option.at(0).text()).to.equal('Kaikki kiinteistöt');
 
         expect(option.at(1).prop('value')).to.equal('abc');
         expect(option.at(1).text()).to.equal('Bockin talo - Aleksanterinkatu 20');
+
+        expect(option.at(2).prop('value')).to.equal('abd');
+        expect(option.at(2).text()).to.equal('Some unit - Aleksanterinkatu 22');
       });
     });
 
@@ -193,12 +206,18 @@ describe('pages/search/search-controls/SearchControls', () => {
         expect(equipmentWrapper.prop('value')).to.equal(eq);
       });
 
-      it('has correct options', () => {
+      it('has correct options sorted by name', () => {
         const equipmentWrapper = getEquipmentWrapper();
-        const expected = [{
-          id: 'qwerty',
-          name: 'Videoprojektori',
-        }];
+        const expected = [
+          {
+            id: 'qwertx',
+            name: 'Some equipment',
+          },
+          {
+            id: 'qwerty',
+            name: 'Videoprojektori',
+          },
+        ];
         expect(equipmentWrapper.prop('options')).to.deep.equal(expected);
       });
     });
@@ -222,12 +241,18 @@ describe('pages/search/search-controls/SearchControls', () => {
         expect(typeWrapper.prop('value')).to.equal(type);
       });
 
-      it('has correct options', () => {
+      it('has correct options sorted by name', () => {
         const typeWrapper = getTypeWrapper();
-        const expected = [{
-          id: 'asdf',
-          name: 'Neuvotteluhuone',
-        }];
+        const expected = [
+          {
+            id: 'asdf',
+            name: 'Neuvotteluhuone',
+          },
+          {
+            id: 'asde',
+            name: 'Some type',
+          },
+        ];
         expect(typeWrapper.prop('options')).to.deep.equal(expected);
       });
     });
