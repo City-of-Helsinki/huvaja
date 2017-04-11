@@ -13,6 +13,7 @@ describe('pages/resource/ResourcePage', () => {
     hideResourceImages: () => null,
     onDateChange: () => null,
     resource: { id: 'ham' },
+    resourceSearchUrl: '/?search=room',
     showResourceImages: () => null,
     unit: { name: { fi: 'Foobar' } },
   };
@@ -28,6 +29,7 @@ describe('pages/resource/ResourcePage', () => {
     expect(info.prop('unit')).to.equal(defaults.unit);
     expect(info.prop('hideResourceImages')).to.equal(defaults.hideResourceImages);
     expect(info.prop('showResourceImages')).to.equal(defaults.showResourceImages);
+    expect(info.prop('resourceSearchUrl')).to.equal(defaults.resourceSearchUrl);
   });
 
   it('renders ReservationForm', () => {

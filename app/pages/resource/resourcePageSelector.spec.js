@@ -64,4 +64,25 @@ describe('pages/resource/resourcePageSelector', () => {
       expect(actual).to.equal('2016-01-01');
     });
   });
+
+  describe('resourceSearchUrl', () => {
+    it('returns correct url', () => {
+      const state = getState({
+        'searchPage.searchFilters': {
+          date: '2016-01-01',
+          equipment: '123',
+          isFavorite: 'true',
+          people: '10',
+          search: 'room',
+          type: '234',
+          unit: '345',
+        },
+      });
+      const actual = selector(state, { params: { id: 'test' } }).resourceSearchUrl;
+      const expected = (
+        '/?date=2016-01-01&equipment=123&is_favorite=true&people=10&search=room&type=234&unit=345'
+      );
+      expect(actual).to.equal(expected);
+    });
+  });
 });

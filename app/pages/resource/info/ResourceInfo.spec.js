@@ -30,12 +30,13 @@ describe('pages/resource/info/ResourceInfo', () => {
     streetAddress: { fi: 'Testinkatu' },
   };
 
+  const defaults = {
+    resource,
+    resourceSearchUrl: '/?search=room',
+    showResourceImages: () => null,
+    unit,
+  };
   function getWrapper(props) {
-    const defaults = {
-      resource,
-      showResourceImages: () => null,
-      unit,
-    };
     return shallow(<ResourceInfo {...defaults} {...props} />);
   }
 
@@ -65,6 +66,11 @@ describe('pages/resource/info/ResourceInfo', () => {
       const resourceDescription = getWrapper().find('.resource-description');
       const wrappedText = resourceDescription.find(WrappedText);
       expect(wrappedText.prop('text')).to.equal(resource.description.fi);
+    });
+
+    it('renders search link with correct url', () => {
+      const link = getWrapper().find('.back-link');
+      expect(link.prop('to')).to.equal(defaults.resourceSearchUrl);
     });
   });
 
