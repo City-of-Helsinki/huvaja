@@ -1,6 +1,7 @@
 import { createActions } from 'redux-actions';
 
 export default createActions(
+  'CHANGE_RESOURCE_SEARCH_FILTERS',
   'HIDE_RESERVATION_CANCEL_MODAL',
   'HIDE_RESERVATION_INFO_MODAL',
   'HIDE_RESOURCE_IMAGES_MODAL',
