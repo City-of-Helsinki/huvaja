@@ -1,15 +1,18 @@
-import { decamelizeKeys } from 'humps';
+import { camelizeKeys, decamelizeKeys } from 'humps';
 import flatten from 'lodash/flatten';
+import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
-import queryString from 'query-string';
+import throttle from 'lodash/throttle';
 import React, { Component, PropTypes } from 'react';
 import Loader from 'react-loader';
 import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
 
+import uiActions from 'actions/uiActions';
 import { fetchResources } from 'api/actions';
 import ResourceDailyReportButton from 'shared/resource-daily-report-button';
 import AvailabilityView from 'shared/availability-view';
+import locationUtils from 'utils/locationUtils';
 import SearchControls from './search-controls';
 import selector from './searchPageSelector';
 
@@ -17,26 +20,59 @@ export class UnconnectedSearchPageContainer extends Component {
   constructor(props) {
     super(props);
     this.handleDateChange = this.handleDateChange.bind(this);
+    this.throttledFetch = throttle(this.fetch, 500, { leading: false });
   }
 
   componentDidMount() {
-    this.props.fetchResources(this.props.searchFilters);
+    const urlFilters = { ...this.props.location.query };
+    if (isEmpty(urlFilters)) {
+      this.props.fetchResources(
+        decamelizeKeys(this.props.searchFilters)
+      );
+    } else {
+      this.props.changeFilters(
+        camelizeKeys(urlFilters)
+      );
+    }
   }
 
   componentWillUpdate(nextProps) {
     if (!isEqual(this.props.searchFilters, nextProps.searchFilters)) {
-      this.props.fetchResources(nextProps.searchFilters);
+      if (this.shouldThrottle(nextProps)) {
+        this.throttledFetch(nextProps.searchFilters);
+      } else {
+        this.fetch(nextProps.searchFilters);
+      }
     }
   }
 
+  fetch(filters) {
+    this.props.fetchResources(decamelizeKeys(filters));
+    const url = locationUtils.getResourceSearchUrl(filters);
+    browserHistory.replace(url);
+  }
+
   handleDateChange(date) {
-    const filters = decamelizeKeys({ ...this.props.searchFilters, date });
-    browserHistory.push(`/?${queryString.stringify(filters)}`);
+    const filters = { ...this.props.searchFilters, date };
+    this.props.changeFilters(filters);
+  }
+
+  shouldThrottle(nextProps) {
+    const throttleFilters = ['people', 'search'];
+    for (const filter of throttleFilters) {
+      const changed = !isEqual(
+        this.props.searchFilters[filter],
+        nextProps.searchFilters[filter]
+      );
+      if (changed) return true;
+    }
+    return false;
   }
 
   render() {
     const {
       availabilityGroups,
+      changeFilters,
       equipment,
       isFetching,
       resultsCount,
@@ -44,7 +80,6 @@ export class UnconnectedSearchPageContainer extends Component {
       types,
       units,
     } = this.props;
-
     const searchResultsText = resultsCount === 1 ?
       `Löytyi ${resultsCount} hakuehdot täyttävä tila.` :
       `Löytyi ${resultsCount} hakuehdot täyttävää tilaa.`;
@@ -54,7 +89,8 @@ export class UnconnectedSearchPageContainer extends Component {
         <h1>Hae tiloja</h1>
         <SearchControls
           equipment={equipment}
-          initialValues={searchFilters}
+          values={searchFilters}
+          onChange={changeFilters}
           units={units}
           types={types}
         />
@@ -87,9 +123,11 @@ const availabilityGroupShape = PropTypes.shape({
 
 UnconnectedSearchPageContainer.propTypes = {
   availabilityGroups: PropTypes.arrayOf(availabilityGroupShape).isRequired,
+  changeFilters: PropTypes.func.isRequired,
   equipment: PropTypes.object.isRequired,
   isFetching: PropTypes.bool.isRequired,
   fetchResources: PropTypes.func.isRequired,
+  location: PropTypes.shape({ query: PropTypes.object }).isRequired,
   resultsCount: PropTypes.number.isRequired,
   searchFilters: PropTypes.object.isRequired,
   types: PropTypes.object.isRequired,
@@ -97,6 +135,7 @@ UnconnectedSearchPageContainer.propTypes = {
 };
 
 const actions = {
+  changeFilters: uiActions.changeResourceSearchFilters,
   fetchResources,
 };
 

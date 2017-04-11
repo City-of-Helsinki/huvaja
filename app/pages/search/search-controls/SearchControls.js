@@ -1,18 +1,12 @@
 import FontAwesome from 'react-fontawesome';
-import { decamelizeKeys } from 'humps';
-import isEqual from 'lodash/isEqual';
-import omit from 'lodash/omit';
 import sortBy from 'lodash/sortBy';
-import queryString from 'query-string';
 import React, { Component, PropTypes } from 'react';
-import Button from 'react-bootstrap/lib/Button';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
-import { browserHistory } from 'react-router';
 
 import DatePicker from 'shared/date-picker';
 import LabelSelect from 'shared/form-fields/label-select/LabelSelect';
@@ -33,36 +27,34 @@ function renderUnitOptions(units) {
   return [defaultOption].concat(options);
 }
 
+function preventDefault(event) {
+  event.preventDefault();
+}
+
 class SearchControls extends Component {
   static propTypes = {
     equipment: PropTypes.object.isRequired,
-    initialValues: PropTypes.shape({
+    onChange: PropTypes.func.isRequired,
+    types: PropTypes.object.isRequired,
+    values: PropTypes.shape({
       date: PropTypes.string.isRequired,
       equipment: PropTypes.string.isRequired,
       isFavorite: PropTypes.string.isRequired,
+      people: PropTypes.string.isRequired,
       search: PropTypes.string.isRequired,
       type: PropTypes.string.isRequired,
       unit: PropTypes.string.isRequired,
     }).isRequired,
-    types: PropTypes.object.isRequired,
     units: PropTypes.object.isRequired,
   };
 
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.handleSearch = this.handleSearch.bind(this);
     this.toggleAdvanced = this.toggleAdvanced.bind(this);
     this.state = {
       showAdvanced: false,
-      ...props.initialValues,
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!isEqual(this.state, nextProps.initialValues)) {
-      this.setState(nextProps.initialValues);
-    }
   }
 
   getEquipmentOptions() {
@@ -80,15 +72,7 @@ class SearchControls extends Component {
   }
 
   handleChange(updatedFilter) {
-    this.setState(updatedFilter);
-  }
-
-  handleSearch(event) {
-    event.preventDefault();
-    const filters = decamelizeKeys(
-      omit(this.state, ['showAdvanced'])
-    );
-    browserHistory.push(`/?${queryString.stringify(filters)}`);
+    this.props.onChange(updatedFilter);
   }
 
   toggleAdvanced() {
@@ -104,7 +88,7 @@ class SearchControls extends Component {
               <ControlLabel>Päivä</ControlLabel>
               <DatePicker
                 onChange={date => this.handleChange({ date })}
-                value={this.state.date}
+                value={this.props.values.date}
               />
             </FormGroup>
           </Col>
@@ -116,7 +100,7 @@ class SearchControls extends Component {
                 min="0"
                 onChange={event => this.handleChange({ people: event.target.value })}
                 type="number"
-                value={this.state.people}
+                value={this.props.values.people}
               />
             </FormGroup>
           </Col>
@@ -127,7 +111,7 @@ class SearchControls extends Component {
               onChange={value => this.handleChange({ equipment: value })}
               options={this.getEquipmentOptions()}
               selectedStyle="success"
-              value={this.state.equipment}
+              value={this.props.values.equipment}
             />
             <LabelSelect
               id="type-control-group"
@@ -135,7 +119,7 @@ class SearchControls extends Component {
               onChange={value => this.handleChange({ type: value })}
               options={this.getTypeOptions()}
               selectedStyle="primary"
-              value={this.state.type}
+              value={this.props.values.type}
             />
           </Col>
         </Row>
@@ -147,7 +131,7 @@ class SearchControls extends Component {
     const advancedIconName = this.state.showAdvanced ? 'caret-down' : 'caret-right';
     return (
       <div className="search-controls">
-        <form onSubmit={this.handleSearch}>
+        <form onSubmit={preventDefault}>
           <div className="basic-controls">
             <Row>
               <Col md={4}>
@@ -157,7 +141,7 @@ class SearchControls extends Component {
                     componentClass="select"
                     onChange={event => this.handleChange({ unit: event.target.value })}
                     type="select"
-                    value={this.state.unit}
+                    value={this.props.values.unit}
                   >
                     {renderUnitOptions(this.props.units)}
                   </FormControl>
@@ -170,7 +154,7 @@ class SearchControls extends Component {
                     autoFocus
                     onChange={event => this.handleChange({ search: event.target.value })}
                     type="text"
-                    value={this.state.search}
+                    value={this.props.values.search}
                   />
                 </FormGroup>
               </Col>
@@ -180,7 +164,7 @@ class SearchControls extends Component {
                   onChange={event =>
                     this.handleChange({ isFavorite: event.target.checked ? 'true' : '' })
                   }
-                  checked={this.state.isFavorite === 'true'}
+                  checked={this.props.values.isFavorite === 'true'}
                 >
                   Näytä vain omat suosikit
                 </Checkbox>
@@ -193,14 +177,6 @@ class SearchControls extends Component {
             </a>
           </div>
           {this.state.showAdvanced ? this.renderAdvanced() : null}
-          <Button
-            block
-            bsStyle="primary"
-            className="search-button"
-            type="submit"
-          >
-            Hae
-          </Button>
         </form>
       </div>
     );

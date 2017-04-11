@@ -1,19 +1,16 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-import queryString from 'query-string';
 import React from 'react';
-import Button from 'react-bootstrap/lib/Button';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormControl from 'react-bootstrap/lib/FormControl';
-import { browserHistory } from 'react-router';
 import simple from 'simple-mock';
 
 import DatePicker from 'shared/date-picker';
 import SearchControls from './SearchControls';
 
 describe('pages/search/search-controls/SearchControls', () => {
-  const defaultInitialValues = {
+  const defaultValues = {
     date: '2016-12-12',
     equipment: '',
     isFavorite: '',
@@ -51,7 +48,8 @@ describe('pages/search/search-controls/SearchControls', () => {
   function getWrapper(props, showAdvanced = true) {
     const defaults = {
       equipment,
-      initialValues: defaultInitialValues,
+      onChange: () => null,
+      values: defaultValues,
       types,
       units,
     };
@@ -61,17 +59,16 @@ describe('pages/search/search-controls/SearchControls', () => {
   }
 
   describe('render', () => {
-    it('renders form with correct onSubmit', () => {
+    it('renders form', () => {
       const wrapper = getWrapper();
       const form = wrapper.find('form');
       expect(form).to.have.length(1);
-      expect(form.prop('onSubmit')).to.equal(wrapper.instance().handleSearch);
     });
 
     describe('search control', () => {
       function getSearchControlWrapper(values) {
         const wrapper = getWrapper({
-          initialValues: Object.assign({}, defaultInitialValues, values),
+          values: Object.assign({}, defaultValues, values),
         });
         return wrapper.find('[controlId="search-control-group"]');
       }
@@ -91,7 +88,7 @@ describe('pages/search/search-controls/SearchControls', () => {
     describe('isFavorite control', () => {
       function getIsFavoriteCheckboxWrapper(values) {
         const wrapper = getWrapper({
-          initialValues: Object.assign({}, defaultInitialValues, values),
+          values: Object.assign({}, defaultValues, values),
         });
         return wrapper.find('.is-favorite-checkbox');
       }
@@ -113,7 +110,7 @@ describe('pages/search/search-controls/SearchControls', () => {
     describe('date control', () => {
       function getDateControlWrapper(values) {
         const wrapper = getWrapper({
-          initialValues: Object.assign({}, defaultInitialValues, values),
+          values: Object.assign({}, defaultValues, values),
         });
         return wrapper.find('[controlId="date-control-group"]');
       }
@@ -134,7 +131,7 @@ describe('pages/search/search-controls/SearchControls', () => {
     describe('unit control', () => {
       function getUnitControlWrapper(values) {
         const wrapper = getWrapper({
-          initialValues: Object.assign({}, defaultInitialValues, values),
+          values: Object.assign({}, defaultValues, values),
         });
         return wrapper.find('[controlId="unit-control-group"]');
       }
@@ -170,7 +167,7 @@ describe('pages/search/search-controls/SearchControls', () => {
     describe('people control', () => {
       function getPeopleControlWrapper(values) {
         const wrapper = getWrapper({
-          initialValues: Object.assign({}, defaultInitialValues, values),
+          values: Object.assign({}, defaultValues, values),
         });
         return wrapper.find('[controlId="people-control-group"]');
       }
@@ -190,7 +187,7 @@ describe('pages/search/search-controls/SearchControls', () => {
     describe('equipment control', () => {
       function getEquipmentWrapper(values) {
         const wrapper = getWrapper({
-          initialValues: Object.assign({}, defaultInitialValues, values),
+          values: Object.assign({}, defaultValues, values),
         });
         return wrapper.find('[id="equipment-control-group"]');
       }
@@ -225,7 +222,7 @@ describe('pages/search/search-controls/SearchControls', () => {
     describe('type control', () => {
       function getTypeWrapper(values) {
         const wrapper = getWrapper({
-          initialValues: Object.assign({}, defaultInitialValues, values),
+          values: Object.assign({}, defaultValues, values),
         });
         return wrapper.find('[id="type-control-group"]');
       }
@@ -268,12 +265,6 @@ describe('pages/search/search-controls/SearchControls', () => {
         expect(link.prop('onClick')).to.be.a('function');
       });
     });
-
-    it('renders a submit button', () => {
-      const button = getWrapper().find(Button);
-      expect(button).to.have.length(1);
-      expect(button.prop('type')).to.equal('submit');
-    });
   });
 
   describe('constructor function', () => {
@@ -283,55 +274,10 @@ describe('pages/search/search-controls/SearchControls', () => {
     });
   });
 
-  describe('componentWillReceiveProps', () => {
-    describe('when initialValues prop changes', () => {
-      const initialValues = defaultInitialValues;
-      const nextProps = { initialValues: { search: 'new search' } };
-      let setStateMock;
-
-      before(() => {
-        const instance = getWrapper({ initialValues }).instance();
-        instance.state = initialValues;
-        setStateMock = simple.mock(instance, 'setState');
-        instance.componentWillReceiveProps(nextProps);
-      });
-
-      after(() => {
-        simple.restore();
-      });
-
-      it('changes state to the new initialValues', () => {
-        expect(setStateMock.callCount).to.equal(1);
-        expect(setStateMock.lastCall.arg).to.deep.equal(nextProps.initialValues);
-      });
-    });
-
-    describe('when initialValues prop is the same than current state', () => {
-      const state = Object({}, defaultInitialValues, { search: 'test' });
-      const nextProps = { initialValues: state };
-      let setStateMock;
-
-      before(() => {
-        const instance = getWrapper().instance();
-        instance.state = state;
-        setStateMock = simple.mock(instance, 'setState');
-        instance.componentWillReceiveProps(nextProps);
-      });
-
-      after(() => {
-        simple.restore();
-      });
-
-      it('does not change state', () => {
-        expect(setStateMock.callCount).to.equal(0);
-      });
-    });
-  });
-
   describe('toggleAdvanced', () => {
     it('changes showAdvanced in state', () => {
       const initialState = {
-        ...defaultInitialValues,
+        ...defaultValues,
         showAdvanced: false,
       };
       const instance = getWrapper().instance();
@@ -348,47 +294,14 @@ describe('pages/search/search-controls/SearchControls', () => {
     });
   });
 
-  describe('handleSearch', () => {
-    const searchFilters = {
-      search: 'search text',
-    };
-    const mockSubmitEvent = { preventDefault: () => {} };
-    let browserHistoryMock;
-
-    function callSearch(filters, props) {
-      const instance = getWrapper(props).instance();
-      instance.state = {
-        ...(filters || searchFilters),
-        showAdvanced: true,
-      };
-      instance.handleSearch(mockSubmitEvent);
-    }
-
-    beforeEach(() => {
-      browserHistoryMock = simple.mock(browserHistory, 'push');
-    });
-
-    afterEach(() => {
-      simple.restore();
-    });
-
-    it('changes the url with current search filters', () => {
-      callSearch();
-      const actualPath = browserHistoryMock.lastCall.args[0];
-      const expectedPath = `/?${queryString.stringify(searchFilters)}`;
-
-      expect(browserHistoryMock.callCount).to.equal(1);
-      expect(actualPath).to.equal(expectedPath);
-    });
-
-    it('decamelize camelized keys', () => {
-      callSearch({ ...searchFilters, isFavorite: 'true' });
-      const actualPath = browserHistoryMock.lastCall.args[0];
-      const expectedFilters = { ...searchFilters, is_favorite: 'true' };
-      const expectedPath = `/?${queryString.stringify(expectedFilters)}`;
-
-      expect(browserHistoryMock.callCount).to.equal(1);
-      expect(actualPath).to.equal(expectedPath);
+  describe('handleChange', () => {
+    it('calls onChange with updated filter', () => {
+      const onChange = simple.mock();
+      const instance = getWrapper({ onChange }).instance();
+      const filters = { search: 'search text' };
+      instance.handleChange(filters);
+      expect(onChange.callCount).to.equal(1);
+      expect(onChange.lastCall.arg).to.deep.equal(filters);
     });
   });
 });

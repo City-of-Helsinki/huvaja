@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-import { decamelizeKeys } from 'humps';
+import { camelizeKeys, decamelizeKeys } from 'humps';
 import queryString from 'query-string';
 import React from 'react';
 import Loader from 'react-loader';
@@ -26,9 +26,11 @@ describe('pages/search/SearchPageContainer', () => {
     availabilityGroups: [
       { name: 'Group 1', resources: ['r-1', 'r-2'] },
     ],
+    changeFilters: () => null,
     equipment: { 123: {} },
     isFetching: false,
     fetchResources: () => null,
+    location: { query: {} },
     resultsCount: 0,
     searchFilters,
     types: { 124: {} },
@@ -69,10 +71,11 @@ describe('pages/search/SearchPageContainer', () => {
       it('renders SearchControls with correct props', () => {
         const searchControls = wrapper.find(SearchControls);
         expect(searchControls).to.have.length(1);
-        expect(searchControls.prop('initialValues')).to.deep.equal(defaultProps.searchFilters);
+        expect(searchControls.prop('values')).to.deep.equal(defaultProps.searchFilters);
         expect(searchControls.prop('equipment')).to.deep.equal(defaultProps.equipment);
         expect(searchControls.prop('types')).to.deep.equal(defaultProps.types);
         expect(searchControls.prop('units')).to.deep.equal(defaultProps.units);
+        expect(searchControls.prop('onChange')).to.deep.equal(defaultProps.changeFilters);
       });
 
       it('renders AvailabilityView with correct props', () => {
@@ -147,7 +150,7 @@ describe('pages/search/SearchPageContainer', () => {
       it('renders SearchControls with correct props', () => {
         const searchControls = wrapper.find(SearchControls);
         expect(searchControls).to.have.length(1);
-        expect(searchControls.prop('initialValues')).to.deep.equal(searchFilters);
+        expect(searchControls.prop('values')).to.deep.equal(searchFilters);
       });
 
       describe('ResourceDailyReportButton', () => {
@@ -159,47 +162,57 @@ describe('pages/search/SearchPageContainer', () => {
   });
 
   describe('componentDidMount', () => {
-    it('fetches resources using search filters', () => {
-      const fetchResources = simple.mock();
-      const instance = getWrapper({ fetchResources }).instance();
-      instance.componentDidMount();
-      expect(fetchResources.callCount).to.equal(1);
-      expect(fetchResources.lastCall.arg).to.deep.equal(searchFilters);
-    });
-  });
+    let changeFilters;
+    let fetchResources;
 
-  describe('componentWillUpdate', () => {
-    describe('when searchFilters prop changes', () => {
-      const fetchResources = simple.mock();
-      const nextProps = {
-        searchFilters: {
-          ...searchFilters,
-          date: '2016-12-13',
-          search: 'new search',
-          isFavorite: 'true',
-        },
+    beforeEach(() => {
+      changeFilters = simple.mock();
+      fetchResources = simple.mock();
+    });
+
+    afterEach(() => {
+      simple.restore();
+    });
+
+    function callComponentDidMount(query) {
+      const props = {
+        changeFilters,
+        fetchResources,
+        location: { query },
       };
+      const instance = getWrapper(props).instance();
+      instance.componentDidMount();
+    }
 
-      before(() => {
-        const instance = getWrapper({ fetchResources, searchFilters }).instance();
-        instance.state = searchFilters;
-        instance.componentWillUpdate(nextProps);
+    describe('when no query params in url', () => {
+      const query = {};
+
+      beforeEach(() => {
+        callComponentDidMount(query);
       });
 
-      it('fetches resources using search filters', () => {
+      it('fetches resources using decamelized search filters', () => {
         expect(fetchResources.callCount).to.equal(1);
-        expect(fetchResources.lastCall.arg).to.deep.equal(nextProps.searchFilters);
+        const expectedArg = decamelizeKeys(searchFilters);
+        expect(fetchResources.lastCall.arg).to.deep.equal(expectedArg);
+      });
+
+      it('does not change filters', () => {
+        expect(changeFilters.callCount).to.equal(0);
       });
     });
 
-    describe('when searchFilters prop does not change', () => {
-      const fetchResources = simple.mock();
-      const nextProps = { searchFilters };
+    describe('when query params in url', () => {
+      const query = { is_favorite: 'true' };
 
-      before(() => {
-        const instance = getWrapper({ fetchResources, searchFilters }).instance();
-        instance.state = searchFilters;
-        instance.componentWillUpdate(nextProps);
+      beforeEach(() => {
+        callComponentDidMount(query);
+      });
+
+      it('changes filters using camelized query params', () => {
+        expect(changeFilters.callCount).to.equal(1);
+        const expectedArg = camelizeKeys(query);
+        expect(changeFilters.lastCall.arg).to.deep.equal(expectedArg);
       });
 
       it('does not fetch resources', () => {
@@ -208,28 +221,116 @@ describe('pages/search/SearchPageContainer', () => {
     });
   });
 
-  describe('handleDateChange', () => {
-    const newDate = '2016-12-13';
-    let browserHistoryMock;
+  describe('componentWillUpdate', () => {
     let instance;
+    let fetchMock;
+    let throttledFetchMock;
 
-    before(() => {
-      browserHistoryMock = simple.mock(browserHistory, 'push');
+    beforeEach(() => {
       instance = getWrapper({ searchFilters }).instance();
-      instance.handleDateChange(newDate);
+      fetchMock = simple.mock(instance, 'fetch');
+      throttledFetchMock = simple.mock(instance, 'throttledFetch');
     });
 
-    after(() => {
+    afterEach(() => {
       simple.restore();
     });
 
-    it('changes the url with current search filters and new date', () => {
-      const actualPath = browserHistoryMock.lastCall.args[0];
-      const expectedFilters = decamelizeKeys({ ...searchFilters, date: newDate });
-      const expectedPath = `/?${queryString.stringify(expectedFilters)}`;
+    describe('when searchFilters prop changes', () => {
+      it('fetches resources using search filters', () => {
+        const nextProps = {
+          searchFilters: {
+            ...searchFilters,
+            date: '2016-12-13',
+          },
+        };
+        instance.componentWillUpdate(nextProps);
+        expect(fetchMock.callCount).to.equal(1);
+        expect(fetchMock.lastCall.arg).to.deep.equal(nextProps.searchFilters);
+        expect(throttledFetchMock.callCount).to.equal(0);
+      });
 
-      expect(browserHistoryMock.callCount).to.equal(1);
-      expect(actualPath).to.equal(expectedPath);
+      it('uses throttledFetch when search field changes', () => {
+        const nextProps = {
+          searchFilters: {
+            ...searchFilters,
+            search: 'new search',
+          },
+        };
+        instance.componentWillUpdate(nextProps);
+        expect(throttledFetchMock.callCount).to.equal(1);
+        expect(throttledFetchMock.lastCall.arg).to.deep.equal(nextProps.searchFilters);
+        expect(fetchMock.callCount).to.equal(0);
+      });
+    });
+
+    describe('when searchFilters prop does not change', () => {
+      const nextProps = { searchFilters };
+
+      it('does not fetch resources', () => {
+        instance.componentWillUpdate(nextProps);
+        expect(fetchMock.callCount).to.equal(0);
+        expect(throttledFetchMock.callCount).to.equal(0);
+      });
+    });
+  });
+
+  describe('fetch', () => {
+    let replaceUrlMock;
+
+    beforeEach(() => {
+      replaceUrlMock = simple.mock(browserHistory, 'replace');
+    });
+
+    afterEach(() => {
+      simple.restore();
+    });
+
+    it('fetches resources with decamelized filters', () => {
+      const fetchResources = simple.mock();
+      const instance = getWrapper({ fetchResources }).instance();
+      const filters = {
+        isFavorite: 'true',
+        search: 'search text',
+      };
+      instance.fetch(filters);
+
+      expect(fetchResources.callCount).to.equal(1);
+      expect(fetchResources.lastCall.arg).to.deep.equal({
+        is_favorite: 'true',
+        search: 'search text',
+      });
+    });
+
+    it('replaces url with correct filters', () => {
+      const fetchResources = simple.mock();
+      const instance = getWrapper({ fetchResources }).instance();
+      const filters = {
+        isFavorite: 'true',
+        search: 'search text',
+      };
+      instance.fetch(filters);
+
+      const expectedFilters = decamelizeKeys(filters);
+      const expectedPath = `/?${queryString.stringify(expectedFilters)}`;
+      expect(replaceUrlMock.callCount).to.equal(1);
+      expect(replaceUrlMock.lastCall.arg).to.equal(expectedPath);
+    });
+  });
+
+  describe('handleDateChange', () => {
+    it('calls changeFilters with new date', () => {
+      const newDate = '2016-12-13';
+      const changeFilters = simple.mock();
+      const instance = getWrapper({ changeFilters, searchFilters }).instance();
+      instance.handleDateChange(newDate);
+
+      expect(changeFilters.callCount).to.equal(1);
+      expect(changeFilters.lastCall.arg).to.deep.equal({
+        ...searchFilters,
+        date: newDate,
+      });
+      simple.restore();
     });
   });
 });
