@@ -16,6 +16,7 @@ describe('pages/resource/ResourcePageContainer', () => {
     isLoaded: true,
     params: { id: 'some-di' },
     resource: { id: 'r-1' },
+    resourceSearchUrl: '/?search=room',
     showResourceImages: () => null,
     unit: { name: { fi: 'unit name' } },
   };
@@ -39,6 +40,7 @@ describe('pages/resource/ResourcePageContainer', () => {
         expect(page.prop('date')).to.equal(defaults.date);
         expect(page.prop('hideResourceImages')).to.equal(defaults.hideResourceImages);
         expect(page.prop('showResourceImages')).to.equal(defaults.showResourceImages);
+        expect(page.prop('resourceSearchUrl')).to.equal(defaults.resourceSearchUrl);
       });
     });
 

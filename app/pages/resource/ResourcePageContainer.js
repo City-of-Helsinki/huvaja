@@ -22,6 +22,7 @@ export class UnconnectedResourcePageContainer extends Component {
       id: PropTypes.string.isRequired,
     }).isRequired,
     resource: PropTypes.object,
+    resourceSearchUrl: PropTypes.string.isRequired,
     showResourceImages: PropTypes.func.isRequired,
     unit: PropTypes.object,
   };
@@ -61,6 +62,7 @@ export class UnconnectedResourcePageContainer extends Component {
         hideResourceImages={this.props.hideResourceImages}
         onDateChange={this.handleDateChange}
         resource={this.props.resource}
+        resourceSearchUrl={this.props.resourceSearchUrl}
         showResourceImages={this.props.showResourceImages}
         unit={this.props.unit}
       />

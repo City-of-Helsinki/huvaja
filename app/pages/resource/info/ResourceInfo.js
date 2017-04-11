@@ -12,18 +12,19 @@ import WrappedText from 'shared/wrapped-text';
 
 ResourceInfo.propTypes = {
   resource: PropTypes.object.isRequired,
+  resourceSearchUrl: PropTypes.string.isRequired,
   showResourceImages: PropTypes.func.isRequired,
   unit: PropTypes.object.isRequired,
 };
 
-function renderHeader(unit, resource) {
+function renderHeader(unit, resource, resourceSearchUrl) {
   const streetAddress = unit.streetAddress ? unit.streetAddress.fi : '';
   const zip = unit.addressZip;
   const city = capitalize(unit.municipality);
   const address = `${streetAddress}, ${zip} ${city}`;
   return (
     <header>
-      <Link className="btn btn-sm back-link" to="/">{'<< Tilahaku'}</Link>
+      <Link className="btn btn-sm back-link" to={resourceSearchUrl}>{'<< Tilahaku'}</Link>
       <h2 className="unit-name">{unit.name.fi}</h2>
       <h1 className="resource-name">{resource.name.fi}</h1>
       <h4 className="unit-address">
@@ -34,13 +35,13 @@ function renderHeader(unit, resource) {
 }
 
 
-function ResourceInfo({ resource, showResourceImages, unit }) {
+function ResourceInfo({ resource, resourceSearchUrl, showResourceImages, unit }) {
   const showImages = () => showResourceImages(resource.id);
   return (
     <div className="resource-info">
       <Row>
         <Col xs={12} sm={8} md={9}>
-          {renderHeader(unit, resource, showResourceImages)}
+          {renderHeader(unit, resource, resourceSearchUrl)}
           <section className="resource-details">
             <aside>
               <div className="details-row">

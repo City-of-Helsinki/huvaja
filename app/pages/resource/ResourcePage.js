@@ -9,6 +9,7 @@ ResourcePage.propTypes = {
   hideResourceImages: PropTypes.func.isRequired,
   onDateChange: PropTypes.func.isRequired,
   resource: PropTypes.object.isRequired,
+  resourceSearchUrl: PropTypes.string.isRequired,
   showResourceImages: PropTypes.func.isRequired,
   unit: PropTypes.object.isRequired,
 };
@@ -18,6 +19,7 @@ export default function ResourcePage(props) {
       <ResourceInfo
         hideResourceImages={props.hideResourceImages}
         resource={props.resource}
+        resourceSearchUrl={props.resourceSearchUrl}
         showResourceImages={props.showResourceImages}
         unit={props.unit}
       />
