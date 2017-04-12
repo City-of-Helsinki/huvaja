@@ -8,6 +8,7 @@ import ReduxFormField from 'shared/form-fields/ReduxFormField';
 import CateringSection from './catering';
 
 const requiredFields = [
+  'time',
   'eventName',
   'hostName',
   'numberOfParticipants',
@@ -56,6 +57,12 @@ export function UnconnectedReservationForm(props) {
         {props.hasTime && <div>
           <Panel bsStyle="primary" header={<h4>Uusi varaus</h4>}>
             <h3>Perustiedot</h3>
+            {renderField(
+              'time',
+              'date-time-range',
+              'Varauksen aika',
+              { required: true },
+            )}
             {renderField(
               'resource',
               'text',
