@@ -1,80 +1,57 @@
 import moment from 'moment';
 import React, { PropTypes } from 'react';
-import HelpBlock from 'react-bootstrap/lib/HelpBlock';
-import { browserHistory } from 'react-router';
 
-import { slotSize } from 'shared/availability-view';
 import SingleAvailabilityView from 'shared/availability-view/SingleAvailabilityView';
 
 export default class SelectableSingleAvailabilityView extends React.Component {
   static propTypes = {
     date: PropTypes.string.isRequired,
-    help: PropTypes.string,
     onChange: PropTypes.func.isRequired,
     onDateChange: PropTypes.func.isRequired,
     resource: PropTypes.shape({
       id: PropTypes.string.isRequired,
     }).isRequired,
-    value: PropTypes.oneOfType([PropTypes.object, PropTypes.oneOf([''])]),
+    value: PropTypes.shape({
+      begin: PropTypes.shape({
+        date: PropTypes.string.isRequired,
+        time: PropTypes.string,
+      }).isRequired,
+      end: PropTypes.shape({
+        date: PropTypes.string.isRequired,
+        time: PropTypes.string,
+      }).isRequired,
+    }).isRequired,
   };
 
-  constructor(props) {
-    super(props);
-    this.handleReservationSlotClick = this.handleReservationSlotClick.bind(this);
-    const query = browserHistory.getCurrentLocation().query;
-    if (query.begin && query.begin.indexOf('T') !== -1) {
-      this.state = {
-        mode: 'end',
-        selection: {
-          begin: query.begin,
-          end: moment(query.begin).add(slotSize, 'minutes').format(),
-        },
-      };
-    } else {
-      this.state = {
-        mode: 'begin',
-        selection: undefined,
+  getSelection() {
+    const { begin, end } = this.props.value;
+    if (begin.time && end.time) {
+      return {
+        begin: `${begin.date}T${begin.time}:00.000`,
+        end: `${end.date}T${end.time}:00.000`,
       };
     }
+    return null;
   }
 
-  componentDidMount() {
-    if (this.state.selection) {
-      this.props.onChange(this.state.selection);
-    }
+  setSelection(selection) {
+    this.props.onChange({
+      begin: {
+        date: moment(selection.begin).format('YYYY-MM-DD'),
+        time: moment(selection.begin).format('HH:mm'),
+      },
+      end: {
+        date: moment(selection.end).format('YYYY-MM-DD'),
+        time: moment(selection.end).format('HH:mm'),
+      },
+    });
   }
 
-  componentWillReceiveProps(nextProps) {
-    const shouldReset = (
-      this.props.date !== nextProps.date || (
-        this.props.value !== nextProps.value &&
-        nextProps.value === ''
-      )
-    );
-    if (shouldReset) {
-      this.setState({ mode: 'begin', selection: undefined });
-    }
-  }
-
-  handleReservationSlotClick(slot) {
-    if (this.state.mode === 'begin') {
-      const selection = { begin: slot.begin, end: slot.end };
-      this.setState({ mode: 'end', selection });
-      this.props.onChange(selection);
-    } else {
-      if (this.state.selection.begin >= slot.end) return;
-      const selection = { begin: this.state.selection.begin, end: slot.end };
-      this.setState({ mode: 'begin', selection });
-      this.props.onChange(selection);
-    }
+  handleReservationSlotClick = (slot) => {
+    this.setSelection(slot);
   }
 
   render() {
-    const help = this.props.help || (
-      this.state.mode === 'end'
-      ? 'Valitse loppumisaika'
-      : (this.state.selection === undefined && 'Valitse alkamisaika')
-    );
     return (
       <div className="selectable-availability-view">
         <SingleAvailabilityView
@@ -82,9 +59,8 @@ export default class SelectableSingleAvailabilityView extends React.Component {
           resource={this.props.resource.id}
           onReservationSlotClick={this.handleReservationSlotClick}
           onDateChange={this.props.onDateChange}
-          selection={this.state.selection}
+          selection={this.getSelection()}
         />
-        {help && <HelpBlock>{help}</HelpBlock>}
       </div>
     );
   }
