@@ -2,7 +2,7 @@ import { camelizeKeys, decamelizeKeys } from 'humps';
 import flatten from 'lodash/flatten';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
-import throttle from 'lodash/throttle';
+import debounce from 'lodash/debounce';
 import React, { Component, PropTypes } from 'react';
 import Loader from 'react-loader';
 import { connect } from 'react-redux';
@@ -20,7 +20,7 @@ export class UnconnectedSearchPageContainer extends Component {
   constructor(props) {
     super(props);
     this.handleDateChange = this.handleDateChange.bind(this);
-    this.throttledFetch = throttle(this.fetch, 500, { leading: false });
+    this.throttledFetch = debounce(this.fetch, 500, { leading: false });
   }
 
   componentDidMount() {
