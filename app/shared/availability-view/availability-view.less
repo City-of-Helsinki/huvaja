@@ -3,9 +3,12 @@
   @resource-row-height: 50px;
   @slot-border: 1px solid white;
   @hovered-siblings-color: @gray-light;
-  display: flex;
-  justify-content: space-between;
   width: 100%;
+
+  .columns {
+    display: flex;
+    justify-content: space-between;
+  }
 
   &-single {
     display: block;
@@ -29,7 +32,7 @@
       width: ~"calc(100% - 122px)";
     }
   }
-  .top-left, .date-selector {
+  .date-selector {
     display: flex;
     align-items: center;
     height: 60px;

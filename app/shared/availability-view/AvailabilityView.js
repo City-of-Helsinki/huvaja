@@ -38,22 +38,23 @@ export default class AvailabilityView extends React.Component {
   render() {
     return (
       <div className="availability-view">
-        <div className="left">
-          <div className="top-left" />
-          <Sidebar
-            date={this.props.date}
-            groups={this.props.groups}
-            highlightedResourceId={this.state.highlightedResourceId}
-          />
-        </div>
-        <div className="right">
-          <DateSelector value={this.props.date} onChange={this.props.onDateChange} />
-          <TimelineGroups
-            date={this.props.date}
-            groups={this.props.groups}
-            onAvailabilityViewMouseEnter={this.handleAvailabilityTimelineMouseEnter}
-            onAvailabilityViewMouseLeave={this.handleAvailabilityTimelineMouseLeave}
-          />
+        <DateSelector value={this.props.date} onChange={this.props.onDateChange} />
+        <div className="columns">
+          <div className="left">
+            <Sidebar
+              date={this.props.date}
+              groups={this.props.groups}
+              highlightedResourceId={this.state.highlightedResourceId}
+            />
+          </div>
+          <div className="right">
+            <TimelineGroups
+              date={this.props.date}
+              groups={this.props.groups}
+              onAvailabilityViewMouseEnter={this.handleAvailabilityTimelineMouseEnter}
+              onAvailabilityViewMouseLeave={this.handleAvailabilityTimelineMouseLeave}
+            />
+          </div>
         </div>
       </div>
     );
