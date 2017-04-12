@@ -32,7 +32,7 @@
   .top-left, .date-selector {
     display: flex;
     align-items: center;
-    height: @line-height-computed;
+    height: 60px;
     margin-bottom: @padding-base-vertical;
     background-color: @brand-primary;
     color: white;
@@ -41,7 +41,6 @@
   }
   .date-selector {
     justify-content: space-between;
-    text-transform: lowercase;
 
     .previous, .next {
       color: white;
@@ -49,21 +48,52 @@
       text-overflow: ellipsis;
       overflow-x: hidden;
       white-space: nowrap;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+
+      &:hover {
+        .arrow {
+          text-decoration: none;
+        }
+        .arrow-text {
+          text-decoration: underline;
+        }
+      }
+
+      .arrow {
+        font-size: 40px;
+      }
+      .arrow-left {
+        margin-right: 8px;
+      }
+      .arrow-right {
+        margin-left: 8px;
+      }
     }
   }
 
   .date-picker {
-    border: none;
+    .input-size(@input-height-base; @padding-base-vertical; @padding-base-horizontal; @font-size-base; @line-height-base; @input-border-radius);
+    border-color: white;
     color: black;
     cursor: pointer;
     input {
       background: none;
       color: white;
       cursor: pointer;
-      text-align: center;
     }
-    .react-date-field__calendar-icon {
-      display: none;
+    .react-date-field__calendar-icon,
+    .react-date-field__calendar-icon:hover {
+      border-color: white;
+
+      &:before, &:after {
+        background-color: white;
+      }
+
+      .react-date-field__calendar-icon-inner{
+        background-color: white;
+      }
     }
   }
   .group-info {

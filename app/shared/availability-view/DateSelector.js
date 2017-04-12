@@ -1,5 +1,6 @@
-import React, { PropTypes } from 'react';
+import FontAwesome from 'react-fontawesome';
 import moment from 'moment';
+import React, { PropTypes } from 'react';
 
 import DatePicker from 'shared/date-picker';
 
@@ -33,7 +34,8 @@ export default class DateSelector extends React.Component {
     return (
       <div className="date-selector">
         <a className="previous" onClick={this.handlePreviousClick} tabIndex="0">
-          Edellinen päivä
+          <FontAwesome className="arrow arrow-left" name="caret-left" />
+          <span className="arrow-text">Edellinen päivä</span>
         </a>
         <div className="current-value" >
           <DatePicker
@@ -43,7 +45,8 @@ export default class DateSelector extends React.Component {
           />
         </div>
         <a className="next" onClick={this.handleNextClick} tabIndex="0">
-          Seuraava päivä
+          <span className="arrow-text">Seuraava päivä</span>
+          <FontAwesome className="arrow arrow-right" name="caret-right" />
         </a>
       </div>
     );
