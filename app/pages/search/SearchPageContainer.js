@@ -12,43 +12,73 @@ import uiActions from 'actions/uiActions';
 import { fetchResources } from 'api/actions';
 import ResourceDailyReportButton from 'shared/resource-daily-report-button';
 import AvailabilityView from 'shared/availability-view';
-import locationUtils from 'utils/locationUtils';
+import resourceSearchUtils from 'utils/resourceSearchUtils';
+import timeUtils from 'utils/timeUtils';
 import SearchControls from './search-controls';
 import selector from './searchPageSelector';
+
+const DATE_FORMAT = 'YYYY-MM-DD';
+const TIME_FORMAT = 'HH:mm';
+
+function getAvailableFilters(availableBetween) {
+  if (!availableBetween) return {};
+  const parts = availableBetween.split(',');
+  if (parts.length !== 2) return {};
+  const start = timeUtils.parseDateTime(parts[0]);
+  const end = timeUtils.parseDateTime(parts[1]);
+  if (!start || !end) return {};
+  return {
+    availableStartDate: start.format(DATE_FORMAT),
+    availableStartTime: start.format(TIME_FORMAT),
+    availableEndDate: end.format(DATE_FORMAT),
+    availableEndTime: end.format(TIME_FORMAT),
+  };
+}
+
+function parseUrlFilters(queryParams) {
+  const { availableBetween, ...regular } = camelizeKeys(queryParams);
+  return { ...getAvailableFilters(availableBetween), ...regular };
+}
 
 export class UnconnectedSearchPageContainer extends Component {
   constructor(props) {
     super(props);
     this.handleDateChange = this.handleDateChange.bind(this);
-    this.throttledFetch = debounce(this.fetch, 500, { leading: false });
+    this.throttledFetchAndChangeUrl = debounce(
+      this.fetchAndChangeUrl,
+      500,
+      { leading: false }
+    );
   }
 
   componentDidMount() {
-    const urlFilters = { ...this.props.location.query };
+    const urlFilters = parseUrlFilters({ ...this.props.location.query });
     if (isEmpty(urlFilters)) {
-      this.props.fetchResources(
-        decamelizeKeys(this.props.searchFilters)
-      );
+      this.fetch(this.props.searchFilters);
     } else {
-      this.props.changeFilters(
-        camelizeKeys(urlFilters)
-      );
+      this.props.changeFilters(urlFilters);
     }
   }
 
   componentWillUpdate(nextProps) {
-    if (!isEqual(this.props.searchFilters, nextProps.searchFilters)) {
+    if (this.haveEffectiveFiltersChanged(nextProps)) {
       if (this.shouldThrottle(nextProps)) {
-        this.throttledFetch(nextProps.searchFilters);
+        this.throttledFetchAndChangeUrl(nextProps.searchFilters);
       } else {
-        this.fetch(nextProps.searchFilters);
+        this.fetchAndChangeUrl(nextProps.searchFilters);
       }
     }
   }
 
   fetch(filters) {
-    this.props.fetchResources(decamelizeKeys(filters));
-    const url = locationUtils.getResourceSearchUrl(filters);
+    const effectiveFilters = resourceSearchUtils.getEffectiveFilters(filters);
+    const decamelized = decamelizeKeys(effectiveFilters);
+    this.props.fetchResources(decamelized);
+  }
+
+  fetchAndChangeUrl(filters) {
+    this.fetch(filters);
+    const url = resourceSearchUtils.getUrl(filters);
     browserHistory.replace(url);
   }
 
@@ -57,8 +87,19 @@ export class UnconnectedSearchPageContainer extends Component {
     this.props.changeFilters(filters);
   }
 
+  haveEffectiveFiltersChanged(nextProps) {
+    const oldFilters = resourceSearchUtils.getEffectiveFilters(this.props.searchFilters);
+    const newFilters = resourceSearchUtils.getEffectiveFilters(nextProps.searchFilters);
+    return !isEqual(oldFilters, newFilters);
+  }
+
   shouldThrottle(nextProps) {
-    const throttleFilters = ['people', 'search'];
+    const throttleFilters = [
+      'people',
+      'search',
+      'availableStartTime',
+      'availableEndTime',
+    ];
     for (const filter of throttleFilters) {
       const changed = !isEqual(
         this.props.searchFilters[filter],

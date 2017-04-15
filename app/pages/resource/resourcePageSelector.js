@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { createSelector, createStructuredSelector } from 'reselect';
 
-import locationUtils from 'utils/locationUtils';
+import resourceSearchUtils from 'utils/resourceSearchUtils';
 
 function resourcesSelector(state) {
   return state.data.resources;
@@ -20,7 +20,7 @@ function beginSelector(state) {
 }
 
 function resourceSearchUrlSelector(state) {
-  return locationUtils.getResourceSearchUrl(state.searchPage.searchFilters);
+  return resourceSearchUtils.getUrl(state.searchPage.searchFilters);
 }
 
 const dateSelector = createSelector(
