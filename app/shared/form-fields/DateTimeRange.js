@@ -15,6 +15,7 @@ export default class DateTimeRange extends React.Component {
       }).isRequired,
     }).isRequired,
     id: PropTypes.string.isRequired,
+    noLabels: PropTypes.bool,
   };
 
   handleDateChange = (date) => {
@@ -50,19 +51,19 @@ export default class DateTimeRange extends React.Component {
           componentClass={DatePicker}
           controlProps={{ onChange: this.handleDateChange, value: value.begin.date }}
           id={`${this.props.id}-date`}
-          label={`Päivä${requiredPostfix}`}
+          label={this.props.noLabels ? '' : `Päivä${requiredPostfix}`}
         />
         <Field
           componentClass={Time}
           controlProps={{ onChange: this.handleStartTimeChange, value: value.begin.time }}
           id={`${this.props.id}-begin-time`}
-          label={`Alkaa${requiredPostfix}`}
+          label={this.props.noLabels ? '' : `Alkaa${requiredPostfix}`}
         />
         <Field
           componentClass={Time}
           controlProps={{ onChange: this.handleEndTimeChange, value: value.end.time }}
           id={`${this.props.id}-end-time`}
-          label={`Päättyy${requiredPostfix}`}
+          label={this.props.noLabels ? '' : `Päättyy${requiredPostfix}`}
         />
       </div>
     );
