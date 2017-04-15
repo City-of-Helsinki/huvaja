@@ -35,7 +35,7 @@ function getAvailableFilters(availableBetween) {
   };
 }
 
-function parseUrlFilters(queryParams) {
+export function parseUrlFilters(queryParams) {
   const { availableBetween, ...regular } = camelizeKeys(queryParams);
   return { ...getAvailableFilters(availableBetween), ...regular };
 }
