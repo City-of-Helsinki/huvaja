@@ -15,6 +15,7 @@ function getWrapper(props) {
       value: { begin: {}, end: {} },
     },
     id: '1234',
+    noLabels: false,
   };
   return shallow(<DateTimeRange {...defaults} {...props} />);
 }
@@ -31,6 +32,18 @@ describe('shared/form-fields/DateTimeRange', () => {
     expect(fields.at(0).prop('componentClass')).to.equal(DatePicker);
     expect(fields.at(1).prop('componentClass')).to.equal(Time);
     expect(fields.at(2).prop('componentClass')).to.equal(Time);
+  });
+
+  it('renders labels only when noLabels = false', () => {
+    const fields = getWrapper().find(Field);
+    expect(fields.at(0).prop('label')).to.equal('Päivä');
+    expect(fields.at(1).prop('label')).to.equal('Alkaa');
+    expect(fields.at(2).prop('label')).to.equal('Päättyy');
+
+    const fieldsWithoutLabels = getWrapper({ noLabels: true }).find(Field);
+    expect(fieldsWithoutLabels.at(0).prop('label')).to.equal('');
+    expect(fieldsWithoutLabels.at(1).prop('label')).to.equal('');
+    expect(fieldsWithoutLabels.at(2).prop('label')).to.equal('');
   });
 
   describe('handleDateChange', () => {
