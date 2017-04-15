@@ -3,8 +3,13 @@ import moment from 'moment';
 import { handleActions } from 'redux-actions';
 
 export function getInitialState() {
+  const today = moment().format('YYYY-MM-DD');
   return {
-    date: moment().format('YYYY-MM-DD'),
+    availableStartDate: today,
+    availableStartTime: '',
+    availableEndDate: today,
+    availableEndTime: '',
+    date: today,
     equipment: '',
     isFavorite: '',
     people: '',

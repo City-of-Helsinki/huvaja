@@ -8,7 +8,7 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
-import DatePicker from 'shared/date-picker';
+import DateTimeRange from 'shared/form-fields/DateTimeRange';
 import LabelSelect from 'shared/form-fields/label-select/LabelSelect';
 
 function getUnitOption(id, label) {
@@ -37,6 +37,10 @@ class SearchControls extends Component {
     onChange: PropTypes.func.isRequired,
     types: PropTypes.object.isRequired,
     values: PropTypes.shape({
+      availableStartDate: PropTypes.string.isRequired,
+      availableStartTime: PropTypes.string.isRequired,
+      availableEndDate: PropTypes.string.isRequired,
+      availableEndTime: PropTypes.string.isRequired,
       date: PropTypes.string.isRequired,
       equipment: PropTypes.string.isRequired,
       isFavorite: PropTypes.string.isRequired,
@@ -50,10 +54,24 @@ class SearchControls extends Component {
 
   constructor(props) {
     super(props);
+    this.handleAvailableBetweenChange = this.handleAvailableBetweenChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.toggleAdvanced = this.toggleAdvanced.bind(this);
     this.state = {
       showAdvanced: false,
+    };
+  }
+
+  getAvailableBetweenValue() {
+    return {
+      begin: {
+        date: this.props.values.availableStartDate,
+        time: this.props.values.availableStartTime,
+      },
+      end: {
+        date: this.props.values.availableEndDate,
+        time: this.props.values.availableEndTime,
+      },
     };
   }
 
@@ -71,6 +89,15 @@ class SearchControls extends Component {
     return sortBy(options, 'name');
   }
 
+  handleAvailableBetweenChange(value) {
+    this.handleChange({
+      availableStartDate: value.begin.date,
+      availableStartTime: value.begin.time,
+      availableEndDate: value.end.date,
+      availableEndTime: value.end.time,
+    });
+  }
+
   handleChange(updatedFilter) {
     this.props.onChange(updatedFilter);
   }
@@ -84,11 +111,18 @@ class SearchControls extends Component {
       <div className="advanced-controls">
         <Row>
           <Col md={4}>
-            <FormGroup className="date-control-group" controlId="date-control-group">
-              <ControlLabel>Päivä</ControlLabel>
-              <DatePicker
-                onChange={date => this.handleChange({ date })}
-                value={this.props.values.date}
+            <FormGroup
+              className="available-between-control-group"
+              controlId="available-between-control-group"
+            >
+              <ControlLabel>Vapaana aikavälille</ControlLabel>
+              <DateTimeRange
+                controlProps={{
+                  onChange: this.handleAvailableBetweenChange,
+                  value: this.getAvailableBetweenValue(),
+                }}
+                id="available-between"
+                noLabels
               />
             </FormGroup>
           </Col>
