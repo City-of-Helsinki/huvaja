@@ -23,6 +23,10 @@ describe('pages/search/searchPageSelector', () => {
     't-2': { id: 't-2', name: { fi: 'Type 2' } },
   };
   const searchFilters = {
+    availableStartDate: '2016-12-12',
+    availableStartTime: '',
+    availableEndDate: '2016-12-12',
+    availableEndTime: '',
     date: '2016-12-12',
     equipment: '',
     isFavorite: '',

@@ -39,6 +39,7 @@ function getUrl(filters) {
 }
 
 export default {
+  getAvailableBetween,
   getEffectiveFilters,
   getUrl,
 };
