@@ -6,11 +6,15 @@ import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import simple from 'simple-mock';
 
-import DatePicker from 'shared/date-picker';
+import DateTimeRange from 'shared/form-fields/DateTimeRange';
 import SearchControls from './SearchControls';
 
 describe('pages/search/search-controls/SearchControls', () => {
   const defaultValues = {
+    availableStartDate: '2016-12-12',
+    availableStartTime: '',
+    availableEndDate: '2016-12-12',
+    availableEndTime: '',
     date: '2016-12-12',
     equipment: '',
     isFavorite: '',
@@ -107,24 +111,39 @@ describe('pages/search/search-controls/SearchControls', () => {
       });
     });
 
-    describe('date control', () => {
-      function getDateControlWrapper(values) {
+    describe('available between control', () => {
+      function getControlWrapper(values) {
         const wrapper = getWrapper({
           values: Object.assign({}, defaultValues, values),
         });
-        return wrapper.find('[controlId="date-control-group"]');
+        return wrapper.find('[controlId="available-between-control-group"]');
       }
 
       it('has correct label', () => {
-        const controlLabel = getDateControlWrapper().find(ControlLabel);
-        expect(controlLabel.prop('children')).to.equal('Päivä');
+        const controlLabel = getControlWrapper().find(ControlLabel);
+        expect(controlLabel.prop('children')).to.equal('Vapaana aikavälille');
       });
 
-      it('renders DatePicker with correct value', () => {
-        const date = '2016-12-12';
-        const datePicker = getDateControlWrapper({ date }).find(DatePicker);
-        expect(datePicker).to.have.length(1);
-        expect(datePicker.prop('value')).to.equal(date);
+      it('renders DateTimeRange with correct value', () => {
+        const values = {
+          availableStartDate: '2016-12-13',
+          availableStartTime: '09:00',
+          availableEndDate: '2016-12-13',
+          availableEndTime: '16:30',
+        };
+        const range = getControlWrapper(values).find(DateTimeRange);
+        expect(range).to.have.length(1);
+        const expected = {
+          begin: {
+            date: values.availableStartDate,
+            time: values.availableStartTime,
+          },
+          end: {
+            date: values.availableEndDate,
+            time: values.availableEndTime,
+          },
+        };
+        expect(range.prop('controlProps').value).to.deep.equal(expected);
       });
     });
 
@@ -302,6 +321,32 @@ describe('pages/search/search-controls/SearchControls', () => {
       instance.handleChange(filters);
       expect(onChange.callCount).to.equal(1);
       expect(onChange.lastCall.arg).to.deep.equal(filters);
+    });
+  });
+
+  describe('handleAvailableBetweenChange', () => {
+    it('calls onChange with correct filters', () => {
+      const onChange = simple.mock();
+      const instance = getWrapper({ onChange }).instance();
+      const filters = {
+        begin: {
+          date: '2016-12-13',
+          time: '09:00',
+        },
+        end: {
+          date: '2016-12-13',
+          time: '16:30',
+        },
+      };
+      instance.handleAvailableBetweenChange(filters);
+      expect(onChange.callCount).to.equal(1);
+      const expected = {
+        availableStartDate: filters.begin.date,
+        availableStartTime: filters.begin.time,
+        availableEndDate: filters.end.date,
+        availableEndTime: filters.end.time,
+      };
+      expect(onChange.lastCall.arg).to.deep.equal(expected);
     });
   });
 });
