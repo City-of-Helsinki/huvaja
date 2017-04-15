@@ -10,6 +10,24 @@ describe('state/reducers/searchFiltersReducer', () => {
       return searchFiltersReducer(undefined, { type: 'NOOP' });
     }
 
+    it('availableStartDate is the current date', () => {
+      const expected = moment().format('YYYY-MM-DD');
+      expect(getInitial().availableStartDate).to.equal(expected);
+    });
+
+    it('availableStartTime is an empty string', () => {
+      expect(getInitial().availableStartTime).to.equal('');
+    });
+
+    it('availableEndDate is the current date', () => {
+      const expected = moment().format('YYYY-MM-DD');
+      expect(getInitial().availableEndDate).to.equal(expected);
+    });
+
+    it('availableEndTime is an empty string', () => {
+      expect(getInitial().availableEndTime).to.equal('');
+    });
+
     it('date is the current date', () => {
       const expected = moment().format('YYYY-MM-DD');
       expect(getInitial().date).to.equal(expected);
