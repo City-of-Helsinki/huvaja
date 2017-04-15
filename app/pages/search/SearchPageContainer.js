@@ -40,10 +40,17 @@ function parseUrlFilters(queryParams) {
   return { ...getAvailableFilters(availableBetween), ...regular };
 }
 
+function didAvailableBetweenChange(updatedFilters) {
+  if (!updatedFilters.availableStartDate) return false;
+  const effective = resourceSearchUtils.getEffectiveFilters(updatedFilters);
+  return effective.availableBetween && effective.availableBetween.length > 0;
+}
+
 export class UnconnectedSearchPageContainer extends Component {
   constructor(props) {
     super(props);
     this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleFilterChange = this.handleFilterChange.bind(this);
     this.throttledFetchAndChangeUrl = debounce(
       this.fetchAndChangeUrl,
       500,
@@ -87,10 +94,27 @@ export class UnconnectedSearchPageContainer extends Component {
     this.props.changeFilters(filters);
   }
 
+  handleFilterChange(updatedFilters) {
+    const filters = { ...updatedFilters };
+    const shouldChangeDate = (
+      didAvailableBetweenChange(updatedFilters) &&
+      this.isDateOutsideAvailableRange(updatedFilters)
+    );
+    if (shouldChangeDate) {
+      filters.date = updatedFilters.availableStartDate;
+    }
+    this.props.changeFilters(filters);
+  }
+
   haveEffectiveFiltersChanged(nextProps) {
     const oldFilters = resourceSearchUtils.getEffectiveFilters(this.props.searchFilters);
     const newFilters = resourceSearchUtils.getEffectiveFilters(nextProps.searchFilters);
     return !isEqual(oldFilters, newFilters);
+  }
+
+  isDateOutsideAvailableRange({ availableStartDate, availableEndDate }) {
+    const date = this.props.searchFilters.date;
+    return date > availableEndDate || date < availableStartDate;
   }
 
   shouldThrottle(nextProps) {
@@ -113,7 +137,6 @@ export class UnconnectedSearchPageContainer extends Component {
   render() {
     const {
       availabilityGroups,
-      changeFilters,
       equipment,
       isFetching,
       resultsCount,
@@ -131,7 +154,7 @@ export class UnconnectedSearchPageContainer extends Component {
         <SearchControls
           equipment={equipment}
           values={searchFilters}
-          onChange={changeFilters}
+          onChange={this.handleFilterChange}
           units={units}
           types={types}
         />
