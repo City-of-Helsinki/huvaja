@@ -4,6 +4,7 @@ import { createAction } from 'redux-actions';
 
 import AppContainer from 'pages/AppContainer';
 import SearchPage from 'pages/search';
+import ReservationSearchPage from 'pages/reservationSearch';
 import ResourcePage from 'pages/resource';
 import store from 'state/store';
 
@@ -27,6 +28,7 @@ export default (
     <Route component={AppContainer} path="/">
       <IndexRoute component={SearchPage} {...getDispatchers('SEARCH')} />
       <Route component={ResourcePage} path="/resources/:id" {...getDispatchers('RESOURCE')} />
+      <Route component={ReservationSearchPage} path="/reservations" {...getDispatchers('RESERVATION_SEARCH')} />
     </Route>
   </Route>
 );

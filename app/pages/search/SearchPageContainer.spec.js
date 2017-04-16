@@ -74,7 +74,7 @@ describe('pages/search/SearchPageContainer', () => {
       it('renders a header with correct text', () => {
         const header = wrapper.find('h1');
         expect(header.length).to.equal(1);
-        expect(header.text()).to.equal('Hae tiloja');
+        expect(header.text()).to.equal('Tilat');
       });
 
       it('renders SearchControls with correct props', () => {
