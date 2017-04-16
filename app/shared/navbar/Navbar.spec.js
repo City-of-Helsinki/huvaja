@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import RBNavbar from 'react-bootstrap/lib/Navbar';
 import NavDropdown from 'react-bootstrap/lib/NavDropdown';
+import NavItem from 'react-bootstrap/lib/NavItem';
 import { IndexLink } from 'react-router';
 
 import Logo from 'shared/logo';
@@ -45,7 +46,34 @@ describe('shared/navbar/Navbar', () => {
     });
 
     it('displays the title of the service', () => {
-      expect(getHomeLinkWrapper().html()).to.contain('Huonevarausjärjestelmä');
+      expect(getHomeLinkWrapper().html()).to.contain('Huonevaraus');
+    });
+  });
+
+  describe('links container', () => {
+    function getPageLinksWrapper(props) {
+      return getWrapper(props).find('.links');
+    }
+
+    it('is rendered', () => {
+      const links = getPageLinksWrapper();
+      expect(links).to.have.length(1);
+    });
+
+    it('contains link to resource search page', () => {
+      const links = getPageLinksWrapper();
+      const link = links.children().at(0);
+      expect(link.prop('to')).to.equal('/');
+      const linkText = link.find(NavItem).children().text();
+      expect(linkText).to.equal('Tilat');
+    });
+
+    it('contains link to reservation search page', () => {
+      const links = getPageLinksWrapper();
+      const link = links.children().at(1);
+      expect(link.prop('to')).to.equal('/reservations');
+      const linkText = link.find(NavItem).children().text();
+      expect(linkText).to.equal('Varaukset');
     });
   });
 

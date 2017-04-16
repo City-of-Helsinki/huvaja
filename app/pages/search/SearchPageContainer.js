@@ -150,7 +150,7 @@ export class UnconnectedSearchPageContainer extends Component {
     const resourceIds = flatten(availabilityGroups.map(group => group.resources));
     return (
       <div className="search-page">
-        <h1>Hae tiloja</h1>
+        <h1>Tilat</h1>
         <SearchControls
           equipment={equipment}
           values={searchFilters}

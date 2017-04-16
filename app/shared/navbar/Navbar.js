@@ -5,6 +5,7 @@ import RBNavbar from 'react-bootstrap/lib/Navbar';
 import NavDropdown from 'react-bootstrap/lib/NavDropdown';
 import NavItem from 'react-bootstrap/lib/NavItem';
 import { IndexLink } from 'react-router';
+import { IndexLinkContainer, LinkContainer } from 'react-router-bootstrap';
 
 import Logo from 'shared/logo';
 
@@ -15,10 +16,18 @@ function Navbar(props) {
         <RBNavbar.Brand>
           <IndexLink to="/">
             <Logo />
-            Huonevarausjärjestelmä
+            Huonevaraus
           </IndexLink>
         </RBNavbar.Brand>
       </RBNavbar.Header>
+      <Nav className="links">
+        <IndexLinkContainer to="/">
+          <NavItem>Tilat</NavItem>
+        </IndexLinkContainer>
+        <LinkContainer to="/reservations">
+          <NavItem>Varaukset</NavItem>
+        </LinkContainer>
+      </Nav>
       <Nav navbar pullRight>
         {!props.user &&
           <NavItem href="/login">Kirjaudu sisään</NavItem>
