@@ -1,4 +1,3 @@
-import dragscroll from 'dragscroll';
 import moment from 'moment';
 import React, { PropTypes } from 'react';
 
@@ -11,6 +10,9 @@ export default class SingleAvailabilityView extends React.Component {
     date: PropTypes.string.isRequired,
     onDateChange: PropTypes.func.isRequired,
     onReservationSlotClick: PropTypes.func,
+    onReservationSlotMouseDown: PropTypes.func,
+    onReservationSlotMouseEnter: PropTypes.func,
+    onReservationSlotMouseUp: PropTypes.func,
     resource: PropTypes.string.isRequired,
     selection: PropTypes.shape({
       begin: PropTypes.string.isRequired,
@@ -21,10 +23,6 @@ export default class SingleAvailabilityView extends React.Component {
   constructor(props) {
     super(props);
     this.scrollToInitial = this.scrollToInitial.bind(this);
-  }
-
-  componentDidMount() {
-    dragscroll.reset();
   }
 
   scrollToInitial(component) {
@@ -49,10 +47,12 @@ export default class SingleAvailabilityView extends React.Component {
       <div className="availability-view availability-view-single">
         <DateSelector value={this.props.date} onChange={this.props.onDateChange} />
         <TimelineGroup
-          className="dragscroll"
           date={this.props.date}
           noStickyHours
           onReservationSlotClick={this.props.onReservationSlotClick}
+          onReservationSlotMouseDown={this.props.onReservationSlotMouseDown}
+          onReservationSlotMouseEnter={this.props.onReservationSlotMouseEnter}
+          onReservationSlotMouseUp={this.props.onReservationSlotMouseUp}
           ref={this.scrollToInitial}
           resources={[this.props.resource]}
           selection={this.props.selection}

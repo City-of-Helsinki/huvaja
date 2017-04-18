@@ -4,6 +4,8 @@ import { Link as RRLink } from 'react-router';
 export default class Link extends React.Component {
   static propTypes = {
     onClick: PropTypes.func.isRequired,
+    onMouseDown: PropTypes.func,
+    onMouseUp: PropTypes.func,
   };
 
   constructor(props) {
@@ -15,8 +17,12 @@ export default class Link extends React.Component {
     this.state = { down: false, preventClick: false };
   }
 
-  handleDown() {
+  handleDown(event) {
+    event.preventDefault();
     this.setState({ down: true, preventClick: false });
+    if (this.props.onMouseDown) {
+      this.props.onMouseDown();
+    }
   }
 
   handleMove() {
@@ -27,6 +33,9 @@ export default class Link extends React.Component {
 
   handleUp() {
     this.setState({ down: false });
+    if (this.props.onMouseUp) {
+      this.props.onMouseUp();
+    }
   }
 
   handleClick(e) {

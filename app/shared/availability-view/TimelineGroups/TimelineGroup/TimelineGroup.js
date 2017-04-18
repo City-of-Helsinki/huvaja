@@ -26,6 +26,9 @@ export default class TimelineGroup extends React.Component {
     onAvailabilityViewMouseEnter: PropTypes.func,
     onAvailabilityViewMouseLeave: PropTypes.func,
     onReservationSlotClick: PropTypes.func,
+    onReservationSlotMouseDown: PropTypes.func,
+    onReservationSlotMouseEnter: PropTypes.func,
+    onReservationSlotMouseUp: PropTypes.func,
     resources: PropTypes.arrayOf(PropTypes.string).isRequired,
     selection: PropTypes.object,
   };
@@ -71,7 +74,6 @@ export default class TimelineGroup extends React.Component {
   }
 
   render() {
-    const { onReservationSlotClick, selection } = this.props;
     const hours = (
       <div className="hours">
         {getHourRanges(this.props.date).map(range =>
@@ -104,8 +106,11 @@ export default class TimelineGroup extends React.Component {
             key={resource}
             onMouseEnter={this.props.onAvailabilityViewMouseEnter}
             onMouseLeave={this.props.onAvailabilityViewMouseLeave}
-            onReservationSlotClick={onReservationSlotClick}
-            selection={selection}
+            onReservationSlotClick={this.props.onReservationSlotClick}
+            onReservationSlotMouseDown={this.props.onReservationSlotMouseDown}
+            onReservationSlotMouseEnter={this.props.onReservationSlotMouseEnter}
+            onReservationSlotMouseUp={this.props.onReservationSlotMouseUp}
+            selection={this.props.selection}
           />
         )}
       </div>
