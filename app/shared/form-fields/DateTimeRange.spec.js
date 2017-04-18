@@ -22,8 +22,13 @@ function getWrapper(props) {
 
 describe('shared/form-fields/DateTimeRange', () => {
   it('renders a div.date-time-range-field', () => {
+    const wrapper = getWrapper().find('div.date-time-range-field');
+    expect(wrapper).to.have.length(1);
+  });
+
+  it('renders a div.date-time-range-field-container', () => {
     const wrapper = getWrapper();
-    expect(wrapper.is('div.date-time-range-field')).to.be.true;
+    expect(wrapper.is('div.date-time-range-field-container')).to.be.true;
   });
 
   it('renders correct fields', () => {
@@ -97,6 +102,31 @@ describe('shared/form-fields/DateTimeRange', () => {
         begin: { date: 'date1', time: 'time1' },
         end: { date: 'date1', time },
       }]);
+    });
+  });
+
+  describe('handleBlur', () => {
+    it('works if no props.controlProps.onBlur', () => {
+      const onChange = simple.mock();
+      const value = {
+        begin: { date: 'date1', time: 'time1' },
+        end: { date: 'date1', time: 'time2' },
+      };
+      const wrapper = getWrapper({ controlProps: { onChange, value, onBlur: null } });
+      wrapper.instance().handleBlur();
+    });
+
+    it('calls props.controlProps.onBlur', () => {
+      const onBlur = simple.mock();
+      const onChange = simple.mock();
+      const value = {
+        begin: { date: 'date1', time: 'time1' },
+        end: { date: 'date1', time: 'time2' },
+      };
+      const wrapper = getWrapper({ controlProps: { onChange, value, onBlur } });
+      wrapper.instance().handleBlur();
+      expect(onBlur.callCount).to.equal(1);
+      expect(onBlur.lastCall.args).to.deep.equal([value]);
     });
   });
 });

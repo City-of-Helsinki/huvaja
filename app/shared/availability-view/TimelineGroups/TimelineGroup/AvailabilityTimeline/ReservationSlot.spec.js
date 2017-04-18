@@ -128,4 +128,32 @@ describe('shared/availability-view/ReservationSlot', () => {
       });
     });
   });
+
+  function createMouseTests(event) {
+    const handle = `handleMouse${event}`;
+    const callback = `onMouse${event}`;
+    describe(handle, () => {
+      it(`works if no props.${callback}`, () => {
+        const wrapper = getWrapper({ [callback]: null });
+        wrapper.instance()[handle]();
+      });
+
+      it(`calls props.${callback}`, () => {
+        const begin = moment();
+        const end = moment().add(30, 'minutes');
+        const mock = simple.mock();
+        const wrapper = getWrapper({ [callback]: mock, begin, end });
+        wrapper.instance()[handle]();
+        expect(mock.callCount).to.equal(1);
+        expect(mock.lastCall.args).to.deep.equal([{
+          begin: begin.format(),
+          end: end.format(),
+        }]);
+      });
+    });
+  }
+
+  createMouseTests('Down');
+  createMouseTests('Enter');
+  createMouseTests('Up');
 });

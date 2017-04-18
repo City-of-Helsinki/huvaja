@@ -31,23 +31,25 @@ export function validate(values) {
     }
   });
 
-  const begin = constructMoment(values.time.begin);
-  const end = constructMoment(values.time.end);
-  if (begin.isValid() && end.isValid()) {
-    if (!begin.isBefore(end)) {
-      errors.time = 'Alkamisajan on oltava ennen loppumisaikaa';
-    } else {
-      const pattern = /^\d\d:[03]0$/;
-      const areTimesValid = (
-        pattern.exec(values.time.begin.time) &&
-        pattern.exec(values.time.end.time)
-      );
-      if (!areTimesValid) {
-        errors.time = 'Ajan on päätyttävä :00 tai :30';
+  if (!errors.time) {
+    const begin = constructMoment(values.time.begin);
+    const end = constructMoment(values.time.end);
+    if (begin.isValid() && end.isValid()) {
+      if (!begin.isBefore(end)) {
+        errors.time = 'Alkamisajan on oltava ennen loppumisaikaa';
+      } else {
+        const pattern = /^\d\d:[03]0$/;
+        const areTimesValid = (
+          pattern.exec(values.time.begin.time) &&
+          pattern.exec(values.time.end.time)
+        );
+        if (!areTimesValid) {
+          errors.time = 'Ajan on päätyttävä :00 tai :30';
+        }
       }
+    } else {
+      errors.time = 'Epäkelpo päivä tai aika';
     }
-  } else {
-    errors.time = 'Epäkelpo päivä tai aika';
   }
 
   return errors;

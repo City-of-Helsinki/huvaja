@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import moment from 'moment';
-import { browserHistory } from 'react-router';
 import simple from 'simple-mock';
 
 import { getState } from 'utils/testUtils';
@@ -16,8 +15,21 @@ describe('pages/resource/reservation-form/ReservationFormContainer', () => {
 
     describe('hasTime', () => {
       it('return true if reservationForm time is specified', () => {
-        const extraState = { 'form.resourceReservation.values': { time: { begin: '...' } } };
+        const extraState = {
+          'form.resourceReservation.values': {
+            time: { begin: { date: '2016-01-01', time: '10:00' } },
+          },
+        };
         expect(getSelected(extraState).hasTime).to.be.true;
+      });
+
+      it('return false if reservationForm time is specified without time', () => {
+        const extraState = {
+          'form.resourceReservation.values': {
+            time: { begin: { date: '2016-01-01', time: '' } },
+          },
+        };
+        expect(getSelected(extraState).hasTime).to.be.false;
       });
 
       it('return false if reservationForm time is not specified', () => {
