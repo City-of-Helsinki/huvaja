@@ -16,6 +16,9 @@ export default class ReservationSlot extends React.Component {
       isSameOrBefore: PropTypes.func.isRequired,
     }).isRequired,
     onClick: PropTypes.func,
+    onMouseDown: PropTypes.func,
+    onMouseEnter: PropTypes.func,
+    onMouseUp: PropTypes.func,
     resourceId: PropTypes.string.isRequired,
     selection: PropTypes.shape({
       begin: PropTypes.string.isRequired,
@@ -23,18 +26,35 @@ export default class ReservationSlot extends React.Component {
     }),
   };
 
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
+  getData() {
+    return {
+      begin: this.props.begin.format(),
+      end: this.props.end.format(),
+    };
   }
 
-  handleClick(event) {
+  handleClick = (event) => {
     if (this.props.onClick) {
       event.preventDefault();
-      this.props.onClick({
-        begin: this.props.begin.format(),
-        end: this.props.end.format(),
-      });
+      this.props.onClick(this.getData());
+    }
+  }
+
+  handleMouseDown = () => {
+    if (this.props.onMouseDown) {
+      this.props.onMouseDown(this.getData());
+    }
+  }
+
+  handleMouseEnter = () => {
+    if (this.props.onMouseEnter) {
+      this.props.onMouseEnter(this.getData());
+    }
+  }
+
+  handleMouseUp = () => {
+    if (this.props.onMouseUp) {
+      this.props.onMouseUp(this.getData());
     }
   }
 
@@ -48,6 +68,9 @@ export default class ReservationSlot extends React.Component {
       <Link
         className={classNames('reservation-slot', { 'reservation-slot-selected': isSelected })}
         onClick={this.handleClick}
+        onMouseDown={this.handleMouseDown}
+        onMouseEnter={this.handleMouseEnter}
+        onMouseUp={this.handleMouseUp}
         style={{ width: utils.getTimeSlotWidth() }}
         to={`/resources/${this.props.resourceId}?${query}`}
       >

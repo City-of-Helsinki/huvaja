@@ -3,6 +3,8 @@ import React, { PropTypes } from 'react';
 
 import SingleAvailabilityView from 'shared/availability-view/SingleAvailabilityView';
 
+function noop() {}
+
 export default class SelectableSingleAvailabilityView extends React.Component {
   static propTypes = {
     date: PropTypes.string.isRequired,
@@ -22,6 +24,11 @@ export default class SelectableSingleAvailabilityView extends React.Component {
       }).isRequired,
     }).isRequired,
   };
+
+  constructor(props) {
+    super(props);
+    this.state = { isSelecting: false, selection: null };
+  }
 
   getSelection() {
     const { begin, end } = this.props.value;
@@ -47,8 +54,31 @@ export default class SelectableSingleAvailabilityView extends React.Component {
     });
   }
 
-  handleReservationSlotClick = (slot) => {
+  handleReservationSlotMouseDown = (slot) => {
+    this.setState({
+      isSelecting: true,
+      selection: slot,
+    });
     this.setSelection(slot);
+  }
+
+  handleReservationSlotMouseEnter = (slot) => {
+    if (!this.state.isSelecting) {
+      return;
+    }
+    const { begin, end } = this.state.selection;
+    const selection = {
+      begin: slot.begin < begin ? slot.begin : begin,
+      end: slot.end > end ? slot.end : end,
+    };
+    this.setSelection(selection);
+  }
+
+  handleReservationSlotMouseUp = () => {
+    this.setState({
+      isSelecting: false,
+      selection: null,
+    });
   }
 
   render() {
@@ -57,7 +87,10 @@ export default class SelectableSingleAvailabilityView extends React.Component {
         <SingleAvailabilityView
           date={this.props.date}
           resource={this.props.resource.id}
-          onReservationSlotClick={this.handleReservationSlotClick}
+          onReservationSlotClick={noop}
+          onReservationSlotMouseDown={this.handleReservationSlotMouseDown}
+          onReservationSlotMouseEnter={this.handleReservationSlotMouseEnter}
+          onReservationSlotMouseUp={this.handleReservationSlotMouseUp}
           onDateChange={this.props.onDateChange}
           selection={this.getSelection()}
         />
