@@ -9,7 +9,7 @@ import Time from './Time';
 export default class DateTimeRange extends React.Component {
   static propTypes = {
     controlProps: PropTypes.shape({
-      onBlur: PropTypes.func.isRequired,
+      onBlur: PropTypes.func,
       onChange: PropTypes.func.isRequired,
       required: PropTypes.bool,
       value: PropTypes.shape({
@@ -24,7 +24,9 @@ export default class DateTimeRange extends React.Component {
   };
 
   handleBlur = () => {
-    this.props.controlProps.onBlur(this.props.controlProps.value);
+    if (this.props.controlProps.onBlur) {
+      this.props.controlProps.onBlur(this.props.controlProps.value);
+    }
   }
 
   handleDateChange = (date) => {

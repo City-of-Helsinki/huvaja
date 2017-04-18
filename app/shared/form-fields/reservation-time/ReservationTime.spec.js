@@ -10,7 +10,10 @@ function getWrapper(props) {
     id: 'reservation-time',
     controlProps: {
       date: '2016-01-01',
-      value: undefined,
+      value: {
+        begin: { date: '2016-01-01', time: '' },
+        end: { date: '2016-01-01', time: '' },
+      },
       resource: { id: 'r1' },
       onChange: () => null,
       onDateChange: () => null,
@@ -23,7 +26,10 @@ describe('shared/form-fields/reservation-time/ReservationTime', () => {
   it('renders a SelectableSingleAvailabilityView', () => {
     const controlProps = {
       date: '2016-01-02',
-      value: {},
+      value: {
+        begin: { date: '2016-01-01', time: '' },
+        end: { date: '2016-01-01', time: '' },
+      },
       resource: { id: 'r1' },
       onChange: () => null,
       onDateChange: () => null,

@@ -25,7 +25,16 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
     describe('if field has a value', () => {
       it('does not return an error even if field is required', () => {
         const values = {
-          time: { begin: '2016-01-01T10:00:00', end: '2016-01-01T11:00:00' },
+          time: {
+            begin: {
+              date: '2016-01-01',
+              time: '10:00',
+            },
+            end: {
+              date: '2016-01-01',
+              time: '11:00',
+            },
+          },
           resource: '123',
           eventName: 'name',
           numberOfParticipants: 21,
@@ -35,6 +44,57 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
         expect(errors.resource).to.not.exist;
         expect(errors.eventName).to.not.exist;
         expect(errors.numberOfParticipants).to.not.exist;
+      });
+    });
+
+    describe('time', () => {
+      function getError(time) {
+        const values = {
+          time: {
+            begin: { date: '2016-01-01', time: '10:00' },
+            end: { date: '2016-01-01', time: '11:00' },
+            ...time,
+          },
+        };
+        return validate(values).time;
+      }
+
+      it('has error when invalid begin time', () => {
+        const error = getError({ begin: { date: '2016-01-01', time: '10:0-' } });
+        expect(error).to.equal('Epäkelpo päivä tai aika');
+      });
+
+      it('has error when invalid end time', () => {
+        const error = getError({ end: { date: '2016-01-01', time: '10:0-' } });
+        expect(error).to.equal('Epäkelpo päivä tai aika');
+      });
+
+      it('has error when end time before begin', () => {
+        const error = getError({
+          begin: { date: '2016-01-01', time: '10:30' },
+          end: { date: '2016-01-01', time: '10:00' },
+        });
+        expect(error).to.equal('Alkamisajan on oltava ennen loppumisaikaa');
+      });
+
+      it('has error when begin time has invalid minutes', () => {
+        const minutes = ['01', '05', '10', '20', '29', '31', '45', '50', '55', '59'];
+        minutes.forEach((minute) => {
+          const error = getError({
+            begin: { date: '2016-01-01', time: `10:${minute}` },
+          });
+          expect(error).to.equal('Ajan on päätyttävä :00 tai :30');
+        });
+      });
+
+      it('has error when end time has invalid minutes', () => {
+        const minutes = ['01', '05', '10', '20', '29', '31', '45', '50', '55', '59'];
+        minutes.forEach((minute) => {
+          const error = getError({
+            end: { date: '2016-01-01', time: `10:${minute}` },
+          });
+          expect(error).to.equal('Ajan on päätyttävä :00 tai :30');
+        });
       });
     });
   });
@@ -63,8 +123,8 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
         fields = getWrapper().find(Field);
       });
 
-      it('length is 8', () => {
-        expect(fields).to.have.length(8);
+      it('length is 9', () => {
+        expect(fields).to.have.length(9);
       });
 
       it('length is 1 if does not have time', () => {
@@ -89,6 +149,17 @@ describe('pages/resource/reservation-form/ReservationForm', () => {
         expect(field.prop('component')).to.equal(ReduxFormField);
         expect(field.prop('name')).to.equal('time');
         expect(field.prop('type')).to.equal('reservation-time');
+      });
+
+      it('has a datetimerange field', () => {
+        const field = fields.filter({
+          component: ReduxFormField,
+          controlProps: { required: true },
+          label: 'Varauksen aika*',
+          name: 'time',
+          type: 'date-time-range',
+        });
+        expect(field).to.have.length(1);
       });
 
       it('has a resource field', () => {

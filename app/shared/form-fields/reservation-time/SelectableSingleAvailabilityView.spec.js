@@ -1,8 +1,6 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-import moment from 'moment';
 import React from 'react';
-import { browserHistory } from 'react-router';
 import simple from 'simple-mock';
 
 import SingleAvailabilityView from 'shared/availability-view/SingleAvailabilityView';
@@ -14,6 +12,10 @@ function getWrapper(props) {
     onChange: () => null,
     onDateChange: () => null,
     resource: { id: 'r-1' },
+    value: {
+      begin: { date: '2016-01-01', time: null },
+      end: { date: '2016-01-01', time: null },
+    },
   };
   return shallow(<SelectableSingleAvailabilityView {...defaults} {...props} />);
 }
@@ -39,161 +41,127 @@ describe('pages/resources/SelectableSingleAvailabilityView', () => {
     expect(view.prop('date')).to.equal(date);
     expect(view.prop('resource')).to.equal(resource.id);
     expect(view.prop('onDateChange')).to.equal(onDateChange);
-    expect(view.prop('onReservationSlotClick')).to.equal(instance.handleReservationSlotClick);
+    expect(view.prop('onReservationSlotMouseDown')).to.equal(
+      instance.handleReservationSlotMouseDown
+    );
+    expect(view.prop('onReservationSlotMouseEnter')).to.equal(
+      instance.handleReservationSlotMouseEnter
+    );
+    expect(view.prop('onReservationSlotMouseUp')).to.equal(
+      instance.handleReservationSlotMouseUp
+    );
   });
 
   it('has correct initial state', () => {
     const wrapper = getWrapper();
-    expect(wrapper.state()).to.deep.equal({
-      mode: 'begin',
-      selection: undefined,
-    });
+    expect(wrapper.state()).to.deep.equal({ isSelecting: false, selection: null });
   });
 
-  it('has correct initial state if query.begin is a date', () => {
-    simple.mock(browserHistory, 'getCurrentLocation', () => ({
-      query: { begin: '2016-01-01' },
-    }));
-    const wrapper = getWrapper();
-    expect(wrapper.state()).to.deep.equal({
-      mode: 'begin',
-      selection: undefined,
-    });
-  });
-
-  it('has correct initial state if query.begin is a datetime', () => {
-    simple.mock(browserHistory, 'getCurrentLocation', () => ({
-      query: { begin: '2016-01-01T10:00:00' },
-    }));
-    const wrapper = getWrapper();
-    expect(wrapper.state()).to.deep.equal({
-      mode: 'end',
-      selection: {
-        begin: '2016-01-01T10:00:00',
-        end: moment('2016-01-01T10:30:00').format(),
-      },
-    });
-  });
-
-  describe('componentWillReceiveProps', () => {
-    function getState(props, state, nextProps) {
-      const wrapper = getWrapper(props);
-      wrapper.setState(state);
-      wrapper.instance().componentWillReceiveProps(nextProps);
-      return wrapper.state();
+  describe('handleReservationSlotMouseDown', () => {
+    function handleMouseDown(slot, onChange = () => null) {
+      const wrapper = getWrapper({ onChange });
+      wrapper.instance().handleReservationSlotMouseDown(slot);
+      return wrapper;
     }
 
-    it('sets mode = begin if date changes', () => {
-      const state = getState(
-        { date: '2016-01-01' },
-        { mode: 'end' },
-        { date: '2016-01-02' },
-      );
-      expect(state.mode).to.equal('begin');
+    it('updates state', () => {
+      const slot = { begin: '2017-01-01T10:00:00', end: '2017-01-01T10:30:00' };
+      const wrapper = handleMouseDown(slot);
+      expect(wrapper.state()).to.deep.equal({ isSelecting: true, selection: slot });
     });
 
-    it('does not change mode if date stays the same', () => {
-      const state = getState(
-        { date: '2016-01-01' },
-        { mode: 'end' },
-        { date: '2016-01-01' },
-      );
-      expect(state.mode).to.equal('end');
-    });
-
-    it('sets mode = begin if value changes to ""', () => {
-      const state = getState(
-        { date: '2016-01-01', value: { begin: '', end: '' } },
-        { mode: 'end' },
-        { date: '2016-01-01', value: '' },
-      );
-      expect(state.mode).to.equal('begin');
+    it('calls props.onChange', () => {
+      const onChange = simple.mock();
+      const slot = { begin: '2017-01-01T10:00:00', end: '2017-01-01T10:30:00' };
+      handleMouseDown(slot, onChange);
+      expect(onChange.callCount).to.equal(1);
+      expect(onChange.lastCall.args).to.deep.equal([{
+        begin: { date: '2017-01-01', time: '10:00' },
+        end: { date: '2017-01-01', time: '10:30' },
+      }]);
     });
   });
 
-  describe('handleReservationSlotClick', () => {
-    function getState(props, state, slot) {
-      const wrapper = getWrapper(props);
-      wrapper.setState(state);
-      wrapper.instance().handleReservationSlotClick(slot);
-      return wrapper.state();
+  describe('handleReservationSlotMouseUp', () => {
+    function handleMouseUp(onChange = () => null) {
+      const wrapper = getWrapper({ onChange });
+      wrapper.instance().handleReservationSlotMouseUp();
+      return wrapper;
     }
 
-    it('updates state if current mode is begin', () => {
-      const onChange = simple.mock();
-      const slot = { begin: '2016-01-01T10:00:00', end: '2016-01-01T10:30:00' };
-      const initialState = { mode: 'begin', selection: undefined };
-      const state = getState({ onChange }, initialState, slot);
-      const selection = { begin: slot.begin, end: slot.end };
-      expect(state).to.deep.equal({ mode: 'end', selection });
-      expect(onChange.callCount).to.equal(1);
-      expect(onChange.lastCall.args).to.deep.equal([selection]);
+    it('updates state', () => {
+      const wrapper = handleMouseUp();
+      expect(wrapper.state()).to.deep.equal({ isSelecting: false, selection: null });
     });
 
-    it('updates state if current mode is begin and has a selection', () => {
+    it('does not call props.onChange', () => {
       const onChange = simple.mock();
-      const slot = { begin: '2016-01-01T10:00:00', end: '2016-01-01T10:30:00' };
-      const initialState = {
-        mode: 'begin',
-        selection: { begin: 'foo', end: 'bar' },
-      };
-      const state = getState({ onChange }, initialState, slot);
-      const selection = { begin: slot.begin, end: slot.end };
-      expect(state).to.deep.equal({ mode: 'end', selection });
-      expect(onChange.callCount).to.equal(1);
-      expect(onChange.lastCall.args).to.deep.equal([selection]);
-    });
-
-    it('updates state if current mode is end and slot ends after current begin', () => {
-      const onChange = simple.mock();
-      const slot = { begin: '2016-01-01T10:00:00', end: '2016-01-01T10:30:00' };
-      const initialState = {
-        mode: 'end',
-        selection: { begin: '2016-01-01T09:00:00', end: '2016-01-01T09:30:00' },
-      };
-      const state = getState({ onChange }, initialState, slot);
-      const selection = { begin: initialState.selection.begin, end: slot.end };
-      expect(state).to.deep.equal({ mode: 'begin', selection });
-      expect(onChange.callCount).to.equal(1);
-      expect(onChange.lastCall.args).to.deep.equal([selection]);
-    });
-
-    it('updates state if current mode is end and same slot selected', () => {
-      const onChange = simple.mock();
-      const slot = { begin: '2016-01-01T10:00:00', end: '2016-01-01T10:30:00' };
-      const initialState = {
-        mode: 'end',
-        selection: { begin: '2016-01-01T10:00:00', end: '2016-01-01T10:30:00' },
-      };
-      const state = getState({ onChange }, initialState, slot);
-      const selection = { begin: slot.begin, end: slot.end };
-      expect(state).to.deep.equal({ mode: 'begin', selection });
-      expect(onChange.callCount).to.equal(1);
-      expect(onChange.lastCall.args).to.deep.equal([selection]);
-    });
-
-    it('does not update if mode is end and slot ends at current begin', () => {
-      const onChange = simple.mock();
-      const slot = { begin: '2016-01-01T09:30:00', end: '2016-01-01T10:00:00' };
-      const initialState = {
-        mode: 'end',
-        selection: { begin: '2016-01-01T10:00:00', end: '2016-01-01T10:30:00' },
-      };
-      const state = getState({ onChange }, initialState, slot);
-      expect(state).to.deep.equal(initialState);
+      handleMouseUp(onChange);
       expect(onChange.called).to.be.false;
     });
+  });
 
-    it('does not update if mode is end and slot ends before current begin', () => {
-      const onChange = simple.mock();
-      const slot = { begin: '2016-01-01T09:00:00', end: '2016-01-01T09:30:00' };
-      const initialState = {
-        mode: 'end',
-        selection: { begin: '2016-01-01T10:00:00', end: '2016-01-01T10:30:00' },
-      };
-      const state = getState({ onChange }, initialState, slot);
-      expect(state).to.deep.equal(initialState);
-      expect(onChange.called).to.be.false;
+  describe('handleReservationSlotMouseEnter', () => {
+    function handleMouseEnter({ slot, state, onChange = () => null }) {
+      const wrapper = getWrapper({ onChange });
+      if (state) {
+        wrapper.setState(state);
+      }
+      wrapper.instance().handleReservationSlotMouseEnter(slot);
+      return wrapper;
+    }
+
+    describe('when not selecting', () => {
+      it('does not update state', () => {
+        const state = { isSelecting: false, selection: null };
+        const slot = {};
+        const wrapper = handleMouseEnter({ slot, state });
+        expect(wrapper.state()).to.deep.equal(state);
+      });
+
+      it('does not call props.onChange', () => {
+        const state = { isSelecting: false, selection: null };
+        const slot = {};
+        const onChange = simple.mock();
+        handleMouseEnter({ slot, state, onChange });
+        expect(onChange.called).to.be.false;
+      });
+    });
+
+    describe('when selecting', () => {
+      it('does not update state', () => {
+        const selection = { begin: '2017-01-01T10:00:00', end: '2017-01-01T10:30:00' };
+        const state = { isSelecting: true, selection };
+        const slot = { begin: '2017-01-01T10:30:00', end: '2017-01-01T11:00:00' };
+        const wrapper = handleMouseEnter({ slot, state });
+        expect(wrapper.state()).to.deep.equal(state);
+      });
+
+      it('calls props.onChange when slot is after start slot', () => {
+        const selection = { begin: '2017-01-01T10:00:00', end: '2017-01-01T10:30:00' };
+        const state = { isSelecting: true, selection };
+        const slot = { begin: '2017-01-01T10:30:00', end: '2017-01-01T11:00:00' };
+        const onChange = simple.mock();
+        handleMouseEnter({ slot, state, onChange });
+        expect(onChange.callCount).to.equal(1);
+        expect(onChange.lastCall.args).to.deep.equal([{
+          begin: { date: '2017-01-01', time: '10:00' },
+          end: { date: '2017-01-01', time: '11:00' },
+        }]);
+      });
+
+      it('calls props.onChange when slot is before start slot', () => {
+        const selection = { begin: '2017-01-01T10:00:00', end: '2017-01-01T10:30:00' };
+        const state = { isSelecting: true, selection };
+        const slot = { begin: '2017-01-01T08:30:00', end: '2017-01-01T09:00:00' };
+        const onChange = simple.mock();
+        handleMouseEnter({ slot, state, onChange });
+        expect(onChange.callCount).to.equal(1);
+        expect(onChange.lastCall.args).to.deep.equal([{
+          begin: { date: '2017-01-01', time: '08:30' },
+          end: { date: '2017-01-01', time: '10:30' },
+        }]);
+      });
     });
   });
 });
