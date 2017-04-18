@@ -4,6 +4,7 @@ import MaskedInput from 'react-maskedinput';
 
 export default class Time extends React.Component {
   static propTypes = {
+    onBlur: PropTypes.func,
     onChange: PropTypes.func.isRequired,
     value: PropTypes.string,
   };
@@ -19,6 +20,7 @@ export default class Time extends React.Component {
         componentClass={MaskedInput}
         mask="11:11"
         placeholderChar="-"
+        onBlur={this.props.onBlur}
         onChange={this.handleChange}
         value={this.props.value}
       />
