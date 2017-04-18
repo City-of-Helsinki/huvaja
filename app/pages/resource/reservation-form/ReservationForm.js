@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, { PropTypes } from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
@@ -17,6 +18,11 @@ const requiredFields = [
   'time',
 ];
 
+function constructMoment(value) {
+  const dateString = `${value.date}T${value.time}:00.000`;
+  return moment(dateString, moment.ISO_8601, true);
+}
+
 export function validate(values) {
   const errors = {};
   requiredFields.forEach((value) => {
@@ -24,6 +30,26 @@ export function validate(values) {
       errors[value] = 'Pakollinen tieto';
     }
   });
+
+  const begin = constructMoment(values.time.begin);
+  const end = constructMoment(values.time.end);
+  if (begin.isValid() && end.isValid()) {
+    if (!begin.isBefore(end)) {
+      errors.time = 'Alkamisajan on oltava ennen loppumisaikaa';
+    } else {
+      const pattern = /^\d\d:[03]0$/;
+      const areTimesValid = (
+        pattern.exec(values.time.begin.time) &&
+        pattern.exec(values.time.end.time)
+      );
+      if (!areTimesValid) {
+        errors.time = 'Ajan on päätyttävä :00 tai :30';
+      }
+    }
+  } else {
+    errors.time = 'Epäkelpo päivä tai aika';
+  }
+
   return errors;
 }
 
