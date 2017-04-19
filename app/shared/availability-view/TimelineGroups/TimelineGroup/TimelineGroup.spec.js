@@ -114,6 +114,38 @@ describe('shared/availability-view/TimelineGroup', () => {
     });
   });
 
+  describe('componentWillReceiveProps', () => {
+    function getUpdatedOffset(oldDate, newDate, now) {
+      mockDate.set(moment(now).format());
+      const wrapper = getWrapper({ date: oldDate });
+      wrapper.instance().componentWillReceiveProps({ date: newDate });
+      return wrapper.state('timeOffset');
+    }
+
+    afterEach(() => {
+      mockDate.reset();
+    });
+
+    it('sets timeOffset to null if changing to a different day', () => {
+      const offset = getUpdatedOffset(
+        '2017-01-01',
+        '2017-01-02',
+        '2017-01-01T10:00:00',
+      );
+      expect(offset).to.be.null;
+    });
+
+    it('sets timeOffset if changing to current day', () => {
+      const offset = getUpdatedOffset(
+        '2017-01-02',
+        '2017-01-01',
+        '2017-01-01T10:00:00',
+      );
+      expect(offset).to.equal((600 / slotSize) * slotWidth);
+    });
+  });
+
+
   describe('getTimeOffset', () => {
     function getOffset(date, now) {
       mockDate.set(moment(now).format());
