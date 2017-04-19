@@ -68,6 +68,10 @@ const actions = {
   makeReservation,
 };
 
+function formatTime({ date, time }) {
+  return moment(`${date}T${time}:00`).format();
+}
+
 export function mergeProps(stateProps, dispatchProps, ownProps) {
   const props = { ...ownProps, ...stateProps, ...dispatchProps };
   return {
@@ -75,8 +79,8 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
     onSubmit: createFormSubmitHandler(
       (actionOptions, values) => props.makeReservation(
         {
-          begin: values.time.begin,
-          end: values.time.end,
+          begin: formatTime(values.time.begin),
+          end: formatTime(values.time.end),
           event_description: values.eventDescription,
           event_subject: values.eventName,
           host_name: values.hostName,

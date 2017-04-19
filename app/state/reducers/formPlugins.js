@@ -11,6 +11,16 @@ export default {
         hostName: state.values.hostName,
         reserverName: state.values.reserverName,
         resource: state.values.resource,
+        time: {
+          begin: {
+            date: state.values.time.begin.date,
+            time: null,
+          },
+          end: {
+            date: state.values.time.end.date,
+            time: null,
+          },
+        },
       },
     }),
   }),

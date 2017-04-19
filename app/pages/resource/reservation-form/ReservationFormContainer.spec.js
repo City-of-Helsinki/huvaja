@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import moment from 'moment';
 import { browserHistory } from 'react-router';
 import simple from 'simple-mock';
 
@@ -95,8 +96,8 @@ describe('pages/resource/reservation-form/ReservationFormContainer', () => {
       it('calls props.makeReservation', () => {
         const values = {
           time: {
-            begin: '2016-01-01T10:00:00',
-            end: '2016-01-01T12:00:00',
+            begin: { date: '2016-01-01', time: '10:00' },
+            end: { date: '2016-01-01', time: '12:00' },
           },
           hostName: 'Han Solo',
           eventDescription: 'Description',
@@ -114,8 +115,8 @@ describe('pages/resource/reservation-form/ReservationFormContainer', () => {
         const args = makeReservation.lastCall.args;
         expect(args).to.have.length(2);
         expect(args[0]).to.deep.equal({
-          begin: values.time.begin,
-          end: values.time.end,
+          begin: moment('2016-01-01T10:00:00').format(),
+          end: moment('2016-01-01T12:00:00').format(),
           event_description: values.eventDescription,
           event_subject: values.eventName,
           host_name: values.hostName,
