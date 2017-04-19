@@ -117,6 +117,7 @@ export function UnconnectedReservationForm(props) {
               'numberOfParticipants',
               'number',
               'Osallistujamäärä',
+              { min: 1 },
             )}
             {renderField(
               'participantList',
