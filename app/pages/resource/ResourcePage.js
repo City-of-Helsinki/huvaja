@@ -8,6 +8,7 @@ ResourcePage.propTypes = {
   date: PropTypes.string.isRequired,
   hideResourceImages: PropTypes.func.isRequired,
   onDateChange: PropTypes.func.isRequired,
+  queryBegin: PropTypes.string,
   resource: PropTypes.object.isRequired,
   resourceSearchUrl: PropTypes.string.isRequired,
   showResourceImages: PropTypes.func.isRequired,
@@ -27,8 +28,9 @@ export default function ResourcePage(props) {
       <p className="help-text">Klikkaa vapaata aikaa varauksen aloittamiseksi</p>
       <ReservationForm
         date={props.date}
-        resource={props.resource}
         onDateChange={props.onDateChange}
+        queryBegin={props.queryBegin}
+        resource={props.resource}
       />
       <ResourceDailyReportButton
         resourceIds={[props.resource.id]}
