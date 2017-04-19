@@ -44,16 +44,22 @@ export default class TimelineGroup extends React.Component {
     this.updateTimeInterval = window.setInterval(this.updateTime, 60000);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.date !== nextProps.date) {
+      this.setState({ timeOffset: this.getTimeOffset(nextProps) });
+    }
+  }
+
   componentWillUnmount() {
     window.clearInterval(this.updateTimeInterval);
     this.updateTimeInterval = null;
   }
 
-  getTimeOffset() {
+  getTimeOffset(props = this.props) {
     const now = moment();
-    const isToday = now.isSame(this.props.date, 'day');
+    const isToday = now.isSame(props.date, 'day');
     if (!isToday) return null;
-    const offsetMinutes = now.diff(this.props.date, 'minutes');
+    const offsetMinutes = now.diff(props.date, 'minutes');
     const offsetPixels = (offsetMinutes / slotSize) * slotWidth;
     return offsetPixels;
   }
