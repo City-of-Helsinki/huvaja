@@ -1,13 +1,19 @@
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { createSelector, createStructuredSelector } from 'reselect';
 
 import { makeReservation } from 'api/actions/reservations';
 import { currentUserSelector } from 'auth/selectors';
+import { slotSize } from 'shared/availability-view';
 import createFormSubmitHandler from 'utils/createFormSubmitHandler';
 import ReservationForm from './ReservationForm';
 
 function dateSelector(state, props) {
   return props.date;
+}
+
+function queryBeginSelector(state, props) {
+  return props.queryBegin;
 }
 
 function hasTimeSelector(state) {
@@ -19,18 +25,37 @@ function resourceSelector(state, props) {
   return props.resource;
 }
 
+function getInitialTime(date) {
+  const begin = moment(date, moment.ISO_8601, true);
+  if (begin.isValid() && date.indexOf('T') !== -1) {
+    const end = begin.clone().add(slotSize, 'minutes');
+    return {
+      begin: {
+        date: begin.format('YYYY-MM-DD'),
+        time: begin.format('HH:mm'),
+      },
+      end: {
+        date: end.format('YYYY-MM-DD'),
+        time: end.format('HH:mm'),
+      },
+    };
+  }
+  return {
+    begin: { date, time: null },
+    end: { date, time: null },
+  };
+}
+
 const initialValuesSelector = createSelector(
   currentUserSelector,
   resourceSelector,
   dateSelector,
-  (currentUser, resource, date) => ({
+  queryBeginSelector,
+  (currentUser, resource, date, queryBegin) => ({
     hostName: currentUser ? currentUser.displayName : '',
     reserverName: currentUser ? currentUser.displayName : '',
     resource: resource.name.fi,
-    time: {
-      begin: { date, time: null },
-      end: { date, time: null },
-    },
+    time: getInitialTime(queryBegin || date),
   })
 );
 

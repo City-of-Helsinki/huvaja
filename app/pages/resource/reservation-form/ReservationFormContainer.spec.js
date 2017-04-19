@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import { browserHistory } from 'react-router';
 import simple from 'simple-mock';
 
 import { getState } from 'utils/testUtils';
@@ -7,9 +8,9 @@ import { mergeProps, selector } from './ReservationFormContainer';
 describe('pages/resource/reservation-form/ReservationFormContainer', () => {
   describe('selector', () => {
     const props = { resource: { name: { fi: 'Resource name' } } };
-    function getSelected(extraState) {
+    function getSelected(extraState, extraProps) {
       const state = getState(extraState);
-      return selector(state, props);
+      return selector(state, { ...props, ...extraProps });
     }
 
     describe('hasTime', () => {
@@ -45,6 +46,30 @@ describe('pages/resource/reservation-form/ReservationFormContainer', () => {
       it('resource equals resource name from props', () => {
         const expected = props.resource.name.fi;
         expect(getSelected().initialValues.resource).to.equal(expected);
+      });
+
+      describe('time', () => {
+        describe('when no queryBegin', () => {
+          it('uses date from props', () => {
+            const date = '2017-01-01';
+            const selected = getSelected({}, { date, queryBegin: null });
+            expect(selected.initialValues.time).to.deep.equal({
+              begin: { date, time: null },
+              end: { date, time: null },
+            });
+          });
+        });
+
+        describe('when queryBegin has date and time', () => {
+          it('uses date from props', () => {
+            const queryBegin = '2017-01-02T10:30:00';
+            const selected = getSelected({}, { date: '2017-01-01', queryBegin });
+            expect(selected.initialValues.time).to.deep.equal({
+              begin: { date: '2017-01-02', time: '10:30' },
+              end: { date: '2017-01-02', time: '11:00' },
+            });
+          });
+        });
       });
     });
   });

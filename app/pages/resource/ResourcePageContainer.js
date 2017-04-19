@@ -61,6 +61,7 @@ export class UnconnectedResourcePageContainer extends Component {
         date={this.props.date}
         hideResourceImages={this.props.hideResourceImages}
         onDateChange={this.handleDateChange}
+        queryBegin={this.props.location.query.begin}
         resource={this.props.resource}
         resourceSearchUrl={this.props.resourceSearchUrl}
         showResourceImages={this.props.showResourceImages}
