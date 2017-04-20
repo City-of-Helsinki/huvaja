@@ -8,6 +8,8 @@ import formPlugins from './formPlugins';
 import resourcePage from './resourcePageReducer';
 import reservationCancel from './reservationCancelModalReducer';
 import reservationInfo from './reservationInfoModalReducer';
+import reservationSearchFilters from './reservationSearchFiltersReducer';
+import reservationSearchResults from './reservationSearchResultsReducer';
 import resourceImages from './resourceImagesModalReducer';
 import searchFilters from './searchFiltersReducer';
 import searchResults from './searchResultsReducer';
@@ -22,6 +24,10 @@ export default combineReducers({
     reservationCancel,
     reservationInfo,
     resourceImages,
+  }),
+  reservationSearchPage: combineReducers({
+    searchFilters: reservationSearchFilters,
+    searchResults: reservationSearchResults,
   }),
   resourcePage,
   searchPage: combineReducers({
