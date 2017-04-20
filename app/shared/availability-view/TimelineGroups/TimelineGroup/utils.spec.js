@@ -68,7 +68,23 @@ describe('shared/availability-view/utils', () => {
         { id: 12, begin: '2016-01-01T12:30:00', end: '2016-01-01T20:00:00' },
         { id: 13, begin: '2016-01-01T20:00:00', end: '2016-01-01T20:30:00' },
       ];
-      const actual = utils.getTimelineItems(moment('2016-01-01T00:00:00'), reservations, '1');
+      const actual = utils.getTimelineItems(
+        moment('2016-01-01T00:00:00'),
+        reservations,
+        {
+          id: '1',
+          openingHours: [
+            {
+              opens: '2016-01-01T08:00:00',
+              closes: '2016-01-01T10:00:00',
+            },
+            {
+              opens: '2016-01-01T12:00:00',
+              closes: '2016-01-01T20:30:00',
+            },
+          ],
+        },
+      );
       const actualFormatted = actual.map((item) => {
         if (item.type === 'reservation') return item;
         return {
@@ -88,6 +104,7 @@ describe('shared/availability-view/utils', () => {
             begin: moment('2016-01-01T00:00:00').format(),
             end: moment('2016-01-01T00:30:00').format(),
             resourceId: '1',
+            isSelectable: false,
           },
         },
         {
@@ -97,6 +114,7 @@ describe('shared/availability-view/utils', () => {
             begin: moment('2016-01-01T00:30:00').format(),
             end: moment('2016-01-01T01:00:00').format(),
             resourceId: '1',
+            isSelectable: false,
           },
         },
         {
@@ -106,6 +124,7 @@ describe('shared/availability-view/utils', () => {
             begin: moment('2016-01-01T01:00:00').format(),
             end: moment('2016-01-01T01:30:00').format(),
             resourceId: '1',
+            isSelectable: false,
           },
         },
         {
@@ -115,6 +134,7 @@ describe('shared/availability-view/utils', () => {
             begin: moment('2016-01-01T01:30:00').format(),
             end: moment('2016-01-01T02:00:00').format(),
             resourceId: '1',
+            isSelectable: false,
           },
         },
         { key: '4', type: 'reservation', data: reservations[0] },
@@ -125,6 +145,7 @@ describe('shared/availability-view/utils', () => {
             begin: moment('2016-01-01T10:00:00').format(),
             end: moment('2016-01-01T10:30:00').format(),
             resourceId: '1',
+            isSelectable: false,
           },
         },
         {
@@ -134,6 +155,7 @@ describe('shared/availability-view/utils', () => {
             begin: moment('2016-01-01T10:30:00').format(),
             end: moment('2016-01-01T11:00:00').format(),
             resourceId: '1',
+            isSelectable: false,
           },
         },
         {
@@ -143,6 +165,7 @@ describe('shared/availability-view/utils', () => {
             begin: moment('2016-01-01T11:00:00').format(),
             end: moment('2016-01-01T11:30:00').format(),
             resourceId: '1',
+            isSelectable: false,
           },
         },
         {
@@ -152,6 +175,7 @@ describe('shared/availability-view/utils', () => {
             begin: moment('2016-01-01T11:30:00').format(),
             end: moment('2016-01-01T12:00:00').format(),
             resourceId: '1',
+            isSelectable: false,
           },
         },
         {
@@ -161,6 +185,7 @@ describe('shared/availability-view/utils', () => {
             begin: moment('2016-01-01T12:00:00').format(),
             end: moment('2016-01-01T12:30:00').format(),
             resourceId: '1',
+            isSelectable: true,
           },
         },
         { key: '10', type: 'reservation', data: reservations[1] },
@@ -172,6 +197,7 @@ describe('shared/availability-view/utils', () => {
             begin: moment('2016-01-01T20:30:00').format(),
             end: moment('2016-01-01T21:00:00').format(),
             resourceId: '1',
+            isSelectable: false,
           },
         },
         {
@@ -181,6 +207,7 @@ describe('shared/availability-view/utils', () => {
             begin: moment('2016-01-01T21:00:00').format(),
             end: moment('2016-01-01T21:30:00').format(),
             resourceId: '1',
+            isSelectable: false,
           },
         },
         {
@@ -190,6 +217,7 @@ describe('shared/availability-view/utils', () => {
             begin: moment('2016-01-01T21:30:00').format(),
             end: moment('2016-01-01T22:00:00').format(),
             resourceId: '1',
+            isSelectable: false,
           },
         },
         {
@@ -199,6 +227,7 @@ describe('shared/availability-view/utils', () => {
             begin: moment('2016-01-01T22:00:00').format(),
             end: moment('2016-01-01T22:30:00').format(),
             resourceId: '1',
+            isSelectable: false,
           },
         },
         {
@@ -208,6 +237,7 @@ describe('shared/availability-view/utils', () => {
             begin: moment('2016-01-01T22:30:00').format(),
             end: moment('2016-01-01T23:00:00').format(),
             resourceId: '1',
+            isSelectable: false,
           },
         },
         {
@@ -217,6 +247,7 @@ describe('shared/availability-view/utils', () => {
             begin: moment('2016-01-01T23:00:00').format(),
             end: moment('2016-01-01T23:30:00').format(),
             resourceId: '1',
+            isSelectable: false,
           },
         },
         {
@@ -226,6 +257,7 @@ describe('shared/availability-view/utils', () => {
             begin: moment('2016-01-01T23:30:00').format(),
             end: moment('2016-01-02T00:00:00').format(),
             resourceId: '1',
+            isSelectable: false,
           },
         },
       ];
