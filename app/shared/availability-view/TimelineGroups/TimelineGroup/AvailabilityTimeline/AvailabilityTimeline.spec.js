@@ -28,7 +28,7 @@ describe('shared/availability-view/AvailabilityTimeline', () => {
       items: [{
         key: '1',
         type: 'reservation-slot',
-        data: { begin: moment(), end: moment(), resourceId: '' },
+        data: { begin: moment(), end: moment(), resourceId: '', isSelectable: true },
       }],
     });
     const slot = wrapper.find(ReservationSlot);
@@ -63,6 +63,7 @@ describe('shared/availability-view/AvailabilityTimeline', () => {
             begin: moment(),
             end: moment(),
             resourceId: '',
+            isSelectable: true,
           },
         },
         { key: '2', type: 'reservation', data: { begin: '', end: '', id: 12345, name: '' } },
@@ -73,6 +74,7 @@ describe('shared/availability-view/AvailabilityTimeline', () => {
             begin: moment(),
             end: moment(),
             resourceId: '',
+            isSelectable: false,
           },
         },
       ],

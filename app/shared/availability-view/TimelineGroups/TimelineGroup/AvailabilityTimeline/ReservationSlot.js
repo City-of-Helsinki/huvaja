@@ -15,6 +15,7 @@ export default class ReservationSlot extends React.Component {
       format: PropTypes.func.isRequired,
       isSameOrBefore: PropTypes.func.isRequired,
     }).isRequired,
+    isSelectable: PropTypes.bool.isRequired,
     onClick: PropTypes.func,
     onMouseDown: PropTypes.func,
     onMouseEnter: PropTypes.func,
@@ -66,7 +67,13 @@ export default class ReservationSlot extends React.Component {
     );
     return (
       <Link
-        className={classNames('reservation-slot', { 'reservation-slot-selected': isSelected })}
+        className={classNames(
+          'reservation-slot',
+          {
+            'reservation-slot-selected': isSelected,
+            'reservation-slot-selectable': this.props.isSelectable,
+          }
+        )}
         onClick={this.handleClick}
         onMouseDown={this.handleMouseDown}
         onMouseEnter={this.handleMouseEnter}

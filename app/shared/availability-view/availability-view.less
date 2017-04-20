@@ -2,7 +2,8 @@
   @group-row-height: 30px;
   @resource-row-height: 50px;
   @slot-border: 1px solid white;
-  @hovered-siblings-color: @gray-light;
+  @hovered-siblings-color: @gray;
+  @hovered-non-selectable-siblings-color: @gray-light;
   width: 100%;
 
   .columns {
@@ -136,7 +137,7 @@
     line-height: 1;
 
     &-highlighted {
-      background-color: @hovered-siblings-color;
+      background-color: @hovered-non-selectable-siblings-color;
     }
     .favorite-icon {
       color: @favorite-color;
@@ -196,7 +197,10 @@
 
     &:hover {
       .reservation-slot:not(:hover):not(.reservation-slot-selected) {
-        background-color: @hovered-siblings-color;
+        background-color: @hovered-non-selectable-siblings-color;
+        &.reservation-slot-selectable {
+          background-color: @hovered-siblings-color;
+        }
       }
     }
   }
@@ -234,6 +238,9 @@
     background-color: @gray-lighter;
     overflow: hidden;
 
+    &-selectable {
+      background-color: @gray-light;
+    }
     &-selected {
       background-color: @brand-primary;
     }

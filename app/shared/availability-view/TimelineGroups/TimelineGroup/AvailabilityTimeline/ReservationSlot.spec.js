@@ -13,6 +13,7 @@ function getWrapper(props) {
   const defaults = {
     begin: moment(),
     end: moment().add(30, 'minutes'),
+    isSelectable: true,
     resourceId: '1',
   };
   return shallow(<ReservationSlot {...defaults} {...props} />);
