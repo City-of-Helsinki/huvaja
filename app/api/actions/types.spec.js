@@ -11,7 +11,7 @@ describe('api/actions/types', () => {
       args: [],
       tests: {
         method: 'GET',
-        endpoint: buildAPIUrl('type', { pageSize: 100 }),
+        endpoint: buildAPIUrl('type', { pageSize: 100, resource_group: 'kanslia' }),
         request: {
           type: types.TYPES_GET_REQUEST,
         },

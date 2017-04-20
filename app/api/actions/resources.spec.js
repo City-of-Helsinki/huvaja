@@ -66,7 +66,7 @@ describe('api/actions/resources', () => {
   });
 
   describe('fetchResources', () => {
-    const params = getParamsWithTimes({ group: 'kanslia', pageSize: 100 });
+    const params = getParamsWithTimes({ resource_group: 'kanslia', pageSize: 100 });
     createApiTest({
       name: 'fetchResources',
       action: fetchResources,

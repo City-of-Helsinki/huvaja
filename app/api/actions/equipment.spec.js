@@ -11,7 +11,7 @@ describe('api/actions/equipment', () => {
       args: [],
       tests: {
         method: 'GET',
-        endpoint: buildAPIUrl('equipment', { pageSize: 100 }),
+        endpoint: buildAPIUrl('equipment', { pageSize: 100, resource_group: 'kanslia' }),
         request: {
           type: types.EQUIPMENT_GET_REQUEST,
         },

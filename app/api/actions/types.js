@@ -4,7 +4,7 @@ import createApiAction from './createApiAction';
 function fetchTypes() {
   return createApiAction({
     endpoint: 'type',
-    params: { pageSize: 100 },
+    params: { pageSize: 100, resource_group: 'kanslia' },
     method: 'GET',
     type: 'TYPES',
     options: { schema: schemas.paginatedTypesSchema },
