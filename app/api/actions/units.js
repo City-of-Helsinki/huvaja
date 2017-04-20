@@ -4,7 +4,7 @@ import createApiAction from './createApiAction';
 function fetchUnits() {
   return createApiAction({
     endpoint: 'unit',
-    params: { pageSize: 100 },
+    params: { pageSize: 100, resource_group: 'kanslia' },
     method: 'GET',
     type: 'UNITS',
     options: { schema: schemas.paginatedUnitsSchema },
