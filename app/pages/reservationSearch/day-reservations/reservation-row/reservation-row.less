@@ -1,0 +1,41 @@
+.reservation-row {
+  display: flex;
+  margin-bottom: 2px;
+
+  &:focus {
+    outline: 0;
+    text-decoration: none;
+  }
+  
+  &:hover {
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .left, .right {
+    display: inline-block;
+    padding: @padding-base-vertical @padding-base-horizontal;
+  }
+
+  .left {
+    background-color: @brand-success;
+    color: #fff;
+    flex-basis: 30%;
+  }
+
+  .right {
+    background-color: @background-gray;
+    color: @text-color;
+    flex-basis: 70%;
+  }
+
+  .time-range,
+  .place {
+    font-weight: @bold;
+  }
+
+  .host-name,
+  .event-subject {
+    font-weight: @regular;
+  }
+}
