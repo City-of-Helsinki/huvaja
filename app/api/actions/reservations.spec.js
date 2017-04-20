@@ -87,7 +87,7 @@ describe('api/actions/reservations', () => {
       args: [],
       tests: {
         method: 'GET',
-        endpoint: buildAPIUrl('reservation', { pageSize: 100 }),
+        endpoint: buildAPIUrl('reservation', { pageSize: 100, resource_group: 'kanslia' }),
         request: {
           type: types.RESERVATIONS_GET_REQUEST,
         },

@@ -35,9 +35,13 @@ function fetchReservation(id) {
 }
 
 function fetchReservations(params = {}) {
+  const defaultParams = {
+    resource_group: 'kanslia',
+    pageSize: 100,
+  };
   return createApiAction({
     endpoint: 'reservation',
-    params: Object.assign({}, params, { pageSize: 100 }),
+    params: { ...defaultParams, ...params },
     method: 'GET',
     type: 'RESERVATIONS',
     options: { schema: schemas.paginatedReservationsSchema },
