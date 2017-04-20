@@ -18,14 +18,18 @@ function fetchResource(id, params = {}) {
   });
 }
 
-function fetchResources(params = {}) {
+function fetchResources(params = {}, times = true) {
   const defaultParams = {
     resource_group: 'kanslia',
     pageSize: 100,
   };
+  const paramsWithTimes = times ? getParamsWithTimes(params) : {};
   return createApiAction({
     endpoint: 'resource',
-    params: { ...defaultParams, ...getParamsWithTimes(params) },
+    params: {
+      ...defaultParams,
+      ...paramsWithTimes,
+    },
     method: 'GET',
     type: 'RESOURCES',
     options: { schema: schemas.paginatedResourcesSchema },

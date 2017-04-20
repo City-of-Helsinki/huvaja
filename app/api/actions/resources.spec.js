@@ -66,24 +66,48 @@ describe('api/actions/resources', () => {
   });
 
   describe('fetchResources', () => {
-    const params = getParamsWithTimes({ resource_group: 'kanslia', pageSize: 100 });
-    createApiTest({
-      name: 'fetchResources',
-      action: fetchResources,
-      args: [],
-      tests: {
-        method: 'GET',
-        endpoint: buildAPIUrl('resource', params),
-        request: {
-          type: types.RESOURCES_GET_REQUEST,
+    describe('with times', () => {
+      const params = getParamsWithTimes({ resource_group: 'kanslia', pageSize: 100 });
+      createApiTest({
+        name: 'fetchResources',
+        action: fetchResources,
+        args: [],
+        tests: {
+          method: 'GET',
+          endpoint: buildAPIUrl('resource', params),
+          request: {
+            type: types.RESOURCES_GET_REQUEST,
+          },
+          success: {
+            type: types.RESOURCES_GET_SUCCESS,
+          },
+          error: {
+            type: types.RESOURCES_GET_ERROR,
+          },
         },
-        success: {
-          type: types.RESOURCES_GET_SUCCESS,
+      });
+    });
+
+    describe('without times', () => {
+      const params = { resource_group: 'kanslia', pageSize: 100 };
+      createApiTest({
+        name: 'fetchResources',
+        action: fetchResources,
+        args: [{}, false],
+        tests: {
+          method: 'GET',
+          endpoint: buildAPIUrl('resource', params),
+          request: {
+            type: types.RESOURCES_GET_REQUEST,
+          },
+          success: {
+            type: types.RESOURCES_GET_SUCCESS,
+          },
+          error: {
+            type: types.RESOURCES_GET_ERROR,
+          },
         },
-        error: {
-          type: types.RESOURCES_GET_ERROR,
-        },
-      },
+      });
     });
   });
 
