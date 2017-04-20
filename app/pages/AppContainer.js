@@ -5,7 +5,7 @@ import Loader from 'react-loader';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-import { fetchEquipment, fetchTypes, fetchUnits } from 'api/actions';
+import { fetchEquipment, fetchResources, fetchTypes, fetchUnits } from 'api/actions';
 import { fetchAuthState } from 'auth/actions';
 import ReservationCancelModal from 'shared/modals/reservation-cancel';
 import ReservationInfoModal from 'shared/modals/reservation-info';
@@ -19,6 +19,7 @@ export class UnconnectedAppContainer extends Component {
     this.props.fetchUnits();
     this.props.fetchTypes();
     this.props.fetchEquipment();
+    this.props.fetchResources({}, false);
   }
 
   componentWillReceiveProps(props) {
@@ -51,11 +52,18 @@ UnconnectedAppContainer.propTypes = {
   isAuthFetched: PropTypes.bool.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   fetchEquipment: PropTypes.func.isRequired,
+  fetchResources: PropTypes.func.isRequired,
   fetchTypes: PropTypes.func.isRequired,
   fetchUnits: PropTypes.func.isRequired,
 };
 
-const actions = { fetchAuthState, fetchEquipment, fetchTypes, fetchUnits };
+const actions = {
+  fetchAuthState,
+  fetchEquipment,
+  fetchResources,
+  fetchTypes,
+  fetchUnits,
+};
 
 export const selector = createStructuredSelector({
   isAuthFetched: state => state.auth.isFetched,

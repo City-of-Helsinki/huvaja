@@ -17,6 +17,7 @@ describe('pages/AppContainer', () => {
     const defaults = {
       fetchAuthState: () => null,
       fetchEquipment: () => null,
+      fetchResources: () => null,
       fetchTypes: () => null,
       fetchUnits: () => null,
       isAuthFetched: true,
@@ -102,6 +103,14 @@ describe('pages/AppContainer', () => {
       const instance = getWrapper({ fetchEquipment }).instance();
       instance.componentDidMount();
       expect(fetchEquipment.callCount).to.equal(1);
+    });
+
+    it('fetches resources with param times = false', () => {
+      const fetchResources = simple.mock();
+      const instance = getWrapper({ fetchResources }).instance();
+      instance.componentDidMount();
+      expect(fetchResources.callCount).to.equal(1);
+      expect(fetchResources.lastCall.args).to.deep.equal([{}, false]);
     });
   });
 
