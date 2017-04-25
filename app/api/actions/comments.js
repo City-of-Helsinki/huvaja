@@ -6,6 +6,7 @@ function fetchComments({ reservationId }) {
     params: { reservationId },
     method: 'GET',
     type: 'COMMENTS',
+    options: { meta: { reservationId } },
   });
 }
 
