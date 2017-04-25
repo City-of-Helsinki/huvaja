@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
+import moment from 'moment';
 import React from 'react';
 
 import Comments from './Comments';
@@ -41,7 +42,7 @@ describe('shared/comments/Comments', () => {
     it('renders date', () => {
       const date = getComment().find('.comments-comment-date');
       expect(date).to.have.length(1);
-      expect(date.text()).to.equal('3.2.2017 12.34');
+      expect(date.text()).to.equal(moment(comment.createdAt).format('D.M.YYYY HH.mm'));
     });
 
     it('renders user name', () => {
