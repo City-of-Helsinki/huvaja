@@ -15,8 +15,8 @@ export const requiredHeaders = {
   'Content-Type': 'application/json',
 };
 
-export function buildAPIUrl(endpoint, params) {
-  const url = `${SETTINGS.API_URL}${endpoint}/`;
+export function buildAPIUrl(endpoint, params, isAbsolute) {
+  const url = isAbsolute ? endpoint : `${SETTINGS.API_URL}${endpoint}/`;
   const nonEmptyParams = pickBy(params, value => value !== '');
   const paramsString = queryString.stringify(decamelizeKeys(nonEmptyParams));
   return paramsString ? `${url}?${paramsString}` : url;
@@ -39,10 +39,10 @@ export function getErrorTypeDescriptor(type, options = {}) {
   };
 }
 
-export function getHeadersCreator(headers) {
+export function getHeadersCreator(headers, isAbsolute) {
   return (state) => {
     const authorizationHeaders = {};
-    if (state.auth && state.auth.token) {
+    if (state.auth && state.auth.token && !isAbsolute) {
       authorizationHeaders.Authorization = `JWT ${state.auth.token}`;
     }
     return Object.assign({}, requiredHeaders, headers, authorizationHeaders);
@@ -90,12 +90,13 @@ function createApiAction({
   options = {},
   headers = {},
 }) {
+  const isAbsolute = endpoint.indexOf('http://') === 0 || endpoint.indexOf('https://') === 0;
   return {
     [CALL_API]: {
       types: getRequestTypeDescriptors(type, method, options),
-      endpoint: buildAPIUrl(endpoint, params),
+      endpoint: buildAPIUrl(endpoint, params, isAbsolute),
       method,
-      headers: getHeadersCreator(headers),
+      headers: getHeadersCreator(headers, isAbsolute),
       body,
     },
   };
