@@ -4,6 +4,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/lib/Modal';
 import simple from 'simple-mock';
 
+import Comments from 'shared/comments';
 import ReservationInfo from './ReservationInfo';
 
 describe('shared/modal/ReservationInfo', () => {
@@ -113,6 +114,14 @@ describe('shared/modal/ReservationInfo', () => {
       const reservationHost = getBodyWrapper().find('.reservation-host');
       expect(reservationHost.html()).to.contain('Tilaisuuden isäntä:');
       expect(reservationHost.html()).to.contain(reservation.hostName);
+    });
+
+    it('renders reservation comments', () => {
+      const comments = getBodyWrapper().find('.reservation-comments');
+      expect(comments).to.have.length(1);
+      expect(comments.is(Comments)).to.be.true;
+      expect(comments.prop('name')).to.equal('Varauksen viestit');
+      expect(comments.prop('reservationId')).to.equal(reservation.id);
     });
   });
 
