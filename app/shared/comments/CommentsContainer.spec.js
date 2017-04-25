@@ -19,7 +19,7 @@ function getWrapper(props) {
   return shallow(<CommentsContainer {...defaults} {...props} />);
 }
 
-function getSelected(state, props) {
+function getSelected(state, props = { reservationId: 1234 }) {
   return selector(getState(state), props);
 }
 
@@ -160,6 +160,15 @@ describe('shared/comments/CommentsContainer', () => {
     it('selects comments', () => {
       const actual = getSelected();
       expect(actual.comments).to.be.truthy;
+    });
+
+    it('selects reservation comments', () => {
+      const comments = [{ id: 1 }, { id: 2 }];
+      const actual = getSelected(
+        { 'data.comments': { 1437: comments } },
+        { reservationId: 1437 },
+      );
+      expect(actual.comments).to.deep.equal(comments);
     });
   });
 });

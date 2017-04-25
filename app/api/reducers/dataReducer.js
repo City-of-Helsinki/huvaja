@@ -7,12 +7,36 @@ import actionTypes from '../actionTypes';
 
 const initialState = immutable({
   cateringMenuItems,
+  comments: {},
   equipment: {},
   reservations: {},
   resources: {},
   types: {},
   units: {},
 });
+
+function getCommentsMockData() {
+  return [
+    {
+      id: 1,
+      content: 'Is it possible to have a 1:1 scale replica of Hogwarts in the room?',
+      createdAt: '2017-01-01T10:18:39Z',
+      user: { name: 'S. Snape' },
+    },
+    {
+      id: 2,
+      content: 'Best I can do is a 1:1 replica of Hogsmeade. Will that do?',
+      createdAt: '2017-01-01T11:07:11Z',
+      user: { name: 'Argus Filch' },
+    },
+    {
+      id: 3,
+      content: 'That will have to do.',
+      createdAt: '2017-01-01T11:13:08Z',
+      user: { name: 'S. Snape' },
+    },
+  ];
+}
 
 function handleData(state, data) {
   return state.merge(data, { deep: true });
@@ -50,6 +74,15 @@ function dataReducer(state = initialState, action) {
     case actionTypes.TYPES_GET_SUCCESS:
     case actionTypes.UNITS_GET_SUCCESS: {
       return handleData(state, action.payload.entities);
+    }
+
+    case actionTypes.COMMENTS_GET_SUCCESS:
+    case actionTypes.COMMENTS_GET_ERROR: {
+      return state.merge({
+        comments: state.comments.merge({
+          [action.meta.reservationId]: getCommentsMockData(),
+        }),
+      });
     }
 
     case actionTypes.RESOURCES_GET_SUCCESS: {
