@@ -1,18 +1,17 @@
 import types from '../actionTypes';
 import { createApiTest } from './testUtils';
 import { fetchComments } from './comments';
-import { buildAPIUrl } from './createApiAction';
 
 describe('api/actions/comments', () => {
   describe('fetchComments', () => {
-    const reservationId = 'some-reservation-id';
+    const reservationId = 3819;
     createApiTest({
       name: 'fetchComments',
       action: fetchComments,
       args: [{ reservationId }],
       tests: {
         method: 'GET',
-        endpoint: buildAPIUrl('comment', { reservationId }),
+        endpoint: `http://www.mocky.io/v2/58ffa5c7110000ef16f60030?reservation_id=${reservationId}`,
         request: {
           type: types.COMMENTS_GET_REQUEST,
         },
