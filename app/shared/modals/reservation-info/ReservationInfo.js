@@ -6,6 +6,7 @@ import Label from 'react-bootstrap/lib/Label';
 import Modal from 'react-bootstrap/lib/Modal';
 import Row from 'react-bootstrap/lib/Row';
 
+import Comments from 'shared/comments';
 import WrappedText from 'shared/wrapped-text';
 
 ReservationInfoModal.propTypes = {
@@ -101,6 +102,11 @@ export default function ReservationInfoModal(props) {
             </Col>
           </Row>
         )}
+        <Comments
+          className="reservation-comments"
+          name="Varauksen viestit"
+          reservationId={reservation.id}
+        />
       </Modal.Body>
       <Modal.Footer>
         <Button
