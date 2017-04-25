@@ -27,11 +27,11 @@ describe('shared/comments/CommentsContainer', () => {
   describe('container', () => {
     describe('componentWillMount', () => {
       it('calls fetchComments with reservation id', () => {
-        const fetchComments = simple.mock();
+        const fetch = simple.mock();
         const reservationId = 1938;
-        const instance = getWrapper({ fetchComments, reservationId }).instance();
-        expect(fetchComments.callCount).to.equal(1);
-        expect(fetchComments.lastCall.args).to.deep.equal([{ reservationId }]);
+        getWrapper({ fetchComments: fetch, reservationId });
+        expect(fetch.callCount).to.equal(1);
+        expect(fetch.lastCall.args).to.deep.equal([{ reservationId }]);
       });
     });
 
