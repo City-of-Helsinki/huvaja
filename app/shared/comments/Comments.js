@@ -1,6 +1,8 @@
 import moment from 'moment';
 import React, { PropTypes } from 'react';
 
+import CommentAdder from './CommentAdder';
+
 function formatCreatedAt(datetime) {
   return moment(datetime).format('D.M.YYYY HH.mm');
 }
@@ -27,6 +29,7 @@ export default function Comments(props) {
           <div className="comments-comment-content">{comment.content}</div>
         </div>
       ))}
+      <CommentAdder />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import moment from 'moment';
 import React from 'react';
 
+import CommentAdder from './CommentAdder';
 import Comments from './Comments';
 
 function getWrapper(props) {
@@ -21,6 +22,11 @@ describe('shared/comments/Comments', () => {
   it('renders no comments if no comments', () => {
     const comments = getWrapper({ comments: [] }).find('.comments-comment');
     expect(comments).to.have.length(0);
+  });
+
+  it('renders a CommentAdder', () => {
+    const adder = getWrapper().find(CommentAdder);
+    expect(adder).to.have.length(1);
   });
 
   describe('comment', () => {

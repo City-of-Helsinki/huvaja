@@ -20,4 +20,26 @@
       padding: @padding-base-vertical @padding-base-horizontal;
     }
   }
+
+  .comment-adder {
+    margin-top: @padding-large-vertical;
+    display: flex;
+    justify-content: flex-end;
+
+    .comment-form {
+      width: 100%;
+
+      textarea.form-control {
+        margin-bottom: @padding-small-horizontal;
+      }
+      .form-controls {
+        display: flex;
+        justify-content: flex-end;
+
+        > * {
+          margin-left: @padding-small-horizontal;
+        }
+      }
+    }
+  }
 }
