@@ -16,6 +16,7 @@ Comments.propTypes = {
       name: PropTypes.string.isRequired,
     }).isRequired,
   })).isRequired,
+  createComment: PropTypes.func.isRequired,
 };
 export default function Comments(props) {
   return (
@@ -29,7 +30,7 @@ export default function Comments(props) {
           <div className="comments-comment-content">{comment.content}</div>
         </div>
       ))}
-      <CommentAdder />
+      <CommentAdder createComment={props.createComment} />
     </div>
   );
 }

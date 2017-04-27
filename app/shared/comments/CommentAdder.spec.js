@@ -2,12 +2,16 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 import Button from 'react-bootstrap/lib/Button';
+import simple from 'simple-mock';
 
 import CommentAdder from './CommentAdder';
 import CommentForm from './CommentForm';
 
 function getWrapper(props, { isOpen = false } = {}) {
-  const wrapper = shallow(<CommentAdder />);
+  const defaults = {
+    createComment: () => Promise.resolve(),
+  };
+  const wrapper = shallow(<CommentAdder {...defaults} {...props} />);
   if (isOpen) wrapper.setState({ isOpen });
   return wrapper;
 }
@@ -21,6 +25,17 @@ describe('shared/comments/CommentAdder', () => {
   it('has correct initial state', () => {
     const wrapper = getWrapper();
     expect(wrapper.state()).to.deep.equal({ isOpen: false });
+  });
+
+  describe('handleSubmit', () => {
+    it('calls props.createComment', () => {
+      const createComment = simple.mock().returnWith(Promise.reject());
+      const wrapper = getWrapper({ createComment });
+      const data = { some: 'data' };
+      wrapper.instance().handleSubmit(data);
+      expect(createComment.callCount).to.equal(1);
+      expect(createComment.lastCall.arg).to.equal(data);
+    });
   });
 
   describe('when closed', () => {
