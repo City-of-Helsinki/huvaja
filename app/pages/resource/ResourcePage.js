@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 
+import ReservationForm from 'shared/reservation-form/';
 import ResourceDailyReportButton from 'shared/resource-daily-report-button';
 import ResourceInfo from './info';
-import ReservationForm from './reservation-form/';
 
 ResourcePage.propTypes = {
   date: PropTypes.string.isRequired,

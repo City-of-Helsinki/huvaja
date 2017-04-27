@@ -9,7 +9,7 @@ import { UnconnectedCateringFormContainer as CateringFormContainer } from './Cat
 import CateringMenuItems from './CateringMenuItems';
 import CateringOrderTable from '../CateringOrderTable';
 
-describe('pages/resource/reservation-form/catering/catering-form/CateringFormContainer', () => {
+describe('shared/reservation-form/catering/catering-form/CateringFormContainer', () => {
   function getCateringData(data) {
     const defaults = {
       additionalInfo: 'Some info',
