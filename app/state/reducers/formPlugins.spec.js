@@ -7,7 +7,10 @@ describe('state/reducers/formPlugins', () => {
   describe('resourceReservation', () => {
     describe('SET_SUBMIT_SUCCEEDED', () => {
       const plugin = plugins.resourceReservation;
-      const action = { type: formActions.SET_SUBMIT_SUCCEEDED };
+      const action = {
+        type: formActions.SET_SUBMIT_SUCCEEDED,
+        meta: { form: 'resourceReservation' }
+      };
       const time = {
         begin: { date: '2017-01-01', time: null },
         end: { date: '2017-01-01', time: null },
