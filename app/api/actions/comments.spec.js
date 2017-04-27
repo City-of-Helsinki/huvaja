@@ -1,6 +1,6 @@
 import types from '../actionTypes';
 import { createApiTest } from './testUtils';
-import { fetchComments } from './comments';
+import { createComment, fetchComments } from './comments';
 
 describe('api/actions/comments', () => {
   describe('fetchComments', () => {
@@ -20,6 +20,30 @@ describe('api/actions/comments', () => {
         },
         error: {
           type: types.COMMENTS_GET_ERROR,
+        },
+      },
+    });
+  });
+
+  describe('createComment', () => {
+    const reservationId = 3819;
+    const content = 'Commends are comments';
+    const userName = 'Conrad Commentor';
+    createApiTest({
+      name: 'createComment',
+      action: createComment,
+      args: [{ reservationId, content, userName }],
+      tests: {
+        method: 'POST',
+        endpoint: 'http://www.mocky.io/v2/58ffa5c7110000ef16f60030',
+        request: {
+          type: types.COMMENTS_POST_REQUEST,
+        },
+        success: {
+          type: types.COMMENTS_POST_SUCCESS,
+        },
+        error: {
+          type: types.COMMENTS_POST_ERROR,
         },
       },
     });

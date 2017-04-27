@@ -1,4 +1,4 @@
-import { fetchComments } from './comments';
+import { createComment, fetchComments } from './comments';
 import { fetchEquipment } from './equipment';
 import {
   cancelReservation,
@@ -19,6 +19,7 @@ import { fetchUnits } from './units';
 
 export {
   cancelReservation,
+  createComment,
   editReservation,
   favoriteResource,
   fetchComments,
