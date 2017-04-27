@@ -9,6 +9,7 @@ import Comments from './Comments';
 function getWrapper(props) {
   const defaults = {
     comments: [],
+    createComment: () => null,
   };
   return shallow(<Comments {...defaults} {...props} />);
 }

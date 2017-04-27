@@ -3,22 +3,41 @@ import React, { PropTypes } from 'react';
 import FontAwesome from 'react-fontawesome';
 import { createStructuredSelector } from 'reselect';
 
-import { fetchComments } from 'api/actions';
+import { createComment, fetchComments } from 'api/actions';
+import { currentUserSelector } from 'auth/selectors';
 import Comments from './Comments';
 
 function commentsSelector(state, props) { return state.data.comments[props.reservationId]; }
 
 export const selector = createStructuredSelector({
   comments: commentsSelector,
+  user: currentUserSelector,
 });
 
 export const actions = {
+  createComment,
   fetchComments,
 };
+
+function mergeProps(state, dispatch, props) {
+  return {
+    ...props,
+    ...state,
+    ...dispatch,
+    createComment({ content }) {
+      return dispatch.createComment({
+        content,
+        reservationId: props.reservationId,
+        userName: state.user.displayName,
+      });
+    },
+  };
+}
 
 export class CommentsContainer extends React.Component {
   static propTypes = {
     comments: PropTypes.array,
+    createComment: PropTypes.func.isRequired,
     fetchComments: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
     reservationId: PropTypes.number.isRequired,
@@ -50,10 +69,15 @@ export class CommentsContainer extends React.Component {
           {' '}
           <FontAwesome name={this.state.isOpen ? 'caret-down' : 'caret-right'} />
         </a>
-        {this.state.isOpen && <Comments comments={this.props.comments} />}
+        {this.state.isOpen && (
+          <Comments
+            comments={this.props.comments}
+            createComment={this.props.createComment}
+          />
+        )}
       </div>
     );
   }
 }
 
-export default connect(selector, actions)(CommentsContainer);
+export default connect(selector, actions, mergeProps)(CommentsContainer);

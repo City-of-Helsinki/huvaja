@@ -12,6 +12,7 @@ import { actions, CommentsContainer, selector } from './CommentsContainer';
 function getWrapper(props) {
   const defaults = {
     comments: [],
+    createComment: () => null,
     fetchComments: () => null,
     name: 'Varauksen viestit',
     reservationId: 1,

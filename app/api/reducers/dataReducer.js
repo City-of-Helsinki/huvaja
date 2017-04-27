@@ -61,6 +61,17 @@ function dataReducer(state = initialState, action) {
         }),
       });
     }
+    case actionTypes.COMMENTS_POST_SUCCESS: {
+      // TODO: Use response data instead of data from meta
+      return state.merge({
+        comments: state.comments.merge({
+          [action.meta.reservationId]: [
+            ...state.comments[action.meta.reservationId],
+            action.meta.data,
+          ],
+        }),
+      });
+    }
 
     case actionTypes.RESOURCES_GET_SUCCESS: {
       const resources = mapValues(action.payload.entities.resources, (resource) => {

@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Button from 'react-bootstrap/lib/Button';
 
 import CommentForm from './CommentForm';
 
 export default class CommentAdder extends React.Component {
+  static propTypes = {
+    createComment: PropTypes.func.isRequired,
+  }
   state = { isOpen: false }
 
   toggle = (event) => {
@@ -11,10 +14,10 @@ export default class CommentAdder extends React.Component {
     this.setState({ isOpen: !this.state.isOpen });
   }
 
-  handleSubmit = (data) => {
-    this.toggle();
-    console.log('Submitted!', data);
-  }
+  handleSubmit = data => (
+    this.props.createComment(data)
+      .then(() => { this.toggle(); })
+  )
 
   render() {
     return (
