@@ -8,7 +8,7 @@ import ReduxFormField from 'shared/form-fields/ReduxFormField';
 import CateringSection from './catering';
 import { UnconnectedReservationForm as ReservationForm, validate } from './ReservationForm';
 
-describe('pages/resource/reservation-form/ReservationForm', () => {
+describe('shared/reservation-form/ReservationForm', () => {
   describe('validation', () => {
     describe('if field value is missing', () => {
       const values = {};

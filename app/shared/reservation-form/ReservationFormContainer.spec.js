@@ -5,7 +5,7 @@ import simple from 'simple-mock';
 import { getState } from 'utils/testUtils';
 import { mergeProps, selector } from './ReservationFormContainer';
 
-describe('pages/resource/reservation-form/ReservationFormContainer', () => {
+describe('shared/reservation-form/ReservationFormContainer', () => {
   describe('selector', () => {
     const props = { resource: { name: { fi: 'Resource name' } } };
     function getSelected(extraState, extraProps) {

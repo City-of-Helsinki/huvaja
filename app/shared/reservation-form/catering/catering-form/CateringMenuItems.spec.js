@@ -5,7 +5,7 @@ import React from 'react';
 import CateringMenuItem from './CateringMenuItem';
 import CateringMenuItems from './CateringMenuItems';
 
-describe('pages/resource/reservation-form/catering/catering-form/CateringMenuItems', () => {
+describe('shared/reservation-form/catering/catering-form/CateringMenuItems', () => {
   function getWrapper(props) {
     const defaults = {
       items: [{ id: 1 }, { id: 2 }],

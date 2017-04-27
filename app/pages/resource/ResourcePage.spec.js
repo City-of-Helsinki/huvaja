@@ -2,10 +2,10 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 
+import ReservationForm from 'shared/reservation-form';
 import ResourceDailyReportButton from 'shared/resource-daily-report-button';
 import ResourceInfo from './info';
 import ResourcePage from './ResourcePage';
-import ReservationForm from './reservation-form';
 
 describe('pages/resource/ResourcePage', () => {
   const defaults = {

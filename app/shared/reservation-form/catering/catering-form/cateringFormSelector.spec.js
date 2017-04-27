@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { getState } from 'utils/testUtils';
 import selector from './cateringFormSelector';
 
-describe('pages/resource/reservation-form/catering/catering-form/cateringFormSelector', () => {
+describe('shared/reservation-form/catering/catering-form/cateringFormSelector', () => {
   function getSelected(extraState = {}) {
     const defaults = {
       'form.resourceReservation.values': {},

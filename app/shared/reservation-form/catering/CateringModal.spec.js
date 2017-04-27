@@ -6,7 +6,7 @@ import Modal from 'react-bootstrap/lib/Modal';
 import CateringModal from './CateringModal';
 import CateringForm from './catering-form';
 
-describe('pages/resource/reservation-form/catering/CateringModal', () => {
+describe('shared/reservation-form/catering/CateringModal', () => {
   function getWrapper(props) {
     const defaults = {
       onClose: () => null,

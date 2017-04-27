@@ -6,7 +6,7 @@ import simple from 'simple-mock';
 
 import CateringMenuItem from './CateringMenuItem';
 
-describe('pages/resource/reservation-form/catering/catering-form/CateringMenuItem', () => {
+describe('shared/reservation-form/catering/catering-form/CateringMenuItem', () => {
   function getWrapper(props) {
     const defaults = {
       item: { id: 'cmi-1', name: 'Coffee', price: 2.50 },
