@@ -9,7 +9,7 @@ describe('state/reducers/formPlugins', () => {
       const plugin = plugins.resourceReservation;
       const action = {
         type: formActions.SET_SUBMIT_SUCCEEDED,
-        meta: { form: 'resourceReservation' }
+        meta: { form: 'resourceReservation' },
       };
       const time = {
         begin: { date: '2017-01-01', time: null },
