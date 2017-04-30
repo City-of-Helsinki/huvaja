@@ -1,0 +1,22 @@
+.reservation-search-controls {
+  .date-pickers-container {
+    display: flex;
+    justify-content: flex-start;
+
+    .delimiter {
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      font-size: 32px;
+    }
+  }
+
+  .date-picker {
+    border: 2px solid @input-border;
+    .input-size(@input-height-base; @padding-base-vertical; @padding-base-horizontal; @font-size-base; @line-height-base; @input-border-radius);
+
+    input {
+      padding: 0;
+    }
+  }
+}
