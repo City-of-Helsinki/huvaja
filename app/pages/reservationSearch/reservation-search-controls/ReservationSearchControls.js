@@ -144,6 +144,7 @@ class ReservationSearchControls extends Component {
               </FormGroup>
             </Col>
           </Row>
+          <hr className="separator" />
           <Row>
             <Col md={4}>
               <FormGroup controlId="unit-control-group">
