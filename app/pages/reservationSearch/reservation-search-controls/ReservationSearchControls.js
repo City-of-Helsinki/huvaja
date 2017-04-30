@@ -1,3 +1,4 @@
+import FontAwesome from 'react-fontawesome';
 import sortBy from 'lodash/sortBy';
 import React, { Component, PropTypes } from 'react';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
@@ -6,6 +7,8 @@ import FormControl from 'react-bootstrap/lib/FormControl';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
+
+import DatePicker from 'shared/date-picker';
 
 function getUnitOption(id, label) {
   return <option key={id} value={id}>{label}</option>;
@@ -57,7 +60,7 @@ class ReservationSearchControls extends Component {
 
   render() {
     return (
-      <div className="search-controls">
+      <div className="reservation-search-controls">
         <form onSubmit={preventDefault}>
           <Row>
             <Col md={4}>
@@ -112,6 +115,24 @@ class ReservationSearchControls extends Component {
             </Col>
           </Row>
           <Row>
+            <Col md={4}>
+              <FormGroup controlId="dates-control-group">
+                <ControlLabel>Varaukset aikavälillä</ControlLabel>
+                <div className="date-pickers-container">
+                  <DatePicker
+                    onChange={start => this.handleChange({ start })}
+                    value={this.props.values.start}
+                  />
+                  <div className="delimiter">
+                    <FontAwesome name="caret-right" />
+                  </div>
+                  <DatePicker
+                    onChange={end => this.handleChange({ end })}
+                    value={this.props.values.end}
+                  />
+                </div>
+              </FormGroup>
+            </Col>
             <Col md={4}>
               <FormGroup controlId="reserver-name-control-group">
                 <ControlLabel>Varaaja</ControlLabel>

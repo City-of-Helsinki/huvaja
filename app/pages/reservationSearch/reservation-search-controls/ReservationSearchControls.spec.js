@@ -156,6 +156,32 @@ describe('pages/reservationSearch/reservation-search-controls/ReservationSearchC
       });
     });
 
+    describe('date controls', () => {
+      function getDatesControlWrapper(values) {
+        const wrapper = getWrapper({
+          values: Object.assign({}, defaultValues, values),
+        });
+        return wrapper.find('[controlId="dates-control-group"]');
+      }
+
+      it('has correct label', () => {
+        const controlLabel = getDatesControlWrapper().find(ControlLabel);
+        expect(controlLabel.prop('children')).to.equal('Varaukset aikavälillä');
+      });
+
+      it('start has correct initial value', () => {
+        const start = '2016-04-05';
+        const startDatePicker = getDatesControlWrapper({ start }).find(DatePicker).at(0);
+        expect(startDatePicker.prop('value')).to.equal(start);
+      });
+
+      it('end has correct initial value', () => {
+        const end = '2016-04-15';
+        const endDatePicker = getDatesControlWrapper({ end }).find(DatePicker).at(1);
+        expect(endDatePicker.prop('value')).to.equal(end);
+      });
+    });
+
     describe('reserverName control', () => {
       function getReserverNameControlWrapper(values) {
         const wrapper = getWrapper({
