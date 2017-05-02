@@ -68,7 +68,11 @@ function dataReducer(state = initialState, action) {
     }
     case actionTypes.COMMENTS_POST_SUCCESS: {
       // TODO: Use response data instead of data from meta
-      const key = `reservation-${action.meta.reservationId}`;
+      const key = (
+        action.meta.reservationId
+        ? `reservation-${action.meta.reservationId}`
+        : `catering-${action.meta.cateringId}`
+      );
       return state.merge({
         comments: state.comments.merge({
           [key]: [
