@@ -7,7 +7,10 @@ import { createComment, fetchComments } from 'api/actions';
 import { currentUserSelector } from 'auth/selectors';
 import Comments from './Comments';
 
-function commentsSelector(state, props) { return state.data.comments[props.reservationId]; }
+function commentsSelector(state, props) {
+  const key = `reservation-${props.reservationId}`;
+  return state.data.comments[key];
+}
 
 export const selector = createStructuredSelector({
   comments: commentsSelector,
