@@ -123,6 +123,14 @@ describe('shared/modal/ReservationInfo', () => {
       expect(comments.prop('name')).to.equal('Varauksen viestit');
       expect(comments.prop('reservationId')).to.equal(reservation.id);
     });
+
+    it('renders catering comments', () => {
+      const comments = getBodyWrapper().find('.catering-comments');
+      expect(comments).to.have.length(1);
+      expect(comments.is(Comments)).to.be.true;
+      expect(comments.prop('name')).to.equal('Tarjoilun viestit');
+      expect(comments.prop('cateringId')).to.equal(reservation.id);
+    });
   });
 
   describe('Modal footer', () => {

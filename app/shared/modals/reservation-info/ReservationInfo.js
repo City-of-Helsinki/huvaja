@@ -93,6 +93,11 @@ export default function ReservationInfoModal(props) {
             }
           </Col>
         </Row>
+        <Comments
+          cateringId={reservation.id}
+          className="catering-comments"
+          name="Tarjoilun viestit"
+        />
         <hr />
         {reservation.eventDescription && (
           <Row>
