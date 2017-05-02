@@ -1,8 +1,9 @@
 import { expect } from 'chai';
+import { camelizeKeys } from 'humps';
 import moment from 'moment';
 import { createAction } from 'redux-actions';
 
-import reservationSearchFiltersReducer, { getInitialState } from './reservationSearchFiltersReducer';
+import reservationSearchFiltersReducer, { getInitialState, parseUrlFilters } from './reservationSearchFiltersReducer';
 
 describe('state/reducers/reservationSearchFiltersReducer', () => {
   describe('initial state', () => {
@@ -65,7 +66,7 @@ describe('state/reducers/reservationSearchFiltersReducer', () => {
         const currentState = {};
         const payload = {
           start: '2016-12-12',
-          is_favorite: '',
+          is_favorite_resource: '',
         };
         const action = routeChangedAction(payload);
         const nextState = reservationSearchFiltersReducer(currentState, action);
@@ -75,17 +76,17 @@ describe('state/reducers/reservationSearchFiltersReducer', () => {
       it('overrides previous values of same filters', () => {
         const payload = {
           start: '2016-12-15',
-          isFavorite: 'true',
+          isFavoriteResource: 'true',
         };
         const action = routeChangedAction(payload);
         const currentState = {
           start: '2016-12-12',
-          isFavorite: '',
+          isFavoriteResource: '',
         };
         const nextState = reservationSearchFiltersReducer(currentState, action);
         expect(nextState).to.deep.equal({
           start: '2016-12-15',
-          isFavorite: 'true',
+          isFavoriteResource: 'true',
         });
       });
     });
@@ -93,31 +94,46 @@ describe('state/reducers/reservationSearchFiltersReducer', () => {
     describe('ENTER_OR_CHANGE_RESERVATION_SEARCH_PAGE', () => {
       const routeChangedAction = createAction('ENTER_OR_CHANGE_RESERVATION_SEARCH_PAGE');
 
-      it('returns current state when payload has query parameters', () => {
+      it('resets state with query parameters', () => {
         const currentState = {
-          isFavorite: 'true',
+          reserverName: 'John',
         };
         const payload = {
           query: {
-            is_favorite: '',
+            extra_param: 'true',
+            host_name: 'Jack',
           },
         };
         const action = routeChangedAction(payload);
         const nextState = reservationSearchFiltersReducer(currentState, action);
-        expect(nextState).to.deep.equal(currentState);
+        const expected = {
+          ...getInitialState(),
+          hostName: 'Jack',
+        };
+        expect(nextState).to.deep.equal(expected);
       });
+    });
+  });
 
-      it('returns initial state when payload has no query parameters', () => {
-        const currentState = {
-          isFavorite: 'true',
-        };
-        const payload = {
-          query: {},
-        };
-        const action = routeChangedAction(payload);
-        const nextState = reservationSearchFiltersReducer(currentState, action);
-        expect(nextState).to.deep.equal(getInitialState());
-      });
+  describe('parseUrlFilters', () => {
+    it('parses filters camelizing keys', () => {
+      const query = {
+        start: '2016-01-01',
+        is_favorite_resource: 'true',
+      };
+      const actual = parseUrlFilters(query);
+      const expected = camelizeKeys(query);
+      expect(actual).to.deep.equal(expected);
+    });
+
+    it('ignores params not in initial state', () => {
+      const query = {
+        start: '2016-01-01',
+        extra_param: 'true',
+      };
+      const actual = parseUrlFilters(query);
+      const expected = { start: '2016-01-01' };
+      expect(actual).to.deep.equal(expected);
     });
   });
 });
