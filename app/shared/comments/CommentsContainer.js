@@ -28,13 +28,14 @@ export const actions = {
   fetchComments,
 };
 
-function mergeProps(state, dispatch, props) {
+export function mergeProps(state, dispatch, props) {
   return {
     ...props,
     ...state,
     ...dispatch,
     createComment({ content }) {
       return dispatch.createComment({
+        cateringId: props.cateringId,
         content,
         reservationId: props.reservationId,
         userName: state.user.displayName,
