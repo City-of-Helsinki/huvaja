@@ -1,13 +1,13 @@
 import createApiAction from './createApiAction';
 
-function fetchComments({ reservationId }) {
+function fetchComments({ cateringId, reservationId }) {
   return createApiAction({
     // TODO: Replace with correct endpoint once the backend supports it.
     endpoint: 'http://www.mocky.io/v2/58ffa5c7110000ef16f60030',
-    params: { reservationId },
+    params: { cateringId, reservationId },
     method: 'GET',
     type: 'COMMENTS',
-    options: { meta: { reservationId } },
+    options: { meta: { cateringId, reservationId } },
   });
 }
 
