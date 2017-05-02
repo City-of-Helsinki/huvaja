@@ -113,15 +113,17 @@ export default function ReservationInfoModal(props) {
           reservationId={reservation.id}
         />
       </Modal.Body>
-      <Modal.Footer>
-        <Button
-          className="reservation-cancel"
-          bsStyle="default"
-          onClick={cancelReservation}
-        >
-          Poista
-        </Button>
-      </Modal.Footer>
+      {reservation.userPermissions.canDelete && (
+        <Modal.Footer>
+          <Button
+            className="reservation-cancel"
+            bsStyle="default"
+            onClick={cancelReservation}
+          >
+            Poista
+          </Button>
+        </Modal.Footer>
+      )}
     </Modal>
   );
 }
