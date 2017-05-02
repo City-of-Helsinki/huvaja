@@ -8,7 +8,7 @@ describe('api/actions/comments', () => {
     const reservationId = 3819;
 
     createApiTest({
-      name: 'fetchComments',
+      name: 'fetchComments(reservationId)',
       action: fetchComments,
       args: [{ reservationId }],
       tests: {
@@ -27,7 +27,7 @@ describe('api/actions/comments', () => {
     });
 
     createApiTest({
-      name: 'fetchComments',
+      name: 'fetchComments(cateringId)',
       action: fetchComments,
       args: [{ cateringId }],
       tests: {

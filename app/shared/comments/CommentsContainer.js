@@ -77,7 +77,7 @@ export class CommentsContainer extends React.Component {
   render() {
     return (
       <div className="comments-container">
-        <a onClick={this.toggleComments} tabIndex="0">
+        <a className="comments-container-toggle" onClick={this.toggleComments} tabIndex="0">
           {this.props.name} ({this.getCommentCount()})
           {' '}
           <FontAwesome name={this.state.isOpen ? 'caret-down' : 'caret-right'} />
