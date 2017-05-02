@@ -32,7 +32,21 @@ describe('shared/comments/CommentsContainer', () => {
         const reservationId = 1938;
         getWrapper({ fetchComments: fetch, reservationId });
         expect(fetch.callCount).to.equal(1);
-        expect(fetch.lastCall.args).to.deep.equal([{ reservationId }]);
+        expect(fetch.lastCall.args).to.deep.equal([{
+          cateringId: undefined,
+          reservationId,
+        }]);
+      });
+
+      it('calls fetchComments with catering id', () => {
+        const fetch = simple.mock();
+        const cateringId = 1938;
+        getWrapper({ fetchComments: fetch, cateringId, reservationId: undefined });
+        expect(fetch.callCount).to.equal(1);
+        expect(fetch.lastCall.args).to.deep.equal([{
+          cateringId,
+          reservationId: undefined,
+        }]);
       });
     });
 
@@ -168,6 +182,15 @@ describe('shared/comments/CommentsContainer', () => {
       const actual = getSelected(
         { 'data.comments': { 'reservation-1437': comments } },
         { reservationId: 1437 },
+      );
+      expect(actual.comments).to.deep.equal(comments);
+    });
+
+    it('selects catering comments', () => {
+      const comments = [{ id: 1 }, { id: 2 }];
+      const actual = getSelected(
+        { 'data.comments': { 'catering-1437': comments } },
+        { cateringId: 1437 },
       );
       expect(actual.comments).to.deep.equal(comments);
     });

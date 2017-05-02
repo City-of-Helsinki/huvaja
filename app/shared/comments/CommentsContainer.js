@@ -8,7 +8,11 @@ import { currentUserSelector } from 'auth/selectors';
 import Comments from './Comments';
 
 function commentsSelector(state, props) {
-  const key = `reservation-${props.reservationId}`;
+  const key = (
+    props.reservationId
+    ? `reservation-${props.reservationId}`
+    : `catering-${props.cateringId}`
+  );
   return state.data.comments[key];
 }
 
@@ -39,16 +43,20 @@ function mergeProps(state, dispatch, props) {
 
 export class CommentsContainer extends React.Component {
   static propTypes = {
+    cateringId: PropTypes.number,
     comments: PropTypes.array,
     createComment: PropTypes.func.isRequired,
     fetchComments: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
-    reservationId: PropTypes.number.isRequired,
+    reservationId: PropTypes.number,
   }
   state = { isOpen: false }
 
   componentWillMount() {
-    this.props.fetchComments({ reservationId: this.props.reservationId });
+    this.props.fetchComments({
+      cateringId: this.props.cateringId,
+      reservationId: this.props.reservationId,
+    });
   }
 
   getCommentCount() {
