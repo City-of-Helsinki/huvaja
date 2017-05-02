@@ -21,7 +21,7 @@ function getWrapper(props) {
 }
 
 function getSelected(state, props = { reservationId: 1234 }) {
-  return selector(getState(state), props);
+  return selector()(getState(state), props);
 }
 
 describe('shared/comments/CommentsContainer', () => {
