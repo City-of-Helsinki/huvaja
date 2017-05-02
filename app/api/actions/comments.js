@@ -11,7 +11,7 @@ function fetchComments({ cateringId, reservationId }) {
   });
 }
 
-function createComment({ content, userName, reservationId }) {
+function createComment({ cateringId, content, userName, reservationId }) {
   const data = {
     id: Math.floor(Math.random() * 10000),
     content,
@@ -24,7 +24,7 @@ function createComment({ content, userName, reservationId }) {
     body: JSON.stringify(data),
     method: 'POST',
     type: 'COMMENTS',
-    options: { meta: { data, reservationId } },
+    options: { meta: { cateringId, data, reservationId } },
   });
 }
 
