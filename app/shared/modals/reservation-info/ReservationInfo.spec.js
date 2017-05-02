@@ -22,6 +22,7 @@ describe('shared/modal/ReservationInfo', () => {
     reserverName: 'Mr reserver',
     begin: '2016-01-01T08:00:00',
     end: '2016-01-01T10:00:00',
+    userPermissions: { canDelete: false, canEdit: false },
   };
 
   const defaults = {
@@ -139,20 +140,39 @@ describe('shared/modal/ReservationInfo', () => {
     }
 
     describe('cancel reservation button', () => {
-      function getButtonWrapper(props) {
-        return getFooterWrapper(props).find('.reservation-cancel');
-      }
+      describe('when not userPermissions.canDelete', () => {
+        function getButtonWrapper(props) {
+          return getFooterWrapper(props).find('.reservation-cancel');
+        }
 
-      it('is rendered', () => {
-        expect(getButtonWrapper()).to.have.length(1);
+        it('is not rendered', () => {
+          expect(getButtonWrapper()).to.have.length(0);
+        });
       });
 
-      it('opens modal on click', () => {
-        const showReservationCancelModal = simple.mock();
-        const wrapper = getButtonWrapper({ showReservationCancelModal });
-        wrapper.simulate('click');
-        expect(showReservationCancelModal.callCount).to.equal(1);
-        expect(showReservationCancelModal.lastCall.arg).to.equal(reservation.id);
+      describe('when userPermissions.canDelete', () => {
+        function getButtonWrapper(props) {
+          const deletableReservation = {
+            ...reservation,
+            userPermissions: { canEdit: false, canDelete: true },
+          };
+          return (
+            getFooterWrapper({ reservation: deletableReservation, ...props })
+            .find('.reservation-cancel')
+          );
+        }
+
+        it('is rendered', () => {
+          expect(getButtonWrapper()).to.have.length(1);
+        });
+
+        it('opens modal on click', () => {
+          const showReservationCancelModal = simple.mock();
+          const wrapper = getButtonWrapper({ showReservationCancelModal });
+          wrapper.simulate('click');
+          expect(showReservationCancelModal.callCount).to.equal(1);
+          expect(showReservationCancelModal.lastCall.arg).to.equal(reservation.id);
+        });
       });
     });
   });
