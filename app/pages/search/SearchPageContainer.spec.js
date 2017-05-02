@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-import { camelizeKeys, decamelizeKeys } from 'humps';
-import moment from 'moment';
+import { decamelizeKeys } from 'humps';
 import queryString from 'query-string';
 import React from 'react';
 import Loader from 'react-loader';
@@ -12,7 +11,6 @@ import AvailabilityView from 'shared/availability-view';
 import ResourceDailyReportButton from 'shared/resource-daily-report-button';
 import resourceSearchUtils from 'utils/resourceSearchUtils';
 import {
-  parseUrlFilters,
   UnconnectedSearchPageContainer as SearchPageContainer,
 } from './SearchPageContainer';
 import SearchControls from './search-controls';
@@ -171,101 +169,19 @@ describe('pages/search/SearchPageContainer', () => {
   });
 
   describe('componentDidMount', () => {
-    let changeFilters;
-    let fetchResources;
-
-    beforeEach(() => {
-      changeFilters = simple.mock();
-      fetchResources = simple.mock();
-    });
-
-    afterEach(() => {
-      simple.restore();
-    });
-
-    function callComponentDidMount(query) {
+    it('fetches resources using decamelized effective filters', () => {
+      const fetchResources = simple.mock();
       const props = {
-        changeFilters,
         fetchResources,
-        location: { query },
+        searchFilters,
       };
       const instance = getWrapper(props).instance();
       instance.componentDidMount();
-    }
-
-    describe('when no query params in url', () => {
-      const query = {};
-
-      beforeEach(() => {
-        callComponentDidMount(query);
-      });
-
-      it('fetches resources using decamelized effective search filters', () => {
-        expect(fetchResources.callCount).to.equal(1);
-        const expectedArg = decamelizeKeys(
-          resourceSearchUtils.getEffectiveFilters(searchFilters)
-        );
-        expect(fetchResources.lastCall.arg).to.deep.equal(expectedArg);
-      });
-
-      it('does not change filters', () => {
-        expect(changeFilters.callCount).to.equal(0);
-      });
-    });
-
-    describe('when query params in url', () => {
-      it('changes filters using camelized query params', () => {
-        const query = { is_favorite: 'true' };
-        callComponentDidMount(query);
-        expect(changeFilters.callCount).to.equal(1);
-        const expectedArg = camelizeKeys(query);
-        expect(changeFilters.lastCall.arg).to.deep.equal(expectedArg);
-      });
-
-      it('parses availableBetween param correctly', () => {
-        const availableBetweenParams = {
-          availableStartDate: '2016-12-13',
-          availableStartTime: '09:00',
-          availableEndDate: '2016-12-14',
-          availableEndTime: '10:30',
-        };
-        const availableBetween = resourceSearchUtils.getAvailableBetween(
-          availableBetweenParams.availableStartDate,
-          availableBetweenParams.availableStartTime,
-          availableBetweenParams.availableEndDate,
-          availableBetweenParams.availableEndTime,
-        );
-        const query = {
-          is_favorite: 'true',
-          availableBetween,
-        };
-        callComponentDidMount(query);
-        expect(changeFilters.callCount).to.equal(1);
-        const expectedArg = {
-          ...availableBetweenParams,
-          isFavorite: 'true',
-        };
-        expect(changeFilters.lastCall.arg).to.deep.equal(expectedArg);
-      });
-
-      it('ignores invalid availableBetween param', () => {
-        const query = {
-          is_favorite: 'true',
-          availableBetween: 'invalid',
-        };
-        callComponentDidMount(query);
-        expect(changeFilters.callCount).to.equal(1);
-        const expectedArg = {
-          isFavorite: 'true',
-        };
-        expect(changeFilters.lastCall.arg).to.deep.equal(expectedArg);
-      });
-
-      it('does not fetch resources', () => {
-        const query = { is_favorite: 'true' };
-        callComponentDidMount(query);
-        expect(fetchResources.callCount).to.equal(0);
-      });
+      expect(fetchResources.callCount).to.equal(1);
+      const expectedArg = decamelizeKeys(
+        resourceSearchUtils.getEffectiveFilters(searchFilters)
+      );
+      expect(props.fetchResources.lastCall.arg).to.deep.equal(expectedArg);
     });
   });
 
@@ -396,52 +312,6 @@ describe('pages/search/SearchPageContainer', () => {
         date: newDate,
       });
       simple.restore();
-    });
-  });
-
-  describe('parseUrlFilters', () => {
-    it('parses regular filters correctly', () => {
-      const query = {
-        date: '2016-01-01',
-        equipment: '123',
-        isFavorite: 'true',
-      };
-      const actual = parseUrlFilters(query);
-      expect(actual).to.deep.equal(query);
-    });
-
-    it('parses availableBetween correctly', () => {
-      const availableStart = moment('2016-01-03 12:00').toISOString();
-      const availableEnd = moment('2016-01-04 13:30').toISOString();
-      const availableBetween = `${availableStart},${availableEnd}`;
-      const query = {
-        availableBetween,
-        equipment: '123',
-      };
-      const expected = {
-        availableStartDate: '2016-01-03',
-        availableStartTime: '12:00',
-        availableEndDate: '2016-01-04',
-        availableEndTime: '13:30',
-        equipment: '123',
-      };
-      const actual = parseUrlFilters(query);
-      expect(actual).to.deep.equal(expected);
-    });
-
-    function expectAvailableBetweenIgnored(availableBetween) {
-      const actual = parseUrlFilters({ availableBetween });
-      expect(actual).to.deep.equal({});
-    }
-
-    it('ignores invalid availableBetween', () => {
-      const availableStart = moment('2016-01-03 12:00').toISOString();
-      expectAvailableBetweenIgnored(undefined);
-      expectAvailableBetweenIgnored('');
-      expectAvailableBetweenIgnored(`${availableStart}`);
-      expectAvailableBetweenIgnored(`${availableStart},`);
-      expectAvailableBetweenIgnored(`${availableStart},${availableStart},${availableStart}`);
-      expectAvailableBetweenIgnored('invalid,invalid');
     });
   });
 });
