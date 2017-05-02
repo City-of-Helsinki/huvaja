@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import moment from 'moment';
 import { createAction } from 'redux-actions';
 
-import searchFiltersReducer, { getInitialState } from './searchFiltersReducer';
+import searchFiltersReducer, { getInitialState, parseUrlFilters } from './searchFiltersReducer';
 
 describe('state/reducers/searchFiltersReducer', () => {
   describe('initial state', () => {
@@ -110,37 +110,80 @@ describe('state/reducers/searchFiltersReducer', () => {
     describe('ENTER_OR_CHANGE_SEARCH_PAGE', () => {
       const routeChangedAction = createAction('ENTER_OR_CHANGE_SEARCH_PAGE');
 
-      it('returns current state when payload has query parameters', () => {
+      it('resets state with query parameters', () => {
         const currentState = {
           isFavorite: 'true',
         };
         const payload = {
           query: {
-            date: '2016-12-12',
-            equipment: '',
-            is_favorite: '',
-            people: '',
+            extra_param: 'true',
             search: 'search text',
-            type: '',
-            unit: '',
           },
         };
         const action = routeChangedAction(payload);
         const nextState = searchFiltersReducer(currentState, action);
-        expect(nextState).to.deep.equal(currentState);
+        const expected = {
+          ...getInitialState(),
+          search: 'search text',
+        };
+        expect(nextState).to.deep.equal(expected);
       });
+    });
+  });
 
-      it('returns initial state when payload has no query parameters', () => {
-        const currentState = {
-          isFavorite: 'true',
-        };
-        const payload = {
-          query: {},
-        };
-        const action = routeChangedAction(payload);
-        const nextState = searchFiltersReducer(currentState, action);
-        expect(nextState).to.deep.equal(getInitialState());
-      });
+  describe('parseUrlFilters', () => {
+    it('parses regular filters correctly', () => {
+      const query = {
+        date: '2016-01-01',
+        equipment: '123',
+        isFavorite: 'true',
+      };
+      const actual = parseUrlFilters(query);
+      expect(actual).to.deep.equal(query);
+    });
+
+    it('parses availableBetween correctly', () => {
+      const availableStart = moment('2016-01-03 12:00').toISOString();
+      const availableEnd = moment('2016-01-04 13:30').toISOString();
+      const availableBetween = `${availableStart},${availableEnd}`;
+      const query = {
+        availableBetween,
+        equipment: '123',
+      };
+      const expected = {
+        availableStartDate: '2016-01-03',
+        availableStartTime: '12:00',
+        availableEndDate: '2016-01-04',
+        availableEndTime: '13:30',
+        equipment: '123',
+      };
+      const actual = parseUrlFilters(query);
+      expect(actual).to.deep.equal(expected);
+    });
+
+    function expectAvailableBetweenIgnored(availableBetween) {
+      const actual = parseUrlFilters({ availableBetween });
+      expect(actual).to.deep.equal({});
+    }
+
+    it('ignores invalid availableBetween', () => {
+      const availableStart = moment('2016-01-03 12:00').toISOString();
+      expectAvailableBetweenIgnored(undefined);
+      expectAvailableBetweenIgnored('');
+      expectAvailableBetweenIgnored(`${availableStart}`);
+      expectAvailableBetweenIgnored(`${availableStart},`);
+      expectAvailableBetweenIgnored(`${availableStart},${availableStart},${availableStart}`);
+      expectAvailableBetweenIgnored('invalid,invalid');
+    });
+
+    it('ignores params not in initial state', () => {
+      const query = {
+        date: '2016-01-01',
+        extra_param: 'true',
+      };
+      const actual = parseUrlFilters(query);
+      const expected = { date: '2016-01-01' };
+      expect(actual).to.deep.equal(expected);
     });
   });
 });

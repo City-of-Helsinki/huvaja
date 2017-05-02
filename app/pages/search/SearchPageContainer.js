@@ -1,6 +1,5 @@
-import { camelizeKeys, decamelizeKeys } from 'humps';
+import { decamelizeKeys } from 'humps';
 import flatten from 'lodash/flatten';
-import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import debounce from 'lodash/debounce';
 import React, { Component, PropTypes } from 'react';
@@ -13,32 +12,8 @@ import { fetchResources } from 'api/actions';
 import ResourceDailyReportButton from 'shared/resource-daily-report-button';
 import AvailabilityView from 'shared/availability-view';
 import resourceSearchUtils from 'utils/resourceSearchUtils';
-import timeUtils from 'utils/timeUtils';
 import SearchControls from './search-controls';
 import selector from './searchPageSelector';
-
-const DATE_FORMAT = 'YYYY-MM-DD';
-const TIME_FORMAT = 'HH:mm';
-
-function getAvailableFilters(availableBetween) {
-  if (!availableBetween) return {};
-  const parts = availableBetween.split(',');
-  if (parts.length !== 2) return {};
-  const start = timeUtils.parseDateTime(parts[0]);
-  const end = timeUtils.parseDateTime(parts[1]);
-  if (!start || !end) return {};
-  return {
-    availableStartDate: start.format(DATE_FORMAT),
-    availableStartTime: start.format(TIME_FORMAT),
-    availableEndDate: end.format(DATE_FORMAT),
-    availableEndTime: end.format(TIME_FORMAT),
-  };
-}
-
-export function parseUrlFilters(queryParams) {
-  const { availableBetween, ...regular } = camelizeKeys(queryParams);
-  return { ...getAvailableFilters(availableBetween), ...regular };
-}
 
 function didAvailableBetweenChange(updatedFilters) {
   if (!updatedFilters.availableStartDate) return false;
@@ -59,12 +34,7 @@ export class UnconnectedSearchPageContainer extends Component {
   }
 
   componentDidMount() {
-    const urlFilters = parseUrlFilters({ ...this.props.location.query });
-    if (isEmpty(urlFilters)) {
-      this.fetch(this.props.searchFilters);
-    } else {
-      this.props.changeFilters(urlFilters);
-    }
+    this.fetch(this.props.searchFilters);
   }
 
   componentWillUpdate(nextProps) {
@@ -191,7 +161,6 @@ UnconnectedSearchPageContainer.propTypes = {
   equipment: PropTypes.object.isRequired,
   isFetching: PropTypes.bool.isRequired,
   fetchResources: PropTypes.func.isRequired,
-  location: PropTypes.shape({ query: PropTypes.object }).isRequired,
   resultsCount: PropTypes.number.isRequired,
   searchFilters: PropTypes.object.isRequired,
   types: PropTypes.object.isRequired,
