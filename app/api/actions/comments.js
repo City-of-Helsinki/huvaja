@@ -1,9 +1,11 @@
 import createApiAction from './createApiAction';
 
+const mockUrl = 'https://mockbin.org/bin/377913d3-940a-49a0-8d52-ad6edd56986b';
+
 function fetchComments({ cateringId, reservationId }) {
   return createApiAction({
     // TODO: Replace with correct endpoint once the backend supports it.
-    endpoint: 'http://www.mocky.io/v2/58ffa5c7110000ef16f60030',
+    endpoint: mockUrl,
     params: { cateringId, reservationId },
     method: 'GET',
     type: 'COMMENTS',
@@ -20,7 +22,7 @@ function createComment({ cateringId, content, userName, reservationId }) {
   };
   return createApiAction({
     // TODO: Replace with correct endpoint once the backend supports it.
-    endpoint: 'http://www.mocky.io/v2/58ffa5c7110000ef16f60030',
+    endpoint: mockUrl,
     body: JSON.stringify(data),
     method: 'POST',
     type: 'COMMENTS',
