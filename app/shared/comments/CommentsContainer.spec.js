@@ -7,7 +7,7 @@ import simple from 'simple-mock';
 import { fetchComments } from 'api/actions';
 import { getState } from 'utils/testUtils';
 import Comments from './Comments';
-import { actions, CommentsContainer, selector } from './CommentsContainer';
+import { actions, CommentsContainer, mergeProps, selector } from './CommentsContainer';
 
 function getWrapper(props) {
   const defaults = {
@@ -193,6 +193,49 @@ describe('shared/comments/CommentsContainer', () => {
         { cateringId: 1437 },
       );
       expect(actual.comments).to.deep.equal(comments);
+    });
+  });
+
+  describe('mergeProps', () => {
+    describe('createComment', () => {
+      function callCreateComment({ data, original, cateringId, reservationId, userName }) {
+        const merged = mergeProps(
+          { user: { displayName: userName } },
+          { createComment: original },
+          { cateringId, reservationId },
+        );
+        merged.createComment(data);
+      }
+
+      it('calls original createComment with cateringId', () => {
+        const createComment = simple.mock();
+        const cateringId = 57871;
+        const userName = 'Mick Mock';
+        const content = 'Hello!';
+        callCreateComment({ data: { content }, original: createComment, cateringId, userName });
+        expect(createComment.callCount).to.equal(1);
+        expect(createComment.lastCall.args).to.deep.equal([{
+          cateringId,
+          content,
+          reservationId: undefined,
+          userName,
+        }]);
+      });
+
+      it('calls original createComment with reservationId', () => {
+        const createComment = simple.mock();
+        const reservationId = 85881;
+        const userName = 'Mick Mock';
+        const content = 'Hello!';
+        callCreateComment({ data: { content }, original: createComment, reservationId, userName });
+        expect(createComment.callCount).to.equal(1);
+        expect(createComment.lastCall.args).to.deep.equal([{
+          cateringId: undefined,
+          content,
+          reservationId,
+          userName,
+        }]);
+      });
     });
   });
 });
