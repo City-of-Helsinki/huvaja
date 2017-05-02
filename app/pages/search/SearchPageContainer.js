@@ -128,23 +128,25 @@ export class UnconnectedSearchPageContainer extends Component {
           units={units}
           types={types}
         />
-        <Loader loaded={!isFetching}>
-          <div className="search-results-count">
-            <span>{searchResultsText} </span>
-            <Link to="/">Tyhjennä haku.</Link>
-          </div>
-          <AvailabilityView
-            date={searchFilters.date}
-            groups={availabilityGroups}
-            onDateChange={this.handleDateChange}
-          />
-          {resourceIds.length !== 0 &&
-            <ResourceDailyReportButton
-              resourceIds={resourceIds}
+        <div className="search-results-container">
+          <Loader loaded={!isFetching}>
+            <div className="search-results-count">
+              <span>{searchResultsText} </span>
+              <Link to="/">Tyhjennä haku.</Link>
+            </div>
+            <AvailabilityView
               date={searchFilters.date}
+              groups={availabilityGroups}
+              onDateChange={this.handleDateChange}
             />
-          }
-        </Loader>
+            {resourceIds.length !== 0 &&
+              <ResourceDailyReportButton
+                resourceIds={resourceIds}
+                date={searchFilters.date}
+              />
+            }
+          </Loader>
+        </div>
       </div>
     );
   }

@@ -104,15 +104,17 @@ export class UnconnectedReservationSearchPageContainer extends Component {
           onChange={changeFilters}
           units={units}
         />
-        <Loader loaded={!isFetching}>
-          <div className="search-results-count">
-            <span>{searchResultsText} </span>
-            <Link to={PATH}>Tyhjennä haku.</Link>
-          </div>
-          {reservationGroups.map(group =>
-            <DayReservations key={group.day} {...group} />
-          )}
-        </Loader>
+        <div className="search-results-container">
+          <Loader loaded={!isFetching}>
+            <div className="search-results-count">
+              <span>{searchResultsText} </span>
+              <Link to={PATH}>Tyhjennä haku.</Link>
+            </div>
+            {reservationGroups.map(group =>
+              <DayReservations key={group.day} {...group} />
+            )}
+          </Loader>
+        </div>
       </div>
     );
   }
