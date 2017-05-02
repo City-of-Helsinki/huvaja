@@ -1,6 +1,13 @@
-import isEmpty from 'lodash/isEmpty';
+import { camelizeKeys } from 'humps';
+import pick from 'lodash/pick';
 import moment from 'moment';
 import { handleActions } from 'redux-actions';
+
+export function parseUrlFilters(queryParams) {
+  const camelized = camelizeKeys(queryParams);
+  const correctKeys = Object.keys(getInitialState());
+  return pick(camelized, correctKeys);
+}
 
 export function getInitialState() {
   return {
@@ -24,7 +31,10 @@ export default handleActions({
     ...action.payload,
   }),
   ENTER_OR_CHANGE_RESERVATION_SEARCH_PAGE: (state, action) => {
-    if (isEmpty(action.payload.query)) return getInitialState();
-    return state;
+    const urlFilters = parseUrlFilters({ ...action.payload.query });
+    return {
+      ...getInitialState(),
+      ...urlFilters,
+    };
   },
 }, getInitialState());

@@ -1,6 +1,5 @@
-import { camelizeKeys, decamelizeKeys } from 'humps';
+import { decamelizeKeys } from 'humps';
 import debounce from 'lodash/debounce';
-import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import omitBy from 'lodash/omitBy';
 import queryString from 'query-string';
@@ -24,16 +23,11 @@ function getUrl(filters) {
   return `${PATH}?${urlParams}`;
 }
 
-export function parseUrlFilters(queryParams) {
-  return camelizeKeys(queryParams);
-}
-
 export class UnconnectedReservationSearchPageContainer extends Component {
   static propTypes = {
     changeFilters: PropTypes.func.isRequired,
     fetchReservations: PropTypes.func.isRequired,
     isFetching: PropTypes.bool.isRequired,
-    location: PropTypes.shape({ query: PropTypes.object }).isRequired,
     reservationGroups: PropTypes.array.isRequired,
     resultsCount: PropTypes.number.isRequired,
     searchFilters: PropTypes.object.isRequired,
@@ -50,12 +44,7 @@ export class UnconnectedReservationSearchPageContainer extends Component {
   }
 
   componentDidMount() {
-    const urlFilters = parseUrlFilters({ ...this.props.location.query });
-    if (isEmpty(urlFilters)) {
-      this.fetch(this.props.searchFilters);
-    } else {
-      this.props.changeFilters(urlFilters);
-    }
+    this.fetch(this.props.searchFilters);
   }
 
   componentWillUpdate(nextProps) {

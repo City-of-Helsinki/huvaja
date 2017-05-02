@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-import { camelizeKeys, decamelizeKeys } from 'humps';
+import { decamelizeKeys } from 'humps';
 import moment from 'moment';
 import queryString from 'query-string';
 import React from 'react';
@@ -10,7 +10,6 @@ import simple from 'simple-mock';
 
 import DayReservation from './day-reservations';
 import {
-  parseUrlFilters,
   UnconnectedReservationSearchPageContainer as ReservationSearchPageContainer,
 } from './ReservationSearchPageContainer';
 import ReservationSearchControls from './reservation-search-controls';
@@ -33,7 +32,6 @@ describe('pages/search/ReservationSearchPageContainer', () => {
     changeFilters: () => null,
     fetchReservations: () => null,
     isFetching: false,
-    location: { query: {} },
     reservationGroups: [
       { day: moment('2016-11-12'), reservations: [1, 2] },
     ],
@@ -137,60 +135,17 @@ describe('pages/search/ReservationSearchPageContainer', () => {
   });
 
   describe('componentDidMount', () => {
-    let changeFilters;
-    let fetchReservations;
-
-    beforeEach(() => {
-      changeFilters = simple.mock();
-      fetchReservations = simple.mock();
-    });
-
-    afterEach(() => {
-      simple.restore();
-    });
-
-    function callComponentDidMount(query) {
+    it('fetches reservations using decamelized filters', () => {
+      const fetchReservations = simple.mock();
       const props = {
-        changeFilters,
         fetchReservations,
-        location: { query },
+        searchFilters,
       };
       const instance = getWrapper(props).instance();
       instance.componentDidMount();
-    }
-
-    describe('when no query params in url', () => {
-      const query = {};
-
-      beforeEach(() => {
-        callComponentDidMount(query);
-      });
-
-      it('fetches reservations using decamelized filters', () => {
-        expect(fetchReservations.callCount).to.equal(1);
-        const expectedArg = decamelizeKeys(searchFilters);
-        expect(fetchReservations.lastCall.arg).to.deep.equal(expectedArg);
-      });
-
-      it('does not change filters', () => {
-        expect(changeFilters.callCount).to.equal(0);
-      });
-    });
-
-    describe('when query params in url', () => {
-      it('changes filters using camelized query params', () => {
-        const query = { is_favorite_resource: 'true' };
-        callComponentDidMount(query);
-        expect(changeFilters.callCount).to.equal(1);
-        const expectedArg = camelizeKeys(query);
-        expect(changeFilters.lastCall.arg).to.deep.equal(expectedArg);
-      });
-
-      it('does not fetch reservations', () => {
-        const query = { is_favorite_resource: 'true' };
-        callComponentDidMount(query);
-        expect(fetchReservations.callCount).to.equal(0);
-      });
+      expect(fetchReservations.callCount).to.equal(1);
+      const expectedArgs = decamelizeKeys(searchFilters);
+      expect(props.fetchReservations.lastCall.arg).to.deep.equal(expectedArgs);
     });
   });
 
@@ -288,18 +243,6 @@ describe('pages/search/ReservationSearchPageContainer', () => {
       const expectedPath = `/reservations?${queryString.stringify(expectedFilters)}`;
       expect(replaceUrlMock.callCount).to.equal(1);
       expect(replaceUrlMock.lastCall.arg).to.equal(expectedPath);
-    });
-  });
-
-  describe('parseUrlFilters', () => {
-    it('parses filters correctly', () => {
-      const query = {
-        start: '2016-01-01',
-        is_favorite_resource: 'true',
-      };
-      const actual = parseUrlFilters(query);
-      const expected = camelizeKeys(query);
-      expect(actual).to.deep.equal(expected);
     });
   });
 });
