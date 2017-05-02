@@ -47,13 +47,34 @@ describe('api/actions/comments', () => {
   });
 
   describe('createComment', () => {
+    const cateringId = 4942;
     const reservationId = 3819;
     const content = 'Commends are comments';
     const userName = 'Conrad Commentor';
+
     createApiTest({
-      name: 'createComment',
+      name: 'createComment(reservationId)',
       action: createComment,
       args: [{ reservationId, content, userName }],
+      tests: {
+        method: 'POST',
+        endpoint: 'http://www.mocky.io/v2/58ffa5c7110000ef16f60030',
+        request: {
+          type: types.COMMENTS_POST_REQUEST,
+        },
+        success: {
+          type: types.COMMENTS_POST_SUCCESS,
+        },
+        error: {
+          type: types.COMMENTS_POST_ERROR,
+        },
+      },
+    });
+
+    createApiTest({
+      name: 'createComment(cateringId)',
+      action: createComment,
+      args: [{ cateringId, content, userName }],
       tests: {
         method: 'POST',
         endpoint: 'http://www.mocky.io/v2/58ffa5c7110000ef16f60030',
