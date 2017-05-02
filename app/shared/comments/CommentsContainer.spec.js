@@ -166,7 +166,7 @@ describe('shared/comments/CommentsContainer', () => {
     it('selects reservation comments', () => {
       const comments = [{ id: 1 }, { id: 2 }];
       const actual = getSelected(
-        { 'data.comments': { 1437: comments } },
+        { 'data.comments': { 'reservation-1437': comments } },
         { reservationId: 1437 },
       );
       expect(actual.comments).to.deep.equal(comments);

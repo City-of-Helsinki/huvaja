@@ -55,18 +55,24 @@ function dataReducer(state = initialState, action) {
     }
 
     case actionTypes.COMMENTS_GET_SUCCESS: {
+      const key = (
+        action.meta.reservationId
+        ? `reservation-${action.meta.reservationId}`
+        : `catering-${action.meta.cateringId}`
+      );
       return state.merge({
         comments: state.comments.merge({
-          [action.meta.reservationId]: action.payload.results,
+          [key]: action.payload.results,
         }),
       });
     }
     case actionTypes.COMMENTS_POST_SUCCESS: {
       // TODO: Use response data instead of data from meta
+      const key = `reservation-${action.meta.reservationId}`;
       return state.merge({
         comments: state.comments.merge({
-          [action.meta.reservationId]: [
-            ...state.comments[action.meta.reservationId],
+          [key]: [
+            ...state.comments[key],
             action.meta.data,
           ],
         }),
