@@ -3,9 +3,10 @@ import { Route, IndexRoute } from 'react-router';
 import { createAction } from 'redux-actions';
 
 import AppContainer from 'pages/AppContainer';
-import SearchPage from 'pages/search';
+import ReservationPage from 'pages/reservation';
 import ReservationSearchPage from 'pages/reservationSearch';
 import ResourcePage from 'pages/resource';
+import SearchPage from 'pages/search';
 import store from 'state/store';
 
 function getDispatchers(componentName) {
@@ -29,6 +30,7 @@ export default (
       <IndexRoute component={SearchPage} {...getDispatchers('SEARCH')} />
       <Route component={ResourcePage} path="/resources/:id" {...getDispatchers('RESOURCE')} />
       <Route component={ReservationSearchPage} path="/reservations" {...getDispatchers('RESERVATION_SEARCH')} />
+      <Route component={ReservationPage} path="/reservations/:id/edit" {...getDispatchers('EDIT_RESERVATION')} />
     </Route>
   </Route>
 );

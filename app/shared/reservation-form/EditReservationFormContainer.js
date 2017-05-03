@@ -1,24 +1,25 @@
 import moment from 'moment';
+import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector, createStructuredSelector } from 'reselect';
 
 import { editReservation } from 'api/actions/reservations';
 import createFormSubmitHandler from 'utils/createFormSubmitHandler';
-import ReservationForm from './ReservationForm';
+// import ReservationForm from './ReservationForm';
 
 
 function reservationSelector(state, props) {
-  return state.data.reservations[props.reservationId];
+  return state.data.reservations[props.reservationId] || {};
 }
 
 function resourcesSelector(state) {
-  return state.data.resources;
+  return state.data.resources || [];
 }
 
 const resourceSelector = createSelector(
   reservationSelector,
   resourcesSelector,
-  (reservation, resources) => resources[reservation.resource]
+  (reservation, resources) => resources[reservation && reservation.resource] || {}
 );
 
 const initialValuesSelector = createSelector(
@@ -32,7 +33,7 @@ const initialValuesSelector = createSelector(
     hostName: reservation.hostName,
     numberOfParticipants: reservation.numberOfParticipants,
     reserverName: reservation.reserverName,
-    resource: resource.name.fi,
+    resource: (resource.name && resource.name.fi) || '',
   })
 );
 
@@ -70,4 +71,8 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
   };
 }
 
-export default connect(selector, actions, mergeProps)(ReservationForm);
+function ReservationFormContainer() {
+  return (<h4>Varaus tehty: some day at some time</h4>);
+}
+
+export default connect(selector, actions, mergeProps)(ReservationFormContainer);
