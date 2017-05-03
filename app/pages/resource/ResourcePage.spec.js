@@ -32,9 +32,9 @@ describe('pages/resource/ResourcePage', () => {
     expect(info.prop('resourceSearchUrl')).to.equal(defaults.resourceSearchUrl);
   });
 
-  it('renders ReservationForm', () => {
+  it('renders a create ReservationForm', () => {
     const resource = { id: 'id' };
-    const form = getWrapper({ resource }).find(ReservationForm);
+    const form = getWrapper({ resource }).find(ReservationForm.create);
     expect(form).to.have.length(1);
     expect(form.prop('resource')).to.equal(resource);
   });

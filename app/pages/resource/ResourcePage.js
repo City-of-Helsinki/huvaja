@@ -26,7 +26,7 @@ export default function ResourcePage(props) {
       />
       <h3>Varaustilanne</h3>
       <p className="help-text">Klikkaa vapaata aikaa varauksen aloittamiseksi</p>
-      <ReservationForm
+      <ReservationForm.create
         date={props.date}
         onDateChange={props.onDateChange}
         queryBegin={props.queryBegin}

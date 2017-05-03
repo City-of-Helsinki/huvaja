@@ -1,3 +1,7 @@
 import ReservationFormContainer from './ReservationFormContainer';
+import EditReservationFormContainer from './EditReservationFormContainer';
 
-export default ReservationFormContainer;
+export default {
+  create: ReservationFormContainer,
+  edit: EditReservationFormContainer,
+};
