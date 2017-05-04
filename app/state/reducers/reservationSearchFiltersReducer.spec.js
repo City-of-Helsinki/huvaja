@@ -11,8 +11,8 @@ describe('state/reducers/reservationSearchFiltersReducer', () => {
       return reservationSearchFiltersReducer(undefined, { type: 'NOOP' });
     }
 
-    it('end is the current date plus one month', () => {
-      const expected = moment().add(1, 'months').format('YYYY-MM-DD');
+    it('end is the current date plus one week', () => {
+      const expected = moment().add(1, 'weeks').format('YYYY-MM-DD');
       expect(getInitial().end).to.equal(expected);
     });
 
