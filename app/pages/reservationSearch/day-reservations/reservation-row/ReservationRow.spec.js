@@ -9,6 +9,7 @@ describe('pages/reservationSearch/reservation-row/ReservationRow', () => {
     place: 'Room 1',
     eventSubject: 'Meeting',
     hostName: 'Michael Jackson',
+    numberOfParticipants: 15,
     onClick: () => null,
     timeRange: '18:00 - 19:30',
   };
@@ -36,6 +37,11 @@ describe('pages/reservationSearch/reservation-row/ReservationRow', () => {
   it('renders place', () => {
     const place = getWrapper().find('.place');
     expect(place.text()).to.equal(defaults.place);
+  });
+
+  it('renders number of participants', () => {
+    const num = getWrapper().find('.number-of-participants');
+    expect(num.text()).to.contain(defaults.numberOfParticipants);
   });
 
   it('renders event subject', () => {

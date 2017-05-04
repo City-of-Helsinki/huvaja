@@ -9,6 +9,7 @@ UnconnectedReservationRowContainer.propTypes = {
   eventSubject: PropTypes.string.isRequired,
   hostName: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
+  numberOfParticipants: PropTypes.number.isRequired,
   onClick: PropTypes.func.isRequired,
   place: PropTypes.string.isRequired,
   timeRange: PropTypes.string.isRequired,
@@ -18,6 +19,7 @@ export function UnconnectedReservationRowContainer(props) {
     <ReservationRow
       eventSubject={props.eventSubject}
       hostName={props.hostName}
+      numberOfParticipants={props.numberOfParticipants}
       onClick={() => props.onClick(props.id)}
       place={props.place}
       timeRange={props.timeRange}

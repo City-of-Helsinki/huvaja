@@ -51,6 +51,7 @@ export default createSelector(
       eventSubject: reservation.eventSubject || 'Tuntematon varauksen nimi',
       hostName: reservation.hostName || 'Tuntematon isäntä',
       id: reservation.id,
+      numberOfParticipants: reservation.numberOfParticipants || null,
       place,
       timeRange: `${begin} - ${end}`,
     };

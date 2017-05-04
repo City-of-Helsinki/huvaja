@@ -11,6 +11,7 @@ describe('pages/search/reservationRowSelector', () => {
       end: '2017-01-01T10:00:00',
       eventSubject: 'Meeting',
       hostName: 'Jaska',
+      numberOfParticipants: 15,
       resource: 'r-1',
     },
     37: {
@@ -57,6 +58,10 @@ describe('pages/search/reservationRowSelector', () => {
       expect(selected.id).to.equal(36);
     });
 
+    it('returns numberOfParticipants', () => {
+      expect(selected.numberOfParticipants).to.equal(15);
+    });
+
     it('returns place', () => {
       expect(selected.place).to.equal('Unit 1 / Room 1');
     });
@@ -81,6 +86,10 @@ describe('pages/search/reservationRowSelector', () => {
 
     it('returns id', () => {
       expect(selected.id).to.equal(37);
+    });
+
+    it('returns numberOfParticipants as null when missing', () => {
+      expect(selected.numberOfParticipants).to.be.null;
     });
 
     it('returns place', () => {
