@@ -19,7 +19,6 @@ describe('pages/search/reservationSearchPageSelector', () => {
     end: '2016-12-12',
     eventSubject: '',
     hasCatering: '',
-    hasEquipment: '',
     hostName: '',
     isFavoriteResource: '',
     isOwn: '',

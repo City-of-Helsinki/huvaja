@@ -14,7 +14,6 @@ describe('pages/reservationSearch/reservation-search-controls/ReservationSearchC
     end: '2016-12-12',
     eventSubject: '',
     hasCatering: '',
-    hasEquipment: '',
     hostName: '',
     isFavoriteResource: '',
     isOwn: '',
@@ -128,28 +127,6 @@ describe('pages/reservationSearch/reservation-search-controls/ReservationSearchC
       it('renders Checkbox with correct value', () => {
         const checkbox = getCheckboxWrapper(
           { hasCatering: 'true' }
-        ).find(Checkbox);
-        expect(checkbox).to.have.length(1);
-        expect(checkbox.prop('checked')).to.equal(true);
-      });
-    });
-
-    describe('hasEquipment control', () => {
-      function getCheckboxWrapper(values) {
-        const wrapper = getWrapper({
-          values: Object.assign({}, defaultValues, values),
-        });
-        return wrapper.find('.has-equipment-checkbox');
-      }
-
-      it('has correct label', () => {
-        const label = getCheckboxWrapper().prop('children');
-        expect(label).to.equal('Sisältää lisävarusteita');
-      });
-
-      it('renders Checkbox with correct value', () => {
-        const checkbox = getCheckboxWrapper(
-          { hasEquipment: 'true' }
         ).find(Checkbox);
         expect(checkbox).to.have.length(1);
         expect(checkbox.prop('checked')).to.equal(true);
