@@ -2,7 +2,6 @@ import moment from 'moment';
 import React, { PropTypes } from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import Col from 'react-bootstrap/lib/Col';
-import Label from 'react-bootstrap/lib/Label';
 import Modal from 'react-bootstrap/lib/Modal';
 import Row from 'react-bootstrap/lib/Row';
 
@@ -27,11 +26,6 @@ export default function ReservationInfoModal(props) {
     showReservationCancelModal,
     unit,
   } = props;
-
-  const placeholderEquipment = [{
-    id: 'Piirtoheitin',
-    name: { fi: 'Piirtoheitin' },
-  }];
   const startTime = moment(reservation.begin);
   const endTime = moment(reservation.end);
   const date = startTime.format('dd D.M.YYYY');
@@ -83,14 +77,6 @@ export default function ReservationInfoModal(props) {
               <li className="details-item">Kahvi <span className="units">12 kpl</span></li>
               <li className="details-item">Paivän pulla <span className="units">12 kpl</span></li>
             </ul>
-          </Col>
-          <Col className="details-row reservation-equipment" xs={6}>
-            <div className="details-label">Tilatut varusteet: </div>
-            {
-              placeholderEquipment.map(item =>
-                <Label bsStyle="primary" key={`label-${item.id}`}>{item.name.fi}</Label>
-              )
-            }
           </Col>
         </Row>
         <Comments
