@@ -37,7 +37,6 @@ class ReservationSearchControls extends Component {
       end: PropTypes.string.isRequired,
       eventSubject: PropTypes.string.isRequired,
       hasCatering: PropTypes.string.isRequired,
-      hasEquipment: PropTypes.string.isRequired,
       hostName: PropTypes.string.isRequired,
       isFavoriteResource: PropTypes.string.isRequired,
       isOwn: PropTypes.string.isRequired,
@@ -102,15 +101,6 @@ class ReservationSearchControls extends Component {
                 checked={this.props.values.hasCatering === 'true'}
               >
                 Sisältää tarjoilutilauksen
-              </Checkbox>
-              <Checkbox
-                className="has-equipment-checkbox"
-                onChange={event =>
-                  this.handleChange({ hasEquipment: event.target.checked ? 'true' : '' })
-                }
-                checked={this.props.values.hasEquipment === 'true'}
-              >
-                Sisältää lisävarusteita
               </Checkbox>
             </Col>
           </Row>

@@ -14,7 +14,6 @@ export function getInitialState() {
     end: moment().add(1, 'weeks').format('YYYY-MM-DD'),
     eventSubject: '',
     hasCatering: '',
-    hasEquipment: '',
     hostName: '',
     isFavoriteResource: '',
     isOwn: '',
