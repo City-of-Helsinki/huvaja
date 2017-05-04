@@ -11,7 +11,7 @@ export function parseUrlFilters(queryParams) {
 
 export function getInitialState() {
   return {
-    end: moment().add(1, 'months').format('YYYY-MM-DD'),
+    end: moment().add(1, 'weeks').format('YYYY-MM-DD'),
     eventSubject: '',
     hasCatering: '',
     hasEquipment: '',
