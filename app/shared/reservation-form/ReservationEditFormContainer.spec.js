@@ -3,9 +3,9 @@ import moment from 'moment';
 import simple from 'simple-mock';
 
 import { getState } from 'utils/testUtils';
-import { mergeProps, selector } from './EditReservationFormContainer';
+import { mergeProps, selector } from './ReservationEditFormContainer';
 
-describe('shared/reservation-form/EditReservationFormContainer', () => {
+describe('shared/reservation-form/ReservationEditFormContainer', () => {
   const reservation = {
     begin: '2017-04-26T10:00:00+03:00',
     end: '2017-04-26T15:30:00+03:00',
