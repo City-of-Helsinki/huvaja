@@ -16,11 +16,6 @@ function queryBeginSelector(state, props) {
   return props.queryBegin;
 }
 
-function hasTimeSelector(state) {
-  const form = state.form.resourceReservation;
-  return Boolean(form && form.values.time.begin.time);
-}
-
 function resourceSelector(state, props) {
   return props.resource;
 }
@@ -60,7 +55,6 @@ const initialValuesSelector = createSelector(
 );
 
 export const selector = createStructuredSelector({
-  hasTime: hasTimeSelector,
   initialValues: initialValuesSelector,
 });
 
