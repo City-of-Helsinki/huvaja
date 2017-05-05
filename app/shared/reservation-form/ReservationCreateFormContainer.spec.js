@@ -3,9 +3,9 @@ import moment from 'moment';
 import simple from 'simple-mock';
 
 import { getState } from 'utils/testUtils';
-import { mergeProps, selector } from './ReservationFormContainer';
+import { mergeProps, selector } from './ReservationCreateFormContainer';
 
-describe('shared/reservation-form/ReservationFormContainer', () => {
+describe('shared/reservation-form/ReservationCreateFormContainer', () => {
   describe('selector', () => {
     const props = { resource: { name: { fi: 'Resource name' } } };
     function getSelected(extraState, extraProps) {

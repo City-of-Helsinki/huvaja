@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import ReservationForm from 'shared/reservation-form';
+import { ReservationCreateForm } from 'shared/reservation-form';
 import ResourceDailyReportButton from 'shared/resource-daily-report-button';
 import ResourceInfo from './info';
 import ResourcePage from './ResourcePage';
@@ -32,9 +32,9 @@ describe('pages/resource/ResourcePage', () => {
     expect(info.prop('resourceSearchUrl')).to.equal(defaults.resourceSearchUrl);
   });
 
-  it('renders ReservationForm', () => {
+  it('renders ReservationCreateForm', () => {
     const resource = { id: 'id' };
-    const form = getWrapper({ resource }).find(ReservationForm);
+    const form = getWrapper({ resource }).find(ReservationCreateForm);
     expect(form).to.have.length(1);
     expect(form.prop('resource')).to.equal(resource);
   });

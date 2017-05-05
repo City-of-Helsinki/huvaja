@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-import ReservationForm from 'shared/reservation-form/';
+import { ReservationCreateForm } from 'shared/reservation-form/';
 import ResourceDailyReportButton from 'shared/resource-daily-report-button';
 import ResourceInfo from './info';
 
@@ -26,7 +26,7 @@ export default function ResourcePage(props) {
       />
       <h3>Varaustilanne</h3>
       <p className="help-text">Klikkaa vapaata aikaa varauksen aloittamiseksi</p>
-      <ReservationForm
+      <ReservationCreateForm
         date={props.date}
         onDateChange={props.onDateChange}
         queryBegin={props.queryBegin}
