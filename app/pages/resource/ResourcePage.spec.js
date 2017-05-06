@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import { ReservationCreateForm } from 'shared/reservation-form';
+import SingleAvailabilityView from 'shared/availability-view/SingleAvailabilityView';
 import ResourceDailyReportButton from 'shared/resource-daily-report-button';
 import ResourceInfo from './info';
 import ResourcePage from './ResourcePage';
@@ -32,11 +32,12 @@ describe('pages/resource/ResourcePage', () => {
     expect(info.prop('resourceSearchUrl')).to.equal(defaults.resourceSearchUrl);
   });
 
-  it('renders ReservationCreateForm', () => {
-    const resource = { id: 'id' };
-    const form = getWrapper({ resource }).find(ReservationCreateForm);
+  it('renders SingleAvailabilityView', () => {
+    const form = getWrapper().find(SingleAvailabilityView);
     expect(form).to.have.length(1);
-    expect(form.prop('resource')).to.equal(resource);
+    expect(form.prop('date')).to.equal(defaults.date);
+    expect(form.prop('resource')).to.equal(defaults.resource.id);
+    expect(form.prop('onDateChange')).to.equal(defaults.onDateChange);
   });
 
   it('renders ResourceDailyReportButton', () => {
