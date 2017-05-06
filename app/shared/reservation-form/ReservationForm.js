@@ -112,6 +112,7 @@ export class UnconnectedReservationForm extends React.Component {
                 'Aika',
                 {
                   date: this.props.timelineDate,
+                  excludeReservation: this.props.reservation && this.props.reservation.id,
                   hideDateSelector: true,
                   resource: this.props.resource,
                   onDateChange: () => null,
@@ -173,6 +174,7 @@ UnconnectedReservationForm.propTypes = {
   error: PropTypes.string,
   fetchResource: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  reservation: PropTypes.object,
   resource: PropTypes.object.isRequired,
   timelineDate: PropTypes.string.isRequired,
 };

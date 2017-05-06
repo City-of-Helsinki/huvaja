@@ -8,6 +8,7 @@ function noop() {}
 export default class SelectableSingleAvailabilityView extends React.Component {
   static propTypes = {
     date: PropTypes.string.isRequired,
+    excludeReservation: PropTypes.number,
     hideDateSelector: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     onDateChange: PropTypes.func.isRequired,
@@ -87,6 +88,7 @@ export default class SelectableSingleAvailabilityView extends React.Component {
       <div className="selectable-availability-view">
         <SingleAvailabilityView
           date={this.props.date}
+          excludeReservation={this.props.excludeReservation}
           hideDateSelector={this.props.hideDateSelector}
           resource={this.props.resource.id}
           onReservationSlotClick={noop}

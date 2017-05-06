@@ -10,6 +10,9 @@ import utils from '../utils';
 
 export function selector() {
   function dateSelector(state, props) { return props.date; }
+  function excludeReservationSelector(state, props) {
+    return props.excludeReservation;
+  }
   function resourceIdSelector(state, props) { return props.id; }
   function resourcesSelector(state) { return state.data.resources; }
 
@@ -33,8 +36,14 @@ export function selector() {
     reservationsSelector,
     dateSelector,
     resourceSelector,
-    (reservations, date, resource) =>
-      utils.getTimelineItems(moment(date), reservations, resource)
+    excludeReservationSelector,
+    (reservations, date, resource, excludeReservation) =>
+      utils.getTimelineItems(
+        moment(date),
+        reservations,
+        resource,
+        excludeReservation,
+      )
   );
 
   return createSelector(
