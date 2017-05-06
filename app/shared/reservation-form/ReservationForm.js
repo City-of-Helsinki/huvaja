@@ -112,6 +112,7 @@ export class UnconnectedReservationForm extends React.Component {
                 'Aika',
                 {
                   date: this.props.timelineDate,
+                  hideDateSelector: true,
                   resource: this.props.resource,
                   onDateChange: () => null,
                 }
