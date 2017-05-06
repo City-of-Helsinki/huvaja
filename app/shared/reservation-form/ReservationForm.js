@@ -67,94 +67,113 @@ function renderField(name, type, label, controlProps = {}) {
   );
 }
 
-export function UnconnectedReservationForm(props) {
-  return (
-    <div>
-      <form className="reservation-form" onSubmit={props.handleSubmit}>
-        <div>
-          <h3>Perustiedot</h3>
-          {renderField(
-            'resource',
-            'text',
-            'Tila',
-            { disabled: true }
-          )}
-          {renderField(
-            'time',
-            'date-time-range',
-            'Varauksen aika',
-            { required: true },
-          )}
-          <div className="timeline-container">
-            <h5>Varaustilanne</h5>
-            <p className="help-text">Voit valita ajan myös maalaamalla.</p>
+export class UnconnectedReservationForm extends React.Component {
+  componentDidMount() {
+    this.props.fetchResource(
+      this.props.resource.id, { date: this.props.timelineDate }
+    );
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const hasTimelineChanged = (
+      this.props.timelineDate !== nextProps.timelineDate
+    );
+    if (hasTimelineChanged) {
+      this.props.fetchResource(
+        nextProps.resource.id, { date: nextProps.timelineDate }
+      );
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <form className="reservation-form" onSubmit={this.props.handleSubmit}>
+          <div>
+            <h3>Perustiedot</h3>
+            {renderField(
+              'resource',
+              'text',
+              'Tila',
+              { disabled: true }
+            )}
             {renderField(
               'time',
-              'reservation-time',
-              'Aika',
-              {
-                date: props.date,
-                resource: props.resource,
-                onDateChange: props.onDateChange,
-              }
+              'date-time-range',
+              'Varauksen aika',
+              { required: true },
             )}
-          </div>
-          {renderField(
-            'eventName',
-            'text',
-            'Tapahtuma',
-          )}
-          {renderField(
-            'reserverName',
-            'text',
-            'Varaaja',
-          )}
-          {renderField(
-            'hostName',
-            'text',
-            'Isäntä',
-          )}
-          <h3>Osallistujat</h3>
-          {renderField(
-            'numberOfParticipants',
-            'number',
-            'Osallistujamäärä',
-            { min: 1 },
-          )}
-          {renderField(
-            'participantList',
-            'textarea',
-            'Lista osallistujista',
-            { rows: 6 },
-          )}
-          <CateringSection />
-          {renderField(
-            'eventDescription',
-            'textarea',
-            'Lisätietoja',
-            { rows: 6 },
-          )}
-          {props.error && (
-            <div className="has-error">
-              <HelpBlock>{props.error}</HelpBlock>
+            <div className="timeline-container">
+              <h5>Varaustilanne</h5>
+              <p className="help-text">Voit valita ajan myös maalaamalla.</p>
+              {renderField(
+                'time',
+                'reservation-time',
+                'Aika',
+                {
+                  date: this.props.timelineDate,
+                  resource: this.props.resource,
+                  onDateChange: () => null,
+                }
+              )}
             </div>
-          )}
-          <div className="form-controls">
-            <Button bsStyle="primary" type="submit">Tallenna varaus</Button>
-            <Button bsStyle="default">Peruuta</Button>
+            {renderField(
+              'eventName',
+              'text',
+              'Tapahtuma',
+            )}
+            {renderField(
+              'reserverName',
+              'text',
+              'Varaaja',
+            )}
+            {renderField(
+              'hostName',
+              'text',
+              'Isäntä',
+            )}
+            <h3>Osallistujat</h3>
+            {renderField(
+              'numberOfParticipants',
+              'number',
+              'Osallistujamäärä',
+              { min: 1 },
+            )}
+            {renderField(
+              'participantList',
+              'textarea',
+              'Lista osallistujista',
+              { rows: 6 },
+            )}
+            <CateringSection />
+            {renderField(
+              'eventDescription',
+              'textarea',
+              'Lisätietoja',
+              { rows: 6 },
+            )}
+            {this.props.error && (
+              <div className="has-error">
+                <HelpBlock>{this.props.error}</HelpBlock>
+              </div>
+            )}
+            <div className="form-controls">
+              <Button bsStyle="primary" type="submit">Tallenna varaus</Button>
+              <Button bsStyle="default">Peruuta</Button>
+            </div>
           </div>
-        </div>
-      </form>
-    </div>
-  );
+        </form>
+      </div>
+    );
+  }
 }
 
 UnconnectedReservationForm.propTypes = {
-  date: PropTypes.string.isRequired,
   error: PropTypes.string,
+  fetchResource: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   resource: PropTypes.object.isRequired,
-  onDateChange: PropTypes.func.isRequired,
+  timelineDate: PropTypes.string.isRequired,
 };
 
 export default reduxForm({
