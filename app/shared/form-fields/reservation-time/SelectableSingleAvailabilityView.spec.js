@@ -9,6 +9,7 @@ import SelectableSingleAvailabilityView from './SelectableSingleAvailabilityView
 function getWrapper(props) {
   const defaults = {
     date: '2016-01-01',
+    hideDateSelector: true,
     onChange: () => null,
     onDateChange: () => null,
     resource: { id: 'r-1' },
@@ -32,6 +33,7 @@ describe('pages/resources/SelectableSingleAvailabilityView', () => {
 
   it('renders a SingleAvailabilityView', () => {
     const date = '2016-10-10';
+    const hideDateSelector = true;
     const resource = { id: 'resource' };
     const onDateChange = () => null;
     const wrapper = getWrapper({ date, resource, onDateChange });
@@ -39,6 +41,7 @@ describe('pages/resources/SelectableSingleAvailabilityView', () => {
     const view = wrapper.find(SingleAvailabilityView);
     expect(view).to.have.length(1);
     expect(view.prop('date')).to.equal(date);
+    expect(view.prop('hideDateSelector')).to.equal(hideDateSelector);
     expect(view.prop('resource')).to.equal(resource.id);
     expect(view.prop('onDateChange')).to.equal(onDateChange);
     expect(view.prop('onReservationSlotMouseDown')).to.equal(

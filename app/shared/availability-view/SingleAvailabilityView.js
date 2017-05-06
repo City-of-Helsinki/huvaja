@@ -8,6 +8,7 @@ import utils from './TimelineGroups/TimelineGroup/utils';
 export default class SingleAvailabilityView extends React.Component {
   static propTypes = {
     date: PropTypes.string.isRequired,
+    hideDateSelector: PropTypes.bool,
     onDateChange: PropTypes.func.isRequired,
     onReservationSlotClick: PropTypes.func,
     onReservationSlotMouseDown: PropTypes.func,
@@ -45,7 +46,11 @@ export default class SingleAvailabilityView extends React.Component {
   render() {
     return (
       <div className="availability-view availability-view-single">
-        <DateSelector value={this.props.date} onChange={this.props.onDateChange} />
+        {
+          this.props.hideDateSelector ?
+          null :
+          <DateSelector value={this.props.date} onChange={this.props.onDateChange} />
+        }
         <TimelineGroup
           date={this.props.date}
           noStickyHours
