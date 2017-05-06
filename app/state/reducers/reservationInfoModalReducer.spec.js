@@ -46,4 +46,13 @@ describe('state/reducers/reservationInfoModalReducer', () => {
       expect(actual).to.deep.equal(initialState);
     });
   });
+
+  describe('ENTER_OR_CHANGE_RESERVATION_EDIT_PAGE', () => {
+    it('resets state', () => {
+      const actual = reducer({ show: true, reservationId: 23 }, {
+        type: 'ENTER_OR_CHANGE_RESERVATION_EDIT_PAGE',
+      });
+      expect(actual).to.deep.equal(initialState);
+    });
+  });
 });

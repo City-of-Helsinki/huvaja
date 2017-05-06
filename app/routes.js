@@ -32,7 +32,7 @@ export default (
       <Route component={ResourcePage} path="/resources/:id" {...getDispatchers('RESOURCE')} />
       <Route component={ReservationSearchPage} path="/reservations" {...getDispatchers('RESERVATION_SEARCH')} />
       <Route component={ReservationCreatePage} path="/reservations/create" />
-      <Route component={ReservationEditPage} path="/reservations/:id/edit" />
+      <Route component={ReservationEditPage} path="/reservations/:id/edit" {...getDispatchers('RESERVATION_EDIT')} />
     </Route>
   </Route>
 );
