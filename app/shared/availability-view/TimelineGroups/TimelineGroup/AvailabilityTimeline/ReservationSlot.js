@@ -60,7 +60,10 @@ export default class ReservationSlot extends React.Component {
   }
 
   render() {
-    const query = queryString.stringify({ begin: this.props.begin.format() });
+    const query = queryString.stringify({
+      begin: this.props.begin.format(),
+      resource: this.props.resourceId,
+    });
     const isSelected = this.props.selection && (
       this.props.begin.isSameOrAfter(this.props.selection.begin) &&
       this.props.end.isSameOrBefore(this.props.selection.end)
@@ -79,7 +82,7 @@ export default class ReservationSlot extends React.Component {
         onMouseEnter={this.handleMouseEnter}
         onMouseUp={this.handleMouseUp}
         style={{ width: utils.getTimeSlotWidth() }}
-        to={`/resources/${this.props.resourceId}?${query}`}
+        to={`/reservations/create?${query}`}
       >
         <span className="a11y-text">Make reservation</span>
       </Link>
