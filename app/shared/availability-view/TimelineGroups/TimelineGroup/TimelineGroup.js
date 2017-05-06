@@ -22,6 +22,7 @@ export default class TimelineGroup extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     date: PropTypes.string.isRequired,
+    excludeReservation: PropTypes.number,
     noStickyHours: PropTypes.bool,
     onAvailabilityViewMouseEnter: PropTypes.func,
     onAvailabilityViewMouseLeave: PropTypes.func,
@@ -108,6 +109,7 @@ export default class TimelineGroup extends React.Component {
         {this.props.resources.map(resource =>
           <AvailabilityTimelineContainer
             date={this.props.date}
+            excludeReservation={this.props.excludeReservation}
             id={resource}
             key={resource}
             onMouseEnter={this.props.onAvailabilityViewMouseEnter}
