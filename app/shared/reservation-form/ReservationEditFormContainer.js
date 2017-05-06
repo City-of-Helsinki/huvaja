@@ -2,13 +2,13 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { createSelector, createStructuredSelector } from 'reselect';
 
+import { fetchResource } from 'api/actions';
 import { editReservation } from 'api/actions/reservations';
 import createFormSubmitHandler from 'utils/createFormSubmitHandler';
 import ReservationForm from './ReservationForm';
 
-
 function reservationSelector(state, props) {
-  return state.data.reservations[props.reservationId];
+  return props.reservation;
 }
 
 function resourcesSelector(state) {
@@ -21,26 +21,54 @@ const resourceSelector = createSelector(
   (reservation, resources) => resources[reservation.resource]
 );
 
+function getInitialTime(reservation) {
+  const begin = moment(reservation.begin);
+  const end = moment(reservation.end);
+  return {
+    begin: {
+      date: begin.format('YYYY-MM-DD'),
+      time: begin.format('HH:mm'),
+    },
+    end: {
+      date: end.format('YYYY-MM-DD'),
+      time: end.format('HH:mm'),
+    },
+  };
+}
+
 const initialValuesSelector = createSelector(
   reservationSelector,
   resourceSelector,
   (reservation, resource) => ({
-    begin: reservation.begin,
-    end: reservation.end,
     eventDescription: reservation.eventDescription,
     eventName: reservation.eventSubject,
     hostName: reservation.hostName,
     numberOfParticipants: reservation.numberOfParticipants,
     reserverName: reservation.reserverName,
     resource: resource.name.fi,
+    time: getInitialTime(reservation),
   })
+);
+
+const formDateSelector = state => (
+  state.form.resourceReservation &&
+  state.form.resourceReservation.values.time &&
+  state.form.resourceReservation.values.time.begin.date
+);
+
+const timelineDateSelector = createSelector(
+  formDateSelector,
+  initialValuesSelector,
+  (formDate, initialValues) => formDate || initialValues.time.begin.date
 );
 
 export const selector = createStructuredSelector({
   initialValues: initialValuesSelector,
+  timelineDate: timelineDateSelector,
 });
 
 const actions = {
+  fetchResource,
   editReservation,
 };
 
@@ -60,6 +88,7 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
           event_description: values.eventDescription,
           event_subject: values.eventName,
           host_name: values.hostName,
+          id: props.reservation.id,
           number_of_participants: values.numberOfParticipants,
           reserver_name: values.reserverName,
           resource: props.resource.id,
