@@ -13,10 +13,6 @@ function datePropSelector(state, props) {
   return props.date;
 }
 
-function queryBeginSelector(state, props) {
-  return props.queryBegin;
-}
-
 function resourceSelector(state, props) {
   return props.resource;
 }
@@ -46,12 +42,11 @@ const initialValuesSelector = createSelector(
   currentUserSelector,
   resourceSelector,
   datePropSelector,
-  queryBeginSelector,
-  (currentUser, resource, date, queryBegin) => ({
+  (currentUser, resource, date) => ({
     hostName: currentUser ? currentUser.displayName : '',
     reserverName: currentUser ? currentUser.displayName : '',
     resource: resource.name.fi,
-    time: getInitialTime(queryBegin || date),
+    time: getInitialTime(date),
   })
 );
 
