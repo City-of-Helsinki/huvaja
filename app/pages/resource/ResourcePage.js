@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-import { ReservationCreateForm } from 'shared/reservation-form/';
+import SingleAvailabilityView from 'shared/availability-view/SingleAvailabilityView';
 import ResourceDailyReportButton from 'shared/resource-daily-report-button';
 import ResourceInfo from './info';
 
@@ -8,7 +8,6 @@ ResourcePage.propTypes = {
   date: PropTypes.string.isRequired,
   hideResourceImages: PropTypes.func.isRequired,
   onDateChange: PropTypes.func.isRequired,
-  queryBegin: PropTypes.string,
   resource: PropTypes.object.isRequired,
   resourceSearchUrl: PropTypes.string.isRequired,
   showResourceImages: PropTypes.func.isRequired,
@@ -26,11 +25,10 @@ export default function ResourcePage(props) {
       />
       <h3>Varaustilanne</h3>
       <p className="help-text">Klikkaa vapaata aikaa varauksen aloittamiseksi</p>
-      <ReservationCreateForm
+      <SingleAvailabilityView
         date={props.date}
         onDateChange={props.onDateChange}
-        queryBegin={props.queryBegin}
-        resource={props.resource}
+        resource={props.resource.id}
       />
       <ResourceDailyReportButton
         resourceIds={[props.resource.id]}
