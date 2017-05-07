@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { fetchReservation } from 'api/actions';
 import { ReservationEditForm } from 'shared/reservation-form';
-import selector from './ReservationEditPageSelector';
+import selector from './reservationEditPageSelector';
 
 export class UnconnectedReservationEditPageContainer extends Component {
   static propTypes = {
