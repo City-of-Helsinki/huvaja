@@ -48,19 +48,24 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
   };
 
   describe('selector', () => {
-    const props = { reservationId: '123' };
+    const props = { reservation };
     function getSelected(extraState, extraProps) {
       const state = getState({ ...defaultState, ...extraState });
       return selector(state, { ...props, ...extraProps });
     }
 
     describe('initialValues', () => {
-      it('begin is reservation.begin', () => {
-        expect(getSelected().initialValues.begin).to.equal(reservation.begin);
-      });
-
-      it('end is reservation.end', () => {
-        expect(getSelected().initialValues.end).to.equal(reservation.end);
+      it('time is correct', () => {
+        expect(getSelected().initialValues.time).to.deep.equal({
+          begin: {
+            date: '2017-04-26',
+            time: '10:00',
+          },
+          end: {
+            date: '2017-04-26',
+            time: '15:30',
+          },
+        });
       });
 
       it('eventDescription is reservation.eventDescription', () => {
@@ -83,6 +88,23 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
 
       it('reserverName is reservation.reserverName', () => {
         expect(getSelected().initialValues.reserverName).to.equal(reservation.reserverName);
+      });
+    });
+
+    describe('timelineDate', () => {
+      it('returns form date if exists', () => {
+        const extraState = {
+          'form.resourceReservation.values': {
+            time: { begin: { date: '2016-01-01', time: '10:00' } },
+          },
+        };
+        expect(getSelected(extraState).timelineDate).to.equal('2016-01-01');
+      });
+
+      it('returns reservation start date if no form date', () => {
+        expect(getSelected().timelineDate).to.equal(
+          moment(reservation.begin).format('YYYY-MM-DD')
+        );
       });
     });
   });
@@ -120,6 +142,7 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
         const editReservation = simple.mock();
         const props = {
           editReservation,
+          reservation: { id: 123 },
           resource: { id: 'r1' },
         };
         callOnSubmit(props, values);
@@ -132,6 +155,7 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
           event_description: values.eventDescription,
           event_subject: values.eventName,
           host_name: values.hostName,
+          id: props.reservation.id,
           number_of_participants: values.numberOfParticipants,
           reserver_name: values.reserverName,
           resource: props.resource.id,
