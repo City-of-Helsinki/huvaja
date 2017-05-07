@@ -10,7 +10,7 @@ function resourcesSelector(state) {
   return state.data.resources;
 }
 
-const selector = createStructuredSelector({
+export const selector = createStructuredSelector({
   resources: resourcesSelector,
 });
 
@@ -34,7 +34,7 @@ export function UnconnectedReservationCreatePageContainer(props) {
   );
 }
 
-function mergeProps(stateProps, dispatchProps, ownProps) {
+export function mergeProps(stateProps, dispatchProps, ownProps) {
   const { resources, ...props } = { ...ownProps, ...stateProps, ...dispatchProps };
   return {
     ...props,
