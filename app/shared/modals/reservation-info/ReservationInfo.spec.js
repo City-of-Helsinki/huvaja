@@ -144,7 +144,7 @@ describe('shared/modal/ReservationInfo', () => {
         reservation: {
           ...reservation,
           userPermissions: { canModify: false, canDelete: false },
-        }
+        },
       };
       const footer = getFooterWrapper(props);
       expect(footer).to.have.length(0);
