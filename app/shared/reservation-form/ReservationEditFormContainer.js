@@ -1,11 +1,13 @@
 import moment from 'moment';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 import { createSelector, createStructuredSelector } from 'reselect';
 
 import { fetchResource } from 'api/actions';
 import { editReservation } from 'api/actions/reservations';
 import createFormSubmitHandler from 'utils/createFormSubmitHandler';
 import ReservationForm from './ReservationForm';
+import utils from './utils';
 
 function reservationSelector(state, props) {
   return props.reservation;
@@ -78,23 +80,30 @@ function formatTime({ date, time }) {
 
 export function mergeProps(stateProps, dispatchProps, ownProps) {
   const props = { ...ownProps, ...stateProps, ...dispatchProps };
+  const callback = (actionOptions, values) => props.editReservation(
+    {
+      begin: formatTime(values.time.begin),
+      end: formatTime(values.time.end),
+      event_description: values.eventDescription,
+      event_subject: values.eventName,
+      host_name: values.hostName,
+      id: props.reservation.id,
+      number_of_participants: values.numberOfParticipants,
+      reserver_name: values.reserverName,
+      resource: props.resource.id,
+    },
+    actionOptions
+  );
+  const successHandler = (action) => {
+    const begin = utils.parseBeginDate(action);
+    const url = utils.getResourceUrl(props.resource.id, begin);
+    browserHistory.push(url);
+  };
   return {
     ...props,
-    onSubmit: createFormSubmitHandler(
-      (actionOptions, values) => props.editReservation(
-        {
-          begin: formatTime(values.time.begin),
-          end: formatTime(values.time.end),
-          event_description: values.eventDescription,
-          event_subject: values.eventName,
-          host_name: values.hostName,
-          id: props.reservation.id,
-          number_of_participants: values.numberOfParticipants,
-          reserver_name: values.reserverName,
-          resource: props.resource.id,
-        },
-        actionOptions
-      )
+    onSubmit: (...args) => (
+      createFormSubmitHandler(callback)(...args)
+        .then(successHandler)
     ),
   };
 }
