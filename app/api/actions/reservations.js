@@ -15,12 +15,13 @@ function cancelReservation(reservation) {
   });
 }
 
-function editReservation(reservation) {
+function editReservation(reservation, options) {
   return createApiAction({
     endpoint: `reservation/${reservation.id}`,
     method: 'PUT',
     type: 'RESERVATION',
     body: parseReservationData(reservation),
+    options,
   });
 }
 
