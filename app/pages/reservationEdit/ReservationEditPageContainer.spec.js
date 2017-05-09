@@ -10,11 +10,15 @@ import { UnconnectedReservationEditPageContainer } from './ReservationEditPageCo
 describe('pages/reservationEdit/ReservationEditPageContainer', () => {
   const defaults = {
     fetchReservation: () => null,
+    isFetching: false,
     params: {
       id: '234',
     },
     reservation: {
       id: 234,
+      userPermissions: {
+        canModify: true,
+      },
     },
     resource: {
       id: '123',
@@ -43,18 +47,13 @@ describe('pages/reservationEdit/ReservationEditPageContainer', () => {
         expect(loader).to.have.length(1);
       });
 
-      it('is loaded when reservation and resource exists', () => {
-        const loader = getWrapper().find(Loader);
+      it('is loaded when isFetching is false', () => {
+        const loader = getWrapper({ isFetching: false }).find(Loader);
         expect(loader.prop('loaded')).to.be.true;
       });
 
-      it('is not loaded when resource does not exist', () => {
-        const loader = getWrapper({ resource: null }).find(Loader);
-        expect(loader.prop('loaded')).to.be.false;
-      });
-
-      it('is not loaded when reservation does not exist', () => {
-        const loader = getWrapper({ reservation: null }).find(Loader);
+      it('is not loaded when isFetching is true', () => {
+        const loader = getWrapper({ isFetching: true }).find(Loader);
         expect(loader.prop('loaded')).to.be.false;
       });
     });
@@ -65,6 +64,45 @@ describe('pages/reservationEdit/ReservationEditPageContainer', () => {
         expect(form).to.have.length(1);
         expect(form.prop('resource')).to.deep.equal(defaults.resource);
         expect(form.prop('reservation')).to.deep.equal(defaults.reservation);
+      });
+    });
+
+    describe('when reservation is not found', () => {
+      const props = { reservation: null };
+
+      it('renders message', () => {
+        const wrapper = getWrapper(props);
+        const message = wrapper.find('.message');
+        expect(message.text()).to.equal('Varausta ei löytynyt.');
+      });
+
+      it('does not render form', () => {
+        const wrapper = getWrapper(props);
+        const form = wrapper.find(ReservationEditForm);
+        expect(form).to.have.length(0);
+      });
+    });
+
+    describe('when user cannot modify', () => {
+      const props = {
+        reservation: {
+          ...defaults.reservation,
+          userPermissions: { canModify: false },
+        },
+      };
+
+      it('renders message', () => {
+        const wrapper = getWrapper(props);
+        const message = wrapper.find('.message');
+        expect(message.text()).to.equal(
+          'Sinulla ei ole oikeutta muokata tätä varausta.'
+        );
+      });
+
+      it('does not render form', () => {
+        const wrapper = getWrapper(props);
+        const form = wrapper.find(ReservationEditForm);
+        expect(form).to.have.length(0);
       });
     });
   });

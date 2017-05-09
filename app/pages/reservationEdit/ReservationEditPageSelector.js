@@ -1,5 +1,7 @@
 import { createSelector, createStructuredSelector } from 'reselect';
 
+import { reservationGetIsActiveSelector, resourcesGetIsActiveSelector } from 'api/selectors';
+
 function reservationsSelector(state) {
   return state.data.reservations;
 }
@@ -29,7 +31,16 @@ const resourceSelector = createSelector(
   (resources, resourceId) => resources[resourceId]
 );
 
+const isFetchingSelector = createSelector(
+  reservationGetIsActiveSelector,
+  resourcesGetIsActiveSelector,
+  (reservationGetIsActive, resourcesGetIsActive) => (
+    reservationGetIsActive || resourcesGetIsActive
+  )
+);
+
 export default createStructuredSelector({
+  isFetching: isFetchingSelector,
   reservation: reservationSelector,
   resource: resourceSelector,
 });
