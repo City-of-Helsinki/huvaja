@@ -17,6 +17,7 @@ describe('shared/reservation-form/ReservationForm', () => {
     reservation: null,
     resource: { id: '123' },
     onDateChange: () => null,
+    submitting: false,
   };
   function getWrapper(props) {
     return shallow(<ReservationForm {...defaults} {...props} />);
@@ -266,6 +267,12 @@ describe('shared/reservation-form/ReservationForm', () => {
       describe('the first button', () => {
         it('has text "Tallenna varaus"', () => {
           expect(buttons.at(0).props().children).to.equal('Tallenna varaus');
+        });
+
+        it('has text "Tallennetaan..." when submitting', () => {
+          const props = { submitting: true };
+          const button = getWrapper(props).find(Button).at(0);
+          expect(button.props().children).to.equal('Tallennetaan...');
         });
       });
 
