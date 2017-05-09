@@ -182,7 +182,9 @@ export class UnconnectedReservationForm extends React.Component {
                   </div>
                 )}
                 <div className="form-controls">
-                  <Button bsStyle="primary" type="submit">Tallenna varaus</Button>
+                  <Button bsStyle="primary" type="submit">
+                    {this.props.submitting ? 'Tallennetaan...' : 'Tallenna varaus'}
+                  </Button>
                   <Button bsStyle="default">Peruuta</Button>
                 </div>
               </Col>
@@ -200,6 +202,7 @@ UnconnectedReservationForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   reservation: PropTypes.object,
   resource: PropTypes.object.isRequired,
+  submitting: PropTypes.bool.isRequired,
   timelineDate: PropTypes.string.isRequired,
 };
 
