@@ -95,7 +95,12 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
   const successHandler = (action) => {
     const begin = utils.parseBeginDate(action);
     const url = utils.getResourceUrl(props.resource.id, begin);
-    browserHistory.push(url);
+    // Use setTimeout to make url change happen after form handling has
+    // been fully completed.
+    window.setTimeout(
+      () => browserHistory.push(url),
+      0
+    );
   };
   return {
     ...props,
