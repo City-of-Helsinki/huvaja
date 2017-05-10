@@ -29,7 +29,7 @@ export function ResourceInfo(props) {
         </Link>
       </div>
       <div className="capacity">
-        <FontAwesome name="users" /> {props.peopleCapacity}
+        <span className="chair-icon" /> {props.peopleCapacity}
       </div>
     </div>
   );
