@@ -1,5 +1,12 @@
 .date-picker {
-
+  input {
+    // Reducing the input width to something smaller than what it is supposed
+    // to be displays correctly the calendar icon in IE and Firefox which would
+    // overflow otherwise.
+    // Width value won't be taken in account because date-picker display is flex
+    // and this element has a flex-grow, flex-shrink and flex-basis values.
+    width: 70%;
+  }
   // Selected value
   .react-date-picker__decade-view--theme-default,
   .react-date-picker__year-view--theme-default,
