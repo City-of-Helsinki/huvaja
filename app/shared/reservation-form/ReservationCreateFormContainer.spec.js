@@ -3,39 +3,15 @@ import moment from 'moment';
 import simple from 'simple-mock';
 
 import { getState } from 'utils/testUtils';
-import { mergeProps, selector } from './ReservationFormContainer';
+import { mergeProps, selector } from './ReservationCreateFormContainer';
 
-describe('shared/reservation-form/ReservationFormContainer', () => {
+describe('shared/reservation-form/ReservationCreateFormContainer', () => {
   describe('selector', () => {
     const props = { resource: { name: { fi: 'Resource name' } } };
     function getSelected(extraState, extraProps) {
       const state = getState(extraState);
       return selector(state, { ...props, ...extraProps });
     }
-
-    describe('hasTime', () => {
-      it('return true if reservationForm time is specified', () => {
-        const extraState = {
-          'form.resourceReservation.values': {
-            time: { begin: { date: '2016-01-01', time: '10:00' } },
-          },
-        };
-        expect(getSelected(extraState).hasTime).to.be.true;
-      });
-
-      it('return false if reservationForm time is specified without time', () => {
-        const extraState = {
-          'form.resourceReservation.values': {
-            time: { begin: { date: '2016-01-01', time: '' } },
-          },
-        };
-        expect(getSelected(extraState).hasTime).to.be.false;
-      });
-
-      it('return false if reservationForm time is not specified', () => {
-        expect(getSelected().hasTime).to.be.false;
-      });
-    });
 
     describe('initialValues', () => {
       it('hostName is emptry string if user is not logged in', () => {
@@ -62,27 +38,40 @@ describe('shared/reservation-form/ReservationFormContainer', () => {
       });
 
       describe('time', () => {
-        describe('when no queryBegin', () => {
-          it('uses date from props', () => {
-            const date = '2017-01-01';
-            const selected = getSelected({}, { date, queryBegin: null });
-            expect(selected.initialValues.time).to.deep.equal({
-              begin: { date, time: null },
-              end: { date, time: null },
-            });
+        it('is correct when date has only day info', () => {
+          const date = '2017-01-01';
+          const selected = getSelected({}, { date });
+          expect(selected.initialValues.time).to.deep.equal({
+            begin: { date, time: null },
+            end: { date, time: null },
           });
         });
 
-        describe('when queryBegin has date and time', () => {
-          it('uses date from props', () => {
-            const queryBegin = '2017-01-02T10:30:00';
-            const selected = getSelected({}, { date: '2017-01-01', queryBegin });
-            expect(selected.initialValues.time).to.deep.equal({
-              begin: { date: '2017-01-02', time: '10:30' },
-              end: { date: '2017-01-02', time: '11:00' },
-            });
+        it('is correct when date has full info', () => {
+          const date = '2017-01-02T10:30:00';
+          const selected = getSelected({}, { date });
+          expect(selected.initialValues.time).to.deep.equal({
+            begin: { date: '2017-01-02', time: '10:30' },
+            end: { date: '2017-01-02', time: '11:00' },
           });
         });
+      });
+    });
+
+    describe('timelineDate', () => {
+      it('returns form date if exists', () => {
+        const extraState = {
+          'form.resourceReservation.values': {
+            time: { begin: { date: '2016-01-01', time: '10:00' } },
+          },
+        };
+        expect(getSelected(extraState).timelineDate).to.equal('2016-01-01');
+      });
+
+      it('returns initial date if no form date', () => {
+        const date = '2017-01-01';
+        const selected = getSelected({}, { date });
+        expect(selected.timelineDate).to.equal(date);
       });
     });
   });

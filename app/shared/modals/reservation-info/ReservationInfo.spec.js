@@ -139,6 +139,17 @@ describe('shared/modal/ReservationInfo', () => {
       return getWrapper(props).find(Modal.Footer);
     }
 
+    it('is not rendered when cannot delete nor modify', () => {
+      const props = {
+        reservation: {
+          ...reservation,
+          userPermissions: { canModify: false, canDelete: false },
+        },
+      };
+      const footer = getFooterWrapper(props);
+      expect(footer).to.have.length(0);
+    });
+
     describe('cancel reservation button', () => {
       describe('when not userPermissions.canDelete', () => {
         function getButtonWrapper(props) {
@@ -154,7 +165,7 @@ describe('shared/modal/ReservationInfo', () => {
         function getButtonWrapper(props) {
           const deletableReservation = {
             ...reservation,
-            userPermissions: { canEdit: false, canDelete: true },
+            userPermissions: { canModify: false, canDelete: true },
           };
           return (
             getFooterWrapper({ reservation: deletableReservation, ...props })
@@ -172,6 +183,42 @@ describe('shared/modal/ReservationInfo', () => {
           wrapper.simulate('click');
           expect(showReservationCancelModal.callCount).to.equal(1);
           expect(showReservationCancelModal.lastCall.arg).to.equal(reservation.id);
+        });
+      });
+    });
+
+    describe('edit reservation link', () => {
+      describe('when not userPermissions.canModify', () => {
+        function getLinkWrapper(props) {
+          return getFooterWrapper(props).find('.reservation-edit');
+        }
+
+        it('is not rendered', () => {
+          expect(getLinkWrapper()).to.have.length(0);
+        });
+      });
+
+      describe('when userPermissions.canModify', () => {
+        function getLinkWrapper(props) {
+          const editableReservation = {
+            ...reservation,
+            userPermissions: { canModify: true, canDelete: false },
+          };
+          return (
+            getFooterWrapper({ reservation: editableReservation, ...props })
+            .find('.reservation-edit')
+          );
+        }
+
+        it('is rendered', () => {
+          expect(getLinkWrapper()).to.have.length(1);
+        });
+
+        it('has link to edit page', () => {
+          const link = getLinkWrapper();
+          expect(link.prop('to')).to.equal(
+            `/reservations/${reservation.id}/edit`
+          );
         });
       });
     });

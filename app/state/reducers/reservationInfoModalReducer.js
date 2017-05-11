@@ -22,4 +22,5 @@ export default handleActions({
   }),
   [actionTypes.RESERVATION_DELETE_SUCCESS]: hide,
   [uiActions.hideReservationInfoModal]: hide,
+  ENTER_OR_CHANGE_RESERVATION_EDIT_PAGE: hide,
 }, initialState);
