@@ -12,6 +12,7 @@ export default class SelectableSingleAvailabilityView extends React.Component {
     hideDateSelector: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     onDateChange: PropTypes.func.isRequired,
+    onDateSelection: PropTypes.func,
     resource: PropTypes.shape({
       id: PropTypes.string.isRequired,
     }).isRequired,
@@ -81,6 +82,9 @@ export default class SelectableSingleAvailabilityView extends React.Component {
       isSelecting: false,
       selection: null,
     });
+    if (this.props.onDateSelection) {
+      this.props.onDateSelection();
+    }
   }
 
   render() {

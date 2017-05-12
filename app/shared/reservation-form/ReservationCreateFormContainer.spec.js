@@ -47,9 +47,38 @@ describe('shared/reservation-form/ReservationCreateFormContainer', () => {
           });
         });
 
-        it('is correct when date has full info', () => {
-          const date = '2017-01-02T10:30:00';
-          const selected = getSelected({}, { date });
+        it('is correct when begin has only day info', () => {
+          const begin = '2017-01-01';
+          const selected = getSelected({}, { begin });
+          expect(selected.initialValues.time).to.deep.equal({
+            begin: { date: begin, time: null },
+            end: { date: begin, time: null },
+          });
+        });
+
+        it('is correct when begin and end values are passed', () => {
+          const begin = '2017-01-02T10:30:00';
+          const end = '2017-01-02T13:30:00';
+          const selected = getSelected({}, { begin, end });
+          expect(selected.initialValues.time).to.deep.equal({
+            begin: { date: '2017-01-02', time: '10:30' },
+            end: { date: '2017-01-02', time: '13:30' },
+          });
+        });
+
+        it('calculates end when only begin is passed', () => {
+          const begin = '2017-01-02T10:30:00';
+          const selected = getSelected({}, { begin });
+          expect(selected.initialValues.time).to.deep.equal({
+            begin: { date: '2017-01-02', time: '10:30' },
+            end: { date: '2017-01-02', time: '11:00' },
+          });
+        });
+
+        it('ignores date if begin is passed', () => {
+          const begin = '2017-01-02T10:30:00';
+          const date = '2017-01-15T10:30:00';
+          const selected = getSelected({}, { begin, date });
           expect(selected.initialValues.time).to.deep.equal({
             begin: { date: '2017-01-02', time: '10:30' },
             end: { date: '2017-01-02', time: '11:00' },

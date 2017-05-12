@@ -1,39 +1,79 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { browserHistory } from 'react-router';
+import queryString from 'query-string';
 
-import SingleAvailabilityView from 'shared/availability-view/SingleAvailabilityView';
+import SelectableSingleAvailabilityView from 'shared/form-fields/reservation-time/SelectableSingleAvailabilityView';
 import ResourceDailyReportButton from 'shared/resource-daily-report-button';
 import ResourceInfo from './info';
 
-ResourcePage.propTypes = {
-  date: PropTypes.string.isRequired,
-  hideResourceImages: PropTypes.func.isRequired,
-  onDateChange: PropTypes.func.isRequired,
-  resource: PropTypes.object.isRequired,
-  resourceSearchUrl: PropTypes.string.isRequired,
-  showResourceImages: PropTypes.func.isRequired,
-  unit: PropTypes.object.isRequired,
-};
-export default function ResourcePage(props) {
-  return (
-    <div className="resource-page">
-      <ResourceInfo
-        hideResourceImages={props.hideResourceImages}
-        resource={props.resource}
-        resourceSearchUrl={props.resourceSearchUrl}
-        showResourceImages={props.showResourceImages}
-        unit={props.unit}
-      />
-      <h3>Varaustilanne</h3>
-      <p className="help-text">Klikkaa vapaata aikaa varauksen aloittamiseksi</p>
-      <SingleAvailabilityView
-        date={props.date}
-        onDateChange={props.onDateChange}
-        resource={props.resource.id}
-      />
-      <ResourceDailyReportButton
-        resourceIds={[props.resource.id]}
-        date={props.date}
-      />
-    </div>
-  );
+export default class ResourcePage extends Component {
+  static propTypes = {
+    date: PropTypes.string.isRequired,
+    hideResourceImages: PropTypes.func.isRequired,
+    onDateChange: PropTypes.func.isRequired,
+    resource: PropTypes.object.isRequired,
+    resourceSearchUrl: PropTypes.string.isRequired,
+    showResourceImages: PropTypes.func.isRequired,
+    unit: PropTypes.object.isRequired,
+  };
+
+  state = {
+    timelineSelectionValue: {
+      begin: {
+        date: this.props.date,
+        time: '',
+      },
+      end: {
+        date: this.props.date,
+        time: '',
+      },
+    },
+  }
+
+  onValueChange = (value) => {
+    this.setState({ timelineSelectionValue: value });
+  }
+
+  goToCreateReservation = () => {
+    const value = this.state.timelineSelectionValue;
+    const begin = `${value.begin.date}T${value.begin.time}:00.000`;
+    const end = `${value.end.date}T${value.end.time}:00.000`;
+
+    const query = queryString.stringify({
+      begin,
+      end,
+      resource: this.props.resource.id,
+    });
+
+    const url = `/reservations/create?${query}`;
+    browserHistory.push(url);
+  }
+
+  render() {
+    return (
+      <div className="resource-page">
+        <ResourceInfo
+          hideResourceImages={this.props.hideResourceImages}
+          resource={this.props.resource}
+          resourceSearchUrl={this.props.resourceSearchUrl}
+          showResourceImages={this.props.showResourceImages}
+          unit={this.props.unit}
+        />
+        <h3>Varaustilanne</h3>
+        <p className="help-text">Klikkaa vapaata aikaa varauksen aloittamiseksi</p>
+        <SelectableSingleAvailabilityView
+          date={this.props.date}
+          onChange={this.onValueChange}
+          onDateChange={this.props.onDateChange}
+          onDateSelection={this.goToCreateReservation}
+          resource={this.props.resource}
+          value={this.state.timelineSelectionValue}
+        />
+        <ResourceDailyReportButton
+          resourceIds={[this.props.resource.id]}
+          date={this.props.date}
+        />
+      </div>
+    );
+  }
 }

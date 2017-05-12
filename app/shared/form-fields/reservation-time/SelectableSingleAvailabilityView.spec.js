@@ -12,6 +12,7 @@ function getWrapper(props) {
     hideDateSelector: true,
     onChange: () => null,
     onDateChange: () => null,
+    onDateSelection: () => null,
     resource: { id: 'r-1' },
     value: {
       begin: { date: '2016-01-01', time: null },
@@ -86,8 +87,8 @@ describe('pages/resources/SelectableSingleAvailabilityView', () => {
   });
 
   describe('handleReservationSlotMouseUp', () => {
-    function handleMouseUp(onChange = () => null) {
-      const wrapper = getWrapper({ onChange });
+    function handleMouseUp(props) {
+      const wrapper = getWrapper(props);
       wrapper.instance().handleReservationSlotMouseUp();
       return wrapper;
     }
@@ -99,8 +100,14 @@ describe('pages/resources/SelectableSingleAvailabilityView', () => {
 
     it('does not call props.onChange', () => {
       const onChange = simple.mock();
-      handleMouseUp(onChange);
+      handleMouseUp({ onChange });
       expect(onChange.called).to.be.false;
+    });
+
+    it('calls props.onDateSelection', () => {
+      const onDateSelection = simple.mock();
+      handleMouseUp({ onDateSelection });
+      expect(onDateSelection.callCount).to.equal(1);
     });
   });
 
