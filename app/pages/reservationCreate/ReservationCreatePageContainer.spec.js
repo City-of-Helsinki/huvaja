@@ -70,6 +70,16 @@ describe('pages/reservationCreate/ReservationCreatePageContainer', () => {
         const today = moment().format('YYYY-MM-DD');
         expect(form.prop('date')).to.equal(today);
       });
+
+      it('gets begin and end dates from query', () => {
+        const props = { location: { query: {
+          begin: '2016-03-15T10:00.000',
+          end: '2016-03-15T12:00.000',
+        } } };
+        const form = getWrapper(props).find(ReservationCreateForm);
+        expect(form.prop('begin')).to.equal('2016-03-15T10:00.000');
+        expect(form.prop('end')).to.equal('2016-03-15T12:00.000');
+      });
     });
   });
 

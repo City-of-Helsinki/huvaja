@@ -15,14 +15,23 @@ function datePropSelector(state, props) {
   return props.date;
 }
 
+function beginPropSelector(state, props) {
+  return props.begin;
+}
+
+function endPropSelector(state, props) {
+  return props.end;
+}
+
 function resourceSelector(state, props) {
   return props.resource;
 }
 
-function getInitialTime(date) {
-  const begin = moment(date, moment.ISO_8601, true);
-  if (begin.isValid() && date.indexOf('T') !== -1) {
-    const end = begin.clone().add(slotSize, 'minutes');
+function getInitialTime(date, beginString, endString) {
+  const begin = moment(beginString, moment.ISO_8601, true);
+  if (begin.isValid() && beginString.indexOf('T') !== -1) {
+    let end = moment(endString, moment.ISO_8601, true);
+    end = end.isValid() ? end : begin.clone().add(slotSize, 'minutes');
     return {
       begin: {
         date: begin.format('YYYY-MM-DD'),
@@ -35,8 +44,8 @@ function getInitialTime(date) {
     };
   }
   return {
-    begin: { date, time: null },
-    end: { date, time: null },
+    begin: { date: (date || beginString), time: null },
+    end: { date: (date || beginString), time: null },
   };
 }
 
@@ -44,11 +53,13 @@ const initialValuesSelector = createSelector(
   currentUserSelector,
   resourceSelector,
   datePropSelector,
-  (currentUser, resource, date) => ({
+  beginPropSelector,
+  endPropSelector,
+  (currentUser, resource, date, begin, end) => ({
     hostName: currentUser ? currentUser.displayName : '',
     reserverName: currentUser ? currentUser.displayName : '',
     resource: resource.name.fi,
-    time: getInitialTime(date),
+    time: getInitialTime(date, begin, end),
   })
 );
 
