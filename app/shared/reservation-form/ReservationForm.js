@@ -24,6 +24,12 @@ function constructMoment(value) {
   return moment(dateString, moment.ISO_8601, true);
 }
 
+function didResourceChange(old, current) {
+  const currentId = current && current.id;
+  const oldId = old && old.id;
+  return Boolean(currentId && currentId !== oldId);
+}
+
 export function validate(values) {
   const errors = {};
   requiredFields.forEach((value) => {
@@ -71,16 +77,20 @@ function renderField(name, type, label, controlProps = {}) {
 
 export class UnconnectedReservationForm extends React.Component {
   componentDidMount() {
-    this.props.fetchResource(
-      this.props.resource.id, { date: this.props.timelineDate }
-    );
+    if (this.props.resource) {
+      this.props.fetchResource(
+        this.props.resource.id,
+        { date: this.props.timelineDate }
+      );
+    }
   }
 
   componentWillReceiveProps(nextProps) {
     const hasTimelineChanged = (
-      this.props.timelineDate !== nextProps.timelineDate
+      this.props.timelineDate !== nextProps.timelineDate ||
+      didResourceChange(this.props.resource, nextProps.resource)
     );
-    if (hasTimelineChanged) {
+    if (hasTimelineChanged && nextProps.resource) {
       this.props.fetchResource(
         nextProps.resource.id, { date: nextProps.timelineDate }
       );
@@ -93,13 +103,16 @@ export class UnconnectedReservationForm extends React.Component {
         <form className="reservation-form" onSubmit={this.props.handleSubmit}>
           <div>
             <Row>
-              <Col md={12}>
+              <Col md={6}>
                 <h3>Tila ja aika</h3>
                 {renderField(
                   'resource',
-                  'text',
+                  'resource',
                   'Tila',
-                  { disabled: true }
+                  {
+                    resource: this.props.resource,
+                    timeRange: this.props.timeRange,
+                  }
                 )}
                 {renderField(
                   'time',
@@ -107,23 +120,27 @@ export class UnconnectedReservationForm extends React.Component {
                   'Varauksen aika',
                   { required: true },
                 )}
-                <div className="timeline-container">
-                  <h5>Varaustilanne</h5>
-                  <p className="help-text">Voit valita ajan myös maalaamalla.</p>
-                  {renderField(
-                    'time',
-                    'reservation-time',
-                    'Aika',
-                    {
-                      date: this.props.timelineDate,
-                      excludeReservation: this.props.reservation && this.props.reservation.id,
-                      hideDateSelector: true,
-                      resource: this.props.resource,
-                      onDateChange: () => null,
-                    }
-                  )}
-                </div>
               </Col>
+              {this.props.resource &&
+                <Col md={12}>
+                  <div className="timeline-container">
+                    <h5>Varaustilanne</h5>
+                    <p className="help-text">Voit valita ajan myös maalaamalla.</p>
+                    {renderField(
+                      'time',
+                      'reservation-time',
+                      'Aika',
+                      {
+                        date: this.props.timelineDate,
+                        excludeReservation: this.props.reservation && this.props.reservation.id,
+                        hideDateSelector: true,
+                        resource: this.props.resource,
+                        onDateChange: () => null,
+                      }
+                    )}
+                  </div>
+                </Col>
+              }
             </Row>
             <Row>
               <Col md={6}>
@@ -201,8 +218,9 @@ UnconnectedReservationForm.propTypes = {
   fetchResource: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   reservation: PropTypes.object,
-  resource: PropTypes.object.isRequired,
+  resource: PropTypes.object,
   submitting: PropTypes.bool.isRequired,
+  timeRange: PropTypes.object,
   timelineDate: PropTypes.string.isRequired,
 };
 
