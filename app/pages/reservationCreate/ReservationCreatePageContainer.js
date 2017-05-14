@@ -1,8 +1,9 @@
+import isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
 import React, { PropTypes } from 'react';
 import Loader from 'react-loader';
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import { createSelector, createStructuredSelector } from 'reselect';
 
 import { ReservationCreateForm } from 'shared/reservation-form';
 
@@ -10,11 +11,28 @@ function resourcesSelector(state) {
   return state.data.resources;
 }
 
+function resourceIdSelector(state, props) {
+  return props.location.query.resource;
+}
+
+const resourceSelector = createSelector(
+  resourcesSelector,
+  resourceIdSelector,
+  (resources, resourceId) => resources[resourceId]
+);
+
+const isFetchingSelector = createSelector(
+  resourcesSelector,
+  resources => isEmpty(resources)
+);
+
 export const selector = createStructuredSelector({
-  resources: resourcesSelector,
+  isFetching: isFetchingSelector,
+  resource: resourceSelector,
 });
 
 UnconnectedReservationCreatePageContainer.propTypes = {
+  isFetching: PropTypes.bool.isRequired,
   location: PropTypes.shape({
     query: PropTypes.object.Required,
   }),
@@ -24,23 +42,15 @@ export function UnconnectedReservationCreatePageContainer(props) {
   return (
     <div>
       <h1>Varauksen tekeminen</h1>
-      <Loader loaded={Boolean(props.resource)}>
+      <Loader loaded={!props.isFetching}>
         <ReservationCreateForm
           begin={props.location.query.begin || moment().format('YYYY-MM-DD')}
           end={props.location.query.end}
-          resource={props.resource}
+          initialResource={props.resource}
         />
       </Loader>
     </div>
   );
 }
 
-export function mergeProps(stateProps, dispatchProps, ownProps) {
-  const { resources, ...props } = { ...ownProps, ...stateProps, ...dispatchProps };
-  return {
-    ...props,
-    resource: resources[props.location.query.resource],
-  };
-}
-
-export default connect(selector, null, mergeProps)(UnconnectedReservationCreatePageContainer);
+export default connect(selector)(UnconnectedReservationCreatePageContainer);

@@ -6,7 +6,7 @@ import Loader from 'react-loader';
 
 import { ReservationCreateForm } from 'shared/reservation-form';
 import { getState } from 'utils/testUtils';
-import { mergeProps, UnconnectedReservationCreatePageContainer, selector } from './ReservationCreatePageContainer';
+import { UnconnectedReservationCreatePageContainer, selector } from './ReservationCreatePageContainer';
 
 describe('pages/reservationCreate/ReservationCreatePageContainer', () => {
   const resources = {
@@ -14,6 +14,7 @@ describe('pages/reservationCreate/ReservationCreatePageContainer', () => {
     234: { id: '234' },
   };
   const defaults = {
+    isFetching: false,
     location: {
       query: {
         begin: '2016-03-15',
@@ -29,30 +30,50 @@ describe('pages/reservationCreate/ReservationCreatePageContainer', () => {
   }
 
   describe('selector', () => {
-    function getSelected() {
+    function getSelected(extraState) {
       const state = getState({
         'data.resources': resources,
+        ...extraState,
       });
-      return selector(state);
+      const props = { location: defaults.location };
+      return selector(state, props);
     }
 
-    it('returns resources', () => {
-      expect(getSelected().resources).to.deep.equal(resources);
+    it('returns resource', () => {
+      expect(getSelected().resource).to.deep.equal(resources['123']);
+    });
+
+    describe('isFetching', () => {
+      it('returns true if data.resources is empty', () => {
+        const extraState = {
+          'data.resources': {},
+        };
+        expect(getSelected(extraState).isFetching).to.be.true;
+      });
+
+      it('returns false if data.resources is not empty', () => {
+        expect(getSelected().isFetching).to.be.false;
+      });
     });
   });
 
   describe('render', () => {
     describe('Loader', () => {
+      function getLoader(props) {
+        return getWrapper(props).find(Loader);
+      }
+
       it('is rendered', () => {
-        const loader = getWrapper().find(Loader);
-        expect(loader).to.have.length(1);
+        expect(getLoader()).to.have.length(1);
       });
 
-      it('is loaded when resource exists', () => {
-        const loaded = getWrapper().find(Loader);
-        expect(loaded.prop('loaded')).to.be.true;
-        const notLoaded = getWrapper({ resource: null }).find(Loader);
-        expect(notLoaded.prop('loaded')).to.be.false;
+      it('is loaded when not fetching', () => {
+        expect(getLoader().prop('loaded')).to.be.true;
+      });
+
+      it('is not loaded when fetching', () => {
+        const props = { isFetching: true };
+        expect(getLoader(props).prop('loaded')).to.be.false;
       });
     });
 
@@ -64,7 +85,7 @@ describe('pages/reservationCreate/ReservationCreatePageContainer', () => {
         } } };
         const form = getWrapper(props).find(ReservationCreateForm);
         expect(form).to.have.length(1);
-        expect(form.prop('resource')).to.deep.equal(defaults.resource);
+        expect(form.prop('initialResource')).to.deep.equal(defaults.resource);
         expect(form.prop('begin')).to.equal('2016-03-15T10:00.000');
         expect(form.prop('end')).to.equal('2016-03-15T12:00.000');
       });
@@ -75,17 +96,6 @@ describe('pages/reservationCreate/ReservationCreatePageContainer', () => {
         const today = moment().format('YYYY-MM-DD');
         expect(form.prop('begin')).to.equal(today);
       });
-    });
-  });
-
-  describe('mergeProps', () => {
-    it('returns resource based on query param', () => {
-      const merged = mergeProps(
-        { resources },
-        {},
-        { location: { query: { resource: '123' } } },
-      );
-      expect(merged.resource).to.deep.equal(resources['123']);
     });
   });
 });

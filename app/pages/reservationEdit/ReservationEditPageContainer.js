@@ -38,7 +38,7 @@ export class UnconnectedReservationEditPageContainer extends Component {
     return (
       <ReservationEditForm
         reservation={reservation}
-        resource={resource}
+        initialResource={resource}
       />
     );
   }

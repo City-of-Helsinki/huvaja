@@ -17,10 +17,25 @@ function resourcesSelector(state) {
   return state.data.resources;
 }
 
+function initialResourceIdSelector(state, props) {
+  return props.initialResource.id;
+}
+
+const formResourceIdSelector = state => (
+  state.form.resourceReservation &&
+  state.form.resourceReservation.values.resource
+);
+
+const resourceIdSelector = createSelector(
+  formResourceIdSelector,
+  initialResourceIdSelector,
+  (formResourceId, initialResourceId) => formResourceId || initialResourceId
+);
+
 const resourceSelector = createSelector(
-  reservationSelector,
+  resourceIdSelector,
   resourcesSelector,
-  (reservation, resources) => resources[reservation.resource]
+  (resourceId, resources) => resources[resourceId]
 );
 
 function getInitialTime(reservation) {
@@ -40,14 +55,14 @@ function getInitialTime(reservation) {
 
 const initialValuesSelector = createSelector(
   reservationSelector,
-  resourceSelector,
-  (reservation, resource) => ({
+  initialResourceIdSelector,
+  (reservation, resourceId) => ({
     eventDescription: reservation.eventDescription,
     eventName: reservation.eventSubject,
     hostName: reservation.hostName,
     numberOfParticipants: reservation.numberOfParticipants,
     reserverName: reservation.reserverName,
-    resource: resource.name.fi,
+    resource: resourceId,
     time: getInitialTime(reservation),
   })
 );
@@ -64,9 +79,16 @@ const timelineDateSelector = createSelector(
   (formDate, initialValues) => formDate || initialValues.time.begin.date
 );
 
+const timeRangeSelector = state => (
+  state.form.resourceReservation &&
+  state.form.resourceReservation.values.time
+);
+
 export const selector = createStructuredSelector({
   initialValues: initialValuesSelector,
+  resource: resourceSelector,
   timelineDate: timelineDateSelector,
+  timeRange: timeRangeSelector,
 });
 
 const actions = {

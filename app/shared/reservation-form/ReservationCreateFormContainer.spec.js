@@ -7,7 +7,9 @@ import { mergeProps, selector } from './ReservationCreateFormContainer';
 
 describe('shared/reservation-form/ReservationCreateFormContainer', () => {
   describe('selector', () => {
-    const props = { resource: { name: { fi: 'Resource name' } } };
+    const props = { initialResource: { id: 'r-1', name: { fi: 'Resource name' } } };
+    const time = { begin: { date: '2016-01-01', time: '10:00' } };
+
     function getSelected(extraState, extraProps) {
       const state = getState(extraState);
       return selector(state, { ...props, ...extraProps });
@@ -32,9 +34,8 @@ describe('shared/reservation-form/ReservationCreateFormContainer', () => {
         expect(getSelected(extraState).initialValues.reserverName).to.equal('Luke Skywalker');
       });
 
-      it('resource equals resource name from props', () => {
-        const expected = props.resource.name.fi;
-        expect(getSelected().initialValues.resource).to.equal(expected);
+      it('resource equals initial resource id from props', () => {
+        expect(getSelected().initialValues.resource).to.equal('r-1');
       });
 
       describe('time', () => {
@@ -69,10 +70,10 @@ describe('shared/reservation-form/ReservationCreateFormContainer', () => {
     });
 
     describe('timelineDate', () => {
-      it('returns form date if exists', () => {
+      it('returns time if exists', () => {
         const extraState = {
           'form.resourceReservation.values': {
-            time: { begin: { date: '2016-01-01', time: '10:00' } },
+            time,
           },
         };
         expect(getSelected(extraState).timelineDate).to.equal('2016-01-01');
@@ -82,6 +83,49 @@ describe('shared/reservation-form/ReservationCreateFormContainer', () => {
         const begin = '2017-01-01';
         const selected = getSelected({}, { begin });
         expect(selected.timelineDate).to.equal(begin);
+      });
+    });
+
+    describe('timeRange', () => {
+      it('returns time if exists', () => {
+        const extraState = {
+          'form.resourceReservation.values': {
+            time,
+          },
+        };
+        expect(getSelected(extraState).timeRange).to.deep.equal(time);
+      });
+    });
+
+    describe('resource', () => {
+      const resource1 = { id: 'r-1' };
+      const resource2 = { id: 'r-2' };
+
+      it('is returned by form value', () => {
+        const extraState = {
+          'data.resources': {
+            'r-1': resource1,
+            'r-2': resource2,
+          },
+          'form.resourceReservation.values': {
+            resource: 'r-2',
+            time,
+          },
+        };
+        expect(getSelected(extraState).resource).to.deep.equal(resource2);
+      });
+
+      it('is returned by initial value if no form value', () => {
+        const extraState = {
+          'data.resources': {
+            'r-1': resource1,
+            'r-2': resource2,
+          },
+          'form.resourceReservation.values': {
+            time,
+          },
+        };
+        expect(getSelected(extraState).resource).to.deep.equal(resource1);
       });
     });
   });
