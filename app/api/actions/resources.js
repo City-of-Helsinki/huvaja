@@ -18,12 +18,12 @@ function fetchResource(id, params = {}) {
   });
 }
 
-function fetchResources(params = {}, times = true) {
+function fetchResources(params = {}, times = true, meta) {
   const defaultParams = {
     resource_group: 'kanslia',
     pageSize: 100,
   };
-  const paramsWithTimes = times ? getParamsWithTimes(params) : {};
+  const paramsWithTimes = times ? getParamsWithTimes(params) : params;
   return createApiAction({
     endpoint: 'resource',
     params: {
@@ -32,7 +32,7 @@ function fetchResources(params = {}, times = true) {
     },
     method: 'GET',
     type: 'RESOURCES',
-    options: { schema: schemas.paginatedResourcesSchema },
+    options: { meta, schema: schemas.paginatedResourcesSchema },
   });
 }
 

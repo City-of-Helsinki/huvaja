@@ -68,10 +68,11 @@ describe('api/actions/resources', () => {
   describe('fetchResources', () => {
     describe('with times', () => {
       const params = getParamsWithTimes({ resource_group: 'kanslia', pageSize: 100 });
+      const metaArg = { resourceSelector: true };
       createApiTest({
         name: 'fetchResources',
         action: fetchResources,
-        args: [],
+        args: [{}, true, metaArg],
         tests: {
           method: 'GET',
           endpoint: buildAPIUrl('resource', params),
@@ -80,6 +81,13 @@ describe('api/actions/resources', () => {
           },
           success: {
             type: types.RESOURCES_GET_SUCCESS,
+            extra: {
+              tests: {
+                'contains correct meta': ({ meta }) => {
+                  expect(meta).to.deep.equal(metaArg);
+                },
+              },
+            },
           },
           error: {
             type: types.RESOURCES_GET_ERROR,
@@ -89,11 +97,15 @@ describe('api/actions/resources', () => {
     });
 
     describe('without times', () => {
-      const params = { resource_group: 'kanslia', pageSize: 100 };
+      const params = {
+        resource_group: 'kanslia',
+        pageSize: 100,
+        some: 'arg',
+      };
       createApiTest({
         name: 'fetchResources',
         action: fetchResources,
-        args: [{}, false],
+        args: [{ some: 'arg' }, false],
         tests: {
           method: 'GET',
           endpoint: buildAPIUrl('resource', params),
