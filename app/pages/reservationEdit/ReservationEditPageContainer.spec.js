@@ -62,7 +62,7 @@ describe('pages/reservationEdit/ReservationEditPageContainer', () => {
       it('is rendered with correct props', () => {
         const form = getWrapper().find(ReservationEditForm);
         expect(form).to.have.length(1);
-        expect(form.prop('resource')).to.deep.equal(defaults.resource);
+        expect(form.prop('initialResource')).to.deep.equal(defaults.resource);
         expect(form.prop('reservation')).to.deep.equal(defaults.reservation);
       });
     });
