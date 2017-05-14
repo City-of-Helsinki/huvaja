@@ -1,6 +1,7 @@
+import isEmpty from 'lodash/isEmpty';
 import { createSelector, createStructuredSelector } from 'reselect';
 
-import { reservationGetIsActiveSelector, resourcesGetIsActiveSelector } from 'api/selectors';
+import { reservationGetIsActiveSelector } from 'api/selectors';
 
 function reservationsSelector(state) {
   return state.data.reservations;
@@ -33,9 +34,9 @@ const resourceSelector = createSelector(
 
 const isFetchingSelector = createSelector(
   reservationGetIsActiveSelector,
-  resourcesGetIsActiveSelector,
-  (reservationGetIsActive, resourcesGetIsActive) => (
-    reservationGetIsActive || resourcesGetIsActive
+  resourcesSelector,
+  (reservationGetIsActive, resources) => (
+    reservationGetIsActive || isEmpty(resources)
   )
 );
 
