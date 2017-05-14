@@ -18,6 +18,10 @@ describe('shared/reservation-form/ReservationForm', () => {
     resource: { id: '123' },
     onDateChange: () => null,
     submitting: false,
+    timeRange: {
+      begin: {},
+      end: {},
+    },
   };
   function getWrapper(props) {
     return shallow(<ReservationForm {...defaults} {...props} />);
@@ -173,10 +177,13 @@ describe('shared/reservation-form/ReservationForm', () => {
       it('has a resource field', () => {
         const field = fields.filter({
           component: ReduxFormField,
-          controlProps: { disabled: true },
+          controlProps: {
+            resource: defaults.resource,
+            timeRange: defaults.timeRange,
+          },
           label: 'Tila*',
           name: 'resource',
-          type: 'text',
+          type: 'resource',
         });
         expect(field).to.have.length(1);
       });
@@ -296,6 +303,14 @@ describe('shared/reservation-form/ReservationForm', () => {
           date: defaults.timelineDate,
         });
       });
+
+      it('does not fetch if no resource', () => {
+        const fetchResource = simple.mock();
+        const props = { fetchResource, resource: null };
+        const instance = getWrapper(props).instance();
+        instance.componentDidMount();
+        expect(fetchResource.callCount).to.equal(0);
+      });
     });
 
     describe('componentWillReceiveProps', () => {
@@ -314,12 +329,39 @@ describe('shared/reservation-form/ReservationForm', () => {
         });
       });
 
+      it('fetches resource for new resource when resource changes', () => {
+        const fetchResource = simple.mock();
+        const instance = getWrapper({ fetchResource }).instance();
+        const nextProps = {
+          resource: { id: '555' },
+          timelineDate: defaults.timelineRange,
+        };
+        instance.componentWillReceiveProps(nextProps);
+        expect(fetchResource.callCount).to.equal(1);
+        expect(fetchResource.lastCall.args[0]).to.equal(nextProps.resource.id);
+        expect(fetchResource.lastCall.args[1]).to.deep.equal({
+          date: nextProps.timelineDate,
+        });
+      });
+
       it('does not fetch resource when timelineDate does not change', () => {
         const fetchResource = simple.mock();
         const instance = getWrapper({ fetchResource }).instance();
         const nextProps = {
           resource: defaults.resource,
           timelineDate: defaults.timelineDate,
+        };
+        instance.componentWillReceiveProps(nextProps);
+        expect(fetchResource.callCount).to.equal(0);
+      });
+
+      it('does not fetch when no resource', () => {
+        const fetchResource = simple.mock();
+        const props = { fetchResource };
+        const instance = getWrapper(props).instance();
+        const nextProps = {
+          resource: null,
+          timelineDate: '2016-01-02',
         };
         instance.componentWillReceiveProps(nextProps);
         expect(fetchResource.callCount).to.equal(0);
