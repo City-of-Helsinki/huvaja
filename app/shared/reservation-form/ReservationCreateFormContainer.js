@@ -11,10 +11,6 @@ import createFormSubmitHandler from 'utils/createFormSubmitHandler';
 import ReservationForm from './ReservationForm';
 import utils from './utils';
 
-function datePropSelector(state, props) {
-  return props.date;
-}
-
 function beginPropSelector(state, props) {
   return props.begin;
 }
@@ -27,7 +23,7 @@ function resourceSelector(state, props) {
   return props.resource;
 }
 
-function getInitialTime(date, beginString, endString) {
+function getInitialTime(beginString, endString) {
   const begin = moment(beginString, moment.ISO_8601, true);
   if (begin.isValid() && beginString.indexOf('T') !== -1) {
     let end = moment(endString, moment.ISO_8601, true);
@@ -44,22 +40,21 @@ function getInitialTime(date, beginString, endString) {
     };
   }
   return {
-    begin: { date: (date || beginString), time: null },
-    end: { date: (date || beginString), time: null },
+    begin: { date: beginString, time: null },
+    end: { date: beginString, time: null },
   };
 }
 
 const initialValuesSelector = createSelector(
   currentUserSelector,
   resourceSelector,
-  datePropSelector,
   beginPropSelector,
   endPropSelector,
-  (currentUser, resource, date, begin, end) => ({
+  (currentUser, resource, begin, end) => ({
     hostName: currentUser ? currentUser.displayName : '',
     reserverName: currentUser ? currentUser.displayName : '',
     resource: resource.name.fi,
-    time: getInitialTime(date, begin, end),
+    time: getInitialTime(begin, end),
   })
 );
 

@@ -38,15 +38,6 @@ describe('shared/reservation-form/ReservationCreateFormContainer', () => {
       });
 
       describe('time', () => {
-        it('is correct when date has only day info', () => {
-          const date = '2017-01-01';
-          const selected = getSelected({}, { date });
-          expect(selected.initialValues.time).to.deep.equal({
-            begin: { date, time: null },
-            end: { date, time: null },
-          });
-        });
-
         it('is correct when begin has only day info', () => {
           const begin = '2017-01-01';
           const selected = getSelected({}, { begin });
@@ -74,16 +65,6 @@ describe('shared/reservation-form/ReservationCreateFormContainer', () => {
             end: { date: '2017-01-02', time: '11:00' },
           });
         });
-
-        it('ignores date if begin is passed', () => {
-          const begin = '2017-01-02T10:30:00';
-          const date = '2017-01-15T10:30:00';
-          const selected = getSelected({}, { begin, date });
-          expect(selected.initialValues.time).to.deep.equal({
-            begin: { date: '2017-01-02', time: '10:30' },
-            end: { date: '2017-01-02', time: '11:00' },
-          });
-        });
       });
     });
 
@@ -98,9 +79,9 @@ describe('shared/reservation-form/ReservationCreateFormContainer', () => {
       });
 
       it('returns initial date if no form date', () => {
-        const date = '2017-01-01';
-        const selected = getSelected({}, { date });
-        expect(selected.timelineDate).to.equal(date);
+        const begin = '2017-01-01';
+        const selected = getSelected({}, { begin });
+        expect(selected.timelineDate).to.equal(begin);
       });
     });
   });
