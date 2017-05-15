@@ -1,0 +1,18 @@
+@import '~hel-bootstrap-3/src/sass/helsinki-variables';
+@import './application-variables';
+@import '~hel-bootstrap-3/src/sass/theme-bootstrap-variables';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap';
+@import '~hel-bootstrap-3/src/sass/theme-custom-styles';
+
+@import '~react-date-picker/index.css';
+
+@import '../../pages/pages';
+@import '../../shared/shared';
+
+body {
+  margin: 0;
+}
+
+.app {
+  padding-bottom: 30px;
+}

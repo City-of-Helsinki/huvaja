@@ -1,0 +1,266 @@
+.availability-view {
+  $group-row-height: 30px;
+  $resource-row-height: 50px;
+  $slot-border: 1px solid white;
+  $hovered-siblings-color: $gray;
+  $hovered-non-selectable-siblings-color: $gray-light;
+  width: 100%;
+
+  .columns {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-single {
+    display: block;
+
+    .timeline-group {
+      overflow-x: auto;
+    }
+  }
+  .left {
+    width: 19%;
+  }
+  .right {
+    width: 80%;
+  }
+  // max-width calculated based on width: 19% and width: 120px
+  @media (max-width: 630px) {
+    .left {
+      width: 120px;
+    }
+    .right {
+      width: calc(100% - 122px);
+    }
+  }
+  .date-selector {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    margin-bottom: $padding-base-vertical;
+    background-color: $brand-primary;
+    color: white;
+    padding: 0 $padding-small-horizontal;
+    font-size: $font-size-small;
+  }
+  .date-selector {
+    justify-content: space-between;
+
+    .previous, .next {
+      color: white;
+      cursor: pointer;
+      text-overflow: ellipsis;
+      overflow-x: hidden;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+
+      &:hover {
+        .arrow {
+          text-decoration: none;
+        }
+        .arrow-text {
+          text-decoration: underline;
+        }
+      }
+
+      .arrow {
+        font-size: 40px;
+      }
+      .arrow-left {
+        margin-right: 8px;
+      }
+      .arrow-right {
+        margin-left: 8px;
+      }
+    }
+  }
+
+  .date-picker {
+    @include input-size(
+      '.date-picker',
+      $input-height-base,
+      $padding-base-vertical,
+      $padding-base-horizontal,
+      $font-size-base,
+      $line-height-base,
+      $input-border-radius
+    );
+    border-color: white;
+    color: black;
+    cursor: pointer;
+    input {
+      background: none;
+      color: white;
+      cursor: pointer;
+    }
+    .react-date-field__calendar-icon,
+    .react-date-field__calendar-icon:hover {
+      border-color: white;
+
+      &:before, &:after {
+        background-color: white;
+      }
+
+      .react-date-field__calendar-icon-inner{
+        background-color: white;
+      }
+    }
+  }
+  .group-info {
+    background-color: $gray-lighter;
+
+    .group-name, .resource-info {
+      padding: 0 $padding-base-horizontal;
+    }
+    .group-name {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      height: $group-row-height;
+      line-height: $headings-line-height;
+      font-weight: $headings-font-weight;
+      font-size: $font-size-base;
+      background-color: $brand-primary;
+      color: white;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      .name {
+        text-align: right;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+  .resource-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    height: $resource-row-height;
+    font-size: $font-size-small;
+    line-height: 1;
+
+    &-highlighted {
+      background-color: $hovered-non-selectable-siblings-color;
+    }
+    .favorite-icon {
+      color: $favorite-color;
+      padding: 3px;
+      font-size: 12px;
+    }
+    .name {
+      text-align: right;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+
+      a {
+        color: $text-color;
+        font-size: $font-size-small;
+        font-weight: $headings-font-weight;
+      }
+    }
+    .capacity {
+      color: $brand-primary;
+      .chair-icon {
+        margin-right: 0;
+      }
+    }
+  }
+  .timeline-groups {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .timeline-group {
+    position: relative;
+    &-current-time {
+      position: absolute;
+      height: 100%;
+      width: 2px;
+      background-color: #FF4E00;
+    }
+    .sticky {
+      overflow: hidden;
+    }
+    .hours {
+      display: flex;
+
+      .hour {
+        display: flex;
+        align-items: center;
+        height: $group-row-height;
+        flex-shrink: 0;
+        margin: 0;
+        border: $slot-border;
+        background-color: $brand-primary;
+        color: white;
+        padding: $padding-small-vertical $padding-small-horizontal;
+        font-size: $font-size-small;
+      }
+    }
+  }
+  .availability-timeline {
+    display: flex;
+
+    &:hover {
+      .reservation-slot:not(:hover):not(.reservation-slot-selected) {
+        background-color: $hovered-non-selectable-siblings-color;
+        &.reservation-slot-selectable {
+          background-color: $hovered-siblings-color;
+        }
+      }
+    }
+  }
+  .reservation-link, .reservation-slot {
+    height: $resource-row-height;
+  }
+  .reservation, .reservation-slot {
+    display: inline-flex;
+    margin: 0;
+    border: $slot-border;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .reservation {
+    height: $resource-row-height;
+    background-color: $brand-success;
+    color: white;
+    font-size: $font-size-small;
+    align-items: center;
+    padding: $padding-small-vertical $padding-small-horizontal;
+    overflow: hidden;
+    cursor: pointer;
+
+    &-link:hover {
+      text-decoration: none;
+    }
+    .names {
+      height: 100%;
+      overflow: hidden;
+      text-overflow: clip;
+      white-space: nowrap;
+    }
+  }
+  .reservation-slot {
+    background-color: $gray-lighter;
+    overflow: hidden;
+
+    &-selectable {
+      background-color: $gray-light;
+    }
+    &-selected {
+      background-color: $brand-primary;
+    }
+    &:hover {
+      background-color: $brand-primary;
+    }
+    .a11y-text {
+      position: relative;
+      left: 100px;
+    }
+  }
+}
