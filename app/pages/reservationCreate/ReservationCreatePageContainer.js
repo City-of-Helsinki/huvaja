@@ -26,8 +26,7 @@ export function UnconnectedReservationCreatePageContainer(props) {
       <h1>Varauksen tekeminen</h1>
       <Loader loaded={Boolean(props.resource)}>
         <ReservationCreateForm
-          begin={props.location.query.begin}
-          date={props.location.query.begin || moment().format('YYYY-MM-DD')}
+          begin={props.location.query.begin || moment().format('YYYY-MM-DD')}
           end={props.location.query.end}
           resource={props.resource}
         />

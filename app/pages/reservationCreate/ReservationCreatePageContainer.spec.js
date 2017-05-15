@@ -58,27 +58,22 @@ describe('pages/reservationCreate/ReservationCreatePageContainer', () => {
 
     describe('ReservationCreateForm', () => {
       it('is rendered with correct props', () => {
-        const form = getWrapper().find(ReservationCreateForm);
-        expect(form).to.have.length(1);
-        expect(form.prop('resource')).to.deep.equal(defaults.resource);
-        expect(form.prop('date')).to.equal('2016-03-15');
-      });
-
-      it('gets today as date prop if begin param not in query', () => {
-        const props = { location: { query: {} } };
-        const form = getWrapper(props).find(ReservationCreateForm);
-        const today = moment().format('YYYY-MM-DD');
-        expect(form.prop('date')).to.equal(today);
-      });
-
-      it('gets begin and end dates from query', () => {
         const props = { location: { query: {
           begin: '2016-03-15T10:00.000',
           end: '2016-03-15T12:00.000',
         } } };
         const form = getWrapper(props).find(ReservationCreateForm);
+        expect(form).to.have.length(1);
+        expect(form.prop('resource')).to.deep.equal(defaults.resource);
         expect(form.prop('begin')).to.equal('2016-03-15T10:00.000');
         expect(form.prop('end')).to.equal('2016-03-15T12:00.000');
+      });
+
+      it('gets today as begin prop if begin param not in query', () => {
+        const props = { location: { query: {} } };
+        const form = getWrapper(props).find(ReservationCreateForm);
+        const today = moment().format('YYYY-MM-DD');
+        expect(form.prop('begin')).to.equal(today);
       });
     });
   });
