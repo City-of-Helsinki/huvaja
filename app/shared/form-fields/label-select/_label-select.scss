@@ -1,0 +1,16 @@
+.label-select {
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .option {
+    font-size: $font-size-small;
+    padding: 0.4em;
+    margin: 0.2em;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
