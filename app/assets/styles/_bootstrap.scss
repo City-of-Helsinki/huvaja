@@ -32,3 +32,12 @@ h4 {
   color: $gray;
   font-size: 13px;
 }
+
+.has-error {
+  background-color: $state-danger-bg;
+  padding: $padding-base-vertical $padding-base-horizontal;
+
+  .help-block {
+    margin-bottom: 0;
+  }
+}

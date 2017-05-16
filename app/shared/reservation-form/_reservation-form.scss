@@ -16,6 +16,13 @@
     margin-bottom: 20px;
   }
 
+  &-timeline {
+    .has-error {
+      background: white;
+      padding: 0;
+    }
+  }
+
   h3 {
     margin-top: 30px;
     margin-bottom: 10px;
