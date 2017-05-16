@@ -54,7 +54,7 @@ describe('utils/createFormSubmitHandler', () => {
         promise.catch((error) => {
           expect(error.errors).to.deep.equal({
             _error: 'non-field error.',
-            field1: 'field1 error 1. field1 error 2.',
+            someField: 'error 1. error 2.',
           });
           done();
         });
@@ -62,7 +62,7 @@ describe('utils/createFormSubmitHandler', () => {
           payload: {
             response: {
               non_field_errors: ['non-field error.'],
-              field1: ['field1 error 1.', 'field1 error 2.'],
+              some_field: ['error 1.', 'error 2.'],
             },
           },
         });
