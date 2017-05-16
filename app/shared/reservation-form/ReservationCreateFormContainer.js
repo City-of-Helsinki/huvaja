@@ -118,7 +118,7 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
       begin: formatTime(values.time.begin),
       end: formatTime(values.time.end),
       event_description: values.eventDescription,
-      event_subject: values.eventName,
+      event_subject: values.eventSubject,
       host_name: values.hostName,
       number_of_participants: values.numberOfParticipants,
       reserver_name: values.reserverName,

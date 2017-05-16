@@ -58,7 +58,7 @@ const initialValuesSelector = createSelector(
   initialResourceIdSelector,
   (reservation, resourceId) => ({
     eventDescription: reservation.eventDescription,
-    eventName: reservation.eventSubject,
+    eventSubject: reservation.eventSubject,
     hostName: reservation.hostName,
     numberOfParticipants: reservation.numberOfParticipants,
     reserverName: reservation.reserverName,
@@ -107,7 +107,7 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
       begin: formatTime(values.time.begin),
       end: formatTime(values.time.end),
       event_description: values.eventDescription,
-      event_subject: values.eventName,
+      event_subject: values.eventSubject,
       host_name: values.hostName,
       id: props.reservation.id,
       number_of_participants: values.numberOfParticipants,

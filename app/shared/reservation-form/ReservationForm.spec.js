@@ -35,7 +35,7 @@ describe('shared/reservation-form/ReservationForm', () => {
         const errors = validate(values);
         expect(errors.time).to.equal('Pakollinen tieto');
         expect(errors.resource).to.equal('Pakollinen tieto');
-        expect(errors.eventName).to.equal('Pakollinen tieto');
+        expect(errors.eventSubject).to.equal('Pakollinen tieto');
         expect(errors.numberOfParticipants).to.equal('Pakollinen tieto');
       });
     });
@@ -54,13 +54,13 @@ describe('shared/reservation-form/ReservationForm', () => {
             },
           },
           resource: '123',
-          eventName: 'name',
+          eventSubject: 'name',
           numberOfParticipants: 21,
         };
         const errors = validate(values);
         expect(errors.time).to.not.exist;
         expect(errors.resource).to.not.exist;
-        expect(errors.eventName).to.not.exist;
+        expect(errors.eventSubject).to.not.exist;
         expect(errors.numberOfParticipants).to.not.exist;
       });
     });
@@ -188,12 +188,12 @@ describe('shared/reservation-form/ReservationForm', () => {
         expect(field).to.have.length(1);
       });
 
-      it('has a eventName field', () => {
+      it('has a eventSubject field', () => {
         const field = fields.filter({
           component: ReduxFormField,
           controlProps: {},
           label: 'Varauksen otsikko*',
-          name: 'eventName',
+          name: 'eventSubject',
           type: 'text',
         });
         expect(field).to.have.length(1);
