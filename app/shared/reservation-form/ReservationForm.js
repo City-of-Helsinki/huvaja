@@ -10,8 +10,7 @@ import ReduxFormField from 'shared/form-fields/ReduxFormField';
 import CateringSection from './catering';
 
 const requiredFields = [
-  'time',
-  'eventName',
+  'eventSubject',
   'hostName',
   'numberOfParticipants',
   'reserverName',
@@ -146,7 +145,7 @@ export class UnconnectedReservationForm extends React.Component {
               <Col md={6}>
                 <h3>Perustiedot</h3>
                 {renderField(
-                  'eventName',
+                  'eventSubject',
                   'text',
                   'Varauksen otsikko',
                 )}

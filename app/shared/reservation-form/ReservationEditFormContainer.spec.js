@@ -74,8 +74,8 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
         expect(getSelected().initialValues.eventDescription).to.equal(reservation.eventDescription);
       });
 
-      it('eventName is reservation.eventSubject', () => {
-        expect(getSelected().initialValues.eventName).to.equal(reservation.eventSubject);
+      it('eventSubject is reservation.eventSubject', () => {
+        expect(getSelected().initialValues.eventSubject).to.equal(reservation.eventSubject);
       });
 
       it('hostName is reservation.hostName', () => {
@@ -183,7 +183,7 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
           },
           hostName: 'Han Solo',
           eventDescription: 'Description',
-          eventName: 'Tapaaminen',
+          eventSubject: 'Tapaaminen',
           numberOfParticipants: 8,
           reserverName: 'Luke Skywalker',
           resource: 'r-1',
@@ -201,7 +201,7 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
           begin: moment('2016-01-01T10:00:00').format(),
           end: moment('2016-01-01T12:00:00').format(),
           event_description: values.eventDescription,
-          event_subject: values.eventName,
+          event_subject: values.eventSubject,
           host_name: values.hostName,
           id: props.reservation.id,
           number_of_participants: values.numberOfParticipants,
