@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/lib/Button';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
+import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import InputGroup from 'react-bootstrap/lib/InputGroup';
 
 import ResourceSelectorModal from 'shared/modals/resource-selector';
@@ -10,6 +11,7 @@ import ResourceSelectorModal from 'shared/modals/resource-selector';
 ResourceField.propTypes = {
   id: PropTypes.string.isRequired,
   controlProps: PropTypes.object,
+  help: PropTypes.string,
   hideSelector: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
   showSelector: PropTypes.func.isRequired,
@@ -18,6 +20,7 @@ ResourceField.propTypes = {
 export default function ResourceField({
   id,
   controlProps,
+  help,
   hideSelector,
   label,
   showSelector,
@@ -48,6 +51,7 @@ export default function ResourceField({
             <Button>Vaihda tila</Button>
           </InputGroup.Button>
         </InputGroup>
+        {help && <HelpBlock>{help}</HelpBlock>}
       </FormGroup>
       <ResourceSelectorModal
         onSelect={onSelect}
