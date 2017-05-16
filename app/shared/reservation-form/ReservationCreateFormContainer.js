@@ -122,7 +122,7 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
       host_name: values.hostName,
       number_of_participants: values.numberOfParticipants,
       reserver_name: values.reserverName,
-      resource: props.resource.id,
+      resource: values.resource,
     },
     actionOptions
   );
