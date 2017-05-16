@@ -14,8 +14,9 @@ describe('shared/reservation-form/ReservationForm', () => {
     timelineDate: '2016-01-01',
     fetchResource: () => null,
     handleSubmit: () => null,
+    numberOfParticipants: null,
     reservation: null,
-    resource: { id: '123' },
+    resource: { id: '123', peopleCapacity: 10 },
     onDateChange: () => null,
     submitting: false,
     timeRange: {
@@ -287,6 +288,28 @@ describe('shared/reservation-form/ReservationForm', () => {
         it('has text "Peruuta"', () => {
           expect(buttons.at(1).props().children).to.equal('Peruuta');
         });
+      });
+    });
+
+    describe('warning', () => {
+      it('warns about numberOfParticipants > peopleCapacity', () => {
+        const props = {
+          numberOfParticipants: 11,
+        };
+        const warning = getWrapper(props).find('.reservation-form-warning');
+        expect(warning).to.have.length(1);
+        const text = (
+          'Huomaa että osallistujia on enemmän kuin tilassa on istumapaikkoja.'
+        );
+        expect(warning.contains(text)).to.be.true;
+      });
+
+      it('does not warn about numberOfParticipants = peopleCapacity', () => {
+        const props = {
+          numberOfParticipants: 10,
+        };
+        const warning = getWrapper(props).find('.reservation-form-warning');
+        expect(warning).to.have.length(0);
       });
     });
   });

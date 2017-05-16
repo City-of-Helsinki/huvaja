@@ -84,8 +84,14 @@ const timeRangeSelector = state => (
   state.form.resourceReservation.values.time
 );
 
+const numberOfParticipantsSelector = state => (
+  state.form.resourceReservation &&
+  state.form.resourceReservation.values.numberOfParticipants
+);
+
 export const selector = createStructuredSelector({
   initialValues: initialValuesSelector,
+  numberOfParticipants: numberOfParticipantsSelector,
   resource: resourceSelector,
   timelineDate: timelineDateSelector,
   timeRange: timeRangeSelector,
