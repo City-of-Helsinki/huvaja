@@ -72,16 +72,18 @@ export function UnconnectedReservationForm(props) {
   return (
     <div>
       <form className="reservation-form" onSubmit={props.handleSubmit}>
-        {renderField(
-          'time',
-          'reservation-time',
-          'Aika',
-          {
-            date: props.date,
-            resource: props.resource,
-            onDateChange: props.onDateChange,
-          }
-        )}
+        <div className="reservation-form-timeline">
+          {renderField(
+            'time',
+            'reservation-time',
+            'Aika',
+            {
+              date: props.date,
+              resource: props.resource,
+              onDateChange: props.onDateChange,
+            }
+          )}
+        </div>
         {props.hasTime && <div>
           <Panel bsStyle="primary" header={<h4>Uusi varaus</h4>}>
             <h3>Perustiedot</h3>
