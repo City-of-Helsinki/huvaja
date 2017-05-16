@@ -159,11 +159,11 @@ describe('shared/reservation-form/ReservationCreateFormContainer', () => {
           eventName: 'Tapaaminen',
           numberOfParticipants: 8,
           reserverName: 'Luke Skywalker',
+          resource: 'r-1',
         };
         const makeReservation = simple.mock();
         const props = {
           makeReservation,
-          resource: { id: 'r1' },
         };
         callOnSubmit(props, values);
         expect(makeReservation.callCount).to.equal(1);
@@ -177,7 +177,7 @@ describe('shared/reservation-form/ReservationCreateFormContainer', () => {
           host_name: values.hostName,
           number_of_participants: values.numberOfParticipants,
           reserver_name: values.reserverName,
-          resource: props.resource.id,
+          resource: values.resource,
         });
       });
     });

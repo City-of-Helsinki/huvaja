@@ -186,12 +186,12 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
           eventName: 'Tapaaminen',
           numberOfParticipants: 8,
           reserverName: 'Luke Skywalker',
+          resource: 'r-1',
         };
         const editReservation = simple.mock();
         const props = {
           editReservation,
           reservation: { id: 123 },
-          resource: { id: 'r1' },
         };
         callOnSubmit(props, values);
         expect(editReservation.callCount).to.equal(1);
@@ -206,7 +206,7 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
           id: props.reservation.id,
           number_of_participants: values.numberOfParticipants,
           reserver_name: values.reserverName,
-          resource: props.resource.id,
+          resource: values.resource,
         });
       });
     });
