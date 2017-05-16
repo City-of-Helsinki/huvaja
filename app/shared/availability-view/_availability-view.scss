@@ -77,16 +77,16 @@
     }
   }
 
+  @include input-size(
+    '.date-picker',
+    $input-height-base,
+    $padding-base-vertical,
+    $padding-base-horizontal,
+    $font-size-base,
+    $line-height-base,
+    $input-border-radius
+  );
   .date-picker {
-    @include input-size(
-      '.date-picker',
-      $input-height-base,
-      $padding-base-vertical,
-      $padding-base-horizontal,
-      $font-size-base,
-      $line-height-base,
-      $input-border-radius
-    );
     border-color: white;
     color: black;
     cursor: pointer;
