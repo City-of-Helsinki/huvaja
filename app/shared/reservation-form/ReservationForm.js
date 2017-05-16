@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/lib/Button';
 import Col from 'react-bootstrap/lib/Col';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import Row from 'react-bootstrap/lib/Row';
+import { browserHistory } from 'react-router';
 import { Field, reduxForm } from 'redux-form';
 
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
@@ -222,7 +223,9 @@ export class UnconnectedReservationForm extends React.Component {
                   <Button bsStyle="primary" type="submit">
                     {this.props.submitting ? 'Tallennetaan...' : 'Tallenna varaus'}
                   </Button>
-                  <Button bsStyle="default">Peruuta</Button>
+                  <Button bsStyle="default" onClick={browserHistory.goBack}>
+                    Peruuta
+                  </Button>
                 </div>
               </Col>
             </Row>
