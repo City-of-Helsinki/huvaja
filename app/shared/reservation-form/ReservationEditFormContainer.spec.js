@@ -56,6 +56,16 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
       return selector(state, { ...props, ...extraProps });
     }
 
+    it('returns numberOfParticipants', () => {
+      const extraState = {
+        'form.resourceReservation.values': {
+          numberOfParticipants: 15,
+          time,
+        },
+      };
+      expect(getSelected(extraState).numberOfParticipants).to.equal(15);
+    });
+
     describe('initialValues', () => {
       it('time is correct', () => {
         expect(getSelected().initialValues.time).to.deep.equal({

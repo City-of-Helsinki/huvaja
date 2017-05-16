@@ -95,8 +95,14 @@ const resourceSelector = createSelector(
   (resources, resourceId) => resources[resourceId]
 );
 
+const numberOfParticipantsSelector = state => (
+  state.form.resourceReservation &&
+  state.form.resourceReservation.values.numberOfParticipants
+);
+
 export const selector = createStructuredSelector({
   initialValues: initialValuesSelector,
+  numberOfParticipants: numberOfParticipantsSelector,
   resource: resourceSelector,
   timelineDate: timelineDateSelector,
   timeRange: timeRangeSelector,

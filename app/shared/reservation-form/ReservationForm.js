@@ -96,7 +96,23 @@ export class UnconnectedReservationForm extends React.Component {
     }
   }
 
+  getWarning() {
+    const tooManyParticipants = (
+      this.props.resource &&
+      this.props.resource.peopleCapacity &&
+      this.props.numberOfParticipants &&
+      this.props.numberOfParticipants > this.props.resource.peopleCapacity
+    );
+    if (tooManyParticipants) {
+      return (
+        'Huomaa että osallistujia on enemmän kuin tilassa on istumapaikkoja.'
+      );
+    }
+    return null;
+  }
+
   render() {
+    const warning = this.getWarning();
     return (
       <div>
         <form className="reservation-form" onSubmit={this.props.handleSubmit}>
@@ -197,6 +213,11 @@ export class UnconnectedReservationForm extends React.Component {
                     <HelpBlock>{this.props.error}</HelpBlock>
                   </div>
                 )}
+                {warning &&
+                  <div className="reservation-form-warning has-error">
+                    <HelpBlock>{warning}</HelpBlock>
+                  </div>
+                }
                 <div className="form-controls">
                   <Button bsStyle="primary" type="submit">
                     {this.props.submitting ? 'Tallennetaan...' : 'Tallenna varaus'}
@@ -216,6 +237,7 @@ UnconnectedReservationForm.propTypes = {
   error: PropTypes.string,
   fetchResource: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  numberOfParticipants: PropTypes.number,
   reservation: PropTypes.object,
   resource: PropTypes.object,
   submitting: PropTypes.bool.isRequired,

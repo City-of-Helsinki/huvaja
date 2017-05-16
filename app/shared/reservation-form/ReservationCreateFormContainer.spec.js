@@ -15,6 +15,16 @@ describe('shared/reservation-form/ReservationCreateFormContainer', () => {
       return selector(state, { ...props, ...extraProps });
     }
 
+    it('returns numberOfParticipants', () => {
+      const extraState = {
+        'form.resourceReservation.values': {
+          numberOfParticipants: 15,
+          time,
+        },
+      };
+      expect(getSelected(extraState).numberOfParticipants).to.equal(15);
+    });
+
     describe('initialValues', () => {
       it('hostName is emptry string if user is not logged in', () => {
         expect(getSelected().initialValues.hostName).to.equal('');
