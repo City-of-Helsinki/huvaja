@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/lib/Button';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
+import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import simple from 'simple-mock';
 
 import ResourceSelectorModal from 'shared/modals/resource-selector';
@@ -20,6 +21,7 @@ describe('shared/form-field/resource-field/ResourceField', () => {
         end: {},
       },
     },
+    help: 'Tila on pakollinen.',
     hideSelector: () => null,
     label: 'Tila',
     showSelector: () => null,
@@ -72,6 +74,12 @@ describe('shared/form-field/resource-field/ResourceField', () => {
     it('renders button for changing resource', () => {
       const button = getFormGroupWrapper().find(Button);
       expect(button.children().text()).to.equal('Vaihda tila');
+    });
+
+    it('renders help text', () => {
+      const help = getFormGroupWrapper().find(HelpBlock);
+      expect(help).to.have.length(1);
+      expect(help.children().text()).to.equal(defaults.help);
     });
   });
 
