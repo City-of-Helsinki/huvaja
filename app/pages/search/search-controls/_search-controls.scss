@@ -12,18 +12,18 @@
       display: block;
     }
 
+    @include input-size(
+      '.date-picker',
+      $input-height-base,
+      $padding-base-vertical,
+      $padding-base-horizontal,
+      $font-size-base,
+      $line-height-base,
+      $input-border-radius
+    );
     .date-picker {
-      @include input-size(
-        '.date-picker',
-        $input-height-base,
-        $padding-base-vertical,
-        $padding-base-horizontal,
-        $font-size-base,
-        $line-height-base,
-        $input-border-radius
-      );
       width: 145px;
-      border: 2px solid $input-border;
+      border: 1px solid $input-border;
       background-color: #fff;
 
       input {
