@@ -28,7 +28,9 @@ function Reservation(props) {
         {startTime.format('HH:mm')} - {endTime.format('HH:mm')}
       </div>
       <div><FontAwesome fixedWidth name="user" /> {props.reserverName}</div>
-      <div><FontAwesome fixedWidth name="users" /> {props.numberOfParticipants}</div>
+      {Boolean(props.numberOfParticipants) && (
+        <div><FontAwesome fixedWidth name="users" /> {props.numberOfParticipants}</div>
+      )}
     </Popover>
   );
   return (
