@@ -10,12 +10,12 @@
     }
   }
   .resource-item {
-    background-color: @gray-lighter;
-    padding: @padding-base-vertical @padding-base-horizontal;
+    background-color: $gray-lighter;
+    padding: $padding-base-vertical $padding-base-horizontal;
     margin-bottom: 10px;
 
     > a {
-      color: @text-color;
+      color: $text-color;
       text-decoration: none;
 
       &:focus {
@@ -29,12 +29,12 @@
     }
 
     &:hover {
-      background-color: @gray-light;
+      background-color: $gray-light;
       cursor: pointer;
     }
 
     .capacity {
-      color: @brand-primary;
+      color: $brand-primary;
 
       .chair-icon {
         margin-top: -2px;
