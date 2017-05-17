@@ -36,8 +36,8 @@ module.exports = merge(common, {
         loader: ExtractTextPlugin.extract('style', 'css!postcss-loader'),
       },
       {
-        test: /\.less$/,
-        loader: ExtractTextPlugin.extract('style', 'css!postcss-loader!less'),
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract('style', 'css!postcss-loader!sass'),
       },
     ],
   },

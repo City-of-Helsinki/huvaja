@@ -86,7 +86,8 @@ const timeRangeSelector = state => (
 
 const numberOfParticipantsSelector = state => (
   state.form.resourceReservation &&
-  state.form.resourceReservation.values.numberOfParticipants
+  state.form.resourceReservation.values.numberOfParticipants &&
+  parseInt(state.form.resourceReservation.values.numberOfParticipants, 10)
 );
 
 export const selector = createStructuredSelector({

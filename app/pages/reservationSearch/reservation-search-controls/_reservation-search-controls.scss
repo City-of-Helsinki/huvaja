@@ -1,0 +1,47 @@
+.reservation-search-controls {
+  background-color: $gray-lighter;
+  padding: $padding-base-vertical $padding-base-horizontal;
+  margin-bottom: 30px;
+
+  .date-pickers-container {
+    display: flex;
+    justify-content: flex-start;
+
+    .delimiter {
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      font-size: 32px;
+    }
+  }
+
+  @include input-size(
+    '.date-picker',
+    $input-height-base,
+    $padding-base-vertical,
+    $padding-base-horizontal,
+    $font-size-base,
+    $line-height-base,
+    $input-border-radius
+  );
+  .date-picker {
+    border: 1px solid $input-border;
+    background-color: #fff;
+
+    input {
+      padding: 0;
+    }
+  }
+
+  .separator {
+    margin: 10px 0 15px;
+    border-top: 2px solid $gray-light;
+  }
+
+  @media (min-width: $screen-md-min) {
+    .is-favorite-resource-checkbox {
+      position: relative;
+      top: 28px;
+    }
+  }
+}

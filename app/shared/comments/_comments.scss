@@ -1,0 +1,47 @@
+.comments {
+  background-color: $gray-light;
+  padding: $padding-large-vertical $padding-large-horizontal;
+
+  &-comment {
+    &:not(:first-child) {
+      margin-top: $padding-small-vertical;
+    }
+    &-header {
+      display: flex;
+    }
+    &-date {
+      margin-right: $padding-small-vertical;
+      &:after {
+        content: ' /';
+      }
+    }
+    &-content {
+      background-color: $body-bg;
+      padding: $padding-base-vertical $padding-base-horizontal;
+    }
+  }
+  &-container-toggle {
+    cursor: pointer;
+  }
+  .comment-adder {
+    margin-top: $padding-large-vertical;
+    display: flex;
+    justify-content: flex-end;
+
+    .comment-form {
+      width: 100%;
+
+      textarea.form-control {
+        margin-bottom: $padding-small-horizontal;
+      }
+      .form-controls {
+        display: flex;
+        justify-content: flex-end;
+
+        > * {
+          margin-left: $padding-small-horizontal;
+        }
+      }
+    }
+  }
+}

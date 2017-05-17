@@ -1,0 +1,37 @@
+@import './label-select/label-select';
+@import './resource-field/resource-field';
+
+.date-time-range-field {
+  display: flex;
+  justify-content: flex-start;
+
+  .form-group {
+    max-width: 200px;
+    margin-left: $padding-small-horizontal;
+    margin-bottom: 0;
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+  .react-date-field {
+    height: $input-height-base;
+    margin-bottom: $padding-small-vertical;
+    border-width: 1px;
+    border-color: $input-border;
+    border-radius: $input-border-radius;
+    padding: $padding-small-vertical $padding-small-horizontal;
+    background-color: $input-bg;
+
+    &--focused {
+      border-color: $input-border-focus;
+    }
+    .has-error & {
+      border-color: $state-danger-text;
+    }
+  }
+}
+
+.react-date-picker__calendar {
+  min-width: 282px !important;  // Fix width in IE 11.
+}
