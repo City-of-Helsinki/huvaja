@@ -2,11 +2,11 @@ import moment from 'moment';
 import React, { PropTypes } from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import Col from 'react-bootstrap/lib/Col';
-import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import Row from 'react-bootstrap/lib/Row';
 import { browserHistory } from 'react-router';
 import { Field, reduxForm } from 'redux-form';
 
+import AlertText from 'shared/alert-text';
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
 import CateringSection from './catering';
 
@@ -209,22 +209,26 @@ export class UnconnectedReservationForm extends React.Component {
             </Row>
             <Row>
               <Col md={12}>
-                {this.props.error && (
-                  <div className="has-error">
-                    <HelpBlock>{this.props.error}</HelpBlock>
-                  </div>
-                )}
+                {this.props.error &&
+                  <AlertText
+                    className="reservation-form-error"
+                    text={this.props.error}
+                    type="error"
+                  />
+                }
                 {warning &&
-                  <div className="reservation-form-warning has-error">
-                    <HelpBlock>{warning}</HelpBlock>
-                  </div>
+                  <AlertText
+                    className="reservation-form-warning"
+                    text={warning}
+                    type="warning"
+                  />
                 }
                 <div className="form-controls">
-                  <Button bsStyle="primary" type="submit">
-                    {this.props.submitting ? 'Tallennetaan...' : 'Tallenna varaus'}
-                  </Button>
                   <Button bsStyle="default" onClick={browserHistory.goBack}>
                     Peruuta
+                  </Button>
+                  <Button bsStyle="primary" type="submit">
+                    {this.props.submitting ? 'Tallennetaan...' : 'Tallenna varaus'}
                   </Button>
                 </div>
               </Col>

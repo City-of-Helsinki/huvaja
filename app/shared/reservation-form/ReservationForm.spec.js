@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/lib/Button';
 import { Field } from 'redux-form';
 import simple from 'simple-mock';
 
+import AlertText from 'shared/alert-text';
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
 import CateringSection from './catering';
 import { UnconnectedReservationForm as ReservationForm, validate } from './ReservationForm';
@@ -273,20 +274,20 @@ describe('shared/reservation-form/ReservationForm', () => {
       });
 
       describe('the first button', () => {
-        it('has text "Tallenna varaus"', () => {
-          expect(buttons.at(0).props().children).to.equal('Tallenna varaus');
-        });
-
-        it('has text "Tallennetaan..." when submitting', () => {
-          const props = { submitting: true };
-          const button = getWrapper(props).find(Button).at(0);
-          expect(button.props().children).to.equal('Tallennetaan...');
+        it('has text "Peruuta"', () => {
+          expect(buttons.at(0).props().children).to.equal('Peruuta');
         });
       });
 
       describe('the second button', () => {
-        it('has text "Peruuta"', () => {
-          expect(buttons.at(1).props().children).to.equal('Peruuta');
+        it('has text "Tallenna varaus"', () => {
+          expect(buttons.at(1).props().children).to.equal('Tallenna varaus');
+        });
+
+        it('has text "Tallennetaan..." when submitting', () => {
+          const props = { submitting: true };
+          const button = getWrapper(props).find(Button).at(1);
+          expect(button.props().children).to.equal('Tallennetaan...');
         });
       });
     });
@@ -297,11 +298,12 @@ describe('shared/reservation-form/ReservationForm', () => {
           numberOfParticipants: 11,
         };
         const warning = getWrapper(props).find('.reservation-form-warning');
-        expect(warning).to.have.length(1);
+        expect(warning.is(AlertText)).to.be.true;
         const text = (
           'Huomaa että osallistujia on enemmän kuin tilassa on istumapaikkoja.'
         );
-        expect(warning.contains(text)).to.be.true;
+        expect(warning.prop('text')).to.equal(text);
+        expect(warning.prop('type')).to.equal('warning');
       });
 
       it('does not warn about numberOfParticipants = peopleCapacity', () => {
@@ -310,6 +312,18 @@ describe('shared/reservation-form/ReservationForm', () => {
         };
         const warning = getWrapper(props).find('.reservation-form-warning');
         expect(warning).to.have.length(0);
+      });
+    });
+
+    describe('error', () => {
+      it('is rendered', () => {
+        const props = {
+          error: 'Some error.',
+        };
+        const error = getWrapper(props).find('.reservation-form-error');
+        expect(error.is(AlertText)).to.be.true;
+        expect(error.prop('text')).to.equal('Some error.');
+        expect(error.prop('type')).to.equal('error');
       });
     });
   });
