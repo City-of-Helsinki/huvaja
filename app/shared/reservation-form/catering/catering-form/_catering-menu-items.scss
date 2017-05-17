@@ -1,0 +1,57 @@
+$glyph-size: 30px;
+$list-margin: 8px;
+$item-vertical-padding: 8px;
+$item-horizontal-padding: 12px;
+
+.catering-menu-items {
+  background-color: $gray-light;
+  padding: $list-margin;
+
+  .catering-menu-item {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: $item-vertical-padding ($item-horizontal-padding + $glyph-size) $item-vertical-padding $item-horizontal-padding;
+    border: none;
+    background-color: $gray-lighter;
+    text-align: left;
+    border-radius: 5px;
+    font-weight: bolder;
+
+    &.selected {
+      background-color: lighten($brand-primary, 50%);
+      .glyphicon {
+        padding-left: 0;
+      }
+    }
+
+    .name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .price {
+      color: $gray;
+    }
+
+    .fa {
+      position: absolute;
+      top: 50%;
+      right: $item-horizontal-padding;
+      margin-top: -$glyph-size / 2;
+      width: $glyph-size;
+      height: $glyph-size;
+      line-height: $glyph-size;
+      text-align: center;
+      font-size: 16px;
+      color: #fff;
+      background-color: $brand-primary;
+      background-color: $gray;
+      border-radius: 50%;
+    }
+  }
+
+  .catering-menu-item + .catering-menu-item {
+    margin-top: $list-margin;
+  }
+}

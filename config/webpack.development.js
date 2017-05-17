@@ -41,8 +41,8 @@ module.exports = merge(common, {
         loader: 'style!css!postcss-loader',
       },
       {
-        test: /\.less$/,
-        loader: 'style!css!postcss-loader!less',
+        test: /\.scss$/,
+        loader: 'style!css!postcss-loader!sass',
       },
     ],
   },

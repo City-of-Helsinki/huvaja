@@ -1,0 +1,63 @@
+.reservation-info-modal {
+  button.close {
+    position: absolute;
+    right: 10px;
+    z-index: 100;
+  }
+
+  h1 {
+    font-size: 1.3em;
+  }
+
+  h2 {
+    font-size: 1.1em;
+  }
+
+  .reservation-time {
+    color: $theme-highlight-light;
+    font-size: 1.3em;;
+    font-weight: 600;
+  }
+
+  .event-subject {
+    font-size: 26px;
+  }
+
+  .details-row {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    .details-label {
+      font-weight: 400;
+      color: $gray;
+    }
+    .details-value {
+      font-weight: 600;
+    }
+    .details-text {
+      font-size: 0.9em;
+    }
+  }
+
+  .reservation-catering {
+    font-weight: 600;
+    ul {
+      padding: 0;
+    }
+    li {
+      display: block;
+    }
+    .units {
+      font-weight: 400;
+      float: right;
+    }
+  }
+
+  .reservation-equipment {
+    .label {
+      display: inline-block;
+      font-size: $font-size-small;
+      padding: 0.4em;
+      margin: 0.2em;
+    }
+  }
+}

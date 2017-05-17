@@ -1,0 +1,48 @@
+@import 'catering/catering';
+
+.reservation-form {
+  .panel {
+    .panel-title {
+      text-transform: none;
+    }
+    .panel-body {
+      @media (min-width: $screen-sm-min) {
+        padding: 10px 40px 20px;
+      }
+    }
+  }
+
+  .catering-section {
+    margin-bottom: 20px;
+  }
+
+  &-timeline {
+    .has-error {
+      background: white;
+      padding: 0;
+    }
+  }
+
+  h3 {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    color: $text-color;
+    font-weight: bold;
+  }
+
+  .form-controls {
+    text-align: right;
+
+    button + button {
+      margin-left: 10px;
+    }
+  }
+
+  #numberOfParticipants {
+    width: $number-field-width;
+  }
+
+  .timeline-container {
+    margin: 30px 0;
+  }
+}

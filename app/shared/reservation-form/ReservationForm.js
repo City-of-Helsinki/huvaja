@@ -139,7 +139,7 @@ export class UnconnectedReservationForm extends React.Component {
               </Col>
               {this.props.resource &&
                 <Col md={12}>
-                  <div className="timeline-container">
+                  <div className="timeline-container reservation-form-timeline">
                     <h5>Varaustilanne</h5>
                     <p className="help-text">Voit valita ajan myös maalaamalla.</p>
                     {renderField(
