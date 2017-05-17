@@ -14,7 +14,7 @@ ReservationRow.propTypes = {
   hostName: PropTypes.string.isRequired,
   place: PropTypes.string.isRequired,
   eventSubject: PropTypes.string.isRequired,
-  numberOfParticipants: PropTypes.number.isRequired,
+  numberOfParticipants: PropTypes.number,
   onClick: PropTypes.func.isRequired,
   timeRange: PropTypes.string.isRequired,
 };

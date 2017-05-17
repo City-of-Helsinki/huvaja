@@ -9,7 +9,7 @@ UnconnectedReservationRowContainer.propTypes = {
   eventSubject: PropTypes.string.isRequired,
   hostName: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
-  numberOfParticipants: PropTypes.number.isRequired,
+  numberOfParticipants: PropTypes.number,
   onClick: PropTypes.func.isRequired,
   place: PropTypes.string.isRequired,
   timeRange: PropTypes.string.isRequired,

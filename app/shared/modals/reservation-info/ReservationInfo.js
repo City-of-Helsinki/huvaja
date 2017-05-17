@@ -59,7 +59,9 @@ export default function ReservationInfoModal(props) {
         <Row>
           <Col className="details-row reservation-participants-number" xs={6}>
             <div className="details-label">Osallistujamäärä: </div>
-            <div className="details-value">{reservation.numberOfParticipants}</div>
+            <div className="details-value">
+              {reservation.numberOfParticipants || '-'}
+            </div>
           </Col>
         </Row>
         <Row>
