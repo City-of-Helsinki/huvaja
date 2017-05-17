@@ -4,6 +4,8 @@ import { createAction } from 'redux-actions';
 
 import AppContainer from 'pages/AppContainer';
 import SearchPage from 'pages/search';
+import ReservationCreatePage from 'pages/reservationCreate';
+import ReservationEditPage from 'pages/reservationEdit';
 import ReservationSearchPage from 'pages/reservationSearch';
 import ResourcePage from 'pages/resource';
 import store from 'state/store';
@@ -29,6 +31,8 @@ export default (
       <IndexRoute component={SearchPage} {...getDispatchers('SEARCH')} />
       <Route component={ResourcePage} path="/resources/:id" {...getDispatchers('RESOURCE')} />
       <Route component={ReservationSearchPage} path="/reservations" {...getDispatchers('RESERVATION_SEARCH')} />
+      <Route component={ReservationCreatePage} path="/reservations/create" />
+      <Route component={ReservationEditPage} path="/reservations/:id/edit" {...getDispatchers('RESERVATION_EDIT')} />
     </Route>
   </Route>
 );

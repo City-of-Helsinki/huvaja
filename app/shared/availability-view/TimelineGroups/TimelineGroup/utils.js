@@ -16,13 +16,17 @@ function isInsideOpeningHours(item, openingHours) {
   ));
 }
 
-function getTimelineItems(date, reservations, resource) {
+function getTimelineItems(date, reservations, resource, excludeReservation) {
   const items = [];
   let reservationPointer = 0;
   let timePointer = date.clone().startOf('day');
   const end = date.clone().endOf('day');
   while (timePointer.isBefore(end)) {
     const reservation = reservations && reservations[reservationPointer];
+    if (reservation && reservation.id === excludeReservation) {
+      reservationPointer += 1;
+      continue; // eslint-disable-line no-continue
+    }
     const isSlotReservation = reservation && timePointer.isSame(reservation.begin);
     if (isSlotReservation) {
       items.push({

@@ -5,6 +5,10 @@ const reservationDeleteIsActiveSelector = createRequestIsActiveSelector(
   actionTypes.RESERVATION_DELETE_REQUEST
 );
 
+const reservationGetIsActiveSelector = createRequestIsActiveSelector(
+  actionTypes.RESERVATION_GET_REQUEST
+);
+
 const reservationsGetIsActiveSelector = createRequestIsActiveSelector(
   actionTypes.RESERVATIONS_GET_REQUEST
 );
@@ -27,6 +31,7 @@ const unitsGetIsActiveSelector = createRequestIsActiveSelector(
 
 export {
   reservationDeleteIsActiveSelector,
+  reservationGetIsActiveSelector,
   reservationsGetIsActiveSelector,
   resourceGetIsActiveSelector,
   resourcePostIsActiveSelector,

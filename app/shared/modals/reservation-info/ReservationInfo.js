@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/lib/Button';
 import Col from 'react-bootstrap/lib/Col';
 import Modal from 'react-bootstrap/lib/Modal';
 import Row from 'react-bootstrap/lib/Row';
+import { Link } from 'react-router';
 
 import Comments from 'shared/comments';
 import WrappedText from 'shared/wrapped-text';
@@ -31,6 +32,8 @@ export default function ReservationInfoModal(props) {
   const date = startTime.format('dd D.M.YYYY');
   const time = `${startTime.format('HH:mm')} - ${endTime.format('HH:mm')}`;
   const cancelReservation = () => showReservationCancelModal(reservation.id);
+  const { canDelete, canModify } = reservation.userPermissions;
+  const showFooter = canDelete || canModify;
   return (
     <Modal
       className="reservation-info-modal"
@@ -99,15 +102,25 @@ export default function ReservationInfoModal(props) {
           reservationId={reservation.id}
         />
       </Modal.Body>
-      {reservation.userPermissions.canDelete && (
+      {showFooter && (
         <Modal.Footer>
-          <Button
-            className="reservation-cancel"
-            bsStyle="default"
-            onClick={cancelReservation}
-          >
-            Poista
-          </Button>
+          {canDelete && (
+            <Button
+              className="reservation-cancel"
+              bsStyle="default"
+              onClick={cancelReservation}
+            >
+              Poista
+            </Button>
+          )}
+          {canModify && (
+            <Link
+              className="btn btn-default reservation-edit"
+              to={`/reservations/${reservation.id}/edit`}
+            >
+              Muokkaa
+            </Link>
+          )}
         </Modal.Footer>
       )}
     </Modal>

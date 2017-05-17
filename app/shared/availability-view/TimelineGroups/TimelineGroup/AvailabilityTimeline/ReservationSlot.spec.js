@@ -30,8 +30,11 @@ describe('shared/availability-view/ReservationSlot', () => {
     const begin = moment();
     const resourceId = '1234';
     const wrapper = getWrapper({ begin, resourceId });
-    const query = queryString.stringify({ begin: begin.format() });
-    expect(wrapper.prop('to')).to.equal(`/resources/${resourceId}?${query}`);
+    const query = queryString.stringify({
+      begin: begin.format(),
+      resource: resourceId,
+    });
+    expect(wrapper.prop('to')).to.equal(`/reservations/create?${query}`);
   });
 
   it('has correct width', () => {

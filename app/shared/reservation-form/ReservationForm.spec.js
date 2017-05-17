@@ -3,12 +3,32 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import { Field } from 'redux-form';
+import simple from 'simple-mock';
 
+import AlertText from 'shared/alert-text';
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
 import CateringSection from './catering';
 import { UnconnectedReservationForm as ReservationForm, validate } from './ReservationForm';
 
 describe('shared/reservation-form/ReservationForm', () => {
+  const defaults = {
+    timelineDate: '2016-01-01',
+    fetchResource: () => null,
+    handleSubmit: () => null,
+    numberOfParticipants: null,
+    reservation: null,
+    resource: { id: '123', peopleCapacity: 10 },
+    onDateChange: () => null,
+    submitting: false,
+    timeRange: {
+      begin: {},
+      end: {},
+    },
+  };
+  function getWrapper(props) {
+    return shallow(<ReservationForm {...defaults} {...props} />);
+  }
+
   describe('validation', () => {
     describe('if field value is missing', () => {
       const values = {};
@@ -17,7 +37,7 @@ describe('shared/reservation-form/ReservationForm', () => {
         const errors = validate(values);
         expect(errors.time).to.equal('Pakollinen tieto');
         expect(errors.resource).to.equal('Pakollinen tieto');
-        expect(errors.eventName).to.equal('Pakollinen tieto');
+        expect(errors.eventSubject).to.equal('Pakollinen tieto');
         expect(errors.numberOfParticipants).to.equal('Pakollinen tieto');
       });
     });
@@ -36,13 +56,13 @@ describe('shared/reservation-form/ReservationForm', () => {
             },
           },
           resource: '123',
-          eventName: 'name',
+          eventSubject: 'name',
           numberOfParticipants: 21,
         };
         const errors = validate(values);
         expect(errors.time).to.not.exist;
         expect(errors.resource).to.not.exist;
-        expect(errors.eventName).to.not.exist;
+        expect(errors.eventSubject).to.not.exist;
         expect(errors.numberOfParticipants).to.not.exist;
       });
     });
@@ -100,17 +120,6 @@ describe('shared/reservation-form/ReservationForm', () => {
   });
 
   describe('rendering', () => {
-    function getWrapper(props) {
-      const defaults = {
-        date: '2016-01-01',
-        handleSubmit: () => null,
-        resource: {},
-        onDateChange: () => null,
-        hasTime: true,
-      };
-      return shallow(<ReservationForm {...defaults} {...props} />);
-    }
-
     it('renders a Form component', () => {
       const form = getWrapper().find('form');
       expect(form.length).to.equal(1);
@@ -127,11 +136,6 @@ describe('shared/reservation-form/ReservationForm', () => {
         expect(fields).to.have.length(9);
       });
 
-      it('length is 1 if does not have time', () => {
-        const wrapper = getWrapper({ hasTime: false });
-        expect(wrapper.find(Field)).to.have.length(1);
-      });
-
       it('has a reservation time field', () => {
         const field = fields.filter({
           component: ReduxFormField,
@@ -142,13 +146,23 @@ describe('shared/reservation-form/ReservationForm', () => {
         expect(field).to.have.length(1);
       });
 
-      it('has a time field if not hasTime', () => {
-        const wrapper = getWrapper({ hasTime: false });
-        const field = wrapper.find(Field);
+      it('has a time field', () => {
+        const wrapper = getWrapper();
+        const field = wrapper.find('.timeline-container').find(Field);
         expect(field.prop('label')).to.equal('Aika*');
         expect(field.prop('component')).to.equal(ReduxFormField);
         expect(field.prop('name')).to.equal('time');
         expect(field.prop('type')).to.equal('reservation-time');
+        expect(field.prop('controlProps').date).to.equal(defaults.timelineDate);
+        expect(field.prop('controlProps').hideDateSelector).to.be.true;
+        expect(field.prop('controlProps').resource).to.equal(defaults.resource);
+      });
+
+      it('time field excludes reservation when exists', () => {
+        const reservation = { id: 23 };
+        const wrapper = getWrapper({ reservation });
+        const field = wrapper.find('.timeline-container').find(Field);
+        expect(field.prop('controlProps').excludeReservation).to.equal(23);
       });
 
       it('has a datetimerange field', () => {
@@ -165,20 +179,23 @@ describe('shared/reservation-form/ReservationForm', () => {
       it('has a resource field', () => {
         const field = fields.filter({
           component: ReduxFormField,
-          controlProps: { disabled: true },
+          controlProps: {
+            resource: defaults.resource,
+            timeRange: defaults.timeRange,
+          },
           label: 'Tila*',
           name: 'resource',
-          type: 'text',
+          type: 'resource',
         });
         expect(field).to.have.length(1);
       });
 
-      it('has a eventName field', () => {
+      it('has a eventSubject field', () => {
         const field = fields.filter({
           component: ReduxFormField,
           controlProps: {},
-          label: 'Tapahtuma*',
-          name: 'eventName',
+          label: 'Varauksen otsikko*',
+          name: 'eventSubject',
           type: 'text',
         });
         expect(field).to.have.length(1);
@@ -199,7 +216,7 @@ describe('shared/reservation-form/ReservationForm', () => {
         const field = fields.filter({
           component: ReduxFormField,
           controlProps: {},
-          label: 'Isäntä*',
+          label: 'Varauksen isäntä*',
           name: 'hostName',
           type: 'text',
         });
@@ -210,7 +227,7 @@ describe('shared/reservation-form/ReservationForm', () => {
         const field = fields.filter({
           component: ReduxFormField,
           controlProps: {},
-          label: 'Osallistujamäärä*',
+          label: 'Osallistujien määrä*',
           name: 'numberOfParticipants',
           type: 'number',
         });
@@ -257,15 +274,134 @@ describe('shared/reservation-form/ReservationForm', () => {
       });
 
       describe('the first button', () => {
-        it('has text "Tallenna varaus"', () => {
-          expect(buttons.at(0).props().children).to.equal('Tallenna varaus');
+        it('has text "Peruuta"', () => {
+          expect(buttons.at(0).props().children).to.equal('Peruuta');
         });
       });
 
       describe('the second button', () => {
-        it('has text "Peruuta"', () => {
-          expect(buttons.at(1).props().children).to.equal('Peruuta');
+        it('has text "Tallenna varaus"', () => {
+          expect(buttons.at(1).props().children).to.equal('Tallenna varaus');
         });
+
+        it('has text "Tallennetaan..." when submitting', () => {
+          const props = { submitting: true };
+          const button = getWrapper(props).find(Button).at(1);
+          expect(button.props().children).to.equal('Tallennetaan...');
+        });
+      });
+    });
+
+    describe('warning', () => {
+      it('warns about numberOfParticipants > peopleCapacity', () => {
+        const props = {
+          numberOfParticipants: 11,
+        };
+        const warning = getWrapper(props).find('.reservation-form-warning');
+        expect(warning.is(AlertText)).to.be.true;
+        const text = (
+          'Huomaa että osallistujia on enemmän kuin tilassa on istumapaikkoja.'
+        );
+        expect(warning.prop('text')).to.equal(text);
+        expect(warning.prop('type')).to.equal('warning');
+      });
+
+      it('does not warn about numberOfParticipants = peopleCapacity', () => {
+        const props = {
+          numberOfParticipants: 10,
+        };
+        const warning = getWrapper(props).find('.reservation-form-warning');
+        expect(warning).to.have.length(0);
+      });
+    });
+
+    describe('error', () => {
+      it('is rendered', () => {
+        const props = {
+          error: 'Some error.',
+        };
+        const error = getWrapper(props).find('.reservation-form-error');
+        expect(error.is(AlertText)).to.be.true;
+        expect(error.prop('text')).to.equal('Some error.');
+        expect(error.prop('type')).to.equal('error');
+      });
+    });
+  });
+
+  describe('lifecycle methods', () => {
+    describe('componentDidMount', () => {
+      it('fetches resource for correct date and resource', () => {
+        const fetchResource = simple.mock();
+        const instance = getWrapper({ fetchResource }).instance();
+        instance.componentDidMount();
+        expect(fetchResource.callCount).to.equal(1);
+        expect(fetchResource.lastCall.args[0]).to.equal(defaults.resource.id);
+        expect(fetchResource.lastCall.args[1]).to.deep.equal({
+          date: defaults.timelineDate,
+        });
+      });
+
+      it('does not fetch if no resource', () => {
+        const fetchResource = simple.mock();
+        const props = { fetchResource, resource: null };
+        const instance = getWrapper(props).instance();
+        instance.componentDidMount();
+        expect(fetchResource.callCount).to.equal(0);
+      });
+    });
+
+    describe('componentWillReceiveProps', () => {
+      it('fetches resource for new timelineDate when timelineDate changes', () => {
+        const fetchResource = simple.mock();
+        const instance = getWrapper({ fetchResource }).instance();
+        const nextProps = {
+          resource: defaults.resource,
+          timelineDate: '2016-01-02',
+        };
+        instance.componentWillReceiveProps(nextProps);
+        expect(fetchResource.callCount).to.equal(1);
+        expect(fetchResource.lastCall.args[0]).to.equal(nextProps.resource.id);
+        expect(fetchResource.lastCall.args[1]).to.deep.equal({
+          date: nextProps.timelineDate,
+        });
+      });
+
+      it('fetches resource for new resource when resource changes', () => {
+        const fetchResource = simple.mock();
+        const instance = getWrapper({ fetchResource }).instance();
+        const nextProps = {
+          resource: { id: '555' },
+          timelineDate: defaults.timelineRange,
+        };
+        instance.componentWillReceiveProps(nextProps);
+        expect(fetchResource.callCount).to.equal(1);
+        expect(fetchResource.lastCall.args[0]).to.equal(nextProps.resource.id);
+        expect(fetchResource.lastCall.args[1]).to.deep.equal({
+          date: nextProps.timelineDate,
+        });
+      });
+
+      it('does not fetch resource when timelineDate does not change', () => {
+        const fetchResource = simple.mock();
+        const instance = getWrapper({ fetchResource }).instance();
+        const nextProps = {
+          resource: defaults.resource,
+          timelineDate: defaults.timelineDate,
+        };
+        instance.componentWillReceiveProps(nextProps);
+        expect(fetchResource.callCount).to.equal(0);
+      });
+
+      it('does not fetch when no resource', () => {
+        const fetchResource = simple.mock();
+        const props = { fetchResource };
+        const instance = getWrapper(props).instance();
+        const nextProps = {
+          resource: null,
+          timelineDate: '2016-01-02',
+        };
+        instance.componentWillReceiveProps(nextProps);
+        expect(fetchResource.callCount).to.equal(0);
       });
     });
   });

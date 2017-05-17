@@ -4,6 +4,7 @@ import Checkbox from './Checkbox';
 import DateTimeRange from './DateTimeRange';
 import FormControl from './FormControl';
 import ReservationTime from './reservation-time';
+import ResourceField from './resource-field';
 
 function ReduxFormField({ controlProps = {}, help, input, label, meta, type }) {
   const showError = meta.error && meta.touched;
@@ -24,6 +25,9 @@ function ReduxFormField({ controlProps = {}, help, input, label, meta, type }) {
   }
   if (type === 'reservation-time') {
     return <ReservationTime {...props} />;
+  }
+  if (type === 'resource') {
+    return <ResourceField {...props} />;
   }
 
   return <FormControl {...props} />;

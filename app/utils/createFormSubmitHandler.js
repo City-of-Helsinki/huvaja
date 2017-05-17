@@ -1,3 +1,4 @@
+import { camelizeKeys } from 'humps';
 import mapValues from 'lodash/mapValues';
 import { SubmissionError } from 'redux-form';
 
@@ -11,7 +12,9 @@ function getErrors(action) {
   }
   /* eslint-disable camelcase */
   const { non_field_errors, ...errors } = action.payload.response;
-  const fieldErrors = mapValues(errors, error => error.join(' '));
+  const fieldErrors = camelizeKeys(
+    mapValues(errors, error => error.join(' '))
+  );
   if (non_field_errors) {
     return { _error: non_field_errors.join(' '), ...fieldErrors };
   }

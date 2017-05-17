@@ -3,9 +3,9 @@ import moment from 'moment';
 import simple from 'simple-mock';
 
 import { getState } from 'utils/testUtils';
-import { mergeProps, selector } from './EditReservationFormContainer';
+import { mergeProps, selector } from './ReservationEditFormContainer';
 
-describe('shared/reservation-form/EditReservationFormContainer', () => {
+describe('shared/reservation-form/ReservationEditFormContainer', () => {
   const reservation = {
     begin: '2017-04-26T10:00:00+03:00',
     end: '2017-04-26T15:30:00+03:00',
@@ -48,27 +48,44 @@ describe('shared/reservation-form/EditReservationFormContainer', () => {
   };
 
   describe('selector', () => {
-    const props = { reservationId: '123' };
+    const props = { initialResource: resource, reservation };
+    const time = { begin: { date: '2016-01-01', time: '10:00' } };
+
     function getSelected(extraState, extraProps) {
       const state = getState({ ...defaultState, ...extraState });
       return selector(state, { ...props, ...extraProps });
     }
 
-    describe('initialValues', () => {
-      it('begin is reservation.begin', () => {
-        expect(getSelected().initialValues.begin).to.equal(reservation.begin);
-      });
+    it('returns numberOfParticipants', () => {
+      const extraState = {
+        'form.resourceReservation.values': {
+          numberOfParticipants: 15,
+          time,
+        },
+      };
+      expect(getSelected(extraState).numberOfParticipants).to.equal(15);
+    });
 
-      it('end is reservation.end', () => {
-        expect(getSelected().initialValues.end).to.equal(reservation.end);
+    describe('initialValues', () => {
+      it('time is correct', () => {
+        expect(getSelected().initialValues.time).to.deep.equal({
+          begin: {
+            date: '2017-04-26',
+            time: '10:00',
+          },
+          end: {
+            date: '2017-04-26',
+            time: '15:30',
+          },
+        });
       });
 
       it('eventDescription is reservation.eventDescription', () => {
         expect(getSelected().initialValues.eventDescription).to.equal(reservation.eventDescription);
       });
 
-      it('eventName is reservation.eventSubject', () => {
-        expect(getSelected().initialValues.eventName).to.equal(reservation.eventSubject);
+      it('eventSubject is reservation.eventSubject', () => {
+        expect(getSelected().initialValues.eventSubject).to.equal(reservation.eventSubject);
       });
 
       it('hostName is reservation.hostName', () => {
@@ -83,6 +100,69 @@ describe('shared/reservation-form/EditReservationFormContainer', () => {
 
       it('reserverName is reservation.reserverName', () => {
         expect(getSelected().initialValues.reserverName).to.equal(reservation.reserverName);
+      });
+
+      it('resource equals initial resource id from props', () => {
+        expect(getSelected().initialValues.resource).to.equal(resource.id);
+      });
+    });
+
+    describe('timelineDate', () => {
+      it('returns form date if exists', () => {
+        const extraState = {
+          'form.resourceReservation.values': {
+            time,
+          },
+        };
+        expect(getSelected(extraState).timelineDate).to.equal('2016-01-01');
+      });
+
+      it('returns reservation start date if no form date', () => {
+        expect(getSelected().timelineDate).to.equal(
+          moment(reservation.begin).format('YYYY-MM-DD')
+        );
+      });
+    });
+
+    describe('timeRange', () => {
+      it('returns time if exists', () => {
+        const extraState = {
+          'form.resourceReservation.values': {
+            time,
+          },
+        };
+        expect(getSelected(extraState).timeRange).to.deep.equal(time);
+      });
+    });
+
+    describe('resource', () => {
+      const resource2 = { id: 'r-2' };
+
+      it('is returned by form value', () => {
+        const extraState = {
+          'data.resources': {
+            [resource.id]: resource,
+            'r-2': resource2,
+          },
+          'form.resourceReservation.values': {
+            resource: 'r-2',
+            time,
+          },
+        };
+        expect(getSelected(extraState).resource).to.deep.equal(resource2);
+      });
+
+      it('is returned by initial value if no form value', () => {
+        const extraState = {
+          'data.resources': {
+            [resource.id]: resource,
+            'r-2': resource2,
+          },
+          'form.resourceReservation.values': {
+            time,
+          },
+        };
+        expect(getSelected(extraState).resource).to.deep.equal(resource);
       });
     });
   });
@@ -113,14 +193,15 @@ describe('shared/reservation-form/EditReservationFormContainer', () => {
           },
           hostName: 'Han Solo',
           eventDescription: 'Description',
-          eventName: 'Tapaaminen',
+          eventSubject: 'Tapaaminen',
           numberOfParticipants: 8,
           reserverName: 'Luke Skywalker',
+          resource: 'r-1',
         };
         const editReservation = simple.mock();
         const props = {
           editReservation,
-          resource: { id: 'r1' },
+          reservation: { id: 123 },
         };
         callOnSubmit(props, values);
         expect(editReservation.callCount).to.equal(1);
@@ -130,11 +211,12 @@ describe('shared/reservation-form/EditReservationFormContainer', () => {
           begin: moment('2016-01-01T10:00:00').format(),
           end: moment('2016-01-01T12:00:00').format(),
           event_description: values.eventDescription,
-          event_subject: values.eventName,
+          event_subject: values.eventSubject,
           host_name: values.hostName,
+          id: props.reservation.id,
           number_of_participants: values.numberOfParticipants,
           reserver_name: values.reserverName,
-          resource: props.resource.id,
+          resource: values.resource,
         });
       });
     });

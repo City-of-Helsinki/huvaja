@@ -263,5 +263,77 @@ describe('shared/availability-view/utils', () => {
       ];
       expect(actualFormatted).to.deep.equal(expected);
     });
+
+    it('supports excluding reservation', () => {
+      const reservations = [
+        { id: 11, begin: '2016-01-01T00:30:00', end: '2016-01-01T01:30:00' },
+        { id: 12, begin: '2016-01-01T02:00:00', end: '2016-01-02T00:00:00' },
+      ];
+      const excludeReservation = reservations[0].id;
+      const actual = utils.getTimelineItems(
+        moment('2016-01-01T00:00:00'),
+        reservations,
+        {
+          id: '1',
+          openingHours: [],
+        },
+        excludeReservation,
+      );
+      const actualFormatted = actual.map((item) => {
+        if (item.type === 'reservation') return item;
+        return {
+          ...item,
+          data: {
+            ...item.data,
+            begin: item.data.begin.format(),
+            end: item.data.end.format(),
+          },
+        };
+      });
+      const expected = [
+        {
+          key: '0',
+          type: 'reservation-slot',
+          data: {
+            begin: moment('2016-01-01T00:00:00').format(),
+            end: moment('2016-01-01T00:30:00').format(),
+            resourceId: '1',
+            isSelectable: false,
+          },
+        },
+        {
+          key: '1',
+          type: 'reservation-slot',
+          data: {
+            begin: moment('2016-01-01T00:30:00').format(),
+            end: moment('2016-01-01T01:00:00').format(),
+            resourceId: '1',
+            isSelectable: false,
+          },
+        },
+        {
+          key: '2',
+          type: 'reservation-slot',
+          data: {
+            begin: moment('2016-01-01T01:00:00').format(),
+            end: moment('2016-01-01T01:30:00').format(),
+            resourceId: '1',
+            isSelectable: false,
+          },
+        },
+        {
+          key: '3',
+          type: 'reservation-slot',
+          data: {
+            begin: moment('2016-01-01T01:30:00').format(),
+            end: moment('2016-01-01T02:00:00').format(),
+            resourceId: '1',
+            isSelectable: false,
+          },
+        },
+        { key: '4', type: 'reservation', data: reservations[1] },
+      ];
+      expect(actualFormatted).to.deep.equal(expected);
+    });
   });
 });
