@@ -1,0 +1,20 @@
+.alert-text {
+  padding: $padding-base-vertical $padding-base-horizontal;
+
+  .help-block {
+    margin-bottom: 0;
+  }
+
+  &.alert-text-warning {
+    background-color: $theme-warning;
+  }
+  &.alert-text-error {
+    background-color: $theme-danger;
+  }
+
+  .notice {
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+  }
+}
