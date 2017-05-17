@@ -32,6 +32,8 @@
 
   .form-controls {
     text-align: right;
+    background-color: $background-gray;
+    padding: $padding-base-vertical $padding-base-horizontal;
 
     button + button {
       margin-left: 10px;
