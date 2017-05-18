@@ -12,7 +12,7 @@ import WrappedText from 'shared/wrapped-text';
 
 ResourceInfo.propTypes = {
   resource: PropTypes.object.isRequired,
-  resourceSearchUrl: PropTypes.string.isRequired,
+  resourceSearchUrl: PropTypes.string,
   showResourceImages: PropTypes.func.isRequired,
   unit: PropTypes.object.isRequired,
 };
@@ -24,7 +24,9 @@ function renderHeader(unit, resource, resourceSearchUrl) {
   const address = `${streetAddress}, ${zip} ${city}`;
   return (
     <header>
-      <Link className="btn btn-sm back-link" to={resourceSearchUrl}>{'<< Tilahaku'}</Link>
+      {resourceSearchUrl &&
+        <Link className="btn btn-sm back-link" to={resourceSearchUrl}>{'<< Tilahaku'}</Link>
+      }
       <h2 className="unit-name">{unit.name.fi}</h2>
       <h1 className="resource-name">{resource.name.fi}</h1>
       <h4 className="unit-address">
