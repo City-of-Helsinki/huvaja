@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import Table from 'react-bootstrap/lib/Table';
+import FontAwesome from 'react-fontawesome';
 
 CateringOrderTable.propTypes = {
   editOrder: PropTypes.func,
@@ -15,6 +16,7 @@ function CateringOrderTable(props) {
           <th className="product">Tuote</th>
           <th className="description">Kuvaus</th>
           <th className="number">Määrä</th>
+          {props.editOrder && <th />}
         </tr>
       </thead>
       <tbody>
@@ -33,6 +35,15 @@ function CateringOrderTable(props) {
               }
               {!props.editOrder && item.quantity}
             </td>
+            {props.editOrder &&
+              <td className="controls">
+                <FontAwesome
+                  className="control"
+                  name="remove"
+                  onClick={() => props.editOrder(item.id, 0)}
+                />
+              </td>
+            }
           </tr>
         )}
       </tbody>
