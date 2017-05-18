@@ -6,6 +6,7 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import InputGroup from 'react-bootstrap/lib/InputGroup';
 
+import ResourceInfoButton from 'shared/resource-info-button';
 import ResourceSelectorModal from 'shared/modals/resource-selector';
 
 ResourceField.propTypes = {
@@ -53,6 +54,9 @@ export default function ResourceField({
         </InputGroup>
         {help && <HelpBlock>{help}</HelpBlock>}
       </FormGroup>
+      {controlProps.resource &&
+        <ResourceInfoButton resourceId={controlProps.resource.id} />
+      }
       <ResourceSelectorModal
         onSelect={onSelect}
         selectedResource={controlProps.resource}
