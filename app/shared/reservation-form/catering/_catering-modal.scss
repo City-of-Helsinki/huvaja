@@ -16,5 +16,9 @@
         float: right;
       }
     }
+    .pricing-link {
+      display: block;
+      margin: $padding-base-vertical 0;
+    }
   }
 }
