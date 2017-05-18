@@ -10,6 +10,7 @@ import { fetchAuthState } from 'auth/actions';
 import ReservationCancelModal from 'shared/modals/reservation-cancel';
 import ReservationInfoModal from 'shared/modals/reservation-info';
 import ResourceImagesModal from 'shared/modals/resource-images';
+import ResourceInfoModal from 'shared/modals/resource-info';
 import Navbar from 'shared/navbar';
 import locationUtils from 'utils/locationUtils';
 
@@ -41,6 +42,7 @@ export class UnconnectedAppContainer extends Component {
         <ReservationInfoModal />
         <ReservationCancelModal />
         <ResourceImagesModal />
+        <ResourceInfoModal />
       </div>
     );
   }
