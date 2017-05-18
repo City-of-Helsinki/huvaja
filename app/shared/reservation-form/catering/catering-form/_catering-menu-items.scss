@@ -11,7 +11,11 @@ $item-horizontal-padding: 12px;
     position: relative;
     display: block;
     width: 100%;
-    padding: $item-vertical-padding ($item-horizontal-padding + $glyph-size) $item-vertical-padding $item-horizontal-padding;
+    padding:
+      $item-vertical-padding
+      ($item-horizontal-padding * 2 + $glyph-size)
+      $item-vertical-padding
+      $item-horizontal-padding;
     border: none;
     background-color: $gray-lighter;
     text-align: left;
@@ -30,8 +34,9 @@ $item-horizontal-padding: 12px;
       text-overflow: ellipsis;
     }
 
-    .price {
+    .description {
       color: $gray;
+      font-weight: normal;
     }
 
     .fa {

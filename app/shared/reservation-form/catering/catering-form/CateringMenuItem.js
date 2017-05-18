@@ -26,7 +26,7 @@ class CateringMenuItem extends Component {
         onClick={this.handleClick}
       >
         <div className="name">{item.name}</div>
-        <div className="price">{item.price.toFixed(2)} €</div>
+        <div className="description">{item.description}</div>
         <FontAwesome name={selected ? 'minus' : 'plus'} />
       </button>
     );

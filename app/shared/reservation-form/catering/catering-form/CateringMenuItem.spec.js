@@ -9,7 +9,7 @@ import CateringMenuItem from './CateringMenuItem';
 describe('shared/reservation-form/catering/catering-form/CateringMenuItem', () => {
   function getWrapper(props) {
     const defaults = {
-      item: { id: 'cmi-1', name: 'Coffee', price: 2.50 },
+      item: { id: 'cmi-1', name: 'Coffee', description: 'Black coffee' },
       onClick: () => null,
       selected: false,
     };
@@ -22,7 +22,7 @@ describe('shared/reservation-form/catering/catering-form/CateringMenuItem', () =
   });
 
   it('clicking the button calls props.onClick with item id', () => {
-    const item = { id: 'some-id', name: 'Coffee', price: 1.2 };
+    const item = { id: 'some-id', name: 'Coffee', description: 'Black coffee' };
     const onClick = simple.mock();
     const button = getWrapper({ item, onClick }).find('button');
     button.simulate('click');
@@ -31,15 +31,15 @@ describe('shared/reservation-form/catering/catering-form/CateringMenuItem', () =
   });
 
   it('renders the name of the item', () => {
-    const item = { name: 'Apple', price: 0.5 };
+    const item = { name: 'Apple', description: 'Fruit, not company' };
     const name = getWrapper({ item }).find('.name');
     expect(name.text()).to.equal(item.name);
   });
 
-  it('renders the price of the item with two decimals', () => {
-    const item = { name: 'Coffee', price: 1.2 };
-    const price = getWrapper({ item }).find('.price');
-    expect(price.text()).to.equal('1.20 €');
+  it('renders the description of the item', () => {
+    const item = { name: 'Coffee', description: 'Delicious' };
+    const description = getWrapper({ item }).find('.description');
+    expect(description.text()).to.equal(item.description);
   });
 
   it('renders a "plus" icon if item is not selected', () => {
