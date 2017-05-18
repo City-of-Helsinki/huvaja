@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import Table from 'react-bootstrap/lib/Table';
+import FontAwesome from 'react-fontawesome';
 import simple from 'simple-mock';
 
 import CateringOrderTable from './CateringOrderTable';
@@ -87,10 +88,11 @@ describe('shared/reservation-form/catering/CateringOrderTable', () => {
         trs.forEach((tr, index) => {
           const tds = tr.find('td');
           const item = items[index];
-          expect(tds).to.have.length(3);
+          expect(tds).to.have.length(4);
           expect(tds.at(0).text()).to.equal(item.name);
           expect(tds.at(1).text()).to.contain(item.description);
           expect(tds.at(2).find(FormControl)).to.have.length(1);
+          expect(tds.at(3).find(FontAwesome)).to.have.length(1);
         });
       });
 

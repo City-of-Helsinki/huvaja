@@ -142,7 +142,10 @@ export class UnconnectedCateringFormContainer extends Component {
           </Col>
         </Row>
         <h3>Tilaus</h3>
-        <CateringOrderTable editOrder={this.updateOrder} items={orderItems} />
+        {orderItems.length
+          ? <CateringOrderTable editOrder={this.updateOrder} items={orderItems} />
+          : <div>Ei tilausta</div>
+        }
         <div className="controls">
           <Button
             bsStyle="primary"
