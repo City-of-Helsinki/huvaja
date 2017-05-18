@@ -25,12 +25,14 @@ describe('shared/reservation-form/catering/catering-form/cateringFormSelector', 
 
   it('returns cateringMenuItems from state', () => {
     const cateringMenuItems = {
-      1: { id: 1, name: 'Coffee' },
-      2: { id: 2, name: 'Coca Cola' },
+      products: {
+        1: { id: 1, name: 'Coffee' },
+        2: { id: 2, name: 'Coca Cola' },
+      },
     };
     const selected = getSelected({ 'data.cateringMenuItems': cateringMenuItems });
-    expect(selected.cateringMenuItems[1]).to.deep.equal(cateringMenuItems[1]);
-    expect(selected.cateringMenuItems[2]).to.deep.equal(cateringMenuItems[2]);
+    expect(selected.cateringMenuItems[1]).to.deep.equal(cateringMenuItems.products[1]);
+    expect(selected.cateringMenuItems[2]).to.deep.equal(cateringMenuItems.products[2]);
   });
 
   describe('defaultCateringTime', () => {

@@ -6,7 +6,7 @@ import FormControl from 'react-bootstrap/lib/FormControl';
 import simple from 'simple-mock';
 
 import { UnconnectedCateringFormContainer as CateringFormContainer } from './CateringFormContainer';
-import CateringMenuItems from './CateringMenuItems';
+import CateringMenu from './CateringMenu';
 import CateringOrderTable from '../CateringOrderTable';
 
 describe('shared/reservation-form/catering/catering-form/CateringFormContainer', () => {
@@ -23,6 +23,7 @@ describe('shared/reservation-form/catering/catering-form/CateringFormContainer',
   function getWrapper(props) {
     const defaults = {
       cateringData: getCateringData(),
+      cateringMenu: [{ id: 'c1', name: 'Drinks', products: [] }],
       cateringMenuItems: { 1: { id: 1, name: 'Coffee' } },
       defaultCateringTime: '12:00',
       defaultItemQuantity: 1,
@@ -89,15 +90,15 @@ describe('shared/reservation-form/catering/catering-form/CateringFormContainer',
       });
     });
 
-    it('renders CateringMenuItems component with correct props', () => {
-      const cateringMenuItems = { 1: { id: 1 }, 2: { id: 2 } };
+    it('renders CateringMenu component with correct props', () => {
+      const cateringMenu = [{ id: 'c1', name: 'Donuts', products: [] }];
       const order = { foo: 'bar' };
-      const wrapper = getWrapper({ cateringData: getCateringData({ order }), cateringMenuItems });
-      const component = wrapper.find(CateringMenuItems);
+      const wrapper = getWrapper({ cateringData: getCateringData({ order }), cateringMenu });
+      const component = wrapper.find(CateringMenu);
       expect(component).to.have.length(1);
-      expect(component.prop('items')).to.deep.equal([{ id: 1 }, { id: 2 }]);
       expect(component.prop('onItemClick')).to.equal(wrapper.instance().addOrRemoveItem);
       expect(component.prop('order')).to.deep.equal(order);
+      expect(component.prop('categories')).to.equal(cateringMenu);
     });
 
     it('renders CateringOrderTable component with correct props', () => {

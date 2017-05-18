@@ -23,8 +23,10 @@ describe('shared/reservation-form/catering/CateringSectionContainer', () => {
 
   describe('selector', () => {
     const cateringMenuItems = {
-      1: { id: 1, name: 'Coffee', price: 2 },
-      2: { id: 2, name: 'Coca Cola', price: 3.5 },
+      products: {
+        1: { id: 1, name: 'Coffee', price: 2 },
+        2: { id: 2, name: 'Coca Cola', price: 3.5 },
+      },
     };
     const cateringData = { order: { 1: 2 }, time: '11:30' };
     function getState() {

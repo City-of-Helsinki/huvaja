@@ -1,5 +1,4 @@
 import isEqual from 'lodash/isEqual';
-import values from 'lodash/values';
 import React, { Component, PropTypes } from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import Col from 'react-bootstrap/lib/Col';
@@ -13,7 +12,7 @@ import { connect } from 'react-redux';
 
 import uiActions from 'actions/uiActions';
 import selector from './cateringFormSelector';
-import CateringMenuItems from './CateringMenuItems';
+import CateringMenu from './CateringMenu';
 import CateringOrderTable from '../CateringOrderTable';
 import cateringUtils from '../utils';
 
@@ -25,6 +24,7 @@ export class UnconnectedCateringFormContainer extends Component {
       projectNumber: PropTypes.string.isRequired,
       time: PropTypes.string.isRequired,
     }).isRequired,
+    cateringMenu: PropTypes.array.isRequired,
     cateringMenuItems: PropTypes.object.isRequired,
     defaultCateringTime: PropTypes.string.isRequired,
     defaultItemQuantity: PropTypes.number.isRequired,
@@ -134,8 +134,8 @@ export class UnconnectedCateringFormContainer extends Component {
             >
               Hinnasto
             </a>
-            <CateringMenuItems
-              items={values(this.props.cateringMenuItems)}
+            <CateringMenu
+              categories={this.props.cateringMenu}
               onItemClick={this.addOrRemoveItem}
               order={this.state.order}
             />
