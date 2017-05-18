@@ -10,7 +10,7 @@ import CateringOrderTable from './CateringOrderTable';
 describe('shared/reservation-form/catering/CateringOrderTable', () => {
   function getWrapper(props) {
     const defaults = {
-      items: [{ id: 'cmi-1', price: 1, quantity: 1 }],
+      items: [{ id: 'cmi-1', description: 'Very cool', quantity: 1 }],
     };
     return shallow(<CateringOrderTable {...defaults} {...props} />);
   }
@@ -28,17 +28,17 @@ describe('shared/reservation-form/catering/CateringOrderTable', () => {
 
     it('has correct headers', () => {
       const ths = getWrapper().find('thead').find('th');
+      expect(ths).to.have.length(3);
       expect(ths.at(0).text()).to.equal('Tuote');
-      expect(ths.at(1).text()).to.equal('Hinta');
+      expect(ths.at(1).text()).to.equal('Kuvaus');
       expect(ths.at(2).text()).to.equal('Määrä');
-      expect(ths.at(3).text()).to.equal('Yhteensä');
     });
   });
 
   describe('table body', () => {
     const items = [
-      { id: 1, name: 'Coffee', price: 1.5, quantity: 2 },
-      { id: 2, name: 'Coca Cola', price: 2.5, quantity: 3 },
+      { id: 1, name: 'Coffee', description: 'Delicious', quantity: 2 },
+      { id: 2, name: 'Coca Cola', description: 'Zero', quantity: 3 },
     ];
 
     function getTbodyWrapper(props) {
@@ -61,10 +61,10 @@ describe('shared/reservation-form/catering/CateringOrderTable', () => {
         trs.forEach((tr, index) => {
           const tds = tr.find('td');
           const item = items[index];
+          expect(tds).to.have.length(3);
           expect(tds.at(0).text()).to.equal(item.name);
-          expect(tds.at(1).text()).to.contain(item.price);
+          expect(tds.at(1).text()).to.contain(item.description);
           expect(tds.at(2).text()).to.contain(item.quantity);
-          expect(tds.at(3).text()).to.contain(item.quantity * item.price);
         });
       });
 
@@ -87,10 +87,10 @@ describe('shared/reservation-form/catering/CateringOrderTable', () => {
         trs.forEach((tr, index) => {
           const tds = tr.find('td');
           const item = items[index];
+          expect(tds).to.have.length(3);
           expect(tds.at(0).text()).to.equal(item.name);
-          expect(tds.at(1).text()).to.contain(item.price);
+          expect(tds.at(1).text()).to.contain(item.description);
           expect(tds.at(2).find(FormControl)).to.have.length(1);
-          expect(tds.at(3).text()).to.contain(item.quantity * item.price);
         });
       });
 
@@ -110,29 +110,6 @@ describe('shared/reservation-form/catering/CateringOrderTable', () => {
           expect(editOrder.lastCall.args[1]).to.equal(mockEvent.target.value);
         });
       });
-    });
-  });
-
-  describe('table footer', () => {
-    it('is rendered if anything is ordered', () => {
-      const items = [{ id: 1, price: 1, quantity: 1 }];
-      const tfoot = getWrapper({ items }).find('tfoot');
-      expect(tfoot).to.have.length(1);
-    });
-
-    it('is not rendered if nothing is ordered', () => {
-      const items = [];
-      const tfoot = getWrapper({ items }).find('tfoot');
-      expect(tfoot).to.have.length(0);
-    });
-
-    it('has the total price of the order', () => {
-      const items = [
-        { id: 1, price: 1, quantity: 2 },
-        { id: 2, price: 1, quantity: 3 },
-      ];
-      const tfoot = getWrapper({ items }).find('tfoot');
-      expect(tfoot.text()).to.contain('5.00 €');
     });
   });
 });

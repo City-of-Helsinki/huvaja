@@ -8,18 +8,17 @@
   }
 
   tbody {
-    td.product, td.number {
+    td.product, td.description, td.number {
       vertical-align: middle;
     }
+  }
 
+  .product {
+    min-width: 100px;
   }
 
   .number {
     text-align: right;
     width: 100px;
-  }
-
-  tfoot {
-    border-top: 2px solid $gray-darker;
   }
 }
