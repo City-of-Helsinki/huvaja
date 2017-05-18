@@ -126,6 +126,14 @@ export class UnconnectedCateringFormContainer extends Component {
               Poimi haluamasi Tarjoiluvaihtoehdot.
               Alempana kohdassa tilaus pääset muokkaamaan valittujen tuotteiden kappalemääriä.
             </p>
+            <a
+              className="pricing-link"
+              href="http://example.com"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Hinnasto
+            </a>
             <CateringMenuItems
               items={values(this.props.cateringMenuItems)}
               onItemClick={this.addOrRemoveItem}
