@@ -41,6 +41,7 @@ module.exports = (options) => {
 
     mochaReporter: {
       showDiff: true,
+      output: 'autowatch',
     },
 
     plugins: [

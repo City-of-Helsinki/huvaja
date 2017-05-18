@@ -9,7 +9,7 @@ import cateringUtils from './utils';
 
 export const selector = createSelector(
   state => state.catering,
-  state => state.data.cateringMenuItems,
+  state => state.data.cateringMenuItems.products,
   (cateringData, cateringMenuItems) => {
     const orderItems = cateringUtils.getOrderItems(cateringMenuItems, cateringData.order);
     return {
