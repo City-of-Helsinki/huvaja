@@ -3,8 +3,8 @@ import Button from 'react-bootstrap/lib/Button';
 import { Field, reduxForm } from 'redux-form';
 
 function validate(values) {
-  if (!values.content) {
-    return { content: 'Pakollinen tieto' };
+  if (!values.text) {
+    return { text: 'Pakollinen tieto' };
   }
   return {};
 }
@@ -26,7 +26,7 @@ export function UnconnectedCommentForm(props) {
         className="form-control"
         component="textarea"
         label="Kommentti*"
-        name="content"
+        name="text"
         ref={focusElement}
         withRef
       />

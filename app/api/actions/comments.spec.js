@@ -1,8 +1,7 @@
 import types from '../actionTypes';
 import { createApiTest } from './testUtils';
 import { createComment, fetchComments } from './comments';
-
-const mockUrl = 'https://mockbin.org/bin/377913d3-940a-49a0-8d52-ad6edd56986b';
+import { buildAPIUrl } from './createApiAction';
 
 describe('api/actions/comments', () => {
   describe('fetchComments', () => {
@@ -15,7 +14,7 @@ describe('api/actions/comments', () => {
       args: [{ reservationId }],
       tests: {
         method: 'GET',
-        endpoint: `${mockUrl}?reservation_id=${reservationId}`,
+        endpoint: buildAPIUrl('comment', { targetType: 'reservation', targetId: reservationId }),
         request: {
           type: types.COMMENTS_GET_REQUEST,
         },
@@ -34,7 +33,7 @@ describe('api/actions/comments', () => {
       args: [{ cateringId }],
       tests: {
         method: 'GET',
-        endpoint: `${mockUrl}?catering_id=${cateringId}`,
+        endpoint: buildAPIUrl('comment', { targetType: 'catering', targetId: cateringId }),
         request: {
           type: types.COMMENTS_GET_REQUEST,
         },
@@ -60,7 +59,7 @@ describe('api/actions/comments', () => {
       args: [{ reservationId, content, userName }],
       tests: {
         method: 'POST',
-        endpoint: mockUrl,
+        endpoint: buildAPIUrl('comment'),
         request: {
           type: types.COMMENTS_POST_REQUEST,
         },
@@ -79,7 +78,7 @@ describe('api/actions/comments', () => {
       args: [{ cateringId, content, userName }],
       tests: {
         method: 'POST',
-        endpoint: mockUrl,
+        endpoint: buildAPIUrl('comment'),
         request: {
           type: types.COMMENTS_POST_REQUEST,
         },

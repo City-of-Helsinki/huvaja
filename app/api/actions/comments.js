@@ -1,32 +1,31 @@
 import createApiAction from './createApiAction';
 
-const mockUrl = 'https://mockbin.org/bin/377913d3-940a-49a0-8d52-ad6edd56986b';
-
 function fetchComments({ cateringId, reservationId }) {
+  const targetType = cateringId ? 'catering' : 'reservation';
+  const targetId = cateringId || reservationId;
   return createApiAction({
-    // TODO: Replace with correct endpoint once the backend supports it.
-    endpoint: mockUrl,
-    params: { cateringId, reservationId },
+    endpoint: 'comment',
+    params: { targetType, targetId },
     method: 'GET',
     type: 'COMMENTS',
-    options: { meta: { cateringId, reservationId } },
+    options: { meta: { targetType, targetId } },
   });
 }
 
-function createComment({ cateringId, content, userName, reservationId }) {
+function createComment({ cateringId, text, reservationId }) {
+  const targetType = cateringId ? 'catering' : 'reservation';
+  const targetId = cateringId || reservationId;
   const data = {
-    id: Math.floor(Math.random() * 10000),
-    content,
-    createdAt: new Date().toISOString(),
-    user: { name: userName },
+    text,
+    target_type: targetType,
+    target_id: targetId,
   };
   return createApiAction({
-    // TODO: Replace with correct endpoint once the backend supports it.
-    endpoint: mockUrl,
+    endpoint: 'comment',
     body: JSON.stringify(data),
     method: 'POST',
     type: 'COMMENTS',
-    options: { meta: { cateringId, data, reservationId } },
+    options: { meta: { targetType, targetId } },
   });
 }
 

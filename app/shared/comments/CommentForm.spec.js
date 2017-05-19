@@ -30,7 +30,7 @@ describe('shared/comments/CommentForm', () => {
     const field = getWrapper().find(Field);
     expect(field).to.have.length(1);
     expect(field.prop('component')).to.equal('textarea');
-    expect(field.prop('name')).to.equal('content');
+    expect(field.prop('name')).to.equal('text');
     expect(field.prop('withRef')).to.be.true;
   });
 

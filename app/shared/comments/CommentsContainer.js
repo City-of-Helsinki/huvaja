@@ -33,12 +33,11 @@ export function mergeProps(state, dispatch, props) {
     ...props,
     ...state,
     ...dispatch,
-    createComment({ content }) {
+    createComment({ text }) {
       return dispatch.createComment({
         cateringId: props.cateringId,
-        content,
         reservationId: props.reservationId,
-        userName: state.user.displayName,
+        text,
       });
     },
   };
@@ -69,7 +68,7 @@ export class CommentsContainer extends React.Component {
 
   toggleComments = (event) => {
     event.preventDefault();
-    const canToggle = this.state.isOpen || (this.props.comments && this.props.comments.length);
+    const canToggle = this.state.isOpen || this.props.comments;
     if (canToggle) {
       this.setState({ isOpen: !this.state.isOpen });
     }
