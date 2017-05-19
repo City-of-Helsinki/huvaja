@@ -71,15 +71,15 @@ describe('shared/comments/CommentsContainer', () => {
       });
 
       it('sets isOpen from false to true if comments exist', () => {
-        const comments = [{ id: 1, content: '', createdAt: '', user: { name: '' } }];
+        const comments = [{ id: 1, createdAt: '', createdBy: { displayName: '' }, text: '' }];
         const wrapper = toggleComments({ isOpen: false, comments });
         expect(wrapper.state('isOpen')).to.be.true;
       });
 
-      it('does not set isOpen from false to true if comments is []', () => {
+      it('sets isOpen from false to true if comments is []', () => {
         const comments = [];
         const wrapper = toggleComments({ isOpen: false, comments });
-        expect(wrapper.state('isOpen')).to.be.false;
+        expect(wrapper.state('isOpen')).to.be.true;
       });
 
       it('does not set isOpen from false to true if comments is null', () => {
@@ -146,7 +146,7 @@ describe('shared/comments/CommentsContainer', () => {
         });
 
         it('is not rendered when closed', () => {
-          const comments = [{ id: 1, content: 'Comment', createdAt: '', user: { name: 'U' } }];
+          const comments = [{ id: 1, createdAt: '', createdBy: { displayName: 'U' }, text: '?' }];
           const wrapper = getWrapper({ comments });
           expect(wrapper.state('isOpen')).to.be.false;
           const comment = wrapper.find(Comments);
@@ -154,7 +154,7 @@ describe('shared/comments/CommentsContainer', () => {
         });
 
         it('is rendered when open', () => {
-          const comments = [{ id: 1, content: 'Comment', createdAt: '', user: { name: 'U' } }];
+          const comments = [{ id: 1, createdAt: '', createdBy: { displayName: 'U' }, text: '?' }];
           const wrapper = getWrapper({ comments });
           wrapper.setState({ isOpen: true });
           const comment = wrapper.find(Comments);
@@ -198,9 +198,9 @@ describe('shared/comments/CommentsContainer', () => {
 
   describe('mergeProps', () => {
     describe('createComment', () => {
-      function callCreateComment({ data, original, cateringId, reservationId, userName }) {
+      function callCreateComment({ data, original, cateringId, reservationId }) {
         const merged = mergeProps(
-          { user: { displayName: userName } },
+          {},
           { createComment: original },
           { cateringId, reservationId },
         );
@@ -210,30 +210,26 @@ describe('shared/comments/CommentsContainer', () => {
       it('calls original createComment with cateringId', () => {
         const createComment = simple.mock();
         const cateringId = 57871;
-        const userName = 'Mick Mock';
-        const content = 'Hello!';
-        callCreateComment({ data: { content }, original: createComment, cateringId, userName });
+        const text = 'Hello!';
+        callCreateComment({ data: { text }, original: createComment, cateringId });
         expect(createComment.callCount).to.equal(1);
         expect(createComment.lastCall.args).to.deep.equal([{
           cateringId,
-          content,
           reservationId: undefined,
-          userName,
+          text,
         }]);
       });
 
       it('calls original createComment with reservationId', () => {
         const createComment = simple.mock();
         const reservationId = 85881;
-        const userName = 'Mick Mock';
-        const content = 'Hello!';
-        callCreateComment({ data: { content }, original: createComment, reservationId, userName });
+        const text = 'Hello!';
+        callCreateComment({ data: { text }, original: createComment, reservationId });
         expect(createComment.callCount).to.equal(1);
         expect(createComment.lastCall.args).to.deep.equal([{
           cateringId: undefined,
-          content,
           reservationId,
-          userName,
+          text,
         }]);
       });
     });

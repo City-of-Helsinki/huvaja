@@ -33,9 +33,9 @@ describe('shared/comments/Comments', () => {
   describe('comment', () => {
     const comment = {
       id: 1,
-      content: 'This comment is in the bag',
       createdAt: '2017-02-03T12:34:56.789+02:00',
-      user: { name: 'Kunkka Shakearther' },
+      createdBy: { displayName: 'Kunkka Shakearther' },
+      text: 'This comment is in the bag',
     };
 
     function getComment() {
@@ -55,13 +55,13 @@ describe('shared/comments/Comments', () => {
     it('renders user name', () => {
       const name = getComment().find('.comments-comment-user');
       expect(name).to.have.length(1);
-      expect(name.text()).to.equal(comment.user.name);
+      expect(name.text()).to.equal(comment.createdBy.displayName);
     });
 
     it('renders comment content', () => {
       const content = getComment().find('.comments-comment-content');
       expect(content).to.have.length(1);
-      expect(content.text()).to.equal(comment.content);
+      expect(content.text()).to.equal(comment.text);
     });
   });
 });
