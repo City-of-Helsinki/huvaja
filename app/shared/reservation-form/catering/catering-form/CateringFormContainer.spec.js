@@ -63,7 +63,7 @@ describe('shared/reservation-form/catering/catering-form/CateringFormContainer',
 
       it('has correct label', () => {
         const controlLabel = getProjectNumberControlWrapper().find(ControlLabel);
-        expect(controlLabel.prop('children')).to.equal('Projektinumero (laskutustieto)');
+        expect(controlLabel.prop('children')).to.equal('Projektinumero (laskutustieto)*');
       });
 
       it('has correct initial value', () => {
@@ -131,12 +131,14 @@ describe('shared/reservation-form/catering/catering-form/CateringFormContainer',
         order: { foo: 'bar' },
         projectNumber: 'abc123',
         time: '11:00',
+        errors: {},
       };
       const changeCateringData = {
         additionalInfo: 'new info',
         order: { foo: 'new bar' },
         projectNumber: 'new123',
         time: '19:30',
+        errors: {},
       };
       const nextProps = { cateringData: changeCateringData };
 
@@ -204,6 +206,53 @@ describe('shared/reservation-form/catering/catering-form/CateringFormContainer',
       const instance = getWrapper({ onSubmitCallback }).instance();
       instance.handleSubmit();
       expect(onSubmitCallback.callCount).to.equal(1);
+    });
+
+    function callHandleSubmit(initialState) {
+      const saveCateringData = simple.mock();
+      const onSubmitCallback = simple.mock();
+      const wrapper = getWrapper({ saveCateringData, onSubmitCallback });
+      const instance = wrapper.instance();
+      instance.state = initialState;
+      instance.handleSubmit();
+      return { saveCateringData, onSubmitCallback };
+    }
+
+    function expectSubmitted({ saveCateringData, onSubmitCallback }) {
+      expect(saveCateringData.callCount).to.equal(1);
+      expect(onSubmitCallback.callCount).to.equal(1);
+    }
+
+    function expectNotSubmitted({ saveCateringData, onSubmitCallback }) {
+      expect(saveCateringData.called).to.be.false;
+      expect(onSubmitCallback.called).to.be.false;
+    }
+
+    describe('when no orders', () => {
+      it('submits if valid data', () => {
+        expectSubmitted(callHandleSubmit({ projectNumber: 'A123' }));
+      });
+
+      it('submits if no projectNumber', () => {
+        expectSubmitted(callHandleSubmit({ projectNumber: '' }));
+      });
+
+      it('submits if no projectNumber and order sum is 0', () => {
+        const order = { product: 0 };
+        expectSubmitted(callHandleSubmit({ order, projectNumber: '' }));
+      });
+    });
+
+    describe('when orders', () => {
+      const order = { product: 10 };
+
+      it('submits if valid data', () => {
+        expectSubmitted(callHandleSubmit({ order, projectNumber: 'A123' }));
+      });
+
+      it('does not submit if no projectNumber', () => {
+        expectNotSubmitted(callHandleSubmit({ order, projectNumber: '' }));
+      });
     });
   });
 
