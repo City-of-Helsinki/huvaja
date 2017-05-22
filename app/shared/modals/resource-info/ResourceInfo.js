@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import Modal from 'react-bootstrap/lib/Modal';
 
-import ResourceInfo from 'pages/resource/info';
+import ResourceInfo from 'shared/resource-info';
 
 ResourceInfoModal.propTypes = {
   hideResourceImages: PropTypes.func.isRequired,
