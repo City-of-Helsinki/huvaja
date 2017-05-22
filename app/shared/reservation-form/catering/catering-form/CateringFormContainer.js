@@ -1,5 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
+import values from 'lodash/values';
 import React, { Component, PropTypes } from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import Col from 'react-bootstrap/lib/Col';
