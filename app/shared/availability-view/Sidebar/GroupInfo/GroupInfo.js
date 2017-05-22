@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Sticky from 'react-sticky-el';
 
-import ResourceInfoContainer from './ResourceInfo';
+import AvailabilityViewResourceInfoContainer from './AvailabilityViewResourceInfo';
 
 GroupInfo.propTypes = {
   date: PropTypes.string.isRequired,
@@ -17,7 +17,7 @@ export default function GroupInfo(props) {
         <div className="group-name"><div className="name">{props.name}</div></div>
       </Sticky>
       {props.resources.map(resource =>
-        <ResourceInfoContainer
+        <AvailabilityViewResourceInfoContainer
           date={date}
           id={resource}
           isHighlighted={highlightedResourceId === resource}

@@ -111,7 +111,7 @@
   .group-info {
     background-color: $gray-lighter;
 
-    .group-name, .resource-info {
+    .group-name, .availability-view-resource-info {
       padding: 0 $padding-base-horizontal;
     }
     .group-name {
@@ -135,7 +135,7 @@
       }
     }
   }
-  .resource-info {
+  .availability-view-resource-info {
     display: flex;
     flex-direction: column;
     justify-content: center;

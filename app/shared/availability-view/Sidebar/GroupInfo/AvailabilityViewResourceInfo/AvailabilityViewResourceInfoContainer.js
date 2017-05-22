@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { createSelector } from 'reselect';
 
-ResourceInfo.propTypes = {
+AvailabilityViewResourceInfo.propTypes = {
   date: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   isFavorite: PropTypes.bool.isRequired,
@@ -13,12 +13,12 @@ ResourceInfo.propTypes = {
   name: PropTypes.string.isRequired,
   peopleCapacity: PropTypes.number.isRequired,
 };
-export function ResourceInfo(props) {
+export function AvailabilityViewResourceInfo(props) {
   return (
     <div
       className={classNames(
-        'resource-info',
-        { 'resource-info-highlighted': props.isHighlighted },
+        'availability-view-resource-info',
+        { 'availability-view-resource-info-highlighted': props.isHighlighted },
       )}
       title={props.name}
     >
@@ -55,8 +55,8 @@ export function selector() {
   );
 }
 
-const ResourceInfoContainer = connect(selector)(ResourceInfo);
-ResourceInfoContainer.propTypes = {
+const AvailabilityViewResourceInfoContainer = connect(selector)(AvailabilityViewResourceInfo);
+AvailabilityViewResourceInfoContainer.propTypes = {
   id: PropTypes.string.isRequired,
 };
-export default ResourceInfoContainer;
+export default AvailabilityViewResourceInfoContainer;

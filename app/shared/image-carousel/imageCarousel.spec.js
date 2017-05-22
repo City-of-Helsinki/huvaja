@@ -7,7 +7,7 @@ import immutable from 'seamless-immutable';
 import BackgroundImage from 'shared/background-image';
 import ImageCarousel from './ImageCarousel';
 
-describe('pages/resource/resource-info/ImageCarousel', () => {
+describe('shared/image-carousel/ImageCarousel', () => {
   const images = [
     {
       url: 'http://api.hel.fi/virkarespa/resource_image/1',
