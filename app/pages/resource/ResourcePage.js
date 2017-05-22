@@ -4,7 +4,7 @@ import queryString from 'query-string';
 
 import SelectableSingleAvailabilityView from 'shared/form-fields/reservation-time/SelectableSingleAvailabilityView';
 import ResourceDailyReportButton from 'shared/resource-daily-report-button';
-import ResourceInfo from './info';
+import ResourceInfo from 'shared/resource-info';
 
 export default class ResourcePage extends Component {
   static propTypes = {

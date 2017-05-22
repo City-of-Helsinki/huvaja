@@ -6,7 +6,7 @@ import simple from 'simple-mock';
 
 import SelectableSingleAvailabilityView from 'shared/form-fields/reservation-time/SelectableSingleAvailabilityView';
 import ResourceDailyReportButton from 'shared/resource-daily-report-button';
-import ResourceInfo from './info';
+import ResourceInfo from 'shared/resource-info';
 import ResourcePage from './ResourcePage';
 
 describe('pages/resource/ResourcePage', () => {
