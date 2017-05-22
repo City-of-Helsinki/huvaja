@@ -72,6 +72,12 @@ describe('pages/resource/info/ResourceInfo', () => {
       const link = getWrapper().find('.back-link');
       expect(link.prop('to')).to.equal(defaults.resourceSearchUrl);
     });
+
+    it('does not render search link if url not in props', () => {
+      const props = { resourceSearchUrl: null };
+      const link = getWrapper(props).find('.back-link');
+      expect(link).to.have.length(0);
+    });
   });
 
   describe('FavoriteButton', () => {
