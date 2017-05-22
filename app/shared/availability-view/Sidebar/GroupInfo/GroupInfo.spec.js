@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 
 import GroupInfo from './GroupInfo';
-import ResourceInfoContainer from './ResourceInfo';
+import AvailabilityViewResourceInfoContainer from './AvailabilityViewResourceInfo';
 
 function getWrapper(props) {
   const defaults = {
@@ -28,14 +28,18 @@ describe('shared/availability-view/GroupInfo', () => {
   });
 
   it('renders no resources if none given', () => {
-    const elements = getWrapper({ resources: [] }).find(ResourceInfoContainer);
+    const elements = getWrapper({ resources: [] }).find(
+      AvailabilityViewResourceInfoContainer
+    );
     expect(elements).to.have.length(0);
   });
 
   it('renders given resources', () => {
     const date = '2016-05-02';
     const resources = ['abcd', 'efgh'];
-    const elements = getWrapper({ date, resources }).find(ResourceInfoContainer);
+    const elements = getWrapper({ date, resources }).find(
+      AvailabilityViewResourceInfoContainer
+    );
     expect(elements).to.have.length(2);
     expect(elements.at(0).prop('date')).to.equal(date);
     expect(elements.at(0).prop('id')).to.equal(resources[0]);

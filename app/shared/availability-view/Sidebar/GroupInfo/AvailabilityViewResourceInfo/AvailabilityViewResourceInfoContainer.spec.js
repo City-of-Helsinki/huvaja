@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import { Link } from 'react-router';
 
-import ResourceInfoContainer, { ResourceInfo, selector } from './ResourceInfoContainer';
+import AvailabilityViewResourceInfoContainer, { AvailabilityViewResourceInfo, selector } from './AvailabilityViewResourceInfoContainer';
 
 function getState() {
   return {
@@ -21,16 +21,16 @@ function getState() {
   };
 }
 
-describe('shared/availability-view/ResourceInfoContainer', () => {
+describe('shared/availability-view/AvailabilityViewResourceInfoContainer', () => {
   describe('container', () => {
     function getWrapper(props) {
       const defaults = { date: '2016-01-01', id: '123456', store: { getState } };
-      return shallow(<ResourceInfoContainer {...defaults} {...props} />);
+      return shallow(<AvailabilityViewResourceInfoContainer {...defaults} {...props} />);
     }
 
-    it('renders a ResourceInfo', () => {
+    it('renders a AvailabilityViewResourceInfo', () => {
       const wrapper = getWrapper();
-      expect(wrapper.is(ResourceInfo)).to.be.true;
+      expect(wrapper.is(AvailabilityViewResourceInfo)).to.be.true;
     });
   });
 
@@ -43,12 +43,12 @@ describe('shared/availability-view/ResourceInfoContainer', () => {
         name: 'Resource name',
         peopleCapacity: 19,
       };
-      return shallow(<ResourceInfo {...defaults} {...props} />);
+      return shallow(<AvailabilityViewResourceInfo {...defaults} {...props} />);
     }
 
-    it('renders a div.resource-info', () => {
+    it('renders a div.availability-view-resource-info', () => {
       const wrapper = getWrapper();
-      expect(wrapper.is('div.resource-info')).to.be.true;
+      expect(wrapper.is('div.availability-view-resource-info')).to.be.true;
     });
 
     it('renders the name and link to resource page', () => {
