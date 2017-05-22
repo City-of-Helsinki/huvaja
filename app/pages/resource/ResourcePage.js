@@ -53,6 +53,7 @@ export default class ResourcePage extends Component {
     return (
       <div className="resource-page">
         <ResourceInfo
+          className="resource-info"
           hideResourceImages={this.props.hideResourceImages}
           resource={this.props.resource}
           resourceSearchUrl={this.props.resourceSearchUrl}
