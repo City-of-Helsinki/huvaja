@@ -2,8 +2,15 @@
   $group-row-height: 30px;
   $resource-row-height: 50px;
   $slot-border: 1px solid white;
-  $hovered-siblings-color: $gray;
-  $hovered-non-selectable-siblings-color: $gray-light;
+
+  $open-slot-color: $silver;
+  $closed-slot-color: $dark-gray;
+  $hovered-row-open-slot-color: $light-gray;
+  $hovered-row-closed-slot-color: $medium-gray;
+  $hovered-open-slot-color: $open-slot-color;
+  $hovered-closed-slot-color: $closed-slot-color;
+  $selected-slot-color: $brand-primary;
+
   width: 100%;
 
   .columns {
@@ -109,7 +116,7 @@
     }
   }
   .group-info {
-    background-color: $gray-lighter;
+    background-color: white;
 
     .group-name, .availability-view-resource-info {
       padding: 0 $padding-base-horizontal;
@@ -127,6 +134,9 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      border: $slot-border;
+      border-left: 0;
+      border-right: 0;
 
       .name {
         text-align: right;
@@ -143,9 +153,13 @@
     height: $resource-row-height;
     font-size: $font-size-small;
     line-height: 1;
+    background-color: $open-slot-color;
+    border: $slot-border;
+    border-left: 0;
+    border-right: 0;
 
     &-highlighted {
-      background-color: $hovered-non-selectable-siblings-color;
+      background-color: $hovered-row-open-slot-color;
     }
     .favorite-icon {
       color: $favorite-color;
@@ -208,9 +222,9 @@
 
     &:hover {
       .reservation-slot:not(:hover):not(.reservation-slot-selected) {
-        background-color: $hovered-non-selectable-siblings-color;
+        background-color: $hovered-row-closed-slot-color;
         &.reservation-slot-selectable {
-          background-color: $hovered-siblings-color;
+          background-color: $hovered-row-open-slot-color;
         }
       }
     }
@@ -246,17 +260,20 @@
     }
   }
   .reservation-slot {
-    background-color: $gray-lighter;
+    background-color: $closed-slot-color;
     overflow: hidden;
 
     &-selectable {
-      background-color: $gray-light;
-    }
-    &-selected {
-      background-color: $brand-primary;
+      background-color: $open-slot-color;
     }
     &:hover {
-      background-color: $brand-primary;
+      background-color: $hovered-closed-slot-color;
+    }
+    &-selectable:hover {
+      background-color: $hovered-open-slot-color;
+    }
+    &-selected, &-selected:hover {
+      background-color: $selected-slot-color;
     }
     .a11y-text {
       position: relative;
