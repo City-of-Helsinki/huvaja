@@ -16,30 +16,33 @@ function Navbar(props) {
             Huonevaraus
           </IndexLink>
         </RBNavbar.Brand>
+        <RBNavbar.Toggle />
       </RBNavbar.Header>
-      <Nav className="links">
-        <IndexLinkContainer to="/">
-          <NavItem>Tilat</NavItem>
-        </IndexLinkContainer>
-        <LinkContainer to="/reservations">
-          <NavItem>Varaukset</NavItem>
-        </LinkContainer>
-        <LinkContainer to="/reservations/create">
-          <NavItem>Uusi varaus</NavItem>
-        </LinkContainer>
-      </Nav>
-      <Nav navbar pullRight>
-        {!props.user &&
-          <NavItem href="/login">Kirjaudu sisään</NavItem>
-        }
-        {props.user &&
-          <NavDropdown id="collapsible-navbar-dropdown" title={props.user.displayName}>
-            <MenuItem href={`/logout?next=${window.location.origin}`}>
-              Kirjaudu ulos
-            </MenuItem>
-          </NavDropdown>
-        }
-      </Nav>
+      <RBNavbar.Collapse>
+        <Nav className="links">
+          <IndexLinkContainer to="/">
+            <NavItem>Tilat</NavItem>
+          </IndexLinkContainer>
+          <LinkContainer to="/reservations">
+            <NavItem>Varaukset</NavItem>
+          </LinkContainer>
+          <LinkContainer to="/reservations/create">
+            <NavItem>Uusi varaus</NavItem>
+          </LinkContainer>
+        </Nav>
+        <Nav navbar pullRight>
+          {!props.user &&
+            <NavItem href="/login">Kirjaudu sisään</NavItem>
+          }
+          {props.user &&
+            <NavDropdown id="collapsible-navbar-dropdown" title={props.user.displayName}>
+              <MenuItem href={`/logout?next=${window.location.origin}`}>
+                Kirjaudu ulos
+              </MenuItem>
+            </NavDropdown>
+          }
+        </Nav>
+      </RBNavbar.Collapse>
     </RBNavbar>
   );
 }
