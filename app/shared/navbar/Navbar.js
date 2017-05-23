@@ -7,15 +7,12 @@ import NavItem from 'react-bootstrap/lib/NavItem';
 import { IndexLink } from 'react-router';
 import { IndexLinkContainer, LinkContainer } from 'react-router-bootstrap';
 
-import Logo from 'shared/logo';
-
 function Navbar(props) {
   return (
     <RBNavbar inverse>
       <RBNavbar.Header>
         <RBNavbar.Brand>
           <IndexLink to="/">
-            <Logo />
             Huonevaraus
           </IndexLink>
         </RBNavbar.Brand>
