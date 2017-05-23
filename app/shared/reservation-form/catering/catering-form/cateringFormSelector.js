@@ -1,11 +1,11 @@
 import sortBy from 'lodash/sortBy';
 import values from 'lodash/values';
-import moment from 'moment';
 import { createSelector, createStructuredSelector } from 'reselect';
 
 function defaultCateringTimeSelector(state) {
   const reservationTimes = state.form.resourceReservation.values.time;
-  return reservationTimes ? moment(reservationTimes.begin).format('HH:mm') : '12:00';
+  const startTime = reservationTimes.begin.time;
+  return startTime || '12:00';
 }
 
 function defaultItemQuantitySelector(state) {

@@ -6,7 +6,12 @@ import selector from './cateringFormSelector';
 describe('shared/reservation-form/catering/catering-form/cateringFormSelector', () => {
   function getSelected(extraState = {}) {
     const defaults = {
-      'form.resourceReservation.values': {},
+      'form.resourceReservation.values': {
+        time: {
+          begin: {},
+          end: {},
+        },
+      },
     };
     const state = getState({ ...defaults, ...extraState });
     return selector(state);
@@ -38,8 +43,8 @@ describe('shared/reservation-form/catering/catering-form/cateringFormSelector', 
   describe('defaultCateringTime', () => {
     it('returns reservation begin time if it is set', () => {
       const time = {
-        begin: '2016-12-12T10:00:00',
-        end: '2016-12-12T11:00:00',
+        begin: { date: '2016-12-12', time: '10:00' },
+        end: { date: '2016-12-12', time: '11:00' },
       };
       const selected = getSelected({ 'form.resourceReservation.values': { time } });
       expect(selected.defaultCateringTime).to.equal('10:00');
@@ -54,7 +59,12 @@ describe('shared/reservation-form/catering/catering-form/cateringFormSelector', 
   describe('defaultItemQuantity', () => {
     it('returns reservation numberOfParticipants if it is set', () => {
       const numberOfParticipants = 12;
-      const selected = getSelected({ 'form.resourceReservation.values': { numberOfParticipants } });
+      const selected = getSelected({
+        'form.resourceReservation.values': {
+          numberOfParticipants,
+          time: { begin: {}, end: {} },
+        },
+      });
       expect(selected.defaultItemQuantity).to.equal(numberOfParticipants);
     });
 
