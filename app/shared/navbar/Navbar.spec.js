@@ -6,7 +6,6 @@ import NavDropdown from 'react-bootstrap/lib/NavDropdown';
 import NavItem from 'react-bootstrap/lib/NavItem';
 import { IndexLink } from 'react-router';
 
-import Logo from 'shared/logo';
 import Navbar from './Navbar';
 
 describe('shared/navbar/Navbar', () => {
@@ -38,11 +37,6 @@ describe('shared/navbar/Navbar', () => {
       const homeLink = getHomeLinkWrapper();
       expect(homeLink).to.have.length(1);
       expect(homeLink.prop('to')).to.equal('/');
-    });
-
-    it('displays the logo of the service', () => {
-      const logo = getHomeLinkWrapper().find(Logo);
-      expect(logo).to.have.length(1);
     });
 
     it('displays the title of the service', () => {
