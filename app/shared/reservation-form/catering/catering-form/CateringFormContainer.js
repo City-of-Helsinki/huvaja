@@ -82,7 +82,8 @@ export class UnconnectedCateringFormContainer extends Component {
   handleSubmit() {
     const shouldValidate = this.hasOrders();
     if (!shouldValidate || this.validate()) {
-      this.props.saveCateringData(this.state);
+      const time = this.state.time || this.props.defaultCateringTime;
+      this.props.saveCateringData({ ...this.state, time });
       this.props.onSubmitCallback && this.props.onSubmitCallback();
     }
   }

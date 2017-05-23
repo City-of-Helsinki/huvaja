@@ -193,12 +193,27 @@ describe('shared/reservation-form/catering/catering-form/CateringFormContainer',
   describe('handleSubmit', () => {
     it('calls props.saveCateringData with data in state', () => {
       const saveCateringData = simple.mock();
-      const instance = getWrapper({ saveCateringData }).instance();
-      const state = { foo: 'bar' };
+      const defaultCateringTime = '19:30';
+      const instance = getWrapper({ defaultCateringTime, saveCateringData }).instance();
+      const state = { foo: 'bar', time: '20:00' };
       instance.state = state;
       instance.handleSubmit();
       expect(saveCateringData.callCount).to.equal(1);
       expect(saveCateringData.lastCall.arg).to.deep.equal(state);
+    });
+
+    it('calls props.saveCateringData with default catering time if no time', () => {
+      const saveCateringData = simple.mock();
+      const defaultCateringTime = '19:30';
+      const instance = getWrapper({ defaultCateringTime, saveCateringData }).instance();
+      const state = { foo: 'bar' };
+      instance.state = state;
+      instance.handleSubmit();
+      expect(saveCateringData.callCount).to.equal(1);
+      expect(saveCateringData.lastCall.arg).to.deep.equal({
+        ...state,
+        time: defaultCateringTime,
+      });
     });
 
     it('calls props.onSubmitCallback', () => {
