@@ -49,7 +49,11 @@ export default function ResourceField({
         <InputGroup>
           <FormControl readOnly type="text" value={resourceName} />
           <InputGroup.Button>
-            <Button>Vaihda tila</Button>
+            <Button>
+              {controlProps.resource
+                ? 'Vaihda tila'
+                : 'Valitse tila'}
+            </Button>
           </InputGroup.Button>
         </InputGroup>
         {help && <HelpBlock>{help}</HelpBlock>}
