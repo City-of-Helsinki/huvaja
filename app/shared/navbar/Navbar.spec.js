@@ -54,20 +54,24 @@ describe('shared/navbar/Navbar', () => {
       expect(links).to.have.length(1);
     });
 
-    it('contains link to resource search page', () => {
+    function testLinkAt(index, href, text) {
       const links = getPageLinksWrapper();
-      const link = links.children().at(0);
-      expect(link.prop('to')).to.equal('/');
+      const link = links.children().at(index);
+      expect(link.prop('to')).to.equal(href);
       const linkText = link.find(NavItem).children().text();
-      expect(linkText).to.equal('Tilat');
+      expect(linkText).to.equal(text);
+    }
+
+    it('contains link to resource search page', () => {
+      testLinkAt(0, '/', 'Tilat');
     });
 
     it('contains link to reservation search page', () => {
-      const links = getPageLinksWrapper();
-      const link = links.children().at(1);
-      expect(link.prop('to')).to.equal('/reservations');
-      const linkText = link.find(NavItem).children().text();
-      expect(linkText).to.equal('Varaukset');
+      testLinkAt(1, '/reservations', 'Varaukset');
+    });
+
+    it('contains link to create reservation page', () => {
+      testLinkAt(2, '/reservations/create', 'Uusi varaus');
     });
   });
 
