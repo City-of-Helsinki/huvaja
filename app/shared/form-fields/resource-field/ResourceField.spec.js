@@ -76,6 +76,15 @@ describe('shared/form-field/resource-field/ResourceField', () => {
       expect(button.children().text()).to.equal('Vaihda tila');
     });
 
+    it('renders button for selecting resource if no resource', () => {
+      const controlProps = {
+        ...defaults.controlProps,
+        resource: null,
+      };
+      const button = getFormGroupWrapper({ controlProps }).find(Button);
+      expect(button.children().text()).to.equal('Valitse tila');
+    });
+
     it('renders help text', () => {
       const help = getFormGroupWrapper().find(HelpBlock);
       expect(help).to.have.length(1);
