@@ -24,6 +24,9 @@ function Navbar(props) {
         <LinkContainer to="/reservations">
           <NavItem>Varaukset</NavItem>
         </LinkContainer>
+        <LinkContainer to="/reservations/create">
+          <NavItem>Uusi varaus</NavItem>
+        </LinkContainer>
       </Nav>
       <Nav navbar pullRight>
         {!props.user &&
