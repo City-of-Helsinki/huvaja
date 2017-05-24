@@ -17,10 +17,10 @@ import locationUtils from 'utils/locationUtils';
 export class UnconnectedAppContainer extends Component {
   componentDidMount() {
     this.props.fetchAuthState();
-    this.props.fetchUnits();
-    this.props.fetchTypes();
     this.props.fetchEquipment();
     this.props.fetchResources({}, false);
+    this.props.fetchTypes();
+    this.props.fetchUnits();
   }
 
   componentWillReceiveProps(props) {
