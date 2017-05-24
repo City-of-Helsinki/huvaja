@@ -16,6 +16,7 @@ describe('pages/AppContainer', () => {
   function getWrapper(props) {
     const defaults = {
       fetchAuthState: () => null,
+      fetchCateringProviders: () => null,
       fetchEquipment: () => null,
       fetchResources: () => null,
       fetchTypes: () => null,
@@ -82,6 +83,13 @@ describe('pages/AppContainer', () => {
       const instance = getWrapper({ fetchAuthState }).instance();
       instance.componentDidMount();
       expect(fetchAuthState.callCount).to.equal(1);
+    });
+
+    it('fetches catering providers', () => {
+      const fetchCateringProviders = simple.mock();
+      const instance = getWrapper({ fetchCateringProviders }).instance();
+      instance.componentDidMount();
+      expect(fetchCateringProviders.callCount).to.equal(1);
     });
 
     it('fetches units', () => {

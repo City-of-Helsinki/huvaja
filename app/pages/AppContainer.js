@@ -5,7 +5,13 @@ import Loader from 'react-loader';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-import { fetchEquipment, fetchResources, fetchTypes, fetchUnits } from 'api/actions';
+import {
+  fetchCateringProviders,
+  fetchEquipment,
+  fetchResources,
+  fetchTypes,
+  fetchUnits,
+} from 'api/actions';
 import { fetchAuthState } from 'auth/actions';
 import ReservationCancelModal from 'shared/modals/reservation-cancel';
 import ReservationInfoModal from 'shared/modals/reservation-info';
@@ -17,6 +23,7 @@ import locationUtils from 'utils/locationUtils';
 export class UnconnectedAppContainer extends Component {
   componentDidMount() {
     this.props.fetchAuthState();
+    this.props.fetchCateringProviders();
     this.props.fetchEquipment();
     this.props.fetchResources({}, false);
     this.props.fetchTypes();
@@ -53,6 +60,7 @@ UnconnectedAppContainer.propTypes = {
   fetchAuthState: PropTypes.func.isRequired,
   isAuthFetched: PropTypes.bool.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
+  fetchCateringProviders: PropTypes.func.isRequired,
   fetchEquipment: PropTypes.func.isRequired,
   fetchResources: PropTypes.func.isRequired,
   fetchTypes: PropTypes.func.isRequired,
@@ -61,6 +69,7 @@ UnconnectedAppContainer.propTypes = {
 
 const actions = {
   fetchAuthState,
+  fetchCateringProviders,
   fetchEquipment,
   fetchResources,
   fetchTypes,

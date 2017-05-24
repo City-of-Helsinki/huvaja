@@ -45,6 +45,7 @@ function handleReservation(state, reservation) {
 function dataReducer(state = initialState, action) {
   switch (action.type) {
 
+    case actionTypes.CATERING_PROVIDERS_GET_SUCCESS:
     case actionTypes.EQUIPMENT_GET_SUCCESS:
     case actionTypes.RESERVATIONS_GET_SUCCESS:
     case actionTypes.RESERVATION_GET_SUCCESS:
