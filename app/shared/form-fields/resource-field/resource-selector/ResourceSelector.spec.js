@@ -66,6 +66,31 @@ describe('shared/form-field/resource-field/resource-selector/ResourceSelector', 
     testResourceItem(items.at(0), defaults.unavailableResources[0], false);
   });
 
+  describe('when given resources prop', () => {
+    function getResourcesWrapper() {
+      return getWrapper({ resources: [{ id: '1', label: 'U1 / R1', peopleCapacity: 1 }] });
+    }
+
+    it('does not render available resources', () => {
+      const wrapper = getResourcesWrapper();
+      expect(wrapper.find('.resource-list-available')).to.have.length(0);
+    });
+
+    it('does not render unavailable resources', () => {
+      const wrapper = getResourcesWrapper();
+      expect(wrapper.find('.resource-list-unavailable')).to.have.length(0);
+    });
+
+    it('renders all resources in one list', () => {
+      const wrapper = getResourcesWrapper();
+      const list = wrapper.find('.resource-list-all');
+      const items = list.find(ResourceItem);
+      expect(list).to.have.length(1);
+      expect(items).to.have.length(1);
+      testResourceItem(items.at(0), { id: '1', label: 'U1 / R1', peopleCapacity: 1 }, true);
+    });
+  });
+
   it('renders message when no resources', () => {
     const props = {
       availableResources: [],
