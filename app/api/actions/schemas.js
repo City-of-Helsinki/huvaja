@@ -1,5 +1,6 @@
 import { arrayOf, Schema } from 'normalizr';
 
+const cateringProviderSchema = new Schema('cateringProviders');
 const equipmentSchema = new Schema('equipment');
 const purposeSchema = new Schema('purposes');
 const reservationSchema = new Schema('reservations');
@@ -11,6 +12,7 @@ resourceSchema.define({
   unit: unitSchema,
 });
 
+const paginatedCateringProvidersSchema = new Schema('paginatedCateringProviders');
 const paginatedEquipmentSchema = new Schema('paginatedEquipment');
 const paginatedPurposesSchema = new Schema('paginatedPurposes');
 const paginatedReservationsSchema = new Schema('paginatedReservations');
@@ -18,6 +20,10 @@ const paginatedResourcesSchema = new Schema('paginatedResources');
 const paginatedTypesSchema = new Schema('paginatedTypes');
 const paginatedUnitsSchema = new Schema('paginatedUnits');
 const typeaheadSchema = new Schema('typeaheadSuggestions');
+
+paginatedCateringProvidersSchema.define({
+  results: arrayOf(cateringProviderSchema),
+});
 
 paginatedEquipmentSchema.define({
   results: arrayOf(equipmentSchema),
@@ -48,6 +54,7 @@ typeaheadSchema.define({
 });
 
 export default {
+  paginatedCateringProvidersSchema,
   paginatedEquipmentSchema,
   paginatedPurposesSchema,
   paginatedReservationsSchema,
