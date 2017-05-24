@@ -14,6 +14,7 @@ export class UnconnectedResourceSelectorContainer extends React.Component {
     fetchResources: PropTypes.func.isRequired,
     isFetching: PropTypes.bool.isRequired,
     onSelect: PropTypes.func.isRequired,
+    resources: PropTypes.array,
     selectedResourceId: PropTypes.string,
     selectedTimeRange: PropTypes.object,
     unavailableResources: PropTypes.array.isRequired,
@@ -48,6 +49,7 @@ export class UnconnectedResourceSelectorContainer extends React.Component {
         availableResources={this.props.availableResources}
         isFetching={this.props.isFetching}
         onSelect={this.props.onSelect}
+        resources={this.props.resources}
         selectedResourceId={this.props.selectedResourceId}
         unavailableResources={this.props.unavailableResources}
       />

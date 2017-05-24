@@ -65,6 +65,50 @@ describe('shared/form-fields/resource-field/resource-selector/resourceSelectorSe
     expect(actual.unavailableResources).to.deep.equal(expected);
   });
 
+  describe('resources', () => {
+    it('is not returned when time', () => {
+      const actual = getSelected({
+        'form.resourceReservation.values.time': {
+          begin: { date: '2017-01-01', time: '10:00' },
+          end: { date: '2017-01-01', time: '11:00' },
+        },
+      });
+      expect(actual.resources).to.be.null;
+    });
+
+    it('is returned when no time', () => {
+      const actual = getSelected({
+        ...defaultState,
+        'form.resourceReservation.values.time': {
+          begin: { date: '', time: '' },
+          end: { date: '', time: '' },
+        },
+      });
+      expect(actual.resources).to.deep.equal([
+        {
+          id: 'r-2',
+          label: 'Unit 1 / Resource 2',
+          peopleCapacity: 20,
+        },
+        {
+          id: 'r-4',
+          label: 'Unit 1 / Resource 4',
+          peopleCapacity: 40,
+        },
+        {
+          id: 'r-1',
+          label: 'Unit 2 / Resource 1',
+          peopleCapacity: 10,
+        },
+        {
+          id: 'r-3',
+          label: 'Unit 2 / Resource 3',
+          peopleCapacity: 30,
+        },
+      ]);
+    });
+  });
+
   describe('isFetching', () => {
     it('returns true when RESOURCES_GET is active', () => {
       const actual = getSelected();

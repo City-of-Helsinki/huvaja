@@ -17,29 +17,47 @@ function renderResources(resources, onSelect, available) {
   );
 }
 
+function renderResourceList(name, className, resources, onSelect, available) {
+  return (
+    <div className={`resource-list resource-list-${className}`}>
+      <h4 className="resource-list-heading">{name}</h4>
+      {renderResources(resources, onSelect, available)}
+    </div>
+  );
+}
+
 ResourceSelector.propTypes = {
   availableResources: PropTypes.array.isRequired,
   isFetching: PropTypes.bool.isRequired,
   onSelect: PropTypes.func.isRequired,
+  resources: PropTypes.array,
   unavailableResources: PropTypes.array.isRequired,
 };
 export default function ResourceSelector({
   availableResources,
   isFetching,
   onSelect,
+  resources,
   unavailableResources,
 }) {
   return (
     <div className="resource-selector">
       <Loader loaded={!isFetching}>
-        <div className="resource-list resource-list-available">
-          <h4 className="resource-list-heading">Vapaana olevat tilat</h4>
-          {renderResources(availableResources, onSelect, true)}
-        </div>
-        <div className="resource-list resource-list-unavailable">
-          <h4 className="resource-list-heading">Varattuna olevat tilat</h4>
-          {renderResources(unavailableResources, onSelect, false)}
-        </div>
+        {resources && renderResourceList('Tilat', 'all', resources, onSelect, true)}
+        {!resources && renderResourceList(
+          'Vapaana olevat tilat',
+          'available',
+          availableResources,
+          onSelect,
+          true
+        )}
+        {!resources && renderResourceList(
+          'Varattuna olevat tilat',
+          'unavailable',
+          unavailableResources,
+          onSelect,
+          false
+        )}
       </Loader>
     </div>
   );

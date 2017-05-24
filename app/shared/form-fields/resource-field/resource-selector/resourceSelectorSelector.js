@@ -55,8 +55,30 @@ const sortedUnavailableSelector = createSelector(
   unavailableResources => sort(unavailableResources)
 );
 
+const hasTimeSelector = createSelector(
+  state => state.form.resourceReservation,
+  form => (
+    form &&
+    form.values.time.begin && form.values.time.begin.time &&
+    form.values.time.end && form.values.time.end.time
+  )
+);
+// All resources only shown when no time has been selected
+const allResourcesSelector = createSelector(
+  hasTimeSelector,
+  resourcesSelector,
+  unitsSelector,
+  selectedResourceIdSelector,
+  (hasTime, resources, units, selectedResourceId) => (
+    hasTime
+    ? null
+    : sortBy(getResources(Object.keys(resources), resources, units, selectedResourceId), 'label')
+  )
+);
+
 export default createStructuredSelector({
   availableResources: sortedAvailableSelector,
   isFetching: resourcesGetIsActiveSelector,
+  resources: allResourcesSelector,
   unavailableResources: sortedUnavailableSelector,
 });
