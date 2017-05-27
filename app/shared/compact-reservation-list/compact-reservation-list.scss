@@ -1,0 +1,38 @@
+.compact-reservation-list {
+  &-subtitle {
+    color: $gray;
+    font-size: 13px;
+    margin-top: 2px;
+    margin-bottom: 10px;
+  }
+  .glyphicon-remove-circle {
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  &-item-success,
+  &-item-failure {
+    display: block;
+    color: $white;
+    padding: $padding-base-vertical $padding-base-horizontal;
+    margin-bottom: 2px;
+
+    .compact-reservation-list-item-content {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  &-item-success {
+    background-color: $theme-success;
+  }
+  &-item-failure {
+    background-color: $theme-danger;
+
+    .compact-reservation-list-subtitle {
+      color: $text-color;
+      font-size: 13px;
+      margin-top: 3px;
+      margin-bottom: 0;
+    }
+  }
+}
