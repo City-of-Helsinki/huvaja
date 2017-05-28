@@ -1,0 +1,15 @@
+.reservation-success-modal {
+  &-heading {
+    text-align: center;
+  }
+
+  .reservations-list,
+  .failed-reservations-list {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  &-section + &-section {
+    margin-top: 35px;
+  }
+}
