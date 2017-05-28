@@ -7,7 +7,10 @@ import { browserHistory } from 'react-router';
 import { Field, reduxForm } from 'redux-form';
 
 import AlertText from 'shared/alert-text';
+import CompactReservationList from 'shared/compact-reservation-list';
+import RecurringReservationControls from 'shared/recurring-reservation-controls';
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
+import timeUtils from 'utils/timeUtils';
 import CateringSection from './catering';
 
 const requiredFields = [
@@ -95,6 +98,7 @@ export class UnconnectedReservationForm extends React.Component {
         nextProps.resource.id, { date: nextProps.timelineDate }
       );
     }
+    this.changeBaseTime(nextProps);
   }
 
   getWarning() {
@@ -110,6 +114,24 @@ export class UnconnectedReservationForm extends React.Component {
       );
     }
     return null;
+  }
+
+  changeBaseTime(nextProps) {
+    if (!this.props.changeBaseTime) return;
+    const oldRange = timeUtils.getDateTimeRangeFieldMoments(this.props.timeRange);
+    const newRange = timeUtils.getDateTimeRangeFieldMoments(nextProps.timeRange);
+    const shouldChange = (
+      newRange &&
+      newRange.begin &&
+      newRange.end &&
+      !(
+        newRange.begin.isSame(oldRange.begin) &&
+        newRange.end.isSame(oldRange.end)
+      )
+    );
+    if (shouldChange) {
+      this.props.changeBaseTime(newRange);
+    }
   }
 
   render() {
@@ -136,8 +158,28 @@ export class UnconnectedReservationForm extends React.Component {
                   'Varauksen aika',
                   { required: true },
                 )}
+                {this.props.allowRecurring &&
+                  <div>
+                    {renderField(
+                      'isRecurring',
+                      'checkbox',
+                      'Tee toistuva varaus...',
+                      { className: 'is-recurring-checkbox' },
+                    )}
+                    {this.props.isRecurring &&
+                      <div className="recurring-reservations">
+                        <RecurringReservationControls />
+                        <CompactReservationList
+                          onRemoveClick={this.props.removeRecurringReservation}
+                          removableReservations={this.props.recurringReservations}
+                          reservations={this.props.baseReservation}
+                        />
+                      </div>
+                    }
+                  </div>
+                }
               </Col>
-              {this.props.resource &&
+              {this.props.resource && !this.props.isRecurring &&
                 <Col md={12}>
                   <div className="timeline-container reservation-form-timeline">
                     <h5>Varaustilanne</h5>
@@ -241,10 +283,16 @@ export class UnconnectedReservationForm extends React.Component {
 }
 
 UnconnectedReservationForm.propTypes = {
+  allowRecurring: PropTypes.bool,
+  baseReservation: PropTypes.array,
+  changeBaseTime: PropTypes.func,
   error: PropTypes.string,
   fetchResource: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  isRecurring: PropTypes.bool,
   numberOfParticipants: PropTypes.number,
+  recurringReservations: PropTypes.array,
+  removeRecurringReservation: PropTypes.func,
   reservation: PropTypes.object,
   resource: PropTypes.object,
   submitting: PropTypes.bool.isRequired,
