@@ -1,14 +1,17 @@
 import moment from 'moment';
+import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { createSelector, createStructuredSelector } from 'reselect';
 
 import { fetchCateringProducts, fetchCateringProductCategories, fetchResource } from 'api/actions';
+import recurringReservationsActions from 'actions/recurringReservations';
 import { makeReservation } from 'api/actions/reservations';
 import { createCateringProviderSelector } from 'api/selectors';
 import { currentUserSelector } from 'auth/selectors';
 import { slotSize } from 'shared/availability-view';
 import createFormSubmitHandler from 'utils/createFormSubmitHandler';
+import timeUtils from 'utils/timeUtils';
 import ReservationForm from './ReservationForm';
 import utils from './utils';
 
@@ -107,20 +110,45 @@ const numberOfParticipantsSelector = state => (
   parseInt(state.form.resourceReservation.values.numberOfParticipants, 10)
 );
 
+const recurringReservationsSelector = state => (
+  state.recurringReservations.reservations
+);
+const baseReservationSelector = createSelector(
+  timeRangeSelector,
+  (timeRange) => {
+    const { begin, end } = timeUtils.getDateTimeRangeFieldMoments(timeRange);
+    if (!begin || !end) return [];
+    return [{
+      begin: begin.format(),
+      end: end.format(),
+    }];
+  }
+);
+
+const isRecurringSelector = state => Boolean(
+  state.form.resourceReservation &&
+  state.form.resourceReservation.values.isRecurring
+);
+
 export const selector = createStructuredSelector({
+  baseReservation: baseReservationSelector,
   cateringProvider: createCateringProviderSelector(unitIdSelector),
   initialValues: initialValuesSelector,
+  isRecurring: isRecurringSelector,
   numberOfParticipants: numberOfParticipantsSelector,
+  recurringReservations: recurringReservationsSelector,
   resource: resourceSelector,
   timelineDate: timelineDateSelector,
   timeRange: timeRangeSelector,
 });
 
 const actions = {
+  changeBaseTime: recurringReservationsActions.changeBaseTime,
   fetchCateringProducts,
   fetchCateringProductCategories,
   fetchResource,
   makeReservation,
+  removeRecurringReservation: recurringReservationsActions.removeReservation,
 };
 
 function formatTime({ date, time }) {
@@ -129,8 +157,8 @@ function formatTime({ date, time }) {
 
 export function mergeProps(stateProps, dispatchProps, ownProps) {
   const props = { ...ownProps, ...stateProps, ...dispatchProps };
-  const callback = (actionOptions, values) => props.makeReservation(
-    {
+  const callback = (actionOptions, values) => {
+    const reservationData = {
       begin: formatTime(values.time.begin),
       end: formatTime(values.time.end),
       event_description: values.eventDescription,
@@ -139,9 +167,21 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
       number_of_participants: values.numberOfParticipants,
       reserver_name: values.reserverName,
       resource: values.resource,
-    },
-    actionOptions
-  );
+    };
+    const options = (
+      values.isRecurring ?
+      {
+        ...actionOptions,
+        successMeta: {
+          ...actionOptions.successMeta,
+          recurringReservations: stateProps.recurringReservations,
+          reservationData,
+        },
+      } :
+      actionOptions
+    );
+    props.makeReservation(reservationData, options);
+  };
   const successHandler = (action) => {
     const begin = utils.parseBeginDate(action);
     const url = utils.getResourceUrl(props.resource.id, begin);
@@ -161,4 +201,8 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
   };
 }
 
-export default connect(selector, actions, mergeProps)(ReservationForm);
+function UnconnectedReservationForm(props) {
+  return <ReservationForm allowRecurring {...props} />;
+}
+
+export default connect(selector, actions, mergeProps)(UnconnectedReservationForm);
