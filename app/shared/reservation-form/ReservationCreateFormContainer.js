@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { createSelector, createStructuredSelector } from 'reselect';
 
+import uiActions from 'actions/uiActions';
 import { fetchResource } from 'api/actions';
 import recurringReservationsActions from 'actions/recurringReservations';
 import { makeReservation } from 'api/actions/reservations';
@@ -140,6 +141,7 @@ const actions = {
   fetchResource,
   makeReservation,
   removeRecurringReservation: recurringReservationsActions.removeReservation,
+  showReservationSuccessModal: uiActions.showReservationSuccessModal,
 };
 
 function formatTime({ date, time }) {
@@ -179,7 +181,10 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
     // Use setTimeout to make url change happen after form handling has
     // been fully completed.
     window.setTimeout(
-      () => browserHistory.push(url),
+      () => {
+        browserHistory.push(url);
+        dispatchProps.showReservationSuccessModal();
+      },
       0
     );
   };

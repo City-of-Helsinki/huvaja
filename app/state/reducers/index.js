@@ -11,6 +11,7 @@ import reservationCancel from './reservationCancelModalReducer';
 import reservationInfo from './reservationInfoModalReducer';
 import reservationSearchFilters from './reservationSearchFiltersReducer';
 import reservationSearchResults from './reservationSearchResultsReducer';
+import reservationSuccess from './reservationSuccessModalReducer';
 import resourceImages from './resourceImagesModalReducer';
 import resourceInfo from './resourceInfoModalReducer';
 import resourceSelector from './resourceSelectorReducer';
@@ -27,6 +28,7 @@ export default combineReducers({
   modals: combineReducers({
     reservationCancel,
     reservationInfo,
+    reservationSuccess,
     resourceImages,
     resourceInfo,
     resourceSelector: resourceSelectorModal,
