@@ -5,6 +5,17 @@ function parseDateTime(value) {
   return parsed.isValid() ? parsed : null;
 }
 
+function getDateTimeRangeFieldMoments(value) {
+  const begin = value && value.begin.date && value.begin.time ?
+    parseDateTime(`${value.begin.date} ${value.begin.time}`) :
+    null;
+  const end = value && value.end.date && value.end.time ?
+    parseDateTime(`${value.end.date} ${value.end.time}`) :
+    null;
+  return { begin, end };
+}
+
 export default {
+  getDateTimeRangeFieldMoments,
   parseDateTime,
 };
