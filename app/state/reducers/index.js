@@ -5,6 +5,7 @@ import { activeRequestsReducer, dataReducer } from 'api/reducers';
 import authReducer from 'auth/reducer';
 import cateringReducer from './cateringReducer';
 import formPlugins from './formPlugins';
+import recurringReservations from './recurringReservationsReducer';
 import resourcePage from './resourcePageReducer';
 import reservationCancel from './reservationCancelModalReducer';
 import reservationInfo from './reservationInfoModalReducer';
@@ -30,6 +31,7 @@ export default combineReducers({
     resourceInfo,
     resourceSelector: resourceSelectorModal,
   }),
+  recurringReservations,
   reservationSearchPage: combineReducers({
     searchFilters: reservationSearchFilters,
     searchResults: reservationSearchResults,
