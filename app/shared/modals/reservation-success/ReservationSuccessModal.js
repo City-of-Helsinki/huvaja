@@ -7,8 +7,17 @@ import CompactReservationList from 'shared/compact-reservation-list';
 const beginFormat = 'dd, D.M.YYYY HH:mm';
 const endFormat = 'HH:mm';
 
+function getListTitle(edited, createdReservations) {
+  if (edited) return 'Yhtä tilavarausta on muokattu';
+  const successCount = createdReservations.length;
+  return successCount === 1 ?
+    `Sinulle on tehty ${successCount} tilavaraus` :
+    `Sinulle on tehty ${successCount} tilavarausta`;
+}
+
 ReservationSuccessModal.propTypes = {
   createdReservations: PropTypes.array.isRequired,
+  editedReservation: PropTypes.object,
   failedReservations: PropTypes.array.isRequired,
   onHide: PropTypes.func.isRequired,
   resourceNames: PropTypes.object.isRequired,
@@ -16,15 +25,18 @@ ReservationSuccessModal.propTypes = {
 };
 function ReservationSuccessModal({
   createdReservations,
+  editedReservation,
   failedReservations,
   onHide,
   resourceNames,
   show,
 }) {
-  const successCount = createdReservations.length;
-  const title = successCount === 1 ?
-    `Sinulle on tehty ${successCount} tilavaraus` :
-    `Sinulle on tehty ${successCount} tilavarausta`;
+  const edited = Boolean(editedReservation);
+  const mainTitle = edited ?
+    'Varauksen muokkaus onnistui' :
+    'Varauksesi on kirjattu';
+  const listTitle = getListTitle(edited, createdReservations);
+  const reservations = edited ? [editedReservation] : createdReservations;
   return (
     <Modal
       bsSize="large"
@@ -33,16 +45,16 @@ function ReservationSuccessModal({
       show={show}
     >
       <Modal.Header closeButton>
-        <h2>Varauksesi on kirjattu</h2>
+        <h2>{mainTitle}</h2>
       </Modal.Header>
       <Modal.Body>
         <div className="reservation-success-modal-section">
-          <h5 className="reservation-success-modal-heading">{title}</h5>
+          <h5 className="reservation-success-modal-heading">{listTitle}</h5>
           <CompactReservationList
             beginFormat={beginFormat}
             className="reservations-list"
             endFormat={endFormat}
-            reservations={createdReservations}
+            reservations={reservations}
             resourceNames={resourceNames}
             success
           />
