@@ -1,4 +1,8 @@
-import { fetchCateringProviders } from './catering';
+import {
+  fetchCateringProducts,
+  fetchCateringProductCategories,
+  fetchCateringProviders,
+} from './catering';
 import { createComment, fetchComments } from './comments';
 import { fetchEquipment } from './equipment';
 import {
@@ -23,6 +27,8 @@ export {
   createComment,
   editReservation,
   favoriteResource,
+  fetchCateringProducts,
+  fetchCateringProductCategories,
   fetchCateringProviders,
   fetchComments,
   fetchEquipment,
