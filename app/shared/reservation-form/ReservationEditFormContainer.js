@@ -5,6 +5,7 @@ import { createSelector, createStructuredSelector } from 'reselect';
 
 import { fetchResource } from 'api/actions';
 import { editReservation } from 'api/actions/reservations';
+import { createCateringProviderSelector } from 'api/selectors';
 import createFormSubmitHandler from 'utils/createFormSubmitHandler';
 import ReservationForm from './ReservationForm';
 import utils from './utils';
@@ -37,6 +38,8 @@ const resourceSelector = createSelector(
   resourcesSelector,
   (resourceId, resources) => resources[resourceId]
 );
+
+const unitIdSelector = createSelector(resourceSelector, resource => resource && resource.unit);
 
 function getInitialTime(reservation) {
   const begin = moment(reservation.begin);
@@ -91,6 +94,7 @@ const numberOfParticipantsSelector = state => (
 );
 
 export const selector = createStructuredSelector({
+  cateringProvider: createCateringProviderSelector(unitIdSelector),
   initialValues: initialValuesSelector,
   numberOfParticipants: numberOfParticipantsSelector,
   resource: resourceSelector,

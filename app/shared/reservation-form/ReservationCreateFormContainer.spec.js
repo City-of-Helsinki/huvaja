@@ -138,6 +138,64 @@ describe('shared/reservation-form/ReservationCreateFormContainer', () => {
         expect(getSelected(extraState).resource).to.deep.equal(resource1);
       });
     });
+
+    describe('cateringProvider', () => {
+      const unit = { id: 'unit123' };
+      const resource = { id: 'r-1', unit: unit.id };
+      const extraResource = { id: 'r-extra' };
+      const cateringProvider = { id: 'cat123', units: [unit.id] };
+
+      function getProviderSelected(extraState, extraProps) {
+        return getSelected({
+          'data.units': { [unit.id]: unit },
+          'data.resources': { [resource.id]: resource, [extraResource.id]: extraResource },
+          'data.cateringProviders': { [cateringProvider.id]: cateringProvider },
+          ...extraState,
+        }, extraProps);
+      }
+
+      it('is returned if exists for initial', () => {
+        const actual = getProviderSelected().cateringProvider;
+        expect(actual).to.deep.equal(cateringProvider);
+      });
+
+      it('is returned if does not exist for initial but does for current selection', () => {
+        const extraState = {
+          'form.resourceReservation.values': {
+            resource: resource.id,
+            time,
+          },
+        };
+        const extraProps = { initialResource: extraResource.id };
+        const actual = getProviderSelected(extraState, extraProps).cateringProvider;
+        expect(actual).to.deep.equal(cateringProvider);
+      });
+
+      it('is not returned if exists for initial but not for current selection', () => {
+        const extraState = {
+          'form.resourceReservation.values': {
+            resource: extraResource.id,
+            time,
+          },
+        };
+        const actual = getProviderSelected(extraState).cateringProvider;
+        expect(actual).to.be.undefined;
+      });
+
+      it('is not returned if does not exist for unit', () => {
+        const extraState = {
+          'data.cateringProviders': {},
+        };
+        const actual = getProviderSelected(extraState).cateringProvider;
+        expect(actual).to.be.undefined;
+      });
+
+      it('is not returned if no resource selected', () => {
+        const extraProps = { initialResource: undefined };
+        const actual = getProviderSelected({}, extraProps).cateringProvider;
+        expect(actual).to.be.undefined;
+      });
+    });
   });
 
   describe('mergeProps', () => {

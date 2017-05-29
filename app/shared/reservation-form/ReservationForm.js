@@ -195,7 +195,7 @@ export class UnconnectedReservationForm extends React.Component {
             </Row>
             <Row>
               <Col md={6}>
-                <CateringSection />
+                {this.props.cateringProvider && <CateringSection />}
               </Col>
               <Col md={6}>
                 <h3>Muuta</h3>
@@ -241,6 +241,7 @@ export class UnconnectedReservationForm extends React.Component {
 }
 
 UnconnectedReservationForm.propTypes = {
+  cateringProvider: PropTypes.object,
   error: PropTypes.string,
   fetchResource: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,

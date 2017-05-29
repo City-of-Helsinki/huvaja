@@ -5,6 +5,7 @@ import { createSelector, createStructuredSelector } from 'reselect';
 
 import { fetchResource } from 'api/actions';
 import { makeReservation } from 'api/actions/reservations';
+import { createCateringProviderSelector } from 'api/selectors';
 import { currentUserSelector } from 'auth/selectors';
 import { slotSize } from 'shared/availability-view';
 import createFormSubmitHandler from 'utils/createFormSubmitHandler';
@@ -95,6 +96,11 @@ const resourceSelector = createSelector(
   (resources, resourceId) => resources[resourceId]
 );
 
+const unitIdSelector = createSelector(
+  resourceSelector,
+  resource => resource && resource.unit
+);
+
 const numberOfParticipantsSelector = state => (
   state.form.resourceReservation &&
   state.form.resourceReservation.values.numberOfParticipants &&
@@ -102,6 +108,7 @@ const numberOfParticipantsSelector = state => (
 );
 
 export const selector = createStructuredSelector({
+  cateringProvider: createCateringProviderSelector(unitIdSelector),
   initialValues: initialValuesSelector,
   numberOfParticipants: numberOfParticipantsSelector,
   resource: resourceSelector,

@@ -26,6 +26,7 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
     name: {
       fi: 'resouceName',
     },
+    unit: 'unit123',
   };
 
   const extraResource = {
@@ -35,14 +36,30 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
     },
   };
 
+  const unit = {
+    id: 'unit123',
+    name: { fi: 'unitName' },
+  };
+
+  const cateringProvider = {
+    id: 'cat123',
+    units: [unit.id],
+  };
+
   const defaultState = {
     data: {
+      cateringProviders: {
+        cat123: cateringProvider,
+      },
       reservations: {
         123: reservation,
       },
       resources: {
         abc123: resource,
         cba321: extraResource,
+      },
+      units: {
+        unit123: unit,
       },
     },
   };
@@ -163,6 +180,21 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
           },
         };
         expect(getSelected(extraState).resource).to.deep.equal(resource);
+      });
+    });
+
+    describe('cateringProvider', () => {
+      it('is returned if exists for unit', () => {
+        const actual = getSelected().cateringProvider;
+        expect(actual).to.deep.equal(cateringProvider);
+      });
+
+      it('is not returned if does not exist for unit', () => {
+        const extraState = {
+          'data.cateringProviders': {},
+        };
+        const actual = getSelected(extraState).cateringProvider;
+        expect(actual).to.be.undefined;
       });
     });
   });
