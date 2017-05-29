@@ -4,6 +4,7 @@ import apiActionTypes from 'api/actionTypes';
 
 const initialState = immutable({
   created: [],
+  edited: null,
   failed: [],
   show: false,
 });
@@ -22,6 +23,7 @@ function reservationSuccessModalReducer(state = initialState, action) {
     case apiActionTypes.RESERVATION_POST_SUCCESS: {
       return state.merge({
         created: [...state.created, action.payload],
+        edited: null,
       });
     }
     case apiActionTypes.RESERVATION_POST_ERROR: {
@@ -29,6 +31,12 @@ function reservationSuccessModalReducer(state = initialState, action) {
       const failReason = parseError(action.payload);
       return state.merge({
         failed: [...state.failed, { ...reservation, failReason }],
+      });
+    }
+    case apiActionTypes.RESERVATION_PUT_SUCCESS: {
+      return state.merge({
+        created: [],
+        edited: action.payload,
       });
     }
     case 'HIDE_RESERVATION_SUCCESS_MODAL': {
