@@ -1,4 +1,5 @@
 import immutable from 'seamless-immutable';
+import { actionTypes as formActions } from 'redux-form';
 
 import apiActionTypes from 'api/actionTypes';
 
@@ -28,6 +29,7 @@ function reservationSuccessModalReducer(state = initialState, action) {
     }
     case apiActionTypes.RESERVATION_POST_ERROR: {
       const reservation = action.meta.reservation;
+      if (!reservation) return state;
       const failReason = parseError(action.payload);
       return state.merge({
         failed: [...state.failed, { ...reservation, failReason }],
@@ -38,6 +40,10 @@ function reservationSuccessModalReducer(state = initialState, action) {
         created: [],
         edited: action.payload,
       });
+    }
+    case formActions.START_SUBMIT: {
+      if (action.meta.form === 'resourceReservation') return initialState;
+      return state;
     }
     case 'HIDE_RESERVATION_SUCCESS_MODAL': {
       return initialState;
