@@ -6,9 +6,10 @@ import selector from './reservationSuccessModalSelector';
 import ReservationSuccessModal from './ReservationSuccessModal';
 
 UnconnectedReservationSuccessModalContainer.propTypes = {
+  createdReservations: PropTypes.array.isRequired,
+  editedReservation: PropTypes.object,
   failedReservations: PropTypes.array.isRequired,
   onHide: PropTypes.func.isRequired,
-  createdReservations: PropTypes.array.isRequired,
   resourceNames: PropTypes.object.isRequired,
   show: PropTypes.bool.isRequired,
 };

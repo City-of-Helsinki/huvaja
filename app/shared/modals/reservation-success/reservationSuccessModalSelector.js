@@ -11,6 +11,7 @@ const failedReservationsSelector = state => orderBy(
   state.modals.reservationSuccess.failed,
   'begin'
 );
+const editedSelector = state => state.modals.reservationSuccess.edited;
 
 function resourcesSelector(state) {
   return state.data.resources;
@@ -34,6 +35,7 @@ const resourceNamesSelector = createSelector(
 
 export default createStructuredSelector({
   createdReservations: createdSelector,
+  editedReservation: editedSelector,
   failedReservations: failedReservationsSelector,
   resourceNames: resourceNamesSelector,
   show: showSelector,
