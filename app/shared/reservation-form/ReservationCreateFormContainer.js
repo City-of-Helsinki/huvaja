@@ -118,11 +118,11 @@ const baseReservationSelector = createSelector(
   timeRangeSelector,
   (timeRange) => {
     const { begin, end } = timeUtils.getDateTimeRangeFieldMoments(timeRange);
-    if (!begin || !end) return [];
-    return [{
+    if (!begin || !end) return null;
+    return {
       begin: begin.format(),
       end: end.format(),
-    }];
+    };
   }
 );
 

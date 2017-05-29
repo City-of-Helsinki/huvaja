@@ -177,16 +177,21 @@ export class UnconnectedReservationForm extends React.Component {
                       'isRecurring',
                       'checkbox',
                       'Tee toistuva varaus...',
-                      { className: 'is-recurring-checkbox' },
+                      {
+                        className: 'is-recurring-checkbox',
+                        disabled: !this.props.isRecurring && !this.props.baseReservation,
+                      },
                     )}
                     {this.props.isRecurring &&
                       <div className="recurring-reservations">
                         <RecurringReservationControls />
-                        <CompactReservationList
-                          onRemoveClick={this.props.removeRecurringReservation}
-                          removableReservations={this.props.recurringReservations}
-                          reservations={this.props.baseReservation}
-                        />
+                        {this.props.baseReservation &&
+                          <CompactReservationList
+                            onRemoveClick={this.props.removeRecurringReservation}
+                            removableReservations={this.props.recurringReservations}
+                            reservations={[this.props.baseReservation]}
+                          />
+                        }
                       </div>
                     }
                   </div>
@@ -297,7 +302,7 @@ export class UnconnectedReservationForm extends React.Component {
 
 UnconnectedReservationForm.propTypes = {
   allowRecurring: PropTypes.bool,
-  baseReservation: PropTypes.array,
+  baseReservation: PropTypes.object,
   cateringProvider: PropTypes.object,
   changeBaseTime: PropTypes.func,
   error: PropTypes.string,
