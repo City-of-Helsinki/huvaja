@@ -12,6 +12,8 @@ function create(name, methods = []) {
 
 export default Object.assign(
   {},
+  create('CATERING_PRODUCTS', ['GET']),
+  create('CATERING_PRODUCT_CATEGORIES', ['GET']),
   create('CATERING_PROVIDERS', ['GET']),
   create('COMMENTS', ['GET', 'POST']),
   create('EQUIPMENT', ['GET']),
