@@ -1,4 +1,5 @@
 import actionTypes from '../actionTypes';
+import createCateringProviderSelector from './createCateringProviderSelector';
 import createRequestIsActiveSelector from './createRequestIsActiveSelector';
 
 const reservationDeleteIsActiveSelector = createRequestIsActiveSelector(
@@ -30,6 +31,7 @@ const unitsGetIsActiveSelector = createRequestIsActiveSelector(
 );
 
 export {
+  createCateringProviderSelector,
   reservationDeleteIsActiveSelector,
   reservationGetIsActiveSelector,
   reservationsGetIsActiveSelector,

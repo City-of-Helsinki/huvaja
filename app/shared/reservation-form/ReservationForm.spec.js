@@ -257,8 +257,14 @@ describe('shared/reservation-form/ReservationForm', () => {
       });
     });
 
-    it('renders CateringSection', () => {
+    it('does not render CateringSection if not props.cateringProvider', () => {
       const cateringSection = getWrapper().find(CateringSection);
+      expect(cateringSection).to.have.length(0);
+    });
+
+    it('renders CateringSection if props.cateringProvider', () => {
+      const cateringProvider = { some: 'provider' };
+      const cateringSection = getWrapper({ cateringProvider }).find(CateringSection);
       expect(cateringSection).to.have.length(1);
     });
 
