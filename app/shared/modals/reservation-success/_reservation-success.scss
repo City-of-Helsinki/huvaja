@@ -1,14 +1,36 @@
 .reservation-success-modal {
-  &-heading {
+  .modal-header,
+  .modal-body {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .modal-header {
+    border-bottom: none;
+
+    button.close {
+      font-size: 52px;
+      font-weight: 100;
+    }
+  }
+
+  &-main-title {
     text-align: center;
+    margin-top: 20px;
+  }
+  &-list-title {
+    text-align: center;
+    margin-bottom: 20px;
   }
 
   .reservations-list,
   .failed-reservations-list {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 0px;
   }
 
+  &-section {
+    margin-bottom: 20px;
+  }
   &-section + &-section {
     margin-top: 35px;
   }

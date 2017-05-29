@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import Button from 'react-bootstrap/lib/Button';
 import Modal from 'react-bootstrap/lib/Modal';
 
 import CompactReservationList from 'shared/compact-reservation-list';
@@ -45,11 +44,11 @@ function ReservationSuccessModal({
       show={show}
     >
       <Modal.Header closeButton>
-        <h2>{mainTitle}</h2>
+        <h2 className="reservation-success-modal-main-title">{mainTitle}</h2>
       </Modal.Header>
       <Modal.Body>
         <div className="reservation-success-modal-section">
-          <h5 className="reservation-success-modal-heading">{listTitle}</h5>
+          <h5 className="reservation-success-modal-list-title">{listTitle}</h5>
           <CompactReservationList
             beginFormat={beginFormat}
             className="reservations-list"
@@ -61,7 +60,7 @@ function ReservationSuccessModal({
         </div>
         {Boolean(failedReservations.length) &&
           <div className="reservation-success-modal-section">
-            <h5 className="reservation-success-modal-heading">
+            <h5 className="reservation-success-modal-list-title">
               Seuraavien varausten tekeminen ei onnistunut
             </h5>
             <CompactReservationList
@@ -76,14 +75,6 @@ function ReservationSuccessModal({
           </div>
         }
       </Modal.Body>
-      <Modal.Footer>
-        <Button
-          bsStyle="default"
-          onClick={onHide}
-        >
-          OK
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 }
