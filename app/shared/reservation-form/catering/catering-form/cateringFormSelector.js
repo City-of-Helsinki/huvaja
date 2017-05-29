@@ -2,6 +2,8 @@ import sortBy from 'lodash/sortBy';
 import values from 'lodash/values';
 import { createSelector, createStructuredSelector } from 'reselect';
 
+import { createCateringProviderSelector } from 'api/selectors';
+
 function defaultCateringTimeSelector(state) {
   const reservationTimes = state.form.resourceReservation.values.time;
   const startTime = reservationTimes.begin.time;
@@ -15,6 +17,20 @@ function defaultItemQuantitySelector(state) {
 function cateringMenuDataSelector(state) {
   return state.data.cateringMenuItems;
 }
+
+function resourceIdSelector(state) {
+  return state.form.resourceReservation.values.resource;
+}
+
+function resourcesSelector(state) {
+  return state.data.resources;
+}
+
+const unitIdSelector = createSelector(
+  resourcesSelector,
+  resourceIdSelector,
+  (resources, id) => resources[id] && resources[id].unit
+);
 
 const cateringMenuProductsSelector = createSelector(
   cateringMenuDataSelector,
@@ -33,6 +49,7 @@ export default createStructuredSelector({
   cateringData: state => state.catering,
   cateringMenu: cateringMenuSelector,
   cateringMenuItems: cateringMenuProductsSelector,
+  cateringProvider: createCateringProviderSelector(unitIdSelector),
   defaultCateringTime: defaultCateringTimeSelector,
   defaultItemQuantity: defaultItemQuantitySelector,
 });

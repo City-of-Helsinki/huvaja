@@ -40,6 +40,9 @@ export class UnconnectedCateringFormContainer extends Component {
     }).isRequired,
     cateringMenu: PropTypes.array.isRequired,
     cateringMenuItems: PropTypes.object.isRequired,
+    cateringProvider: PropTypes.shape({
+      priceListUrl: PropTypes.string,
+    }).isRequired,
     defaultCateringTime: PropTypes.string.isRequired,
     defaultItemQuantity: PropTypes.number.isRequired,
     onCancelCallback: PropTypes.func,
@@ -174,7 +177,7 @@ export class UnconnectedCateringFormContainer extends Component {
             </p>
             <a
               className="pricing-link"
-              href="http://example.com"
+              href={this.props.cateringProvider.priceListUrl || 'http://example.com'}
               rel="noopener noreferrer"
               target="_blank"
             >

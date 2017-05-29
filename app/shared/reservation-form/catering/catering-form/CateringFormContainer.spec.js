@@ -25,6 +25,7 @@ describe('shared/reservation-form/catering/catering-form/CateringFormContainer',
       cateringData: getCateringData(),
       cateringMenu: [{ id: 'c1', name: 'Drinks', products: [] }],
       cateringMenuItems: { 1: { id: 1, name: 'Coffee' } },
+      cateringProvider: { priceListUrl: null },
       defaultCateringTime: '12:00',
       defaultItemQuantity: 1,
       saveCateringData: () => null,
@@ -121,6 +122,19 @@ describe('shared/reservation-form/catering/catering-form/CateringFormContainer',
       const saveButton = wrapper.find('.cancel-button');
       expect(saveButton).to.have.length(1);
       expect(saveButton.prop('onClick')).to.equal(wrapper.instance().handleCancel);
+    });
+
+    it('renders pricing link', () => {
+      const link = getWrapper().find('.pricing-link');
+      expect(link).to.have.length(1);
+      expect(link.prop('href')).to.equal('http://example.com');
+    });
+
+    it('renders pricing link with catering provider link', () => {
+      const cateringProvider = { priceListUrl: 'http://example.com/price-list-url' };
+      const link = getWrapper({ cateringProvider }).find('.pricing-link');
+      expect(link).to.have.length(1);
+      expect(link.prop('href')).to.equal(cateringProvider.priceListUrl);
     });
   });
 
