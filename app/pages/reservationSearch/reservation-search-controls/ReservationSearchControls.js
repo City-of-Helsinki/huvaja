@@ -36,7 +36,7 @@ class ReservationSearchControls extends Component {
     values: PropTypes.shape({
       end: PropTypes.string.isRequired,
       eventSubject: PropTypes.string.isRequired,
-      hasCatering: PropTypes.string.isRequired,
+      hasCateringOrder: PropTypes.string.isRequired,
       hostName: PropTypes.string.isRequired,
       isFavoriteResource: PropTypes.string.isRequired,
       isOwn: PropTypes.string.isRequired,
@@ -96,9 +96,9 @@ class ReservationSearchControls extends Component {
                 className="has-catering-checkbox"
                 disabled
                 onChange={event =>
-                  this.handleChange({ hasCatering: event.target.checked ? 'true' : '' })
+                  this.handleChange({ hasCateringOrder: event.target.checked ? 'true' : '' })
                 }
-                checked={this.props.values.hasCatering === 'true'}
+                checked={this.props.values.hasCateringOrder === 'true'}
               >
                 Sisältää tarjoilutilauksen
               </Checkbox>

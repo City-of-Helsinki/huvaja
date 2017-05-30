@@ -13,7 +13,7 @@ describe('pages/reservationSearch/reservation-search-controls/ReservationSearchC
   const defaultValues = {
     end: '2016-12-12',
     eventSubject: '',
-    hasCatering: '',
+    hasCateringOrder: '',
     hostName: '',
     isFavoriteResource: '',
     isOwn: '',
@@ -111,7 +111,7 @@ describe('pages/reservationSearch/reservation-search-controls/ReservationSearchC
       });
     });
 
-    describe('hasCatering control', () => {
+    describe('hasCateringOrder control', () => {
       function getCheckboxWrapper(values) {
         const wrapper = getWrapper({
           values: Object.assign({}, defaultValues, values),
@@ -126,7 +126,7 @@ describe('pages/reservationSearch/reservation-search-controls/ReservationSearchC
 
       it('renders Checkbox with correct value', () => {
         const checkbox = getCheckboxWrapper(
-          { hasCatering: 'true' }
+          { hasCateringOrder: 'true' }
         ).find(Checkbox);
         expect(checkbox).to.have.length(1);
         expect(checkbox.prop('checked')).to.equal(true);

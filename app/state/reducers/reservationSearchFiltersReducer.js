@@ -13,7 +13,7 @@ export function getInitialState() {
   return {
     end: moment().add(1, 'weeks').format('YYYY-MM-DD'),
     eventSubject: '',
-    hasCatering: '',
+    hasCateringOrder: '',
     hostName: '',
     isFavoriteResource: '',
     isOwn: '',
