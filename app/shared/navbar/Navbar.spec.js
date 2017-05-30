@@ -84,6 +84,12 @@ describe('shared/navbar/Navbar', () => {
       expect(navDropdown.prop('title')).to.equal(user.displayName);
     });
 
+    it('renders my-info link', () => {
+      const navDropdown = getWrapper({ user }).find(NavDropdown);
+      const myInfoLink = navDropdown.children().at(0);
+      expect(myInfoLink.prop('to')).to.equal('/my-info');
+    });
+
     it('renders a logout link', () => {
       const logoutLink = getLogoutLinkWrapper({ user });
       expect(logoutLink).to.have.length(1);

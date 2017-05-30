@@ -36,6 +36,11 @@ function Navbar(props) {
           }
           {props.user &&
             <NavDropdown id="collapsible-navbar-dropdown" title={props.user.displayName}>
+              <LinkContainer to="/my-info">
+                <MenuItem>
+                  Omat tiedot
+                </MenuItem>
+              </LinkContainer>
               <MenuItem href={`/logout?next=${window.location.origin}`}>
                 Kirjaudu ulos
               </MenuItem>
