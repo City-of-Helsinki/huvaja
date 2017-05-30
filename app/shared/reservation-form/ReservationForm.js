@@ -83,6 +83,11 @@ export class UnconnectedReservationForm extends React.Component {
         { date: this.props.timelineDate }
       );
     }
+    if (this.props.cateringProvider) {
+      const id = this.props.cateringProvider.id;
+      this.props.fetchCateringProducts(id);
+      this.props.fetchCateringProductCategories(id);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -94,6 +99,13 @@ export class UnconnectedReservationForm extends React.Component {
       this.props.fetchResource(
         nextProps.resource.id, { date: nextProps.timelineDate }
       );
+    }
+
+    const prevId = this.props.cateringProvider && this.props.cateringProvider.id;
+    const nextId = nextProps.cateringProvider && nextProps.cateringProvider.id;
+    if (nextId && prevId !== nextId) {
+      this.props.fetchCateringProducts(nextId);
+      this.props.fetchCateringProductCategories(nextId);
     }
   }
 
@@ -243,6 +255,8 @@ export class UnconnectedReservationForm extends React.Component {
 UnconnectedReservationForm.propTypes = {
   cateringProvider: PropTypes.object,
   error: PropTypes.string,
+  fetchCateringProducts: PropTypes.func.isRequired,
+  fetchCateringProductCategories: PropTypes.func.isRequired,
   fetchResource: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   numberOfParticipants: PropTypes.number,

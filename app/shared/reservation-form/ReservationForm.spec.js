@@ -13,6 +13,8 @@ import { UnconnectedReservationForm as ReservationForm, validate } from './Reser
 describe('shared/reservation-form/ReservationForm', () => {
   const defaults = {
     timelineDate: '2016-01-01',
+    fetchCateringProducts: () => null,
+    fetchCateringProductCategories: () => null,
     fetchResource: () => null,
     handleSubmit: () => null,
     numberOfParticipants: null,
@@ -354,6 +356,30 @@ describe('shared/reservation-form/ReservationForm', () => {
         instance.componentDidMount();
         expect(fetchResource.callCount).to.equal(0);
       });
+
+      it('fetches products and categories if provider', () => {
+        const fetchCateringProducts = simple.mock();
+        const fetchCateringProductCategories = simple.mock();
+        const cateringProvider = { id: 4 };
+        const props = { cateringProvider, fetchCateringProducts, fetchCateringProductCategories };
+        const instance = getWrapper(props).instance();
+        instance.componentDidMount();
+        expect(fetchCateringProducts.callCount).to.equal(1);
+        expect(fetchCateringProducts.lastCall.args).to.deep.equal([4]);
+        expect(fetchCateringProductCategories.callCount).to.equal(1);
+        expect(fetchCateringProductCategories.lastCall.args).to.deep.equal([4]);
+      });
+
+      it('does not fetch products and categories if no provider', () => {
+        const fetchCateringProducts = simple.mock();
+        const fetchCateringProductCategories = simple.mock();
+        const cateringProvider = null;
+        const props = { cateringProvider, fetchCateringProducts, fetchCateringProductCategories };
+        const instance = getWrapper(props).instance();
+        instance.componentDidMount();
+        expect(fetchCateringProducts.called).to.be.false;
+        expect(fetchCateringProductCategories.called).to.be.false;
+      });
     });
 
     describe('componentWillReceiveProps', () => {
@@ -408,6 +434,56 @@ describe('shared/reservation-form/ReservationForm', () => {
         };
         instance.componentWillReceiveProps(nextProps);
         expect(fetchResource.callCount).to.equal(0);
+      });
+
+      describe('fetching products and categories', () => {
+        function getFetchingCallData(prevProvider, nextProvider) {
+          const fetchCateringProducts = simple.mock();
+          const fetchCateringProductCategories = simple.mock();
+          const wrapper = getWrapper({
+            cateringProvider: prevProvider,
+            fetchCateringProducts,
+            fetchCateringProductCategories,
+          });
+          const instance = wrapper.instance();
+          instance.componentWillReceiveProps({
+            ...wrapper.props(),
+            cateringProvider: nextProvider,
+          });
+          return { fetchCateringProducts, fetchCateringProductCategories };
+        }
+
+        function testCalled(mocks, providerId) {
+          expect(mocks.fetchCateringProducts.callCount).to.equal(1);
+          expect(mocks.fetchCateringProducts.lastCall.args).to.deep.equal([providerId]);
+          expect(mocks.fetchCateringProductCategories.callCount).to.equal(1);
+          expect(mocks.fetchCateringProductCategories.lastCall.args).to.deep.equal([providerId]);
+        }
+
+        function testNotCalled(mocks) {
+          expect(mocks.fetchCateringProducts.called).to.be.false;
+          expect(mocks.fetchCateringProductCategories.called).to.be.false;
+        }
+
+        it('is done if provider added', () => {
+          const data = getFetchingCallData(null, { id: 5 });
+          testCalled(data, 5);
+        });
+
+        it('is done if provider changes', () => {
+          const data = getFetchingCallData({ id: 9 }, { id: 10 });
+          testCalled(data, 10);
+        });
+
+        it('is not done if provider removed', () => {
+          const data = getFetchingCallData({ id: 5 }, null);
+          testNotCalled(data);
+        });
+
+        it('is not done if provider does not change', () => {
+          const data = getFetchingCallData({ id: 10 }, { id: 10 });
+          testNotCalled(data);
+        });
       });
     });
   });
