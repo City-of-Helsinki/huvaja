@@ -3,6 +3,7 @@ import { Route, IndexRoute } from 'react-router';
 import { createAction } from 'redux-actions';
 
 import AppContainer from 'pages/AppContainer';
+import MyInfoPage from 'pages/myInfo';
 import SearchPage from 'pages/search';
 import ReservationCreatePage from 'pages/reservationCreate';
 import ReservationEditPage from 'pages/reservationEdit';
@@ -33,6 +34,7 @@ export default (
       <Route component={ReservationSearchPage} path="/reservations" {...getDispatchers('RESERVATION_SEARCH')} />
       <Route component={ReservationCreatePage} path="/reservations/create" />
       <Route component={ReservationEditPage} path="/reservations/:id/edit" {...getDispatchers('RESERVATION_EDIT')} />
+      <Route component={MyInfoPage} path="/my-info" />
     </Route>
   </Route>
 );
