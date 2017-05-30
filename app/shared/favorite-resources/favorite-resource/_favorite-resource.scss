@@ -1,0 +1,26 @@
+.favorite-resource {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $background-gray;
+  padding: $padding-base-vertical $padding-base-horizontal;
+  margin-bottom: 3px;
+  font-weight: 500;
+
+  &-heart {
+    color: $favorite-color;
+    margin-right: 10px;
+  }
+
+  &-link {
+    color: $text-color;
+
+    &:hover {
+      color: $text-color;
+    }
+  }
+
+  &-unfavorite {
+    cursor: pointer;
+  }
+}

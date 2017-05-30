@@ -26,7 +26,6 @@ export class UnconnectedAppContainer extends Component {
     this.props.fetchAuthState();
     this.props.fetchCateringProviders();
     this.props.fetchEquipment();
-    this.props.fetchResources({}, false);
     this.props.fetchTypes();
     this.props.fetchUnits();
   }
@@ -34,6 +33,13 @@ export class UnconnectedAppContainer extends Component {
   componentWillReceiveProps(props) {
     if (props.isAuthFetched && !props.isLoggedIn) {
       locationUtils.redirect('/login');
+    }
+
+    // Wait for authentication before fetching resources, so that resources
+    // will include correct user specific data. Otherwise for example
+    // isFavorite could be wrongly false.
+    if (!this.props.isLoggedIn && props.isLoggedIn) {
+      this.props.fetchResources({}, false);
     }
   }
 
