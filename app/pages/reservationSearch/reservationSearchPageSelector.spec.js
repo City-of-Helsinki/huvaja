@@ -18,7 +18,7 @@ describe('pages/search/reservationSearchPageSelector', () => {
   const searchFilters = {
     end: '2016-12-12',
     eventSubject: '',
-    hasCatering: '',
+    hasCateringOrder: '',
     hostName: '',
     isFavoriteResource: '',
     isOwn: '',

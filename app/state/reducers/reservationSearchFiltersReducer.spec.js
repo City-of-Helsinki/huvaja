@@ -20,8 +20,8 @@ describe('state/reducers/reservationSearchFiltersReducer', () => {
       expect(getInitial().eventSubject).to.equal('');
     });
 
-    it('hasCatering is an empty string', () => {
-      expect(getInitial().hasCatering).to.equal('');
+    it('hasCateringOrder is an empty string', () => {
+      expect(getInitial().hasCateringOrder).to.equal('');
     });
 
     it('hostName is an empty string', () => {
