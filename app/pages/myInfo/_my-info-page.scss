@@ -1,0 +1,15 @@
+.my-info-page {
+  h1 {
+    margin-bottom: 40px;
+  }
+
+  &-section {
+    border-top: 1px solid $medium-gray;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  &-section-heading {
+    margin-bottom: 30px;
+  }
+}

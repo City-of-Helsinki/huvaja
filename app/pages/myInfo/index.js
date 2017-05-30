@@ -1,1 +1,1 @@
-export { default } from './MyInfoPageContainer';
+export { default } from './MyInfoPage';
