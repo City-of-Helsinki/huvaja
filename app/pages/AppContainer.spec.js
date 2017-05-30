@@ -112,14 +112,6 @@ describe('pages/AppContainer', () => {
       instance.componentDidMount();
       expect(fetchEquipment.callCount).to.equal(1);
     });
-
-    it('fetches resources with param times = false', () => {
-      const fetchResources = simple.mock();
-      const instance = getWrapper({ fetchResources }).instance();
-      instance.componentDidMount();
-      expect(fetchResources.callCount).to.equal(1);
-      expect(fetchResources.lastCall.args).to.deep.equal([{}, false]);
-    });
   });
 
   describe('componentWillReceiveProps', () => {
@@ -159,6 +151,27 @@ describe('pages/AppContainer', () => {
       it('does not redirect if isLoggedIn is true', () => {
         const redirected = callsRedirect({ isAuthFetched: true, isLoggedIn: true });
         expect(redirected).to.be.false;
+      });
+    });
+
+    describe('when user logs in', () => {
+      it('fetches resources with param times = false', () => {
+        const fetchResources = simple.mock();
+        const props = { fetchResources, isLoggedIn: false };
+        const instance = getWrapper(props).instance();
+        instance.componentWillReceiveProps({ isLoggedIn: true });
+        expect(fetchResources.callCount).to.equal(1);
+        expect(fetchResources.lastCall.args).to.deep.equal([{}, false]);
+      });
+    });
+
+    describe('when user stays logged in', () => {
+      it('does not fetch resources', () => {
+        const fetchResources = simple.mock();
+        const props = { fetchResources, isLoggedIn: true };
+        const instance = getWrapper(props).instance();
+        instance.componentWillReceiveProps({ isLoggedIn: true });
+        expect(fetchResources.callCount).to.equal(0);
       });
     });
   });
