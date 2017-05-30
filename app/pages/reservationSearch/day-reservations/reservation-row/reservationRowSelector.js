@@ -1,6 +1,8 @@
 import moment from 'moment';
 import { createSelector } from 'reselect';
 
+import resourceUtils from 'utils/resourceUtils';
+
 function reservationsSelector(state) {
   return state.data.reservations;
 }
@@ -42,17 +44,12 @@ export default createSelector(
   (reservation, resource, unit) => {
     const begin = moment(reservation.begin).format('HH:mm');
     const end = moment(reservation.end).format('HH:mm');
-    const resourceName = resource && resource.name.fi;
-    const unitName = unit && unit.name.fi;
-    const place = unitName && resourceName ?
-      `${unitName} / ${resourceName}` :
-      'Tuntematon tila';
     return {
       eventSubject: reservation.eventSubject || 'Tuntematon varauksen nimi',
       hostName: reservation.hostName || 'Tuntematon isäntä',
       id: reservation.id,
       numberOfParticipants: reservation.numberOfParticipants || null,
-      place,
+      place: resourceUtils.getLongName(resource, unit) || 'Tuntematon tila',
       timeRange: `${begin} - ${end}`,
     };
   }

@@ -4,6 +4,7 @@ import sortBy from 'lodash/sortBy';
 import { createSelector, createStructuredSelector } from 'reselect';
 
 import { resourcesGetIsActiveSelector } from 'api/selectors';
+import resourceUtils from 'utils/resourceUtils';
 
 const selectedResourceIdSelector = (state, props) => props.selectedResourceId;
 const resourcesSelector = state => state.data.resources;
@@ -25,7 +26,7 @@ const getResources = (ids, resources, units, excludedId) => {
     const unit = units[resource.unit];
     return {
       id,
-      label: `${unit.name.fi} / ${resource.name.fi}`,
+      label: resourceUtils.getLongName(resource, unit),
       peopleCapacity: resource.peopleCapacity,
     };
   });

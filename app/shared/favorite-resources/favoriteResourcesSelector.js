@@ -4,6 +4,7 @@ import values from 'lodash/values';
 import { createSelector, createStructuredSelector } from 'reselect';
 
 import { resourcesGetIsActiveSelector } from 'api/selectors';
+import resourceUtils from 'utils/resourceUtils';
 
 function resourcesSelector(state) {
   return state.data.resources;
@@ -23,10 +24,9 @@ const favoriteResourcesSelector = createSelector(
   unitsSelector,
   (resources, units) => resources.map((resource) => {
     const unit = units[resource.unit];
-    const longName = `${unit.name.fi} / ${resource.name.fi}`;
     return {
       id: resource.id,
-      longName,
+      longName: resourceUtils.getLongName(resource, unit),
     };
   })
 );
