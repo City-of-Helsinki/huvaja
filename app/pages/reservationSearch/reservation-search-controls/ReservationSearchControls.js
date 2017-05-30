@@ -94,7 +94,6 @@ class ReservationSearchControls extends Component {
               </Checkbox>
               <Checkbox
                 className="has-catering-checkbox"
-                disabled
                 onChange={event =>
                   this.handleChange({ hasCateringOrder: event.target.checked ? 'true' : '' })
                 }
