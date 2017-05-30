@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { createSelector, createStructuredSelector } from 'reselect';
 
-import { fetchResource } from 'api/actions';
+import { fetchCateringProducts, fetchCateringProductCategories, fetchResource } from 'api/actions';
 import { editReservation } from 'api/actions/reservations';
 import { createCateringProviderSelector } from 'api/selectors';
 import createFormSubmitHandler from 'utils/createFormSubmitHandler';
@@ -103,6 +103,8 @@ export const selector = createStructuredSelector({
 });
 
 const actions = {
+  fetchCateringProducts,
+  fetchCateringProductCategories,
   fetchResource,
   editReservation,
 };
