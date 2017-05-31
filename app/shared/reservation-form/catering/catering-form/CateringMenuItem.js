@@ -25,8 +25,8 @@ class CateringMenuItem extends Component {
         className={classNames('catering-menu-item', { selected })}
         onClick={this.handleClick}
       >
-        <div className="name">{item.name}</div>
-        <div className="description">{item.description}</div>
+        <div className="name">{item.name.fi}</div>
+        <div className="description">{item.description && item.description.fi}</div>
         <FontAwesome name={selected ? 'minus' : 'plus'} />
       </button>
     );

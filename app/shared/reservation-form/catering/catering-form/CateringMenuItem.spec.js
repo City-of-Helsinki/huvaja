@@ -9,7 +9,11 @@ import CateringMenuItem from './CateringMenuItem';
 describe('shared/reservation-form/catering/catering-form/CateringMenuItem', () => {
   function getWrapper(props) {
     const defaults = {
-      item: { id: 'cmi-1', name: 'Coffee', description: 'Black coffee' },
+      item: {
+        id: 'cmi-1',
+        name: { fi: 'Kahvi' },
+        description: null,
+      },
       onClick: () => null,
       selected: false,
     };
@@ -22,7 +26,7 @@ describe('shared/reservation-form/catering/catering-form/CateringMenuItem', () =
   });
 
   it('clicking the button calls props.onClick with item id', () => {
-    const item = { id: 'some-id', name: 'Coffee', description: 'Black coffee' };
+    const item = { id: 'some-id', name: { fi: 'Kahvi' } };
     const onClick = simple.mock();
     const button = getWrapper({ item, onClick }).find('button');
     button.simulate('click');
@@ -31,15 +35,15 @@ describe('shared/reservation-form/catering/catering-form/CateringMenuItem', () =
   });
 
   it('renders the name of the item', () => {
-    const item = { name: 'Apple', description: 'Fruit, not company' };
+    const item = { name: { fi: 'Omena' } };
     const name = getWrapper({ item }).find('.name');
-    expect(name.text()).to.equal(item.name);
+    expect(name.text()).to.equal(item.name.fi);
   });
 
   it('renders the description of the item', () => {
-    const item = { name: 'Coffee', description: 'Delicious' };
+    const item = { name: { fi: 'Kahvi' }, description: { fi: 'Herkullinen' } };
     const description = getWrapper({ item }).find('.description');
-    expect(description.text()).to.equal(item.description);
+    expect(description.text()).to.equal(item.description.fi);
   });
 
   it('renders a "plus" icon if item is not selected', () => {

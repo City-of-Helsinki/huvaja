@@ -18,7 +18,7 @@ export default function CateringMenu(props) {
           className="catering-menu-category"
           collapsible
           eventKey={category.id}
-          header={category.name}
+          header={category.name.fi}
           key={category.id}
         >
           {category.products.map(item =>

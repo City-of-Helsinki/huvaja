@@ -11,7 +11,12 @@ import CateringOrderTable from './CateringOrderTable';
 describe('shared/reservation-form/catering/CateringOrderTable', () => {
   function getWrapper(props) {
     const defaults = {
-      items: [{ id: 'cmi-1', description: 'Very cool', quantity: 1 }],
+      items: [{
+        id: 'cmi-1',
+        name: { fi: 'Sokeri' },
+        description: { fi: 'Tosi makee' },
+        quantity: 1,
+      }],
     };
     return shallow(<CateringOrderTable {...defaults} {...props} />);
   }
@@ -38,8 +43,8 @@ describe('shared/reservation-form/catering/CateringOrderTable', () => {
 
   describe('table body', () => {
     const items = [
-      { id: 1, name: 'Coffee', description: 'Delicious', quantity: 2 },
-      { id: 2, name: 'Coca Cola', description: 'Zero', quantity: 3 },
+      { id: 1, name: { fi: 'Kahvi' }, description: { fi: 'Maittava' }, quantity: 2 },
+      { id: 2, name: { fi: 'Kokis' }, description: { fi: 'Nolla' }, quantity: 3 },
     ];
 
     function getTbodyWrapper(props) {
@@ -63,8 +68,8 @@ describe('shared/reservation-form/catering/CateringOrderTable', () => {
           const tds = tr.find('td');
           const item = items[index];
           expect(tds).to.have.length(3);
-          expect(tds.at(0).text()).to.equal(item.name);
-          expect(tds.at(1).text()).to.contain(item.description);
+          expect(tds.at(0).text()).to.equal(item.name.fi);
+          expect(tds.at(1).text()).to.contain(item.description.fi);
           expect(tds.at(2).text()).to.contain(item.quantity);
         });
       });
@@ -89,8 +94,8 @@ describe('shared/reservation-form/catering/CateringOrderTable', () => {
           const tds = tr.find('td');
           const item = items[index];
           expect(tds).to.have.length(4);
-          expect(tds.at(0).text()).to.equal(item.name);
-          expect(tds.at(1).text()).to.contain(item.description);
+          expect(tds.at(0).text()).to.equal(item.name.fi);
+          expect(tds.at(1).text()).to.contain(item.description.fi);
           expect(tds.at(2).find(FormControl)).to.have.length(1);
           expect(tds.at(3).find(FontAwesome)).to.have.length(1);
         });

@@ -11,7 +11,7 @@ describe('shared/reservation-form/catering/catering-form/CateringMenu', () => {
     categories: [
       {
         id: 'c1',
-        name: 'Category 1',
+        name: { fi: 'Kategoria 1' },
         products: [{ id: 'p1' }, { id: 'p2' }],
       },
     ],
@@ -36,13 +36,13 @@ describe('shared/reservation-form/catering/catering-form/CateringMenu', () => {
 
   it('renders a Panel for each category', () => {
     const categories = [
-      { id: 'c1', name: 'Category 1', products: [] },
-      { id: 'c2', name: 'Donuts', products: [] },
+      { id: 'c1', name: { fi: 'Kategoria 1' }, products: [] },
+      { id: 'c2', name: { fi: 'Donitsit' }, products: [] },
     ];
     const panels = getWrapper({ categories }).find(Panel);
     expect(panels).to.have.length(2);
-    expect(panels.at(0).prop('header')).to.equal('Category 1');
-    expect(panels.at(1).prop('header')).to.equal('Donuts');
+    expect(panels.at(0).prop('header')).to.equal('Kategoria 1');
+    expect(panels.at(1).prop('header')).to.equal('Donitsit');
   });
 
   it('passes correct props to each CateringMenuItem', () => {
