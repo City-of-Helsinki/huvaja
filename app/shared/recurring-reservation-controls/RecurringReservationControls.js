@@ -15,8 +15,8 @@ RecurringReservationControls.propTypes = {
   frequency: PropTypes.string.isRequired,
   frequencyOptions: PropTypes.array.isRequired,
   isVisible: PropTypes.bool.isRequired,
-  numberOfOccurrences: PropTypes.number.isRequired,
   lastTime: PropTypes.string,
+  numberOfOccurrences: PropTypes.number.isRequired,
 };
 function RecurringReservationControls({
   changeFrequency,
