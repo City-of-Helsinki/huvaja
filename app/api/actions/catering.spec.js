@@ -8,6 +8,8 @@ import { buildAPIUrl } from './createApiAction';
 import { createApiTest } from './testUtils';
 
 describe('api/actions/equipment', () => {
+  const pageSize = 1000;
+
   describe('fetchCateringProducts', () => {
     const provider = 32;
     createApiTest({
@@ -16,7 +18,11 @@ describe('api/actions/equipment', () => {
       args: [provider],
       tests: {
         method: 'GET',
-        endpoint: buildAPIUrl('catering_product', { resource_group: 'kanslia', provider }),
+        endpoint: buildAPIUrl('catering_product', {
+          resource_group: 'kanslia',
+          provider,
+          pageSize,
+        }),
         request: {
           type: types.CATERING_PRODUCTS_GET_REQUEST,
         },
@@ -38,7 +44,11 @@ describe('api/actions/equipment', () => {
       args: [provider],
       tests: {
         method: 'GET',
-        endpoint: buildAPIUrl('catering_product_category', { resource_group: 'kanslia', provider }),
+        endpoint: buildAPIUrl('catering_product_category', {
+          resource_group: 'kanslia',
+          provider,
+          pageSize,
+        }),
         request: {
           type: types.CATERING_PRODUCT_CATEGORIES_GET_REQUEST,
         },
