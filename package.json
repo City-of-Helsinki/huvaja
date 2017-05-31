@@ -103,6 +103,7 @@
     "react-addons-test-utils": "15.3.2",
     "redux-freeze-state": "1.0.0",
     "redux-logger": "2.7.4",
+    "rosie": "1.6.0",
     "simple-mock": "0.7.2",
     "webpack-dev-middleware": "1.8.4",
     "webpack-hot-middleware": "2.13.2"
