@@ -5,6 +5,9 @@ import { actionTypes as formActions } from 'redux-form';
 
 import actions from 'actions/recurringReservations';
 
+const MAX_DURATION_IN_YEARS = 1;
+const MAX_OCCURRENCES = 100;
+
 const initialState = {
   baseTime: null,
   frequency: 'weeks',
@@ -30,12 +33,15 @@ export function populateReservations({ baseTime, frequency, numberOfOccurrences 
 }
 
 function setOccurrences(state, numberOfOccurrences) {
+  const occurrences = numberOfOccurrences > MAX_OCCURRENCES ?
+    MAX_OCCURRENCES :
+    numberOfOccurrences;
   return {
     ...state,
-    numberOfOccurrences,
+    numberOfOccurrences: occurrences,
     lastTime: (
         moment(state.baseTime.begin)
-        .add(numberOfOccurrences, state.frequency)
+        .add(occurrences, state.frequency)
         .format('YYYY-MM-DD')
     ),
   };
@@ -45,10 +51,10 @@ function limitDateState(state) {
   const start = moment(state.baseTime.begin).startOf('day');
   const end = moment(state.lastTime).startOf('day');
   const duration = moment.duration(end.diff(start));
-  const twoYearsDuration = moment.duration(2, 'years');
+  const maxDuration = moment.duration(MAX_DURATION_IN_YEARS, 'years');
 
-  if (duration > twoYearsDuration) {
-    const numberOfOccurrences = parseInt(twoYearsDuration.as(state.frequency), 10);
+  if (duration > maxDuration) {
+    const numberOfOccurrences = parseInt(maxDuration.as(state.frequency), 10);
     return setOccurrences(state, numberOfOccurrences);
   }
   return state;
