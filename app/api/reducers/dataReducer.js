@@ -2,11 +2,9 @@ import mapValues from 'lodash/mapValues';
 import reject from 'lodash/reject';
 import immutable from 'seamless-immutable';
 
-import cateringMenuItems from './cateringMenuItemsExampleData';
 import actionTypes from '../actionTypes';
 
 const initialState = immutable({
-  cateringMenuItems,
   comments: {},
   equipment: {},
   reservations: {},
