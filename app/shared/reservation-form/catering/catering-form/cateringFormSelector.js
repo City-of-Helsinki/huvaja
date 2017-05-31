@@ -14,10 +14,6 @@ function defaultItemQuantitySelector(state) {
   return Number(state.form.resourceReservation.values.numberOfParticipants || 1);
 }
 
-function cateringMenuDataSelector(state) {
-  return state.data.cateringMenuItems;
-}
-
 function resourceIdSelector(state) {
   return state.form.resourceReservation.values.resource;
 }
@@ -26,29 +22,43 @@ function resourcesSelector(state) {
   return state.data.resources;
 }
 
+function cateringProductsSelector(state) {
+  return state.data.cateringProducts;
+}
+
+function cateringCategoriesSelector(state) {
+  return state.data.cateringProductCategories;
+}
+
 const unitIdSelector = createSelector(
   resourcesSelector,
   resourceIdSelector,
   (resources, id) => resources[id] && resources[id].unit
 );
 
-const cateringMenuProductsSelector = createSelector(
-  cateringMenuDataSelector,
-  data => data.products,
+const cateringProviderSelector = createCateringProviderSelector(unitIdSelector);
+
+const providerCategoriesSelector = createSelector(
+  cateringProviderSelector,
+  cateringCategoriesSelector,
+  (provider, categories) =>
+    values(categories).filter(category => category.provider === provider.id)
 );
 
 const cateringMenuSelector = createSelector(
-  cateringMenuDataSelector,
-  data => sortBy(values(data.categories), 'name').map(category => ({
-    ...category,
-    products: category.products.map(id => data.products[id]),
-  })),
+  providerCategoriesSelector,
+  cateringProductsSelector,
+  (categories, products) =>
+    sortBy(categories, 'name.fi').map(category => ({
+      ...category,
+      products: category.products.map(id => products[id]),
+    }))
 );
 
 export default createStructuredSelector({
   cateringData: state => state.catering,
   cateringMenu: cateringMenuSelector,
-  cateringMenuItems: cateringMenuProductsSelector,
+  cateringMenuItems: cateringProductsSelector,
   cateringProvider: createCateringProviderSelector(unitIdSelector),
   defaultCateringTime: defaultCateringTimeSelector,
   defaultItemQuantity: defaultItemQuantitySelector,

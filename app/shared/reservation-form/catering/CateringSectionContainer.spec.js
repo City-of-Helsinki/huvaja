@@ -15,30 +15,28 @@ describe('shared/reservation-form/catering/CateringSectionContainer', () => {
     const defaults = {
       cateringTime: '10:00',
       orderItems: [
-        { id: 'cmi-1', name: 'Coffee', price: 1, quantity: 2 },
+        { id: 'cmi-1', name: { fi: 'Kahvi' }, price: 1, quantity: 2 },
       ],
     };
     return shallow(<CateringSectionContainer {...defaults} {...props} />);
   }
 
   describe('selector', () => {
-    const cateringMenuItems = {
-      products: {
-        1: { id: 1, name: 'Coffee', price: 2 },
-        2: { id: 2, name: 'Coca Cola', price: 3.5 },
-      },
+    const cateringProducts = {
+      1: { id: 1, name: { fi: 'Kahvi' }, price: 2 },
+      2: { id: 2, name: { fi: 'Kokis' }, price: 3.5 },
     };
     const cateringData = { order: { 1: 2 }, time: '11:30' };
     function getState() {
       return {
-        data: { cateringMenuItems },
+        data: { cateringProducts },
         catering: cateringData,
       };
     }
 
     it('returns orderItems from the state', () => {
       const selected = selector(getState());
-      const expected = [{ id: 1, name: 'Coffee', price: 2, quantity: 2 }];
+      const expected = [{ id: 1, name: { fi: 'Kahvi' }, price: 2, quantity: 2 }];
       expect(selected.orderItems).to.deep.equal(expected);
     });
 
@@ -77,7 +75,7 @@ describe('shared/reservation-form/catering/CateringSectionContainer', () => {
 
     describe('if order has been made', () => {
       const orderItems = [
-        { id: 'cmi-1', name: 'Coffee', price: 1, quantity: 2 },
+        { id: 'cmi-1', name: { fi: 'Kahvi' }, price: 1, quantity: 2 },
       ];
       function getOrderNotMadeWrapper() {
         return getWrapper({ orderItems });

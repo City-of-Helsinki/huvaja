@@ -22,8 +22,8 @@ function CateringOrderTable(props) {
       <tbody>
         {props.items.map(item =>
           <tr key={item.id}>
-            <td className="product">{item.name}</td>
-            <td className="description">{item.description}</td>
+            <td className="product">{item.name.fi}</td>
+            <td className="description">{item.description && item.description.fi}</td>
             <td className="number">
               {props.editOrder &&
                 <FormControl
