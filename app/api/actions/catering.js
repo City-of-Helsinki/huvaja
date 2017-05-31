@@ -4,7 +4,7 @@ import createApiAction from './createApiAction';
 export function fetchCateringProducts(providerId) {
   return createApiAction({
     endpoint: 'catering_product',
-    params: { resource_group: 'kanslia', provider: providerId },
+    params: { resource_group: 'kanslia', provider: providerId, pageSize: 1000 },
     method: 'GET',
     type: 'CATERING_PRODUCTS',
     options: { schema: schemas.paginatedCateringProductsSchema },
@@ -14,7 +14,7 @@ export function fetchCateringProducts(providerId) {
 export function fetchCateringProductCategories(providerId) {
   return createApiAction({
     endpoint: 'catering_product_category',
-    params: { resource_group: 'kanslia', provider: providerId },
+    params: { resource_group: 'kanslia', provider: providerId, pageSize: 1000 },
     method: 'GET',
     type: 'CATERING_PRODUCT_CATEGORIES',
     options: { schema: schemas.paginatedCateringProductCategoriesSchema },
