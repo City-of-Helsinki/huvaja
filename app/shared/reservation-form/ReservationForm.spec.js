@@ -6,16 +6,24 @@ import { Field } from 'redux-form';
 import simple from 'simple-mock';
 
 import AlertText from 'shared/alert-text';
+import CompactReservationList from 'shared/compact-reservation-list';
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
+import RecurringReservationControls from 'shared/recurring-reservation-controls';
+import timeUtils from 'utils/timeUtils';
 import CateringSection from './catering';
 import { UnconnectedReservationForm as ReservationForm, validate } from './ReservationForm';
 
 describe('shared/reservation-form/ReservationForm', () => {
   const defaults = {
+    allowRecurring: true,
+    baseReservation: { begin: 'bar', end: 'foo' },
+    isRecurring: false,
     timelineDate: '2016-01-01',
     fetchResource: () => null,
     handleSubmit: () => null,
     numberOfParticipants: null,
+    recurringReservations: [{ begin: 'foo', end: 'bar' }],
+    removeRecurringReservation: () => null,
     reservation: null,
     resource: { id: '123', peopleCapacity: 10 },
     onDateChange: () => null,
@@ -132,8 +140,8 @@ describe('shared/reservation-form/ReservationForm', () => {
         fields = getWrapper().find(Field);
       });
 
-      it('length is 9', () => {
-        expect(fields).to.have.length(9);
+      it('length is 10', () => {
+        expect(fields).to.have.length(10);
       });
 
       it('has a reservation time field', () => {
@@ -255,7 +263,77 @@ describe('shared/reservation-form/ReservationForm', () => {
         });
         expect(field).to.have.length(1);
       });
+
+      describe('isRecurring field', () => {
+        it('exists', () => {
+          const field = fields.filter({
+            component: ReduxFormField,
+            controlProps: {
+              className: 'is-recurring-checkbox',
+              disabled: false,
+            },
+            label: 'Tee toistuva varaus...',
+            name: 'isRecurring',
+            type: 'checkbox',
+          });
+          expect(field).to.have.length(1);
+        });
+
+        it('is disabled when not checked and no baseReservation', () => {
+          const props = {
+            baseReservation: null,
+            isRecurring: false,
+          };
+          const field = fields = getWrapper(props).find(Field).filter({
+            name: 'isRecurring',
+            controlProps: {
+              disabled: true,
+            },
+          });
+          expect(field).to.have.length(1);
+        });
+      });
     });
+
+    describe('recurring reservations', () => {
+      describe('when isRecurring is true', () => {
+        it('does not render timeline', () => {
+          const wrapper = getWrapper({ isRecurring: true });
+          const timeline = wrapper.find('.timeline-container');
+          expect(timeline).to.have.length(0);
+        });
+
+        it('renders RecurringReservationControls', () => {
+          const wrapper = getWrapper({ isRecurring: true });
+          const controls = wrapper.find(RecurringReservationControls);
+          expect(controls).to.have.length(1);
+        });
+
+        it('renders compact list of reservations', () => {
+          const wrapper = getWrapper({ isRecurring: true });
+          const list = wrapper.find(CompactReservationList);
+          expect(list).to.have.length(1);
+          expect(list.prop('onRemoveClick')).to.equal(defaults.removeRecurringReservation);
+          expect(list.prop('removableReservations')).to.deep.equal(defaults.recurringReservations);
+          expect(list.prop('reservations')).to.deep.equal([defaults.baseReservation]);
+        });
+      });
+
+      describe('when isRecurring is false', () => {
+        it('does not render RecurringReservationControls', () => {
+          const wrapper = getWrapper({ isRecurring: false });
+          const controls = wrapper.find(RecurringReservationControls);
+          expect(controls).to.have.length(0);
+        });
+
+        it('does not render compact list of reservations', () => {
+          const wrapper = getWrapper({ isRecurring: false });
+          const list = wrapper.find(CompactReservationList);
+          expect(list).to.have.length(0);
+        });
+      });
+    });
+
 
     it('renders CateringSection', () => {
       const cateringSection = getWrapper().find(CateringSection);
@@ -402,6 +480,35 @@ describe('shared/reservation-form/ReservationForm', () => {
         };
         instance.componentWillReceiveProps(nextProps);
         expect(fetchResource.callCount).to.equal(0);
+      });
+
+      it('changes base time when time range changes', () => {
+        const changeBaseTime = simple.mock();
+        const timeRange = {
+          begin: {
+            date: '2016-01-01',
+            time: '10:00',
+          },
+          end: {
+            date: '2016-01-01',
+            time: '11:00',
+          },
+        };
+        const props = { changeBaseTime, timeRange };
+        const instance = getWrapper(props).instance();
+        const newRange = {
+          ...timeRange,
+          end: {
+            date: '2016-01-01',
+            time: '12:00',
+          },
+        };
+        const nextProps = { timeRange: newRange };
+        instance.componentWillReceiveProps(nextProps);
+        expect(changeBaseTime.callCount).to.equal(1);
+        expect(changeBaseTime.lastCall.arg).to.deep.equal(
+          timeUtils.getDateTimeRangeFieldMoments(newRange)
+        );
       });
     });
   });
