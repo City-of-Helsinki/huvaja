@@ -1,14 +1,20 @@
 import { expect } from 'chai';
 import moment from 'moment';
+import { shallow } from 'enzyme';
+import React from 'react';
 import simple from 'simple-mock';
 
 import { getState } from 'utils/testUtils';
-import { mergeProps, selector } from './ReservationCreateFormContainer';
+import { mergeProps, selector, UnconnectedReservationCreateFormContainer } from './ReservationCreateFormContainer';
+import ReservationForm from './ReservationForm';
 
 describe('shared/reservation-form/ReservationCreateFormContainer', () => {
   describe('selector', () => {
     const props = { initialResource: { id: 'r-1', name: { fi: 'Resource name' } } };
-    const time = { begin: { date: '2016-01-01', time: '10:00' } };
+    const time = {
+      begin: { date: '2016-01-01', time: '10:00' },
+      end: { date: '2016-01-01', time: '11:00' },
+    };
 
     function getSelected(extraState, extraProps) {
       const state = getState(extraState);
@@ -138,6 +144,59 @@ describe('shared/reservation-form/ReservationCreateFormContainer', () => {
         expect(getSelected(extraState).resource).to.deep.equal(resource1);
       });
     });
+
+    describe('baseReservation', () => {
+      it('returns correct data when valid time range exists', () => {
+        const extraState = {
+          'form.resourceReservation.values': {
+            time,
+          },
+        };
+        const expected = {
+          begin: '2016-01-01T10:00:00+02:00',
+          end: '2016-01-01T11:00:00+02:00',
+        };
+        const actual = getSelected(extraState).baseReservation;
+        expect(actual).to.deep.equal(expected);
+      });
+
+      it('returns null when no valid time range', () => {
+        const extraState = {
+          'form.resourceReservation.values': {
+            time: {
+              ...time,
+              end: {},
+            },
+          },
+        };
+        const actual = getSelected(extraState).baseReservation;
+        expect(actual).to.be.null;
+      });
+    });
+
+    describe('isRecurring', () => {
+      it('returns form value', () => {
+        const extraState = {
+          'form.resourceReservation.values': {
+            isRecurring: true,
+            time,
+          },
+        };
+        expect(getSelected(extraState).isRecurring).to.be.true;
+      });
+    });
+
+    describe('recurringReservations', () => {
+      it('is returned from state', () => {
+        const reservations = [{ id: 'r-1' }];
+        const extraState = {
+          recurringReservations: { reservations },
+        };
+        expect(getSelected(extraState).recurringReservations).to.deep.equal(
+          reservations
+        );
+      });
+    });
   });
 
   describe('mergeProps', () => {
@@ -158,38 +217,91 @@ describe('shared/reservation-form/ReservationCreateFormContainer', () => {
         mergedProps.onSubmit(...args);
       }
 
+      const values = {
+        time: {
+          begin: { date: '2016-01-01', time: '10:00' },
+          end: { date: '2016-01-01', time: '12:00' },
+        },
+        hostName: 'Han Solo',
+        isRecurring: false,
+        eventDescription: 'Description',
+        eventSubject: 'Tapaaminen',
+        numberOfParticipants: 8,
+        reserverName: 'Luke Skywalker',
+        resource: 'r-1',
+      };
+
+      const expectedReservationData = {
+        begin: moment('2016-01-01T10:00:00').format(),
+        end: moment('2016-01-01T12:00:00').format(),
+        event_description: values.eventDescription,
+        event_subject: values.eventSubject,
+        host_name: values.hostName,
+        number_of_participants: values.numberOfParticipants,
+        reserver_name: values.reserverName,
+        resource: values.resource,
+      };
+
       it('calls props.makeReservation', () => {
-        const values = {
-          time: {
-            begin: { date: '2016-01-01', time: '10:00' },
-            end: { date: '2016-01-01', time: '12:00' },
-          },
-          hostName: 'Han Solo',
-          eventDescription: 'Description',
-          eventSubject: 'Tapaaminen',
-          numberOfParticipants: 8,
-          reserverName: 'Luke Skywalker',
-          resource: 'r-1',
-        };
         const makeReservation = simple.mock();
-        const props = {
-          makeReservation,
-        };
+        const props = { makeReservation };
         callOnSubmit(props, values);
         expect(makeReservation.callCount).to.equal(1);
         const args = makeReservation.lastCall.args;
         expect(args).to.have.length(2);
-        expect(args[0]).to.deep.equal({
-          begin: moment('2016-01-01T10:00:00').format(),
-          end: moment('2016-01-01T12:00:00').format(),
-          event_description: values.eventDescription,
-          event_subject: values.eventSubject,
-          host_name: values.hostName,
-          number_of_participants: values.numberOfParticipants,
-          reserver_name: values.reserverName,
-          resource: values.resource,
-        });
+        expect(args[0]).to.deep.equal(expectedReservationData);
       });
+
+      it('calls props.makeReservation with recurring data in meta when recurring', () => {
+        const makeReservation = simple.mock();
+        const recurringReservations = [{ some: 'data' }];
+        const props = { makeReservation, recurringReservations };
+        callOnSubmit(
+          props,
+          { ...values, isRecurring: true },
+        );
+        expect(makeReservation.callCount).to.equal(1);
+        const args = makeReservation.lastCall.args;
+        expect(args).to.have.length(2);
+        expect(args[0]).to.deep.equal(expectedReservationData);
+        expect(args[1].successMeta.recurringReservations).to.deep.equal(
+          recurringReservations
+        );
+        expect(args[1].successMeta.reservationData).to.deep.equal(
+          expectedReservationData
+        );
+      });
+    });
+  });
+
+  describe('rendering', () => {
+    const defaults = {
+      baseReservation: {},
+      changeBaseTime: () => null,
+      fetchResource : () => null,
+      initialValues: {},
+      isRecurring: false,
+      makeReservation: () => null,
+      numberOfParticipants: 10,
+      recurringReservations: [],
+      removeRecurringReservation: () => null,
+      resource: {},
+      showReservationSuccessModal: () => null,
+      timelineDate: '2017-02-10',
+      timeRange: {},
+    };
+
+    function getWrapper() {
+      return shallow(<UnconnectedReservationCreateFormContainer {...defaults} />);
+    }
+
+    it('renders ReservationForm with correct props', () => {
+      const wrapper = getWrapper();
+      expect(wrapper.is(ReservationForm)).to.be.true;
+      expect(wrapper.props()).to.deep.equal({
+        ...defaults,
+        allowRecurring: true,
+      })
     });
   });
 });
