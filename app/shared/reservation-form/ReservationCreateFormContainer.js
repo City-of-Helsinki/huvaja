@@ -176,7 +176,7 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
         ...actionOptions,
         successMeta: {
           ...actionOptions.successMeta,
-          recurringReservations: stateProps.recurringReservations,
+          recurringReservations: props.recurringReservations,
           reservationData,
         },
       } :
@@ -206,8 +206,8 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
   };
 }
 
-function UnconnectedReservationForm(props) {
+export function UnconnectedReservationCreateFormContainer(props) {
   return <ReservationForm allowRecurring {...props} />;
 }
 
-export default connect(selector, actions, mergeProps)(UnconnectedReservationForm);
+export default connect(selector, actions, mergeProps)(UnconnectedReservationCreateFormContainer);
