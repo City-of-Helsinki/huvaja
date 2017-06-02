@@ -46,7 +46,13 @@ describe('shared/reservation-form/catering/catering-form/cateringFormSelector', 
       },
       'data.resources': { r1: { id: 'r1', unit: 'u1' } },
       'data.units': { u1: { id: 'u1' } },
-      'data.cateringProviders': { c1: { id: 'c1', units: ['u1'], priceListUrl: 'example' } },
+      'data.cateringProviders': {
+        c1: {
+          id: 'c1',
+          units: ['u1'],
+          priceListUrl: { fi: 'example' },
+        }
+      },
     };
     const selected = getSelected(state);
     expect(selected.cateringProvider).to.deep.equal(state['data.cateringProviders'].c1);
