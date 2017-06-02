@@ -1,7 +1,7 @@
 import actionTypes from 'api/actionTypes';
 import { makeReservation } from 'api/actions/reservations';
 
-function create(action, store) {
+export function create(action, store, makeReservationAction) {
   action.meta.recurringReservations.forEach((instance) => {
     const data = {
       ...action.meta.reservationData,
@@ -13,7 +13,7 @@ function create(action, store) {
         reservation: { ...data },
       },
     };
-    const makeInstance = makeReservation(data, options);
+    const makeInstance = makeReservationAction(data, options);
     store.dispatch(makeInstance);
   });
 }
@@ -25,7 +25,7 @@ const createRecurringReservations = store => dispatch => (action) => {
     action.meta.recurringReservations
   ) {
     window.setTimeout(
-      () => create(action, store),
+      () => create(action, store, makeReservation),
       0
     );
   }
