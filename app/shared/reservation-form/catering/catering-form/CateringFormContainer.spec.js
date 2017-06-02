@@ -124,17 +124,16 @@ describe('shared/reservation-form/catering/catering-form/CateringFormContainer',
       expect(saveButton.prop('onClick')).to.equal(wrapper.instance().handleCancel);
     });
 
-    it('renders pricing link', () => {
+    it('does not render pricing link when no url', () => {
       const link = getWrapper().find('.pricing-link');
-      expect(link).to.have.length(1);
-      expect(link.prop('href')).to.equal('http://example.com');
+      expect(link).to.have.length(0);
     });
 
     it('renders pricing link with catering provider link', () => {
-      const cateringProvider = { priceListUrl: 'http://example.com/price-list-url' };
+      const cateringProvider = { priceListUrl: { fi: 'http://example.com/price-list-url' } };
       const link = getWrapper({ cateringProvider }).find('.pricing-link');
       expect(link).to.have.length(1);
-      expect(link.prop('href')).to.equal(cateringProvider.priceListUrl);
+      expect(link.prop('href')).to.equal(cateringProvider.priceListUrl.fi);
     });
   });
 

@@ -41,7 +41,7 @@ export class UnconnectedCateringFormContainer extends Component {
     cateringMenu: PropTypes.array.isRequired,
     cateringMenuItems: PropTypes.object.isRequired,
     cateringProvider: PropTypes.shape({
-      priceListUrl: PropTypes.string,
+      priceListUrl: PropTypes.object,
     }).isRequired,
     defaultCateringTime: PropTypes.string.isRequired,
     defaultItemQuantity: PropTypes.number.isRequired,
@@ -129,6 +129,10 @@ export class UnconnectedCateringFormContainer extends Component {
 
   render() {
     const orderItems = cateringUtils.getOrderItems(this.props.cateringMenuItems, this.state.order);
+    const priceListUrl = (
+      this.props.cateringProvider.priceListUrl &&
+      this.props.cateringProvider.priceListUrl.fi
+    );
     return (
       <div className="catering-form">
         <Row>
@@ -175,14 +179,16 @@ export class UnconnectedCateringFormContainer extends Component {
               Poimi haluamasi Tarjoiluvaihtoehdot.
               Alempana kohdassa tilaus pääset muokkaamaan valittujen tuotteiden kappalemääriä.
             </p>
-            <a
-              className="pricing-link"
-              href={this.props.cateringProvider.priceListUrl || 'http://example.com'}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Hinnasto
-            </a>
+            {priceListUrl &&
+              <a
+                className="pricing-link"
+                href={priceListUrl}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Hinnasto
+              </a>
+            }
             <CateringMenu
               categories={this.props.cateringMenu}
               onItemClick={this.addOrRemoveItem}
