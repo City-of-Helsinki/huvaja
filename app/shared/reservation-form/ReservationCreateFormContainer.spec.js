@@ -278,7 +278,7 @@ describe('shared/reservation-form/ReservationCreateFormContainer', () => {
     const defaults = {
       baseReservation: {},
       changeBaseTime: () => null,
-      fetchResource : () => null,
+      fetchResource: () => null,
       initialValues: {},
       isRecurring: false,
       makeReservation: () => null,
@@ -301,7 +301,7 @@ describe('shared/reservation-form/ReservationCreateFormContainer', () => {
       expect(wrapper.props()).to.deep.equal({
         ...defaults,
         allowRecurring: true,
-      })
+      });
     });
   });
 });
