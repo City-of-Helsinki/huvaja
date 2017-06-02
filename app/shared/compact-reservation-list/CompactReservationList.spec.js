@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
-import Immutable from 'seamless-immutable';
+import immutable from 'seamless-immutable';
 import simple from 'simple-mock';
 
 import Reservation from 'utils/fixtures/Reservation';
@@ -14,11 +14,11 @@ describe('shared/compact-reservation-list/CompactReservationList', () => {
   const successClass = 'compact-reservation-list-item-success';
   const resource = Resource.build();
   const defaultProps = {
-    reservations: Immutable([
+    reservations: immutable([
       Reservation.build({ resource: resource.id }),
       Reservation.build({ resource: 'unfetched-resource' }),
     ]),
-    resourceNames: Immutable({
+    resourceNames: immutable({
       [resource.id]: 'Unit 1 / Resource 1',
     }),
     onRemoveClick: () => {},

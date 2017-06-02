@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import simple from 'simple-mock';
 
-import * as reservationActions from 'api/actions';
 import createRecurringReservationsMiddleware, { create } from './createRecurringReservations';
 
 describe('state/middleware/createRecurringReservations', () => {
@@ -55,7 +54,7 @@ describe('state/middleware/createRecurringReservations', () => {
 
       beforeEach(() => {
         store = { dispatch: simple.mock() };
-        makeReservation = simple.mock().returnWith('mockAction')
+        makeReservation = simple.mock().returnWith('mockAction');
         create(action, store, makeReservation);
       });
 
@@ -116,6 +115,5 @@ describe('state/middleware/createRecurringReservations', () => {
       createRecurringReservations(someAction);
       expect(window.setTimeout.callCount).to.equal(0);
     });
-    
   });
 });
