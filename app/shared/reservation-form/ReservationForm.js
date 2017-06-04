@@ -11,7 +11,6 @@ import CompactReservationList from 'shared/compact-reservation-list';
 import RecurringReservationControls from 'shared/recurring-reservation-controls';
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
 import timeUtils from 'utils/timeUtils';
-import CateringSection from './catering';
 
 const requiredFields = [
   'eventSubject',
@@ -255,7 +254,11 @@ export class UnconnectedReservationForm extends React.Component {
             </Row>
             <Row>
               <Col md={6}>
-                {this.props.cateringProvider && <CateringSection />}
+                {this.props.cateringProvider && renderField(
+                  'cateringOrder',
+                  'cateringOrder',
+                  'Tarjoilutilaus',
+                )}
               </Col>
               <Col md={6}>
                 <h3>Muuta</h3>
