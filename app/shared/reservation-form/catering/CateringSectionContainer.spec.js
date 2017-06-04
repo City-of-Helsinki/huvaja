@@ -10,7 +10,7 @@ import {
   UnconnectedCateringSectionContainer as CateringSectionContainer,
 } from './CateringSectionContainer';
 
-describe('shared/reservation-form/catering/CateringSectionContainer', () => {
+describe.skip('shared/reservation-form/catering/CateringSectionContainer', () => {
   function getWrapper(props) {
     const defaults = {
       cateringTime: '10:00',
