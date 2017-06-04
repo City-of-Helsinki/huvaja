@@ -1,3 +1,5 @@
+import { decamelizeKeys } from 'humps';
+
 import schemas from './schemas';
 import createApiAction from './createApiAction';
 
@@ -29,4 +31,26 @@ export function fetchCateringProviders() {
     type: 'CATERING_PROVIDERS',
     options: { schema: schemas.paginatedCateringProvidersSchema },
   });
+}
+
+export function makeCateringOrder(order, options) {
+  return createApiAction({
+    endpoint: 'catering_order',
+    method: 'POST',
+    type: 'CATERING_ORDER',
+    body: processCateringOrderData(order),
+    options,
+  });
+}
+
+function processCateringOrderData(orderData) {
+  const { order, ...rest } = orderData;
+  const data = {
+    ...rest,
+    orderLines: Object.keys(order).map(productId => ({
+      product: productId,
+      quantity: order[productId],
+    })),
+  };
+  return JSON.stringify(decamelizeKeys(data));
 }
