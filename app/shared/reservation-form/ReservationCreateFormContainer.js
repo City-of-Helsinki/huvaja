@@ -7,10 +7,13 @@ import { createSelector, createStructuredSelector } from 'reselect';
 import uiActions from 'actions/uiActions';
 import { fetchCateringProducts, fetchCateringProductCategories, fetchResource } from 'api/actions';
 import recurringReservationsActions from 'actions/recurringReservations';
+import { makeCateringOrder } from 'api/actions/catering';
 import { makeReservation } from 'api/actions/reservations';
 import { createCateringProviderSelector } from 'api/selectors';
+import { createAPIPromise } from 'api/utils';
 import { currentUserSelector } from 'auth/selectors';
 import { slotSize } from 'shared/availability-view';
+import cateringUtils from 'shared/reservation-form/catering/utils';
 import createFormSubmitHandler from 'utils/createFormSubmitHandler';
 import timeUtils from 'utils/timeUtils';
 import ReservationForm from './ReservationForm';
@@ -134,6 +137,7 @@ const isRecurringSelector = state => Boolean(
 export const selector = createStructuredSelector({
   baseReservation: baseReservationSelector,
   cateringProvider: createCateringProviderSelector(unitIdSelector),
+  formDate: formDateSelector,
   initialValues: initialValuesSelector,
   isRecurring: isRecurringSelector,
   numberOfParticipants: numberOfParticipantsSelector,
@@ -148,6 +152,7 @@ const actions = {
   fetchCateringProducts,
   fetchCateringProductCategories,
   fetchResource,
+  makeCateringOrder,
   makeReservation,
   removeRecurringReservation: recurringReservationsActions.removeReservation,
   showReservationSuccessModal: uiActions.showReservationSuccessModal,
@@ -157,9 +162,31 @@ function formatTime({ date, time }) {
   return moment(`${date}T${time}:00`).format();
 }
 
+// Note that recurring reservations and catering orders cannot be created
+// at the same time, so meta will only include data for one of these.
+function getExtraSuccessMeta(
+  actionOptions,
+  values,
+  props,
+  reservationData
+) {
+  if (values.isRecurring) {
+    return {
+      recurringReservations: props.recurringReservations,
+      reservationData,
+    };
+  }
+  if (cateringUtils.hasOrders(values.cateringOrder)) {
+    return {
+      cateringOrder: values.cateringOrder,
+    };
+  }
+  return {};
+}
+
 export function mergeProps(stateProps, dispatchProps, ownProps) {
   const props = { ...ownProps, ...stateProps, ...dispatchProps };
-  const callback = (actionOptions, values) => {
+  const createReservation = (actionOptions, values) => {
     const reservationData = {
       begin: formatTime(values.time.begin),
       end: formatTime(values.time.end),
@@ -170,23 +197,29 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
       reserver_name: values.reserverName,
       resource: values.resource,
     };
-    const options = (
-      values.isRecurring ?
-      {
-        ...actionOptions,
-        successMeta: {
-          ...actionOptions.successMeta,
-          recurringReservations: props.recurringReservations,
-          reservationData,
-        },
-      } :
-      actionOptions
-    );
+    const options = {
+      ...actionOptions,
+      successMeta: {
+        ...actionOptions.successMeta,
+        ...getExtraSuccessMeta(actionOptions, values, props, reservationData),
+      },
+    };
     props.makeReservation(reservationData, options);
   };
-  const successHandler = (action) => {
-    const begin = utils.parseBeginDate(action);
-    const url = utils.getResourceUrl(props.resource.id, begin);
+  const createCateringOrder = (actionOptions, createReservationSuccessAction) => {
+    if (!createReservationSuccessAction.meta.cateringOrder) {
+      // No catering order to create so just resolve the promise.
+      actionOptions.successMeta.sideEffect();
+      return;
+    }
+    const cateringOrderData = {
+      reservation: createReservationSuccessAction.payload.id,
+      ...createReservationSuccessAction.meta.cateringOrder,
+    };
+    props.makeCateringOrder(cateringOrderData, actionOptions);
+  };
+  const successHandler = () => {
+    const url = utils.getResourceUrl(props.resource.id, props.formDate);
     // Use setTimeout to make url change happen after form handling has
     // been fully completed.
     window.setTimeout(
@@ -199,8 +232,14 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
   };
   return {
     ...props,
+    // onSubmit will first send POST reservation request. On success, if the
+    // reservation form has catering order data, catering order is POSTed.
+    // If reservation form has recurring reservation data, all reservations
+    // except the first one will be sent by a middleware. Creating recurring
+    // reservations with catering orders is not allowed.
     onSubmit: (...args) => (
-      createFormSubmitHandler(callback)(...args)
+      createFormSubmitHandler(createReservation)(...args)
+        .then(createAPIPromise(createCateringOrder))
         .then(successHandler)
     ),
   };
