@@ -1,8 +1,13 @@
 import sortBy from 'lodash/sortBy';
 import values from 'lodash/values';
+import { formValueSelector } from 'redux-form';
 import { createSelector, createStructuredSelector } from 'reselect';
 
 import { createCateringProviderSelector } from 'api/selectors';
+
+function reservationFormCateringOrderSelector(state) {
+  return state.form.resourceReservation.values.cateringOrder || {};
+}
 
 function defaultCateringTimeSelector(state) {
   const reservationTimes = state.form.resourceReservation.values.time;
@@ -55,11 +60,26 @@ const cateringMenuSelector = createSelector(
     }))
 );
 
+const initialValuesSelector = createSelector(
+  reservationFormCateringOrderSelector,
+  defaultCateringTimeSelector,
+  (reservationFormValues, time) => ({
+    invoicingData: reservationFormValues.invoicingData || '',
+    message: reservationFormValues.message || '',
+    order: reservationFormValues.order || {},
+    time,
+  })
+);
+
+const valuesSelector = state => formValueSelector('catering')(
+  state, 'time', 'invoicingData', 'message', 'order'
+);
+
 export default createStructuredSelector({
-  cateringData: state => state.catering,
   cateringMenu: cateringMenuSelector,
   cateringMenuItems: cateringProductsSelector,
   cateringProvider: createCateringProviderSelector(unitIdSelector),
-  defaultCateringTime: defaultCateringTimeSelector,
   defaultItemQuantity: defaultItemQuantitySelector,
+  formValues: valuesSelector,
+  initialValues: initialValuesSelector,
 });

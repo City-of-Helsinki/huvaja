@@ -24,6 +24,7 @@ class CateringMenuItem extends Component {
       <button
         className={classNames('catering-menu-item', { selected })}
         onClick={this.handleClick}
+        type="button"
       >
         <div className="name">{item.name.fi}</div>
         <div className="description">{item.description && item.description.fi}</div>
