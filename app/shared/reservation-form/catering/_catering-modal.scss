@@ -6,16 +6,17 @@
   }
 
   .catering-form {
-    .controls {
-      margin-left: -15px;
-      margin-right: -15px;
-      padding: 20px 20px 0;
-      border-top: 1px solid $gray-light;
+    .form-controls {
+      text-align: right;
+      background-color: $background-gray;
+      padding: $padding-base-vertical $padding-base-horizontal;
+      margin-top: 15px;
 
-      .cancel-button {
-        float: right;
+      button + button {
+        margin-left: 10px;
       }
     }
+
     .pricing-link {
       display: block;
       margin: $padding-base-vertical 0;
