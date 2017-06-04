@@ -7,23 +7,14 @@ import { Field, reduxForm } from 'redux-form';
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
 import CateringMenu from './CateringMenu';
 import CateringOrderTable from '../CateringOrderTable';
+import cateringUtils from '../utils';
 
 const requiredFields = [
   'invoicingData',
 ];
 
-function hasOrders(values) {
-  if (!values.order) return false;
-  const quantities = Object.values(values.order);
-  const total = quantities.reduce(
-    (sum, value) => sum + parseInt(value, 10) || 0,
-    0,
-  );
-  return total > 0;
-}
-
 export function validate(values) {
-  if (!hasOrders(values)) return {};
+  if (!cateringUtils.hasOrders(values)) return {};
   const errors = {};
   requiredFields.forEach((value) => {
     if (!values[value]) {

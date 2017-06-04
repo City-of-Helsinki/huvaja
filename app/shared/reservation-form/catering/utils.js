@@ -11,6 +11,17 @@ function getOrderItems(cateringMenuItems, order) {
   );
 }
 
+function hasOrders(cateringData) {
+  if (!(cateringData && cateringData.order)) return false;
+  const quantities = Object.values(cateringData.order);
+  const total = quantities.reduce(
+    (sum, value) => sum + parseInt(value, 10) || 0,
+    0,
+  );
+  return total > 0;
+}
+
 export default {
   getOrderItems,
+  hasOrders,
 };
