@@ -10,6 +10,7 @@ describe('shared/reservation-form/catering/CateringModal', () => {
   function getWrapper(props) {
     const defaults = {
       onClose: () => null,
+      onSubmit: () => null,
       show: true,
     };
     return shallow(<CateringModal {...defaults} {...props} />);
@@ -29,9 +30,10 @@ describe('shared/reservation-form/catering/CateringModal', () => {
 
   it('renders CateringForm with correct props', () => {
     const onClose = () => null;
-    const cateringModal = getWrapper({ onClose }).find(CateringForm);
+    const onSubmit = () => null;
+    const cateringModal = getWrapper({ onClose, onSubmit }).find(CateringForm);
     expect(cateringModal).to.have.length(1);
     expect(cateringModal.prop('onCancelCallback')).to.equal(onClose);
-    expect(cateringModal.prop('onSubmitCallback')).to.equal(onClose);
+    expect(cateringModal.prop('onSubmitCallback')).to.equal(onSubmit);
   });
 });

@@ -10,7 +10,6 @@ import CompactReservationList from 'shared/compact-reservation-list';
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
 import RecurringReservationControls from 'shared/recurring-reservation-controls';
 import timeUtils from 'utils/timeUtils';
-import CateringSection from './catering';
 import { UnconnectedReservationForm as ReservationForm, validate } from './ReservationForm';
 
 describe('shared/reservation-form/ReservationForm', () => {
@@ -334,17 +333,6 @@ describe('shared/reservation-form/ReservationForm', () => {
           expect(list).to.have.length(0);
         });
       });
-    });
-
-    it('does not render CateringSection if not props.cateringProvider', () => {
-      const cateringSection = getWrapper().find(CateringSection);
-      expect(cateringSection).to.have.length(0);
-    });
-
-    it('renders CateringSection if props.cateringProvider', () => {
-      const cateringProvider = { some: 'provider' };
-      const cateringSection = getWrapper({ cateringProvider }).find(CateringSection);
-      expect(cateringSection).to.have.length(1);
     });
 
     describe('form buttons', () => {
