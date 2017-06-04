@@ -200,6 +200,8 @@ describe('shared/reservation-form/ReservationCreateFormContainer', () => {
         const extraProps = { initialResource: undefined };
         const actual = getProviderSelected({}, extraProps).cateringProvider;
         expect(actual).to.be.undefined;
+      });
+    });
 
     describe('baseReservation', () => {
       it('returns correct data when valid time range exists', () => {
