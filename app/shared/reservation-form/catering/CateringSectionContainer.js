@@ -8,12 +8,15 @@ import CateringOrderTable from './CateringOrderTable';
 import cateringUtils from './utils';
 
 export const selector = createSelector(
-  state => state.catering,
+  state => state.form.resourceReservation.values.cateringOrder,
   state => state.data.cateringProducts,
   (cateringData, cateringMenuItems) => {
-    const orderItems = cateringUtils.getOrderItems(cateringMenuItems, cateringData.order);
+    const orderItems = cateringUtils.getOrderItems(
+      cateringMenuItems,
+      cateringData ? cateringData.order : {}
+    );
     return {
-      cateringTime: cateringData.time,
+      cateringTime: cateringData ? cateringData.time : '',
       orderItems,
     };
   }
@@ -22,6 +25,9 @@ export const selector = createSelector(
 export class UnconnectedCateringSectionContainer extends Component {
   static propTypes = {
     cateringTime: PropTypes.string.isRequired,
+    controlProps: PropTypes.shape({
+      onChange: PropTypes.func.isRequired,
+    }).isRequired,
     orderItems: PropTypes.array.isRequired,
   }
 
@@ -36,6 +42,11 @@ export class UnconnectedCateringSectionContainer extends Component {
 
   closeCateringModal() {
     this.setState({ showCateringModal: false });
+  }
+
+  handleSubmit = (cateringOrder) => {
+    this.props.controlProps.onChange(cateringOrder);
+    this.closeCateringModal();
   }
 
   openCateringModal() {
@@ -61,7 +72,11 @@ export class UnconnectedCateringSectionContainer extends Component {
         <Button onClick={this.openCateringModal}>
           {orderMade ? 'Muokkaa tarjoiluja' : 'Tilaa tarjoilut'}
         </Button>
-        <CateringModal onClose={this.closeCateringModal} show={this.state.showCateringModal} />
+        <CateringModal
+          onClose={this.closeCateringModal}
+          onSubmit={this.handleSubmit}
+          show={this.state.showCateringModal}
+        />
       </div>
     );
   }

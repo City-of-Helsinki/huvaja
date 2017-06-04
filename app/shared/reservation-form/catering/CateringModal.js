@@ -5,6 +5,7 @@ import CateringForm from './catering-form';
 
 CateringModal.propTypes = {
   onClose: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   show: PropTypes.bool.isRequired,
 };
 
@@ -15,7 +16,10 @@ function CateringModal(props) {
         <Modal.Title>Lisää tarjoilutilaus</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <CateringForm onCancelCallback={props.onClose} onSubmitCallback={props.onClose} />
+        <CateringForm
+          onCancelCallback={props.onClose}
+          onSubmitCallback={props.onSubmit}
+        />
       </Modal.Body>
     </Modal>
   );

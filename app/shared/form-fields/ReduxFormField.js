@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 
+import CateringSection from 'shared/reservation-form/catering';
 import Checkbox from './Checkbox';
 import DateTimeRange from './DateTimeRange';
 import FormControl from './FormControl';
@@ -17,6 +18,9 @@ function ReduxFormField({ controlProps = {}, help, input, label, meta, type }) {
     validationState: showError ? 'error' : undefined,
   };
 
+  if (type === 'cateringOrder') {
+    return <CateringSection {...props} />;
+  }
   if (type === 'checkbox') {
     return <Checkbox {...props} />;
   }
