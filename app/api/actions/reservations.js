@@ -1,8 +1,8 @@
 import pickBy from 'lodash/pickBy';
 import { decamelizeKeys } from 'humps';
 
-import createApiAction from './createApiAction';
 import schemas from './schemas';
+import { createApiAction } from './utils';
 
 function cancelReservation(reservation) {
   return createApiAction({

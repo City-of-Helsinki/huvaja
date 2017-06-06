@@ -4,10 +4,10 @@ import {
   fetchCateringProductCategories,
   fetchCateringProviders,
 } from './catering';
-import { buildAPIUrl } from './createApiAction';
 import { createApiTest } from './testUtils';
+import { buildAPIUrl } from './utils';
 
-describe('api/actions/equipment', () => {
+describe('api/actions/catering', () => {
   const pageSize = 1000;
 
   describe('fetchCateringProducts', () => {

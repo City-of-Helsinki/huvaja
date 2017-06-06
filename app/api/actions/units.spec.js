@@ -1,7 +1,7 @@
 import types from '../actionTypes';
 import { createApiTest } from './testUtils';
 import { fetchUnits } from './units';
-import { buildAPIUrl } from './createApiAction';
+import { buildAPIUrl } from './utils';
 
 describe('api/actions/units', () => {
   describe('fetchUnits', () => {

@@ -9,7 +9,7 @@ import actionTypes from '../actionTypes';
 // Helpers
 // -------
 
-export const requiredHeaders = {
+const requiredHeaders = {
   Accept: 'application/json',
   'Accept-Language': 'fi',
   'Content-Type': 'application/json',
@@ -22,12 +22,12 @@ function buildUrl(base, endpoint, params) {
   return paramsString ? `${url}?${paramsString}` : url;
 }
 
-export function buildAPIUrl(endpoint, params, isAbsolute) {
+function buildAPIUrl(endpoint, params, isAbsolute) {
   const base = isAbsolute ? '' : SETTINGS.API_URL;
   return buildUrl(base, endpoint, params);
 }
 
-export function createTransformFunction(schema) {
+function createTransformFunction(schema) {
   return (json) => {
     const camelizedJson = camelizeKeys(json);
     if (schema) {
@@ -37,14 +37,14 @@ export function createTransformFunction(schema) {
   };
 }
 
-export function getErrorTypeDescriptor(type, options = {}) {
+function getErrorTypeDescriptor(type, options = {}) {
   return {
     type,
     meta: Object.assign({}, options.meta, options.errorMeta),
   };
 }
 
-export function getHeadersCreator(headers, isAbsolute = false) {
+function getHeadersCreator(headers, isAbsolute = false) {
   return (state) => {
     const authorizationHeaders = {};
     if (state.auth && state.auth.token && !isAbsolute) {
@@ -54,7 +54,7 @@ export function getHeadersCreator(headers, isAbsolute = false) {
   };
 }
 
-export function getReportHeadersCreator(extraHeaders) {
+function getReportHeadersCreator(extraHeaders) {
   const createHeaders = getHeadersCreator(extraHeaders);
   return (state) => {
     const headers = createHeaders(state);
@@ -64,14 +64,14 @@ export function getReportHeadersCreator(extraHeaders) {
   };
 }
 
-export function getRequestTypeDescriptor(type, options = {}) {
+function getRequestTypeDescriptor(type, options = {}) {
   return {
     type,
     meta: Object.assign({}, options.meta, options.requestMeta),
   };
 }
 
-export function getRequestTypeDescriptors(type, method, options = {}) {
+function getRequestTypeDescriptors(type, method, options = {}) {
   return [
     getRequestTypeDescriptor(actionTypes[`${type}_${method}_REQUEST`], options),
     getSuccessTypeDescriptor(actionTypes[`${type}_${method}_SUCCESS`], options),
@@ -79,7 +79,7 @@ export function getRequestTypeDescriptors(type, method, options = {}) {
   ];
 }
 
-export function getSuccessPayload(options) {
+function getSuccessPayload(options) {
   return (action, state, response) => (
     options.rawResponse
     ? response
@@ -87,7 +87,7 @@ export function getSuccessPayload(options) {
   );
 }
 
-export function getSuccessTypeDescriptor(type, options = {}) {
+function getSuccessTypeDescriptor(type, options = {}) {
   return {
     type,
     payload: options.payload || getSuccessPayload(options),
@@ -95,7 +95,7 @@ export function getSuccessTypeDescriptor(type, options = {}) {
   };
 }
 
-export function downloadReport(response) {
+function downloadReport(response) {
   response.blob().then((blob) => {
     const url = window.URL.createObjectURL(blob);
     const anchor = document.createElement('a');
@@ -111,7 +111,7 @@ export function downloadReport(response) {
 // createReportAction
 // ------------------
 
-export function createReportAction({ endpoint, type, params = {}, options = {} }) {
+function createReportAction({ endpoint, type, params = {}, options = {} }) {
   const defaultOptions = {
     rawResponse: true,
     successMeta: {
@@ -155,4 +155,18 @@ function createApiAction({
   };
 }
 
-export default createApiAction;
+export {
+  buildAPIUrl,
+  buildUrl,
+  createApiAction,
+  createReportAction,
+  createTransformFunction,
+  getErrorTypeDescriptor,
+  getHeadersCreator,
+  getReportHeadersCreator,
+  getRequestTypeDescriptor,
+  getRequestTypeDescriptors,
+  getSuccessPayload,
+  getSuccessTypeDescriptor,
+  requiredHeaders,
+};

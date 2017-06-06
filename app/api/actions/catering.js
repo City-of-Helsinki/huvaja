@@ -1,7 +1,7 @@
 import { decamelizeKeys } from 'humps';
 
 import schemas from './schemas';
-import createApiAction from './createApiAction';
+import { createApiAction } from './utils';
 
 export function fetchCateringProducts(providerId) {
   return createApiAction({

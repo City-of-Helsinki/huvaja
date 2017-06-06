@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { createReportAction } from './createApiAction';
+import { createReportAction } from './utils';
 
 function fetchResourceDailyReport({ date, resourceIds }) {
   return createReportAction({

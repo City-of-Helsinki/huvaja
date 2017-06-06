@@ -9,9 +9,9 @@ import {
   getRequestTypeDescriptor,
   getSuccessTypeDescriptor,
   requiredHeaders,
-} from './createApiAction';
+} from './utils';
 
-describe('api/actions/createApiAction', () => {
+describe('api/actions/utils', () => {
   describe('buildAPIUrl', () => {
     const endpoint = 'some/endpoint';
 

@@ -9,7 +9,7 @@ import {
   getParamsWithTimes,
 } from './resources';
 import { createApiTest } from './testUtils';
-import { buildAPIUrl } from './createApiAction';
+import { buildAPIUrl } from './utils';
 
 describe('api/actions/resources', () => {
   describe('favoriteResource', () => {

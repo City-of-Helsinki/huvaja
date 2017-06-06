@@ -1,4 +1,4 @@
-import createApiAction from './createApiAction';
+import { createApiAction } from './utils';
 
 function fetchComments({ cateringId, reservationId }) {
   const targetType = cateringId ? 'catering' : 'reservation';
