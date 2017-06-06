@@ -10,7 +10,7 @@ ResourceDailyReportButton.propTypes = {
   resourceIds: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-function ResourceDailyReportButton({ date, onClick, resourceIds }) {
+export function ResourceDailyReportButton({ date, onClick, resourceIds }) {
   return (
     <Button
       bsStyle="primary"

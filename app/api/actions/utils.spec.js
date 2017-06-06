@@ -3,10 +3,13 @@ import { expect } from 'chai';
 import schemas from './schemas';
 import {
   buildAPIUrl,
+  buildUrl,
   createTransformFunction,
   getErrorTypeDescriptor,
   getHeadersCreator,
+  getReportHeadersCreator,
   getRequestTypeDescriptor,
+  getSuccessPayload,
   getSuccessTypeDescriptor,
   requiredHeaders,
 } from './utils';
@@ -14,25 +17,43 @@ import {
 describe('api/actions/utils', () => {
   describe('buildAPIUrl', () => {
     const endpoint = 'some/endpoint';
+    const isAbsolute = false;
 
     it('returns API_URL + given endpoint if params is empty', () => {
       const expected = `${SETTINGS.API_URL}${endpoint}/`;
 
-      expect(buildAPIUrl(endpoint)).to.equal(expected);
+      expect(buildAPIUrl(endpoint, {}, isAbsolute)).to.equal(expected);
     });
 
     it('rejects params with empty values', () => {
       const params = { empty: '' };
       const expected = `${SETTINGS.API_URL}${endpoint}/`;
 
-      expect(buildAPIUrl(endpoint, params)).to.equal(expected);
+      expect(buildAPIUrl(endpoint, params, isAbsolute)).to.equal(expected);
     });
 
     it('appends search params at the end if params is not empty', () => {
       const params = { param: 'hello_world' };
       const expected = `${SETTINGS.API_URL}${endpoint}/?param=hello_world`;
 
-      expect(buildAPIUrl(endpoint, params)).to.equal(expected);
+      expect(buildAPIUrl(endpoint, params, isAbsolute)).to.equal(expected);
+    });
+
+    it('supports absolute urls', () => {
+      const expected = `${endpoint}/`;
+
+      expect(buildAPIUrl(endpoint, {}, true)).to.equal(expected);
+    });
+  });
+
+  describe('buildUrl', () => {
+    it('returns correct url', () => {
+      const base = 'http://base.fi/';
+      const endpoint = 'some/endpoint';
+      const params = { empty: '', someParam: 'hello_world' };
+      const actual = buildUrl(base, endpoint, params);
+      const expected = 'http://base.fi/some/endpoint/?some_param=hello_world';
+      expect(actual).to.equal(expected);
     });
   });
 
@@ -179,6 +200,42 @@ describe('api/actions/utils', () => {
     });
   });
 
+  describe('getReportHeadersCreator', () => {
+    it('returns a function', () => {
+      expect(typeof getReportHeadersCreator()).to.equal('function');
+    });
+
+    describe('the returned function', () => {
+      describe('when user is logged in', () => {
+        const state = {
+          auth: {
+            token: 'mock-token',
+          },
+        };
+        const authorizationHeader = { Authorization: 'JWT mock-token' };
+
+        describe('if additional headers are specified', () => {
+          it('returns the required, the additional and Authorization headers without Accept and Content-Type', () => {
+            const additionalHeaders = {
+              header: 'value',
+            };
+            const creator = getReportHeadersCreator(additionalHeaders);
+            const expected = Object.assign(
+              {},
+              requiredHeaders,
+              additionalHeaders,
+              authorizationHeader
+            );
+            delete expected.Accept;
+            delete expected['Content-Type'];
+
+            expect(creator(state)).to.deep.equal(expected);
+          });
+        });
+      });
+    });
+  });
+
   describe('getRequestTypeDescriptor', () => {
     const actionType = 'SOME_GET_REQUEST';
 
@@ -197,6 +254,22 @@ describe('api/actions/utils', () => {
       const actual = getRequestTypeDescriptor(actionType, options).meta;
       const expected = { foo: 'bar', some: 'value' };
       expect(actual).to.deep.equal(expected);
+    });
+  });
+
+  describe('getSuccessPayload', () => {
+    it('returns a function', () => {
+      expect(typeof getSuccessPayload({})).to.equal('function');
+    });
+
+    describe('the returned function', () => {
+      it('returns response if rawResponse in options', () => {
+        const options = { rawResponse: true };
+        const func = getSuccessPayload(options);
+        const response = { some: 'data' };
+        const actual = func(null, null, response);
+        expect(actual).to.deep.equal(response);
+      });
     });
   });
 
