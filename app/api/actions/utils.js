@@ -95,12 +95,12 @@ function getSuccessTypeDescriptor(type, options = {}) {
   };
 }
 
-function downloadReport(response) {
+function downloadReport(response, filename) {
   response.blob().then((blob) => {
     const url = window.URL.createObjectURL(blob);
     const anchor = document.createElement('a');
     anchor.setAttribute('href', url);
-    anchor.setAttribute('download', 'paivaraportti.docx');
+    anchor.setAttribute('download', `${filename}.docx`);
     document.body.appendChild(anchor);
     anchor.click();
     window.URL.revokeObjectURL(url);
@@ -111,13 +111,13 @@ function downloadReport(response) {
 // createReportAction
 // ------------------
 
-function createReportAction({ endpoint, type, params = {}, options = {} }) {
+function createReportAction({ endpoint, filename, type, params = {}, options = {} }) {
   const defaultOptions = {
     rawResponse: true,
     successMeta: {
       sideEffect: (action) => {
         const response = action.payload;
-        downloadReport(response);
+        downloadReport(response, filename);
       },
     },
   };
