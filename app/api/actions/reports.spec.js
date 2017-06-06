@@ -1,6 +1,6 @@
 import types from '../actionTypes';
 import { createApiTest } from './testUtils';
-import { fetchResourceDailyReport } from './reports';
+import { fetchReservationDetailsReport, fetchResourceDailyReport } from './reports';
 import { buildUrl } from './utils';
 
 describe('api/actions/reports', () => {
@@ -26,6 +26,31 @@ describe('api/actions/reports', () => {
       },
       error: {
         type: types.RESOURCE_DAILY_REPORT_GET_ERROR,
+      },
+    },
+  });
+
+  createApiTest({
+    name: 'fetchReservationDetailsReport',
+    action: fetchReservationDetailsReport,
+    args: [123],
+    tests: {
+      method: 'GET',
+      endpoint: buildUrl(
+        SETTINGS.REPORT_URL,
+        'reservation_details',
+        {
+          reservation: 123,
+        }
+      ),
+      request: {
+        type: types.RESERVATION_DETAILS_REPORT_GET_REQUEST,
+      },
+      success: {
+        type: types.RESERVATION_DETAILS_REPORT_GET_SUCCESS,
+      },
+      error: {
+        type: types.RESERVATION_DETAILS_REPORT_GET_ERROR,
       },
     },
   });

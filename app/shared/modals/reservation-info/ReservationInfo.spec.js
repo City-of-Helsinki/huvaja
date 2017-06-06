@@ -5,6 +5,7 @@ import Modal from 'react-bootstrap/lib/Modal';
 import simple from 'simple-mock';
 
 import Comments from 'shared/comments';
+import ReservationDetailsReportButton from 'shared/reservation-details-report-button';
 import ReservationInfo from './ReservationInfo';
 
 describe('shared/modal/ReservationInfo', () => {
@@ -139,15 +140,10 @@ describe('shared/modal/ReservationInfo', () => {
       return getWrapper(props).find(Modal.Footer);
     }
 
-    it('is not rendered when cannot delete nor modify', () => {
-      const props = {
-        reservation: {
-          ...reservation,
-          userPermissions: { canModify: false, canDelete: false },
-        },
-      };
-      const footer = getFooterWrapper(props);
-      expect(footer).to.have.length(0);
+    it('renders report button', () => {
+      const button = getFooterWrapper().find(ReservationDetailsReportButton);
+      expect(button).to.have.length(1);
+      expect(button.prop('reservationId')).to.equal(reservation.id);
     });
 
     describe('cancel reservation button', () => {

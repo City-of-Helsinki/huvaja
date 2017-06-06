@@ -15,6 +15,18 @@ function fetchResourceDailyReport({ date, resourceIds }) {
   });
 }
 
+function fetchReservationDetailsReport(reservationId) {
+  return createReportAction({
+    endpoint: 'reservation_details',
+    filename: `varaus-${reservationId}`,
+    type: 'RESERVATION_DETAILS_REPORT',
+    params: {
+      reservation: reservationId,
+    },
+  });
+}
+
 export {
-  fetchResourceDailyReport,  // eslint-disable-line import/prefer-default-export
+  fetchReservationDetailsReport,
+  fetchResourceDailyReport,
 };

@@ -19,6 +19,7 @@ export default Object.assign(
   create('COMMENTS', ['GET', 'POST']),
   create('EQUIPMENT', ['GET']),
   create('RESERVATION', ['GET', 'DELETE', 'POST', 'PUT']),
+  create('RESERVATION_DETAILS_REPORT', ['GET']),
   create('RESERVATIONS', ['GET']),
   create('RESOURCE', ['GET']),
   create('RESOURCE_DAILY_REPORT', ['GET']),
