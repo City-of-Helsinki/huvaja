@@ -5,6 +5,7 @@ import {
 } from './catering';
 import { createComment, fetchComments } from './comments';
 import { fetchEquipment } from './equipment';
+import { fetchResourceDailyReport } from './reports';
 import {
   cancelReservation,
   editReservation,
@@ -33,6 +34,7 @@ export {
   fetchComments,
   fetchEquipment,
   fetchFavoritedResources,
+  fetchResourceDailyReport,
   fetchReservation,
   fetchReservations,
   fetchResource,

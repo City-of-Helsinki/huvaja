@@ -21,6 +21,7 @@ export default Object.assign(
   create('RESERVATION', ['GET', 'DELETE', 'POST', 'PUT']),
   create('RESERVATIONS', ['GET']),
   create('RESOURCE', ['GET']),
+  create('RESOURCE_DAILY_REPORT', ['GET']),
   create('RESOURCE_FAVORITE', ['POST']),
   create('RESOURCE_UNFAVORITE', ['POST']),
   create('RESOURCES', ['GET']),

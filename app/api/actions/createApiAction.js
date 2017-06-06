@@ -15,11 +15,16 @@ export const requiredHeaders = {
   'Content-Type': 'application/json',
 };
 
-export function buildAPIUrl(endpoint, params, isAbsolute) {
-  const url = isAbsolute ? endpoint : `${SETTINGS.API_URL}${endpoint}/`;
+function buildUrl(base, endpoint, params) {
+  const url = `${base}${endpoint}/`;
   const nonEmptyParams = pickBy(params, value => value !== '');
   const paramsString = queryString.stringify(decamelizeKeys(nonEmptyParams));
   return paramsString ? `${url}?${paramsString}` : url;
+}
+
+export function buildAPIUrl(endpoint, params, isAbsolute) {
+  const base = isAbsolute ? '' : SETTINGS.API_URL;
+  return buildUrl(base, endpoint, params);
 }
 
 export function createTransformFunction(schema) {
@@ -39,13 +44,23 @@ export function getErrorTypeDescriptor(type, options = {}) {
   };
 }
 
-export function getHeadersCreator(headers, isAbsolute) {
+export function getHeadersCreator(headers, isAbsolute = false) {
   return (state) => {
     const authorizationHeaders = {};
     if (state.auth && state.auth.token && !isAbsolute) {
       authorizationHeaders.Authorization = `JWT ${state.auth.token}`;
     }
     return Object.assign({}, requiredHeaders, headers, authorizationHeaders);
+  };
+}
+
+export function getReportHeadersCreator(extraHeaders) {
+  const createHeaders = getHeadersCreator(extraHeaders);
+  return (state) => {
+    const headers = createHeaders(state);
+    delete headers.Accept;
+    delete headers['Content-Type'];
+    return headers;
   };
 }
 
@@ -66,7 +81,9 @@ export function getRequestTypeDescriptors(type, method, options = {}) {
 
 export function getSuccessPayload(options) {
   return (action, state, response) => (
-    getJSON(response).then(createTransformFunction(options.schema))
+    options.rawResponse
+    ? response
+    : getJSON(response).then(createTransformFunction(options.schema))
   );
 }
 
@@ -75,6 +92,42 @@ export function getSuccessTypeDescriptor(type, options = {}) {
     type,
     payload: options.payload || getSuccessPayload(options),
     meta: Object.assign({}, options.meta, options.successMeta),
+  };
+}
+
+export function downloadReport(response) {
+  response.blob().then((blob) => {
+    const url = window.URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.setAttribute('href', url);
+    anchor.setAttribute('download', 'paivaraportti.docx');
+    document.body.appendChild(anchor);
+    anchor.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(anchor);
+  });
+}
+
+// createReportAction
+// ------------------
+
+export function createReportAction({ endpoint, type, params = {}, options = {} }) {
+  const defaultOptions = {
+    rawResponse: true,
+    successMeta: {
+      sideEffect: (action) => {
+        const response = action.payload;
+        downloadReport(response);
+      },
+    },
+  };
+  return {
+    [CALL_API]: {
+      types: getRequestTypeDescriptors(type, 'GET', { ...defaultOptions, ...options }),
+      endpoint: buildUrl(SETTINGS.REPORT_URL, endpoint, params),
+      method: 'GET',
+      headers: getReportHeadersCreator({}),
+    },
   };
 }
 
