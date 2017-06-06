@@ -41,6 +41,7 @@ module.exports = merge(common, {
     new webpack.DefinePlugin({
       SETTINGS: {
         API_URL: JSON.stringify('https://mock-api.fi/'),
+        REPORT_URL: JSON.stringify('https://mock-reports.fi/'),
       },
     }),
     new webpack.IgnorePlugin(/ReactContext/),

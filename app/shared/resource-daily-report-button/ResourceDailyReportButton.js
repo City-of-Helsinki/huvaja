@@ -1,25 +1,27 @@
-import moment from 'moment';
-import queryString from 'query-string';
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 import Button from 'react-bootstrap/lib/Button';
+
+import { fetchResourceDailyReport } from 'api/actions';
 
 ResourceDailyReportButton.propTypes = {
   date: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
   resourceIds: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-function ResourceDailyReportButton({ date, resourceIds }) {
-  const endpoint = `${SETTINGS.API_URL.replace('v1/', '')}reports/daily_reservations/`;
-  const params = queryString.stringify({
-    resource: resourceIds.join(','),
-    day: moment(date).format('YYYY-MM-DD'),
-  });
-  const reportLink = `${endpoint}?${params}`;
+function ResourceDailyReportButton({ date, onClick, resourceIds }) {
   return (
-    <Button bsStyle="primary" className="resource-daily-report-button" href={reportLink}>
+    <Button
+      bsStyle="primary"
+      className="resource-daily-report-button"
+      onClick={() => onClick({ date, resourceIds })}
+    >
       Lataa päiväraportti
     </Button>
   );
 }
 
-export default ResourceDailyReportButton;
+const actions = { onClick: fetchResourceDailyReport };
+
+export default connect(null, actions)(ResourceDailyReportButton);

@@ -46,6 +46,9 @@ module.exports = merge(common, {
       'process.env.NODE_ENV': JSON.stringify('production'),
       SETTINGS: {
         API_URL: JSON.stringify(process.env.API_URL || 'https://api.hel.fi/virkarespa/v1/'),
+        REPORT_URL: JSON.stringify(
+          process.env.REPORT_URL || 'https://api.hel.fi/virkarespa/reports/'
+        ),
       },
     }),
     new CleanWebpackPlugin([outputPath], { root: path.resolve(__dirname, '..') }),
