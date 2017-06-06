@@ -1,3 +1,1 @@
-import ResourceDailyReportButton from './ResourceDailyReportButton';
-
-export default ResourceDailyReportButton;
+export { default } from './ResourceDailyReportButton';
