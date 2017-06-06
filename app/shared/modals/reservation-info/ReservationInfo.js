@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/lib/Row';
 import { Link } from 'react-router';
 
 import Comments from 'shared/comments';
+import ReservationDetailsReportButton from 'shared/reservation-details-report-button';
 import WrappedText from 'shared/wrapped-text';
 
 ReservationInfoModal.propTypes = {
@@ -33,7 +34,6 @@ export default function ReservationInfoModal(props) {
   const time = `${startTime.format('HH:mm')} - ${endTime.format('HH:mm')}`;
   const cancelReservation = () => showReservationCancelModal(reservation.id);
   const { canDelete, canModify } = reservation.userPermissions;
-  const showFooter = canDelete || canModify;
   return (
     <Modal
       className="reservation-info-modal"
@@ -104,27 +104,26 @@ export default function ReservationInfoModal(props) {
           reservationId={reservation.id}
         />
       </Modal.Body>
-      {showFooter && (
-        <Modal.Footer>
-          {canDelete && (
-            <Button
-              className="reservation-cancel"
-              bsStyle="default"
-              onClick={cancelReservation}
-            >
-              Poista
-            </Button>
-          )}
-          {canModify && (
-            <Link
-              className="btn btn-default reservation-edit"
-              to={`/reservations/${reservation.id}/edit`}
-            >
-              Muokkaa
-            </Link>
-          )}
-        </Modal.Footer>
-      )}
+      <Modal.Footer>
+        <ReservationDetailsReportButton reservationId={reservation.id} />
+        {canDelete && (
+          <Button
+            className="reservation-cancel"
+            bsStyle="default"
+            onClick={cancelReservation}
+          >
+            Poista
+          </Button>
+        )}
+        {canModify && (
+          <Link
+            className="btn btn-default reservation-edit"
+            to={`/reservations/${reservation.id}/edit`}
+          >
+            Muokkaa
+          </Link>
+        )}
+      </Modal.Footer>
     </Modal>
   );
 }
