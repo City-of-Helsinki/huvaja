@@ -1,5 +1,5 @@
 import schemas from './schemas';
-import createApiAction from './createApiAction';
+import { createApiAction } from './utils';
 
 function fetchUnits() {
   return createApiAction({

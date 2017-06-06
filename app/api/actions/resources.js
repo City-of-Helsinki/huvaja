@@ -1,7 +1,7 @@
 import moment from 'moment';
 
-import createApiAction from './createApiAction';
 import schemas from './schemas';
+import { createApiAction } from './utils';
 
 function fetchFavoritedResources(date) {
   const params = { date, is_favorite: true };

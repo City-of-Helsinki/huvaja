@@ -1,5 +1,4 @@
 import types from '../actionTypes';
-import { buildAPIUrl } from './createApiAction';
 import {
   cancelReservation,
   editReservation,
@@ -8,6 +7,7 @@ import {
   makeReservation,
 } from './reservations';
 import { createApiTest } from './testUtils';
+import { buildAPIUrl } from './utils';
 
 describe('api/actions/reservations', () => {
   describe('cancelReservation', () => {

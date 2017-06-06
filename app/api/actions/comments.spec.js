@@ -1,7 +1,7 @@
 import types from '../actionTypes';
 import { createApiTest } from './testUtils';
 import { createComment, fetchComments } from './comments';
-import { buildAPIUrl } from './createApiAction';
+import { buildAPIUrl } from './utils';
 
 describe('api/actions/comments', () => {
   describe('fetchComments', () => {
