@@ -30,7 +30,22 @@ const unitsGetIsActiveSelector = createRequestIsActiveSelector(
   actionTypes.UNITS_GET_REQUEST
 );
 
+const cateringProvidersGetIsActiveSelector = createRequestIsActiveSelector(
+  actionTypes.CATERING_PROVIDERS_GET_REQUEST
+);
+
+const cateringProductsGetIsActiveSelector = createRequestIsActiveSelector(
+  actionTypes.CATERING_PRODUCTS_GET_REQUEST
+);
+
+const cateringProductCategoriesGetIsActiveSelector = createRequestIsActiveSelector(
+  actionTypes.CATERING_PRODUCT_CATEGORIES_GET_REQUEST
+);
+
 export {
+  cateringProductCategoriesGetIsActiveSelector,
+  cateringProductsGetIsActiveSelector,
+  cateringProvidersGetIsActiveSelector,
   createCateringProviderSelector,
   reservationDeleteIsActiveSelector,
   reservationGetIsActiveSelector,
