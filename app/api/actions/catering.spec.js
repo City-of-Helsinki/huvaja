@@ -1,5 +1,6 @@
 import types from '../actionTypes';
 import {
+  fetchCateringOrder,
   fetchCateringProducts,
   fetchCateringProductCategories,
   fetchCateringProviders,
@@ -78,6 +79,28 @@ describe('api/actions/catering', () => {
         },
         error: {
           type: types.CATERING_PROVIDERS_GET_ERROR,
+        },
+      },
+    });
+  });
+
+  describe('fetchCateringOrder', () => {
+    const reservationId = 123;
+    createApiTest({
+      name: 'fetchCateringOrder',
+      action: fetchCateringOrder,
+      args: [reservationId],
+      tests: {
+        method: 'GET',
+        endpoint: buildAPIUrl('catering_order', { reservation: reservationId }),
+        request: {
+          type: types.CATERING_ORDER_GET_REQUEST,
+        },
+        success: {
+          type: types.CATERING_ORDER_GET_SUCCESS,
+        },
+        error: {
+          type: types.CATERING_ORDER_GET_ERROR,
         },
       },
     });

@@ -38,6 +38,7 @@ typeaheadSchema.define({
 });
 
 export default {
+  paginatedCateringOrdersSchema: createPaginatedSchema('cateringOrders').paginated,
   paginatedCateringProductsSchema: createPaginatedSchema('cateringProducts').paginated,
   paginatedCateringProductCategoriesSchema:
     createPaginatedSchema('cateringProductCategories').paginated,

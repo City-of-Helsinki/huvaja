@@ -1,4 +1,5 @@
 import {
+  fetchCateringOrder,
   fetchCateringProducts,
   fetchCateringProductCategories,
   fetchCateringProviders,
@@ -31,6 +32,7 @@ export {
   createComment,
   editReservation,
   favoriteResource,
+  fetchCateringOrder,
   fetchCateringProducts,
   fetchCateringProductCategories,
   fetchCateringProviders,
