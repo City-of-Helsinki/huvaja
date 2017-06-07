@@ -73,7 +73,7 @@ export function UnconnectedCateringForm(props) {
           {renderField(
             'message',
             'textarea',
-            'Viesti tarjoilun toimittajalle',
+            'Lisätietoja tarjoilun toimittajalle',
             { rows: 7, value: props.formValues.message },
           )}
         </Col>

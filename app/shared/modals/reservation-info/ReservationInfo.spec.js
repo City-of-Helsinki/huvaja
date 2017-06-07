@@ -4,6 +4,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/lib/Modal';
 import simple from 'simple-mock';
 
+import CateringOrderTable from 'shared/catering-order-table';
 import Comments from 'shared/comments';
 import WrappedText from 'shared/wrapped-text';
 import ReservationDetailsReportButton from 'shared/reservation-details-report-button';
@@ -29,6 +30,7 @@ describe('shared/modal/ReservationInfo', () => {
   };
 
   const defaults = {
+    cateringOrderItems: [],
     onHide: () => {},
     reservation,
     resource,
@@ -136,12 +138,58 @@ describe('shared/modal/ReservationInfo', () => {
       expect(comments.prop('reservationId')).to.equal(reservation.id);
     });
 
-    it('renders catering comments', () => {
+    it('does not render catering comments when no catering order', () => {
       const comments = getBodyWrapper().find('.catering-comments');
-      expect(comments).to.have.length(1);
-      expect(comments.is(Comments)).to.be.true;
-      expect(comments.prop('name')).to.equal('Tarjoilun viestit');
-      expect(comments.prop('cateringId')).to.equal(reservation.id);
+      expect(comments).to.have.length(0);
+    });
+
+    describe('when cateringOrder and cateringOrderItems exist', () => {
+      const cateringData = {
+        cateringOrder: {
+          message: 'Hello!',
+          servingTime: '12:00:00',
+        },
+        cateringOrderItems: [
+          { name: 'Coffee', quantity: 10 },
+        ],
+      };
+
+      it('renders CateringOrderTable with correct props', () => {
+        const table = getBodyWrapper(cateringData).find(CateringOrderTable);
+        expect(table.prop('items')).to.deep.equal(cateringData.cateringOrderItems);
+        expect(table.prop('narrow')).to.be.true;
+        expect(table.prop('noHeader')).to.be.true;
+      });
+
+      it('renders cateringTime', () => {
+        const time = getBodyWrapper(cateringData).find('.serving-time');
+        const value = time.find('.details-value');
+        expect(value.text()).to.equal('12:00');
+      });
+
+      it('renders message if exists', () => {
+        const message = getBodyWrapper(cateringData).find('.catering-message');
+        expect(message).to.have.length(1);
+        const text = message.find(WrappedText);
+        expect(text.prop('text')).to.equal('Hello!');
+      });
+
+      it('does not render message if does not exist', () => {
+        const dataWithoutMessage = {
+          ...cateringData,
+          cateringOrder: {},
+        }
+        const message = getBodyWrapper(dataWithoutMessage).find('.catering-message');
+        expect(message).to.have.length(0);
+      });
+
+      it('renders catering comments', () => {
+        const comments = getBodyWrapper(cateringData).find('.catering-comments');
+        expect(comments).to.have.length(1);
+        expect(comments.is(Comments)).to.be.true;
+        expect(comments.prop('name')).to.equal('Tarjoilun viestit');
+        expect(comments.prop('cateringId')).to.equal(reservation.id);
+      });      
     });
   });
 
