@@ -59,10 +59,10 @@ export function UnconnectedCateringForm(props) {
       <Row>
         <Col xs={12} sm={6} md={6}>
           {renderField(
-            'time',
+            'servingTime',
             'time',
             'Tarjoiluaika',
-            { step: 5 * 60, value: props.formValues.time }
+            { step: 5 * 60, value: props.formValues.servingTime }
           )}
           {renderField(
             'invoicingData',
