@@ -3,6 +3,7 @@ import { reducer as formReducer } from 'redux-form';
 
 import { activeRequestsReducer, dataReducer } from 'api/reducers';
 import authReducer from 'auth/reducer';
+import reservationCateringOrders from './reservationCateringOrdersReducer';
 import formPlugins from './formPlugins';
 import recurringReservations from './recurringReservationsReducer';
 import resourcePage from './resourcePageReducer';
@@ -21,6 +22,7 @@ import searchResults from './searchResultsReducer';
 export default combineReducers({
   activeRequests: activeRequestsReducer,
   auth: authReducer,
+  reservationCateringOrders,
   data: dataReducer,
   form: formReducer.plugin(formPlugins),
   modals: combineReducers({
