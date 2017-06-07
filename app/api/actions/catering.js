@@ -43,6 +43,16 @@ export function makeCateringOrder(order, options) {
   });
 }
 
+export function fetchCateringOrder(reservationId) {
+  return createApiAction({
+    endpoint: 'catering_order',
+    params: { reservation: reservationId },
+    method: 'GET',
+    type: 'CATERING_ORDER',
+    options: { schema: schemas.paginatedCateringOrdersSchema },
+  });
+}
+
 function processCateringOrderData(orderData) {
   const { order, ...rest } = orderData;
   const data = {
