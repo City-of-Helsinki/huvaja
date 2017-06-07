@@ -50,6 +50,16 @@
       font-weight: 400;
       float: right;
     }
+
+    .catering-order-table {
+      margin-top: 5px;
+      margin-bottom: 5px;
+
+      &-narrow-description,
+      .number {
+        font-weight: 400;
+      }
+    }
   }
 
   .reservation-equipment {

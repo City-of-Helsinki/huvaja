@@ -7,10 +7,14 @@ import Row from 'react-bootstrap/lib/Row';
 import { Link } from 'react-router';
 
 import Comments from 'shared/comments';
-import WrappedText from 'shared/wrapped-text';
 import ReservationDetailsReportButton from 'shared/reservation-details-report-button';
+import CateringOrderTable from 'shared/reservation-form/catering/CateringOrderTable';
+import WrappedText from 'shared/wrapped-text';
+import cateringUtils from 'utils/cateringUtils';
 
 ReservationInfoModal.propTypes = {
+  cateringOrder: PropTypes.object,
+  cateringOrderItems: PropTypes.array.isRequired,
   onHide: PropTypes.func.isRequired,
   reservation: PropTypes.object.isRequired,
   resource: PropTypes.object.isRequired,
@@ -21,6 +25,8 @@ ReservationInfoModal.propTypes = {
 
 export default function ReservationInfoModal(props) {
   const {
+    cateringOrder,
+    cateringOrderItems,
     onHide,
     reservation,
     resource,
@@ -75,21 +81,39 @@ export default function ReservationInfoModal(props) {
           </Col>
         </Row>
         <hr />
-        <Row>
-          <Col className="details-row reservation-catering" xs={6}>
-            <div className="details-label">Tilattu tarjoilu: </div>
-            <ul>
-              <li className="details-item">Kahvi <span className="units">12 kpl</span></li>
-              <li className="details-item">Paivän pulla <span className="units">12 kpl</span></li>
-            </ul>
-          </Col>
-        </Row>
-        <Comments
-          cateringId={reservation.id}
-          className="catering-comments"
-          name="Tarjoilun viestit"
-        />
-        <hr />
+        {cateringOrder && cateringOrderItems.length &&
+          <Row>
+            <Col className="details-row reservation-catering" xs={12}>
+              <div className="details-label">Tilattu tarjoilu: </div>
+              <CateringOrderTable items={cateringOrderItems} narrow noHeader />
+            </Col>
+            <Col className="details-row serving-time" xs={6}>
+              <div className="details-label">Tarjoiluaika: </div>
+              <div className="details-value">
+                {cateringUtils.getServingTimeText(cateringOrder.servingTime)}
+              </div>
+            </Col>
+            {cateringOrder.message &&
+              <Col className="details-row catering-message" xs={12}>
+                <div className="details-label">
+                  Lisätietoja tarjoilun toimittajalle:
+                </div>
+                <WrappedText
+                  className="details-value"
+                  text={cateringOrder.message}
+                />
+              </Col>
+            }
+            <Col className="details-row" xs={12}>
+              <Comments
+                cateringId={reservation.id}
+                className="catering-comments"
+                name="Tarjoilun viestit"
+              />
+              <hr />
+            </Col>
+          </Row>
+        }
         {reservation.eventDescription && (
           <Row>
             <Col className="details-row reservation-additional-info" xs={6}>
