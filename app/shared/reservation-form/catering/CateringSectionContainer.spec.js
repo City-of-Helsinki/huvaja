@@ -3,8 +3,8 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import Button from 'react-bootstrap/lib/Button';
 
+import CateringOrderTable from 'shared/catering-order-table';
 import CateringModal from './CateringModal';
-import CateringOrderTable from './CateringOrderTable';
 import {
   selector,
   UnconnectedCateringSectionContainer as CateringSectionContainer,

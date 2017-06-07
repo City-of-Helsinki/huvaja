@@ -3,8 +3,8 @@ import Button from 'react-bootstrap/lib/Button';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
+import CateringOrderTable from 'shared/catering-order-table';
 import CateringModal from './CateringModal';
-import CateringOrderTable from './CateringOrderTable';
 import cateringUtils from './utils';
 
 export const selector = createSelector(

@@ -5,9 +5,9 @@ import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import simple from 'simple-mock';
 
+import CateringOrderTable from 'shared/catering-order-table';
 import { UnconnectedCateringFormContainer as CateringFormContainer } from './CateringFormContainer';
 import CateringMenu from './CateringMenu';
-import CateringOrderTable from '../CateringOrderTable';
 
 describe.skip('shared/reservation-form/catering/catering-form/CateringFormContainer', () => {
   function getCateringData(data) {

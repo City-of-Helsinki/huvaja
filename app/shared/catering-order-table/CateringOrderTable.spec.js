@@ -8,7 +8,7 @@ import simple from 'simple-mock';
 
 import CateringOrderTable from './CateringOrderTable';
 
-describe('shared/reservation-form/catering/CateringOrderTable', () => {
+describe('shared/catering-order-table/CateringOrderTable', () => {
   function getWrapper(props) {
     const defaults = {
       items: [{

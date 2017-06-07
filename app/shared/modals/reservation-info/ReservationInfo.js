@@ -6,9 +6,9 @@ import Modal from 'react-bootstrap/lib/Modal';
 import Row from 'react-bootstrap/lib/Row';
 import { Link } from 'react-router';
 
+import CateringOrderTable from 'shared/catering-order-table';
 import Comments from 'shared/comments';
 import ReservationDetailsReportButton from 'shared/reservation-details-report-button';
-import CateringOrderTable from 'shared/reservation-form/catering/CateringOrderTable';
 import WrappedText from 'shared/wrapped-text';
 import cateringUtils from 'utils/cateringUtils';
 
