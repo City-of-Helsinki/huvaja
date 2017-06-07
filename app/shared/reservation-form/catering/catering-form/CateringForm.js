@@ -4,9 +4,9 @@ import Col from 'react-bootstrap/lib/Col';
 import Row from 'react-bootstrap/lib/Row';
 import { Field, reduxForm } from 'redux-form';
 
+import CateringOrderTable from 'shared/catering-order-table';
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
 import CateringMenu from './CateringMenu';
-import CateringOrderTable from '../CateringOrderTable';
 import cateringUtils from '../utils';
 
 const requiredFields = [
