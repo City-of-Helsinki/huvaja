@@ -13,7 +13,7 @@ import {
 describe.skip('shared/reservation-form/catering/CateringSectionContainer', () => {
   function getWrapper(props) {
     const defaults = {
-      cateringTime: '10:00',
+      servingTime: '10:00',
       orderItems: [
         { id: 'cmi-1', name: { fi: 'Kahvi' }, price: 1, quantity: 2 },
       ],
@@ -40,9 +40,9 @@ describe.skip('shared/reservation-form/catering/CateringSectionContainer', () =>
       expect(selected.orderItems).to.deep.equal(expected);
     });
 
-    it('returns cateringTime from the state', () => {
+    it('returns servingTime from the state', () => {
       const selected = selector(getState());
-      expect(selected.cateringTime).to.deep.equal(cateringData.time);
+      expect(selected.servingTime).to.deep.equal(cateringData.servingTime);
     });
   });
 

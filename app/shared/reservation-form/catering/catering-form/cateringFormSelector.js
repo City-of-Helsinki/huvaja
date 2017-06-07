@@ -9,7 +9,7 @@ function reservationFormCateringOrderSelector(state) {
   return state.form.resourceReservation.values.cateringOrder || {};
 }
 
-function defaultCateringTimeSelector(state) {
+function defaultServingTimeSelector(state) {
   const reservationTimes = state.form.resourceReservation.values.time;
   const startTime = reservationTimes.begin.time;
   return startTime || '12:00';
@@ -62,17 +62,17 @@ const cateringMenuSelector = createSelector(
 
 const initialValuesSelector = createSelector(
   reservationFormCateringOrderSelector,
-  defaultCateringTimeSelector,
-  (reservationFormValues, time) => ({
+  defaultServingTimeSelector,
+  (reservationFormValues, servingTime) => ({
     invoicingData: reservationFormValues.invoicingData || '',
     message: reservationFormValues.message || '',
     order: reservationFormValues.order || {},
-    time,
+    servingTime,
   })
 );
 
 const valuesSelector = state => formValueSelector('catering')(
-  state, 'time', 'invoicingData', 'message', 'order'
+  state, 'invoicingData', 'message', 'order', 'servingTime'
 );
 
 export default createStructuredSelector({

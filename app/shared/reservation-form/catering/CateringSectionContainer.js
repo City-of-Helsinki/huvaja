@@ -16,7 +16,7 @@ export const selector = createSelector(
       cateringData ? cateringData.order : {}
     );
     return {
-      cateringTime: cateringData ? cateringData.time : '',
+      servingTime: cateringData ? cateringData.servingTime : '',
       orderItems,
     };
   }
@@ -24,7 +24,7 @@ export const selector = createSelector(
 
 export class UnconnectedCateringSectionContainer extends Component {
   static propTypes = {
-    cateringTime: PropTypes.string.isRequired,
+    servingTime: PropTypes.string.isRequired,
     controlProps: PropTypes.shape({
       onChange: PropTypes.func.isRequired,
     }).isRequired,
@@ -54,7 +54,7 @@ export class UnconnectedCateringSectionContainer extends Component {
   }
 
   render() {
-    const { cateringTime, orderItems } = this.props;
+    const { servingTime, orderItems } = this.props;
     const orderMade = Boolean(orderItems.length);
 
     return (
@@ -65,7 +65,7 @@ export class UnconnectedCateringSectionContainer extends Component {
         }
         {orderMade &&
           <div>
-            <p>Tilatut tuotteet tarjoillaan klo {cateringTime}.</p>
+            <p>Tilatut tuotteet tarjoillaan klo {servingTime}.</p>
             <CateringOrderTable items={orderItems} />
           </div>
         }
