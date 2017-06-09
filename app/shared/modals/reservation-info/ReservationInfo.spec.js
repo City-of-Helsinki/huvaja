@@ -5,6 +5,7 @@ import Modal from 'react-bootstrap/lib/Modal';
 import simple from 'simple-mock';
 
 import Comments from 'shared/comments';
+import FormattedUserText from 'shared/comments/FormattedUserText';
 import ReservationDetailsReportButton from 'shared/reservation-details-report-button';
 import ReservationInfo from './ReservationInfo';
 
@@ -20,6 +21,7 @@ describe('shared/modal/ReservationInfo', () => {
     eventSubject: 'Awesome meeting',
     hostName: 'Mr host',
     numberOfParticipants: 12,
+    participants: 'Participan list',
     reserverName: 'Mr reserver',
     begin: '2016-01-01T08:00:00',
     end: '2016-01-01T10:00:00',
@@ -104,6 +106,14 @@ describe('shared/modal/ReservationInfo', () => {
       const reservationParticipants = getBodyWrapper().find('.reservation-participants-number');
       expect(reservationParticipants.html()).to.contain('Osallistujamäärä: ');
       expect(reservationParticipants.html()).to.contain(reservation.numberOfParticipants);
+    });
+
+    it('renders participants list', () => {
+      const reservationParticipants = getBodyWrapper().find('.reservation-participants');
+      expect(reservationParticipants.html()).to.contain('Lista osallistujista: ');
+      const formattedUserText = reservationParticipants.find(FormattedUserText);
+      expect(formattedUserText).to.have.length(1);
+      expect(formattedUserText.prop('text')).to.equal(reservation.participants);
     });
 
     it('renders reservation reserver', () => {
