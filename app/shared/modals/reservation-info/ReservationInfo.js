@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/lib/Row';
 import { Link } from 'react-router';
 
 import Comments from 'shared/comments';
+import FormattedUserText from 'shared/comments/FormattedUserText';
 import ReservationDetailsReportButton from 'shared/reservation-details-report-button';
 import WrappedText from 'shared/wrapped-text';
 
@@ -63,11 +64,15 @@ export default function ReservationInfoModal(props) {
               {reservation.numberOfParticipants || '-'}
             </div>
           </Col>
-        </Row>
-        <Row>
           <Col className="details-row reservation-reserver" xs={6}>
             <div className="details-label">Varaaja: </div>
             <div className="details-value">{reservation.reserverName}</div>
+          </Col>
+        </Row>
+        <Row>
+          <Col className="details-row reservation-participants" xs={6}>
+            <div className="details-label">Lista osallistujista: </div>
+            <FormattedUserText className="details-value" text={reservation.participants || ''} />
           </Col>
           <Col className="details-row reservation-host" xs={6}>
             <div className="details-label">Tilaisuuden isäntä: </div>
