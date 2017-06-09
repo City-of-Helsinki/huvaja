@@ -243,12 +243,12 @@ describe('shared/reservation-form/ReservationForm', () => {
         expect(field).to.have.length(1);
       });
 
-      it('has a participantList field', () => {
+      it('has a participants field', () => {
         const field = fields.filter({
           component: ReduxFormField,
           controlProps: { rows: 6 },
           label: 'Lista osallistujista',
-          name: 'participantList',
+          name: 'participants',
           type: 'textarea',
         });
         expect(field).to.have.length(1);

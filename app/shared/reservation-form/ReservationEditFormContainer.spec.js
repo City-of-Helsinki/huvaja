@@ -227,6 +227,7 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
           eventDescription: 'Description',
           eventSubject: 'Tapaaminen',
           numberOfParticipants: 8,
+          participants: 'participant list',
           reserverName: 'Luke Skywalker',
           resource: 'r-1',
         };
@@ -247,6 +248,7 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
           host_name: values.hostName,
           id: props.reservation.id,
           number_of_participants: values.numberOfParticipants,
+          participants: values.participants,
           reserver_name: values.reserverName,
           resource: values.resource,
         });

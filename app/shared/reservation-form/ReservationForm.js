@@ -245,7 +245,7 @@ export class UnconnectedReservationForm extends React.Component {
                   { min: 1 },
                 )}
                 {renderField(
-                  'participantList',
+                  'participants',
                   'textarea',
                   'Lista osallistujista',
                   { rows: 6 },
