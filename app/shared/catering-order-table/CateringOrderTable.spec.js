@@ -32,12 +32,26 @@ describe('shared/catering-order-table/CateringOrderTable', () => {
       expect(thead).to.have.length(1);
     });
 
+    it('is not rendered if noHeader prop is true', () => {
+      const thead = getWrapper({ noHeader: true }).find('thead');
+      expect(thead).to.have.length(0);
+    })
+
     it('has correct headers', () => {
       const ths = getWrapper().find('thead').find('th');
       expect(ths).to.have.length(3);
       expect(ths.at(0).text()).to.equal('Tuote');
       expect(ths.at(1).text()).to.equal('Kuvaus');
       expect(ths.at(2).text()).to.equal('Määrä');
+    });
+
+    describe('in narrow mode', () => {
+      it('has correct headers', () => {
+        const ths = getWrapper({ narrow: true }).find('thead').find('th');
+        expect(ths).to.have.length(2);
+        expect(ths.at(0).text()).to.equal('Tuote');
+        expect(ths.at(1).text()).to.equal('Määrä');
+      });
     });
   });
 
@@ -77,6 +91,19 @@ describe('shared/catering-order-table/CateringOrderTable', () => {
       it('does not render any FormControls for editing item quantities', () => {
         const formControls = getTbodyWrapper().find(FormControl);
         expect(formControls).to.have.length(0);
+      });
+    });
+
+    describe('in narrow mode', () => {
+      it('renders correct table cells for each row', () => {
+        const trs = getTbodyWrapper({ narrow: true }).find('tr');
+        trs.forEach((tr, index) => {
+          const tds = tr.find('td');
+          const item = items[index];
+          expect(tds).to.have.length(2);
+          expect(tds.at(0).text()).to.equal(item.name.fi + item.description.fi);
+          expect(tds.at(1).text()).to.contain(item.quantity);
+        });
       });
     });
 
