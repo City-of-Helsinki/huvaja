@@ -194,6 +194,7 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
       event_subject: values.eventSubject,
       host_name: values.hostName,
       number_of_participants: values.numberOfParticipants,
+      participants: values.participants,
       reserver_name: values.reserverName,
       resource: values.resource,
     };
