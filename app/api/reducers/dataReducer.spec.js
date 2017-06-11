@@ -428,5 +428,23 @@ describe('api/reducers/dataReducer', () => {
         expect(nextState.resources[resource.id].isFavorite).to.be.false;
       });
     });
+
+    describe('CATERING_ORDER_POST_SUCCESS', () => {
+      const postOrderSuccess = createAction(actionTypes.CATERING_ORDER_POST_SUCCESS);
+
+      it('adds catering order to catering orders', () => {
+        const cateringOrder = { id: 1234 };
+        const initialState = immutable({
+          cateringOrders: {},
+        });
+        const action = postOrderSuccess(cateringOrder);
+        const nextState = dataReducer(initialState, action);
+
+        const actualOrders = nextState.cateringOrders;
+        const expectedOrders = { [cateringOrder.id]: cateringOrder };
+
+        expect(actualOrders).to.deep.equal(expectedOrders);
+      });
+    });
   });
 });
