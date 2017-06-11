@@ -8,6 +8,7 @@ import CateringOrderTable from 'shared/catering-order-table';
 import Comments from 'shared/comments';
 import WrappedText from 'shared/wrapped-text';
 import ReservationDetailsReportButton from 'shared/reservation-details-report-button';
+import WrappedText from 'shared/wrapped-text';
 import ReservationInfo from './ReservationInfo';
 
 describe('shared/modal/ReservationInfo', () => {
@@ -64,7 +65,7 @@ describe('shared/modal/ReservationInfo', () => {
         eventDescription,
       },
     });
-    const text = wrapper.find('.details-text');
+    const text = wrapper.find('.reservation-additional-info').find(WrappedText);
     expect(text.prop('text')).to.equal(eventDescription);
   });
 
