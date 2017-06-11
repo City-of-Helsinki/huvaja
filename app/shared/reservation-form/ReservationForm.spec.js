@@ -273,7 +273,7 @@ describe('shared/reservation-form/ReservationForm', () => {
               className: 'is-recurring-checkbox',
               disabled: false,
             },
-            label: 'Tee toistuva varaus...',
+            label: 'Tee toistuva varaus',
             name: 'isRecurring',
             type: 'checkbox',
           });
