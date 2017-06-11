@@ -175,7 +175,7 @@ export class UnconnectedReservationForm extends React.Component {
                     {renderField(
                       'isRecurring',
                       'checkbox',
-                      'Tee toistuva varaus...',
+                      'Tee toistuva varaus',
                       {
                         className: 'is-recurring-checkbox',
                         disabled: !this.props.isRecurring && !this.props.baseReservation,
