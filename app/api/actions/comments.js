@@ -1,7 +1,7 @@
 import { createApiAction } from './utils';
 
 function fetchComments({ cateringId, reservationId }) {
-  const targetType = cateringId ? 'catering' : 'reservation';
+  const targetType = cateringId ? 'catering_order' : 'reservation';
   const targetId = cateringId || reservationId;
   return createApiAction({
     endpoint: 'comment',
@@ -13,7 +13,7 @@ function fetchComments({ cateringId, reservationId }) {
 }
 
 function createComment({ cateringId, text, reservationId }) {
-  const targetType = cateringId ? 'catering' : 'reservation';
+  const targetType = cateringId ? 'catering_order' : 'reservation';
   const targetId = cateringId || reservationId;
   const data = {
     text,

@@ -12,7 +12,7 @@ export function selector() {
     const key = (
       props.reservationId
       ? `reservation-${props.reservationId}`
-      : `catering-${props.cateringId}`
+      : `catering_order-${props.cateringId}`
     );
     return state.data.comments[key];
   }

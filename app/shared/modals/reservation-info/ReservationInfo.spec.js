@@ -146,6 +146,7 @@ describe('shared/modal/ReservationInfo', () => {
     describe('when cateringOrder and cateringOrderItems exist', () => {
       const cateringData = {
         cateringOrder: {
+          id: 23,
           message: 'Hello!',
           servingTime: '12:00:00',
         },
@@ -188,7 +189,7 @@ describe('shared/modal/ReservationInfo', () => {
         expect(comments).to.have.length(1);
         expect(comments.is(Comments)).to.be.true;
         expect(comments.prop('name')).to.equal('Tarjoilun viestit');
-        expect(comments.prop('cateringId')).to.equal(reservation.id);
+        expect(comments.prop('cateringId')).to.equal(cateringData.cateringOrder.id);
       });
     });
   });
