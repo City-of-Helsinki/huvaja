@@ -118,7 +118,9 @@ export default function ReservationInfoModal(props) {
           <Row>
             <Col className="details-row reservation-additional-info" xs={6}>
               <div className="details-label">Lisätiedot: </div>
-              <WrappedText className="details-text" text={reservation.eventDescription} />
+              <div className="details-value">
+                <WrappedText text={reservation.eventDescription} />
+              </div>
             </Col>
           </Row>
         )}
