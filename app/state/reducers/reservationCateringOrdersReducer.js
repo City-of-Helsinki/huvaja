@@ -14,4 +14,8 @@ export default handleActions({
     const newData = fromPairs(pairs);
     return { ...state, ...newData };
   },
+  [actionTypes.CATERING_ORDER_POST_SUCCESS]: (state, action) => ({
+    ...state,
+    [action.payload.reservation]: action.payload.id,
+  }),
 }, initialState);

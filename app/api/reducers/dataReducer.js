@@ -59,6 +59,14 @@ function dataReducer(state = initialState, action) {
       return handleData(state, action.payload.entities);
     }
 
+    case actionTypes.CATERING_ORDER_POST_SUCCESS: {
+      return state.merge({
+        cateringOrders: {
+          [action.payload.id]: action.payload,
+        },
+      });
+    }
+
     case actionTypes.COMMENTS_GET_SUCCESS: {
       const key = `${action.meta.targetType}-${action.meta.targetId}`;
       return state.merge({

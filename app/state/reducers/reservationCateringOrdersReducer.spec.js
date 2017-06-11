@@ -44,4 +44,22 @@ describe('state/reducers/reservationCateringOrdersReducer', () => {
       expect(actual).to.deep.equal(expected);
     });
   });
+
+  describe('CATERING_ORDER_POST_SUCCESS', () => {
+    it('adds new mapping to state', () => {
+      const state = { 1: 2 };
+      const actual = reducer(state, {
+        type: 'CATERING_ORDER_POST_SUCCESS',
+        payload: {
+          id: 6,
+          reservation: 5,
+        },
+      });
+      const expected = {
+        1: 2,
+        5: 6,
+      };
+      expect(actual).to.deep.equal(expected);
+    });
+  });
 });
