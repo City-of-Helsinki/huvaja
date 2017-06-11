@@ -12,7 +12,7 @@ CateringMenu.propTypes = {
 
 export default function CateringMenu(props) {
   return (
-    <PanelGroup className="catering-menu">
+    <PanelGroup accordion className="catering-menu">
       {props.categories.map(category =>
         <Panel
           className="catering-menu-category"
