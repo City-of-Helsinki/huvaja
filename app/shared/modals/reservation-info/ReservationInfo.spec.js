@@ -178,7 +178,7 @@ describe('shared/modal/ReservationInfo', () => {
         const dataWithoutMessage = {
           ...cateringData,
           cateringOrder: {},
-        }
+        };
         const message = getBodyWrapper(dataWithoutMessage).find('.catering-message');
         expect(message).to.have.length(0);
       });
@@ -189,7 +189,7 @@ describe('shared/modal/ReservationInfo', () => {
         expect(comments.is(Comments)).to.be.true;
         expect(comments.prop('name')).to.equal('Tarjoilun viestit');
         expect(comments.prop('cateringId')).to.equal(reservation.id);
-      });      
+      });
     });
   });
 
