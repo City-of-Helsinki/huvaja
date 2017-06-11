@@ -35,7 +35,7 @@ describe('shared/catering-order-table/CateringOrderTable', () => {
     it('is not rendered if noHeader prop is true', () => {
       const thead = getWrapper({ noHeader: true }).find('thead');
       expect(thead).to.have.length(0);
-    })
+    });
 
     it('has correct headers', () => {
       const ths = getWrapper().find('thead').find('th');

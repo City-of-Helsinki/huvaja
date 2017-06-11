@@ -137,7 +137,7 @@ describe('shared/modals/reservation-info/reservationInfoSelector', () => {
       const expected = [{
         name: 'Coffee',
         quantity: 10,
-      }]
+      }];
       expect(actual).to.deep.equal(expected);
     });
   });
@@ -155,7 +155,7 @@ describe('shared/modals/reservation-info/reservationInfoSelector', () => {
       const extraState = {
         ...defaultState,
         'data.cateringProducts': {},
-      }
+      };
       const state = getState(extraState);
       const actual = selector(state).shouldFetchCateringData;
       expect(actual).to.be.true;
