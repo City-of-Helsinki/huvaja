@@ -33,7 +33,7 @@ describe('api/actions/comments', () => {
       args: [{ cateringId }],
       tests: {
         method: 'GET',
-        endpoint: buildAPIUrl('comment', { targetType: 'catering', targetId: cateringId }),
+        endpoint: buildAPIUrl('comment', { targetType: 'catering_order', targetId: cateringId }),
         request: {
           type: types.COMMENTS_GET_REQUEST,
         },
@@ -50,16 +50,21 @@ describe('api/actions/comments', () => {
   describe('createComment', () => {
     const cateringId = 4942;
     const reservationId = 3819;
-    const content = 'Commends are comments';
+    const text = 'Commends are comments';
     const userName = 'Conrad Commentor';
 
     createApiTest({
       name: 'createComment(reservationId)',
       action: createComment,
-      args: [{ reservationId, content, userName }],
+      args: [{ reservationId, text, userName }],
       tests: {
         method: 'POST',
         endpoint: buildAPIUrl('comment'),
+        body: {
+          text,
+          target_type: 'reservation',
+          target_id: reservationId,
+        },
         request: {
           type: types.COMMENTS_POST_REQUEST,
         },
@@ -75,10 +80,15 @@ describe('api/actions/comments', () => {
     createApiTest({
       name: 'createComment(cateringId)',
       action: createComment,
-      args: [{ cateringId, content, userName }],
+      args: [{ cateringId, text, userName }],
       tests: {
         method: 'POST',
         endpoint: buildAPIUrl('comment'),
+        body: {
+          text,
+          target_type: 'catering_order',
+          target_id: cateringId,
+        },
         request: {
           type: types.COMMENTS_POST_REQUEST,
         },

@@ -106,7 +106,7 @@ export default function ReservationInfoModal(props) {
             }
             <Col className="details-row" xs={12}>
               <Comments
-                cateringId={reservation.id}
+                cateringId={cateringOrder.id}
                 className="catering-comments"
                 name="Tarjoilun viestit"
               />

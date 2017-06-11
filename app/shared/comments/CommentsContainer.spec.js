@@ -189,7 +189,7 @@ describe('shared/comments/CommentsContainer', () => {
     it('selects catering comments', () => {
       const comments = [{ id: 1 }, { id: 2 }];
       const actual = getSelected(
-        { 'data.comments': { 'catering-1437': comments } },
+        { 'data.comments': { 'catering_order-1437': comments } },
         { cateringId: 1437 },
       );
       expect(actual.comments).to.deep.equal(comments);
