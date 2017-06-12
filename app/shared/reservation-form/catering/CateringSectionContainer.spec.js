@@ -2,17 +2,22 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 import Button from 'react-bootstrap/lib/Button';
+import simple from 'simple-mock';
 
 import CateringOrderTable from 'shared/catering-order-table';
+import { getState } from 'utils/testUtils';
 import CateringModal from './CateringModal';
 import {
   selector,
   UnconnectedCateringSectionContainer as CateringSectionContainer,
 } from './CateringSectionContainer';
 
-describe.skip('shared/reservation-form/catering/CateringSectionContainer', () => {
+describe('shared/reservation-form/catering/CateringSectionContainer', () => {
   function getWrapper(props) {
     const defaults = {
+      controlProps: {
+        onChange: () => null,
+      },
       servingTime: '10:00',
       orderItems: [
         { id: 'cmi-1', name: { fi: 'Kahvi' }, price: 1, quantity: 2 },
@@ -26,23 +31,21 @@ describe.skip('shared/reservation-form/catering/CateringSectionContainer', () =>
       1: { id: 1, name: { fi: 'Kahvi' }, price: 2 },
       2: { id: 2, name: { fi: 'Kokis' }, price: 3.5 },
     };
-    const cateringData = { order: { 1: 2 }, time: '11:30' };
-    function getState() {
-      return {
-        data: { cateringProducts },
-        catering: cateringData,
-      };
-    }
+    const cateringOrder = { order: { 1: 2 }, servingTime: '11:30' };
+    const defaultState = {
+      data: { cateringProducts },
+      'form.resourceReservation.values': { cateringOrder },
+    };
 
     it('returns orderItems from the state', () => {
-      const selected = selector(getState());
+      const selected = selector(getState(defaultState));
       const expected = [{ id: 1, name: { fi: 'Kahvi' }, price: 2, quantity: 2 }];
       expect(selected.orderItems).to.deep.equal(expected);
     });
 
     it('returns servingTime from the state', () => {
-      const selected = selector(getState());
-      expect(selected.servingTime).to.deep.equal(cateringData.servingTime);
+      const selected = selector(getState(defaultState));
+      expect(selected.servingTime).to.deep.equal(cateringOrder.servingTime);
     });
   });
 
@@ -102,6 +105,7 @@ describe.skip('shared/reservation-form/catering/CateringSectionContainer', () =>
       const cateringModal = wrapper.find(CateringModal);
       expect(cateringModal).to.have.length(1);
       expect(cateringModal.prop('onClose')).to.equal(instance.closeCateringModal);
+      expect(cateringModal.prop('onSubmit')).to.equal(instance.handleSubmit);
       expect(cateringModal.prop('show')).to.equal(instance.state.showCateringModal);
     });
   });
@@ -111,6 +115,25 @@ describe.skip('shared/reservation-form/catering/CateringSectionContainer', () =>
       const instance = getWrapper().instance();
       instance.state.showCateringModal = true;
       instance.closeCateringModal();
+      expect(instance.state.showCateringModal).to.equal(false);
+    });
+  });
+
+  describe('handleSubmit', () => {
+    it('calls onChange with catering order data', () => {
+      const onChange = simple.mock();
+      const props = { controlProps: { onChange } };
+      const instance = getWrapper(props).instance();
+      const cateringOrder = { some: 'data' };
+      instance.handleSubmit(cateringOrder);
+      expect(onChange.callCount).to.equal(1);
+      expect(onChange.lastCall.arg).to.deep.equal(cateringOrder);
+    });
+
+    it('closes modal', () => {
+      const instance = getWrapper().instance();
+      instance.state.showCateringModal = true;
+      instance.handleSubmit();
       expect(instance.state.showCateringModal).to.equal(false);
     });
   });
