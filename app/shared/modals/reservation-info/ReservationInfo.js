@@ -6,6 +6,7 @@ import Modal from 'react-bootstrap/lib/Modal';
 import Row from 'react-bootstrap/lib/Row';
 import { Link } from 'react-router';
 
+import constants from 'constants/AppConstants';
 import CateringOrderTable from 'shared/catering-order-table';
 import Comments from 'shared/comments';
 import ReservationDetailsReportButton from 'shared/reservation-details-report-button';
@@ -36,8 +37,8 @@ export default function ReservationInfoModal(props) {
   } = props;
   const startTime = moment(reservation.begin);
   const endTime = moment(reservation.end);
-  const date = startTime.format('dd D.M.YYYY');
-  const time = `${startTime.format('HH:mm')} - ${endTime.format('HH:mm')}`;
+  const date = startTime.format(constants.DATE_FORMAT);
+  const time = `${startTime.format(constants.TIME_FORMAT)} - ${endTime.format(constants.TIME_FORMAT)}`;
   const cancelReservation = () => showReservationCancelModal(reservation.id);
   const { canDelete, canModify } = reservation.userPermissions;
   return (

@@ -91,7 +91,7 @@ describe('shared/modal/ReservationInfo', () => {
 
     it('renders time', () => {
       const time = getHeaderWrapper().find('.reservation-time').find('.time');
-      expect(time.text()).to.equal('08:00 - 10:00');
+      expect(time.text()).to.equal('8:00 - 10:00');
     });
   });
 

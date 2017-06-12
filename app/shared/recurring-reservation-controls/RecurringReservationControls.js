@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/lib/Row';
 import NumericInput from 'react-numeric-input';
 import Select from 'react-select';
 
+import constants from 'constants/AppConstants';
 import DatePicker from 'shared/date-picker';
 
 RecurringReservationControls.propTypes = {
@@ -74,7 +75,7 @@ function RecurringReservationControls({
                 Päättyy
               </ControlLabel>
               <DatePicker
-                dateFormat="D.M.YYYY"
+                dateFormat={constants.DATE_PICKER_DATE_FORMAT}
                 formControl
                 onChange={changeLastTime}
                 value={lastTime}

@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import moment from 'moment';
 import React from 'react';
 
+import constants from 'constants/AppConstants';
 import WrappedText from 'shared/wrapped-text';
 import CommentAdder from './CommentAdder';
 import Comments from './Comments';
@@ -50,7 +51,8 @@ describe('shared/comments/Comments', () => {
     it('renders date', () => {
       const date = getComment().find('.comments-comment-date');
       expect(date).to.have.length(1);
-      expect(date.text()).to.equal(moment(comment.createdAt).format('D.M.YYYY HH.mm'));
+      const expected = moment(comment.createdAt).format(constants.DATETIME_FORMAT);
+      expect(date.text()).to.equal(expected);
     });
 
     it('renders user name', () => {

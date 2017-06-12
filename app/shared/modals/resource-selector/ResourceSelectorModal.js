@@ -6,12 +6,13 @@ import Col from 'react-bootstrap/lib/Col';
 import Modal from 'react-bootstrap/lib/Modal';
 import Row from 'react-bootstrap/lib/Row';
 
+import constants from 'constants/AppConstants';
 import ResourceSelector from 'shared/form-fields/resource-field/resource-selector';
 
 function getFormattedDate(dateTimeRange) {
   return (
     dateTimeRange &&
-    moment(dateTimeRange.begin.date).format('dd D.M.YYYY')
+    moment(dateTimeRange.begin.date).format(constants.DATE_FORMAT)
   );
 }
 

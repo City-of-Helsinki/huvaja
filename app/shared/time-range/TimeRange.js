@@ -2,6 +2,8 @@ import upperFirst from 'lodash/upperFirst';
 import moment from 'moment';
 import React, { PropTypes } from 'react';
 
+import constants from 'constants/AppConstants';
+
 TimeRange.propTypes = {
   begin: PropTypes.string.isRequired,
   beginFormat: PropTypes.string.isRequired,
@@ -10,8 +12,8 @@ TimeRange.propTypes = {
   endFormat: PropTypes.string.isRequired,
 };
 TimeRange.defaultProps = {
-  beginFormat: 'dddd, LLL',
-  endFormat: 'LT',
+  beginFormat: constants.DATETIME_FORMAT,
+  endFormat: constants.TIME_FORMAT,
 };
 function TimeRange({
   begin,
