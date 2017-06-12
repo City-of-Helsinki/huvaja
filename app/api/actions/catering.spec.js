@@ -4,6 +4,7 @@ import {
   fetchCateringProducts,
   fetchCateringProductCategories,
   fetchCateringProviders,
+  makeCateringOrder,
 } from './catering';
 import { createApiTest } from './testUtils';
 import { buildAPIUrl } from './utils';
@@ -79,6 +80,41 @@ describe('api/actions/catering', () => {
         },
         error: {
           type: types.CATERING_PROVIDERS_GET_ERROR,
+        },
+      },
+    });
+  });
+
+  describe('makeCateringOrder', () => {
+    const order = {
+      message: 'Hello!',
+      order: {
+        2: 10,
+      },
+    };
+    const body = {
+      message: 'Hello!',
+      order_lines: [{
+        product: '2',
+        quantity: 10,
+      }],
+    };
+    createApiTest({
+      name: 'makeCateringOrder',
+      action: makeCateringOrder,
+      args: [order],
+      tests: {
+        method: 'POST',
+        endpoint: buildAPIUrl('catering_order'),
+        body,
+        request: {
+          type: types.CATERING_ORDER_POST_REQUEST,
+        },
+        success: {
+          type: types.CATERING_ORDER_POST_SUCCESS,
+        },
+        error: {
+          type: types.CATERING_ORDER_POST_ERROR,
         },
       },
     });
