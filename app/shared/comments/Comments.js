@@ -1,8 +1,8 @@
 import moment from 'moment';
 import React, { PropTypes } from 'react';
 
+import WrappedText from 'shared/wrapped-text';
 import CommentAdder from './CommentAdder';
-import FormattedUserText from './FormattedUserText';
 
 function formatCreatedAt(datetime) {
   return moment(datetime).format('D.M.YYYY HH.mm');
@@ -28,7 +28,7 @@ export default function Comments(props) {
             <div className="comments-comment-date">{formatCreatedAt(comment.createdAt)}</div>
             <div className="comments-comment-user">{comment.createdBy.displayName}</div>
           </div>
-          <FormattedUserText className="comments-comment-content" text={comment.text} />
+          <WrappedText className="comments-comment-content" text={comment.text} />
         </div>
       ))}
       <CommentAdder createComment={props.createComment} />

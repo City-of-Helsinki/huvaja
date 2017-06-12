@@ -3,9 +3,9 @@ import { shallow } from 'enzyme';
 import moment from 'moment';
 import React from 'react';
 
+import WrappedText from 'shared/wrapped-text';
 import CommentAdder from './CommentAdder';
 import Comments from './Comments';
-import FormattedUserText from './FormattedUserText';
 
 function getWrapper(props) {
   const defaults = {
@@ -62,7 +62,7 @@ describe('shared/comments/Comments', () => {
     it('renders comment content', () => {
       const content = getComment().find('.comments-comment-content');
       expect(content).to.have.length(1);
-      expect(content.is(FormattedUserText)).to.be.true;
+      expect(content.is(WrappedText)).to.be.true;
       expect(content.prop('text')).to.equal(comment.text);
     });
   });

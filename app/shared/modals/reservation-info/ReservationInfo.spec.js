@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/lib/Modal';
 import simple from 'simple-mock';
 
 import Comments from 'shared/comments';
-import FormattedUserText from 'shared/comments/FormattedUserText';
+import WrappedText from 'shared/wrapped-text';
 import ReservationDetailsReportButton from 'shared/reservation-details-report-button';
 import ReservationInfo from './ReservationInfo';
 
@@ -111,7 +111,7 @@ describe('shared/modal/ReservationInfo', () => {
     it('renders participants list', () => {
       const reservationParticipants = getBodyWrapper().find('.reservation-participants');
       expect(reservationParticipants.html()).to.contain('Lista osallistujista: ');
-      const formattedUserText = reservationParticipants.find(FormattedUserText);
+      const formattedUserText = reservationParticipants.find(WrappedText);
       expect(formattedUserText).to.have.length(1);
       expect(formattedUserText.prop('text')).to.equal(reservation.participants);
     });

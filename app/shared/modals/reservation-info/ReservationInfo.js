@@ -7,9 +7,8 @@ import Row from 'react-bootstrap/lib/Row';
 import { Link } from 'react-router';
 
 import Comments from 'shared/comments';
-import FormattedUserText from 'shared/comments/FormattedUserText';
-import ReservationDetailsReportButton from 'shared/reservation-details-report-button';
 import WrappedText from 'shared/wrapped-text';
+import ReservationDetailsReportButton from 'shared/reservation-details-report-button';
 
 ReservationInfoModal.propTypes = {
   onHide: PropTypes.func.isRequired,
@@ -108,7 +107,7 @@ export default function ReservationInfoModal(props) {
         <Row>
           <Col className="details-row reservation-participants" xs={12}>
             <div className="details-label">Lista osallistujista: </div>
-            <FormattedUserText className="details-value" text={reservation.participants || ''} />
+            <WrappedText className="details-value" text={reservation.participants || ''} />
           </Col>
         </Row>
       </Modal.Body>
