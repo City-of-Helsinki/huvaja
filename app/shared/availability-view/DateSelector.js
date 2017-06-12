@@ -2,6 +2,7 @@ import FontAwesome from 'react-fontawesome';
 import moment from 'moment';
 import React, { PropTypes } from 'react';
 
+import constants from 'constants/AppConstants';
 import DatePicker from 'shared/date-picker';
 
 export default class DateSelector extends React.Component {
@@ -39,7 +40,7 @@ export default class DateSelector extends React.Component {
         </a>
         <div className="current-value" >
           <DatePicker
-            dateFormat="dd D.M.YYYY"
+            dateFormat={constants.DATE_FORMAT}
             onChange={date => this.handleChange(date)}
             value={this.props.value}
           />

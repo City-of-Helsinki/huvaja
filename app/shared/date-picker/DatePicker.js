@@ -2,8 +2,10 @@ import React, { PropTypes } from 'react';
 import moment from 'moment';
 import { DateField, DatePicker as RDPDatePicker } from 'react-date-picker';
 
+import constants from 'constants/AppConstants';
+
 const dateFormat = 'YYYY-MM-DD';
-const localizedDateFormat = 'D.M.YYYY';
+const localizedDateFormat = constants.DATE_PICKER_DATE_FORMAT;
 
 
 DatePicker.propTypes = {

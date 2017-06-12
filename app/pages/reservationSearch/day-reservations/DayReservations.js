@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 
+import constants from 'constants/AppConstants';
 import ReservationRow from './reservation-row';
 
 DayReservations.propTypes = {
@@ -9,7 +10,7 @@ DayReservations.propTypes = {
 export default function DayReservations({ day, reservations }) {
   return (
     <div className="day-reservations">
-      <div className="day">{day.format('dd D.M.YYYY')}</div>
+      <div className="day">{day.format(constants.DATE_FORMAT)}</div>
       <div className="reservations">
         {reservations.map(id =>
           <ReservationRow id={id} key={id} />

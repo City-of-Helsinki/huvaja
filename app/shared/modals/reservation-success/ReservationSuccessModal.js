@@ -3,9 +3,6 @@ import Modal from 'react-bootstrap/lib/Modal';
 
 import CompactReservationList from 'shared/compact-reservation-list';
 
-const beginFormat = 'dd, D.M.YYYY HH:mm';
-const endFormat = 'HH:mm';
-
 function getListTitle(edited, createdReservations) {
   if (edited) return 'Yhtä tilavarausta on muokattu';
   const successCount = createdReservations.length;
@@ -50,9 +47,7 @@ function ReservationSuccessModal({
         <div className="reservation-success-modal-section">
           <h5 className="reservation-success-modal-list-title">{listTitle}</h5>
           <CompactReservationList
-            beginFormat={beginFormat}
             className="reservations-list"
-            endFormat={endFormat}
             reservations={reservations}
             resourceNames={resourceNames}
             success
@@ -64,8 +59,6 @@ function ReservationSuccessModal({
               Seuraavien varausten tekeminen ei onnistunut
             </h5>
             <CompactReservationList
-              beginFormat={beginFormat}
-              endFormat={endFormat}
               failure
               className="failed-reservations-list"
               reservations={failedReservations}

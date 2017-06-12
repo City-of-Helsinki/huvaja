@@ -1,11 +1,12 @@
 import moment from 'moment';
 import React, { PropTypes } from 'react';
 
+import constants from 'constants/AppConstants';
 import WrappedText from 'shared/wrapped-text';
 import CommentAdder from './CommentAdder';
 
 function formatCreatedAt(datetime) {
-  return moment(datetime).format('D.M.YYYY HH.mm');
+  return moment(datetime).format(constants.DATETIME_FORMAT);
 }
 
 Comments.propTypes = {

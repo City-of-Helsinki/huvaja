@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import simple from 'simple-mock';
 
+import constants from 'constants/AppConstants';
 import DatePicker from 'shared/date-picker';
 import DateSelector from './DateSelector';
 
@@ -52,7 +53,9 @@ describe('shared/availability-view/DateSelector', () => {
     }
 
     it('gets dateFormat prop', () => {
-      expect(getDatePickerWrapper().prop('dateFormat')).to.equal('dd D.M.YYYY');
+      expect(getDatePickerWrapper().prop('dateFormat')).to.equal(
+        constants.DATE_FORMAT
+      );
     });
 
     it('gets correct value', () => {

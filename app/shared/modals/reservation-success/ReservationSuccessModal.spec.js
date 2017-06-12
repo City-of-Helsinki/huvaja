@@ -7,8 +7,6 @@ import CompactReservationList from 'shared/compact-reservation-list';
 import ReservationSuccessModal from './ReservationSuccessModal';
 
 describe('shared/modals/reservation-success/ReservationSuccessModal', () => {
-  const beginFormat = 'dd, D.M.YYYY HH:mm';
-  const endFormat = 'HH:mm';
   const defaults = {
     createdReservations: [
       { id: 'r-1' },
@@ -62,8 +60,6 @@ describe('shared/modals/reservation-success/ReservationSuccessModal', () => {
     expect(list.prop('reservations')).to.deep.equal(defaults.createdReservations);
     expect(list.prop('resourceNames')).to.deep.equal(defaults.resourceNames);
     expect(list.prop('success')).to.be.true;
-    expect(list.prop('beginFormat')).to.deep.equal(beginFormat);
-    expect(list.prop('endFormat')).to.deep.equal(endFormat);
   });
 
   it('renders list of failed reservations', () => {
@@ -77,8 +73,6 @@ describe('shared/modals/reservation-success/ReservationSuccessModal', () => {
     expect(list.prop('reservations')).to.deep.equal(failedReservations);
     expect(list.prop('resourceNames')).to.deep.equal(defaults.resourceNames);
     expect(list.prop('failure')).to.be.true;
-    expect(list.prop('beginFormat')).to.deep.equal(beginFormat);
-    expect(list.prop('endFormat')).to.deep.equal(endFormat);
   });
 
   describe('when edited', () => {
