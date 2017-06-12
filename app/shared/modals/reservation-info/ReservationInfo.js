@@ -64,15 +64,11 @@ export default function ReservationInfoModal(props) {
               {reservation.numberOfParticipants || '-'}
             </div>
           </Col>
+        </Row>
+        <Row>
           <Col className="details-row reservation-reserver" xs={6}>
             <div className="details-label">Varaaja: </div>
             <div className="details-value">{reservation.reserverName}</div>
-          </Col>
-        </Row>
-        <Row>
-          <Col className="details-row reservation-participants" xs={6}>
-            <div className="details-label">Lista osallistujista: </div>
-            <FormattedUserText className="details-value" text={reservation.participants || ''} />
           </Col>
           <Col className="details-row reservation-host" xs={6}>
             <div className="details-label">Tilaisuuden isäntä: </div>
@@ -108,6 +104,13 @@ export default function ReservationInfoModal(props) {
           name="Varauksen viestit"
           reservationId={reservation.id}
         />
+        <hr />
+        <Row>
+          <Col className="details-row reservation-participants" xs={12}>
+            <div className="details-label">Lista osallistujista: </div>
+            <FormattedUserText className="details-value" text={reservation.participants || ''} />
+          </Col>
+        </Row>
       </Modal.Body>
       <Modal.Footer>
         <ReservationDetailsReportButton reservationId={reservation.id} />
