@@ -335,6 +335,29 @@ describe('shared/reservation-form/ReservationForm', () => {
       });
     });
 
+    describe('catering field', () => {
+      const props = {
+        component: ReduxFormField,
+        label: 'Tarjoilutilaus',
+        name: 'cateringOrder',
+        type: 'cateringOrder',
+      };
+
+      it('exists if cateringProvider exists', () => {
+        const wrapper = getWrapper({ cateringProvider: { id: 1 } });
+        const fields = wrapper.find(Field);
+        const field = fields.filter(props);
+        expect(field).to.have.length(1);
+      });
+
+      it('does not exist if cateringProvider does not exist', () => {
+        const wrapper = getWrapper({ cateringProvider: null });
+        const fields = wrapper.find(Field);
+        const field = fields.filter(props);
+        expect(field).to.have.length(0);
+      });
+    });
+
     describe('form buttons', () => {
       let buttons;
 
