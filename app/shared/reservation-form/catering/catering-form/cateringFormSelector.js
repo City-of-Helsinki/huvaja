@@ -63,11 +63,11 @@ const cateringMenuSelector = createSelector(
 const initialValuesSelector = createSelector(
   reservationFormCateringOrderSelector,
   defaultServingTimeSelector,
-  (reservationFormValues, servingTime) => ({
+  (reservationFormValues, defaultServingTime) => ({
     invoicingData: reservationFormValues.invoicingData || '',
     message: reservationFormValues.message || '',
     order: reservationFormValues.order || {},
-    servingTime,
+    servingTime: reservationFormValues.servingTime || defaultServingTime,
   })
 );
 
