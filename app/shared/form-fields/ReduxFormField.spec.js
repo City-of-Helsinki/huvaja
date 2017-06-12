@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 
+import CateringSection from 'shared/reservation-form/catering';
 import Checkbox from './Checkbox';
 import FormControl from './FormControl';
 import ReduxFormField from './ReduxFormField';
@@ -21,6 +22,14 @@ describe('shared/form-fields/ReduxFormField', () => {
   function getWrapper(props) {
     return shallow(<ReduxFormField {...defaultProps} {...props} />);
   }
+
+  describe('if type is "cateringOrder"', () => {
+    it('renders a CateringSection component', () => {
+      const wrapper = getWrapper({ type: 'cateringOrder' });
+      const checkbox = wrapper.find(CateringSection);
+      expect(checkbox.length).to.equal(1);
+    });
+  });
 
   describe('if type is "checkbox"', () => {
     it('renders a Checkbox component', () => {
