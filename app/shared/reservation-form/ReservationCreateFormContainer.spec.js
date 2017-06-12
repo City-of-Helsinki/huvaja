@@ -5,7 +5,12 @@ import React from 'react';
 import simple from 'simple-mock';
 
 import { getState } from 'utils/testUtils';
-import { mergeProps, selector, UnconnectedReservationCreateFormContainer } from './ReservationCreateFormContainer';
+import {
+  doCreateCateringOrder,
+  mergeProps,
+  selector,
+  UnconnectedReservationCreateFormContainer,
+} from './ReservationCreateFormContainer';
 import ReservationForm from './ReservationForm';
 
 describe('shared/reservation-form/ReservationCreateFormContainer', () => {
@@ -82,6 +87,17 @@ describe('shared/reservation-form/ReservationCreateFormContainer', () => {
             end: { date: '2017-01-02', time: '11:00' },
           });
         });
+      });
+    });
+
+    describe('formDate', () => {
+      it('returns date if exists', () => {
+        const extraState = {
+          'form.resourceReservation.values': {
+            time,
+          },
+        };
+        expect(getSelected(extraState).formDate).to.equal('2016-01-01');
       });
     });
 
@@ -330,6 +346,77 @@ describe('shared/reservation-form/ReservationCreateFormContainer', () => {
         expect(args[1].successMeta.reservationData).to.deep.equal(
           expectedReservationData
         );
+      });
+
+      it('calls props.makeReservation with catering order data in meta when catering order', () => {
+        const makeReservation = simple.mock();
+        const cateringOrder = {
+          message: 'Hello!',
+          order: { 2: 10 },
+        };
+        const props = { makeReservation };
+        callOnSubmit(
+          props,
+          { ...values, cateringOrder },
+        );
+        expect(makeReservation.callCount).to.equal(1);
+        const args = makeReservation.lastCall.args;
+        expect(args).to.have.length(2);
+        expect(args[0]).to.deep.equal(expectedReservationData);
+        expect(args[1].successMeta.cateringOrder).to.deep.equal(cateringOrder);
+      });
+    });
+
+    describe('doCreateCateringOrder helper function', () => {
+      it('just resolves promise if no catering order to create', () => {
+        const actionOptions = {
+          successMeta: {
+            sideEffect: simple.mock(),
+          },
+        };
+        const createReservationSuccessAction = {
+          meta: {},
+        };
+        const makeCateringOrder = simple.mock();
+        doCreateCateringOrder(
+          actionOptions,
+          createReservationSuccessAction,
+          makeCateringOrder,
+        );
+        expect(actionOptions.successMeta.sideEffect.callCount).to.equal(1);
+        expect(makeCateringOrder.callCount).to.equal(0);
+      });
+
+      it('calls makeCateringOrder with correct args', () => {
+        const actionOptions = {
+          some: 'options',
+        };
+        const cateringOrder = {
+          message: 'Hello!',
+          order: { 2: 10 },
+        };
+        const createReservationSuccessAction = {
+          meta: {
+            cateringOrder,
+          },
+          payload: {
+            id: 123,
+          },
+        };
+        const makeCateringOrder = simple.mock();
+        doCreateCateringOrder(
+          actionOptions,
+          createReservationSuccessAction,
+          makeCateringOrder,
+        );
+        expect(makeCateringOrder.callCount).to.equal(1);
+        const actualArgs = makeCateringOrder.lastCall.args;
+        const expectedCateringOrderData = {
+          ...cateringOrder,
+          reservation: 123,
+        };
+        expect(actualArgs[0]).to.deep.equal(expectedCateringOrderData);
+        expect(actualArgs[1]).to.deep.equal(actionOptions);
       });
     });
   });
