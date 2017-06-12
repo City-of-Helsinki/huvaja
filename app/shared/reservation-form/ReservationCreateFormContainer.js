@@ -184,6 +184,23 @@ function getExtraSuccessMeta(
   return {};
 }
 
+export function doCreateCateringOrder(
+  actionOptions,
+  createReservationSuccessAction,
+  makeOrder
+) {
+  if (!createReservationSuccessAction.meta.cateringOrder) {
+    // No catering order to create so just resolve the promise.
+    actionOptions.successMeta.sideEffect();
+    return;
+  }
+  const cateringOrderData = {
+    reservation: createReservationSuccessAction.payload.id,
+    ...createReservationSuccessAction.meta.cateringOrder,
+  };
+  makeOrder(cateringOrderData, actionOptions);
+}
+
 export function mergeProps(stateProps, dispatchProps, ownProps) {
   const props = { ...ownProps, ...stateProps, ...dispatchProps };
   const createReservation = (actionOptions, values) => {
@@ -207,18 +224,13 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
     };
     props.makeReservation(reservationData, options);
   };
-  const createCateringOrder = (actionOptions, createReservationSuccessAction) => {
-    if (!createReservationSuccessAction.meta.cateringOrder) {
-      // No catering order to create so just resolve the promise.
-      actionOptions.successMeta.sideEffect();
-      return;
-    }
-    const cateringOrderData = {
-      reservation: createReservationSuccessAction.payload.id,
-      ...createReservationSuccessAction.meta.cateringOrder,
-    };
-    props.makeCateringOrder(cateringOrderData, actionOptions);
-  };
+  const createCateringOrder = (actionOptions, createReservationSuccessAction) => (
+    doCreateCateringOrder(
+      actionOptions,
+      createReservationSuccessAction,
+      props.makeCateringOrder,
+    )
+  );
   const successHandler = () => {
     const url = utils.getResourceUrl(props.resource.id, props.formDate);
     // Use setTimeout to make url change happen after form handling has
