@@ -1,5 +1,6 @@
 import { decamelizeKeys } from 'humps';
 
+import cateringUtils from 'utils/cateringUtils';
 import schemas from './schemas';
 import { createApiAction } from './utils';
 
@@ -73,13 +74,6 @@ export function deleteCateringOrder(cateringOrderId, options) {
 }
 
 function processCateringOrderData(orderData) {
-  const { order, ...rest } = orderData;
-  const data = {
-    ...rest,
-    orderLines: Object.keys(order).map(productId => ({
-      product: productId,
-      quantity: order[productId],
-    })),
-  };
-  return JSON.stringify(decamelizeKeys(data));
+  const cateringOrder = cateringUtils.formValueToCateringOrder(orderData);
+  return JSON.stringify(decamelizeKeys(cateringOrder));
 }
