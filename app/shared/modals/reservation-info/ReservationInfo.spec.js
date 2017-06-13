@@ -6,7 +6,6 @@ import simple from 'simple-mock';
 
 import CateringOrderTable from 'shared/catering-order-table';
 import Comments from 'shared/comments';
-import WrappedText from 'shared/wrapped-text';
 import ReservationDetailsReportButton from 'shared/reservation-details-report-button';
 import WrappedText from 'shared/wrapped-text';
 import ReservationInfo from './ReservationInfo';
