@@ -12,7 +12,7 @@ function create(name, methods = []) {
 
 export default Object.assign(
   {},
-  create('CATERING_ORDER', ['GET', 'POST']),
+  create('CATERING_ORDER', ['GET', 'DELETE', 'POST', 'PUT']),
   create('CATERING_PRODUCTS', ['GET']),
   create('CATERING_PRODUCT_CATEGORIES', ['GET']),
   create('CATERING_PROVIDERS', ['GET']),

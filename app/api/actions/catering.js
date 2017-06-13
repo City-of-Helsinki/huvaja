@@ -53,6 +53,25 @@ export function fetchCateringOrder(reservationId) {
   });
 }
 
+export function editCateringOrder(cateringOrder, options) {
+  return createApiAction({
+    endpoint: `catering_order/${cateringOrder.id}`,
+    method: 'PUT',
+    type: 'CATERING_ORDER',
+    body: processCateringOrderData(cateringOrder),
+    options,
+  });
+}
+
+export function deleteCateringOrder(cateringOrderId, options) {
+  return createApiAction({
+    endpoint: `catering_order/${cateringOrderId}`,
+    method: 'DELETE',
+    type: 'CATERING_ORDER',
+    options,
+  });
+}
+
 function processCateringOrderData(orderData) {
   const { order, ...rest } = orderData;
   const data = {
