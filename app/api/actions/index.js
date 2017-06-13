@@ -1,8 +1,11 @@
 import {
+  deleteCateringOrder,
+  editCateringOrder,
   fetchCateringOrder,
   fetchCateringProducts,
   fetchCateringProductCategories,
   fetchCateringProviders,
+  makeCateringOrder,
 } from './catering';
 import { createComment, fetchComments } from './comments';
 import { fetchEquipment } from './equipment';
@@ -30,6 +33,8 @@ import { fetchUnits } from './units';
 export {
   cancelReservation,
   createComment,
+  deleteCateringOrder,
+  editCateringOrder,
   editReservation,
   favoriteResource,
   fetchCateringOrder,
@@ -47,6 +52,7 @@ export {
   fetchResources,
   fetchTypes,
   fetchUnits,
+  makeCateringOrder,
   makeReservation,
   unfavoriteResource,
 };

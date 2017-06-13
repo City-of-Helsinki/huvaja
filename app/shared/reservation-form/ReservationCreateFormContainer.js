@@ -5,9 +5,13 @@ import { browserHistory } from 'react-router';
 import { createSelector, createStructuredSelector } from 'reselect';
 
 import uiActions from 'actions/uiActions';
-import { fetchCateringProducts, fetchCateringProductCategories, fetchResource } from 'api/actions';
+import {
+  fetchCateringProducts,
+  fetchCateringProductCategories,
+  fetchResource,
+  makeCateringOrder,
+} from 'api/actions';
 import recurringReservationsActions from 'actions/recurringReservations';
-import { makeCateringOrder } from 'api/actions/catering';
 import { makeReservation } from 'api/actions/reservations';
 import { createCateringProviderSelector } from 'api/selectors';
 import { createAPIPromise } from 'api/utils';

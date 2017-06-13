@@ -1,5 +1,7 @@
 import types from '../actionTypes';
 import {
+  deleteCateringOrder,
+  editCateringOrder,
   fetchCateringOrder,
   fetchCateringProducts,
   fetchCateringProductCategories,
@@ -95,7 +97,7 @@ describe('api/actions/catering', () => {
     const body = {
       message: 'Hello!',
       order_lines: [{
-        product: '2',
+        product: 2,
         quantity: 10,
       }],
     };
@@ -137,6 +139,65 @@ describe('api/actions/catering', () => {
         },
         error: {
           type: types.CATERING_ORDER_GET_ERROR,
+        },
+      },
+    });
+  });
+
+  describe('editCateringOrder', () => {
+    const order = {
+      id: 23,
+      message: 'Hello!',
+      order: {
+        2: 10,
+      },
+    };
+    const body = {
+      id: 23,
+      message: 'Hello!',
+      order_lines: [{
+        product: 2,
+        quantity: 10,
+      }],
+    };
+    createApiTest({
+      name: 'editCateringOrder',
+      action: editCateringOrder,
+      args: [order],
+      tests: {
+        method: 'PUT',
+        endpoint: buildAPIUrl(`catering_order/${order.id}`),
+        body,
+        request: {
+          type: types.CATERING_ORDER_PUT_REQUEST,
+        },
+        success: {
+          type: types.CATERING_ORDER_PUT_SUCCESS,
+        },
+        error: {
+          type: types.CATERING_ORDER_PUT_ERROR,
+        },
+      },
+    });
+  });
+
+  describe('deleteCateringOrder', () => {
+    const orderId = 23;
+    createApiTest({
+      name: 'deleteCateringOrder',
+      action: deleteCateringOrder,
+      args: [orderId],
+      tests: {
+        method: 'DELETE',
+        endpoint: buildAPIUrl(`catering_order/${orderId}`),
+        request: {
+          type: types.CATERING_ORDER_DELETE_REQUEST,
+        },
+        success: {
+          type: types.CATERING_ORDER_DELETE_SUCCESS,
+        },
+        error: {
+          type: types.CATERING_ORDER_DELETE_ERROR,
         },
       },
     });
