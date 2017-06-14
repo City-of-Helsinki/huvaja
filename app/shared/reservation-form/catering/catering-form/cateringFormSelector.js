@@ -9,12 +9,6 @@ function reservationFormCateringOrderSelector(state) {
   return state.form.resourceReservation.values.cateringOrder || {};
 }
 
-function defaultServingTimeSelector(state) {
-  const reservationTimes = state.form.resourceReservation.values.time;
-  const startTime = reservationTimes.begin.time;
-  return startTime || '12:00';
-}
-
 function defaultItemQuantitySelector(state) {
   return Number(state.form.resourceReservation.values.numberOfParticipants || 1);
 }
@@ -62,12 +56,11 @@ const cateringMenuSelector = createSelector(
 
 const initialValuesSelector = createSelector(
   reservationFormCateringOrderSelector,
-  defaultServingTimeSelector,
-  (reservationFormValues, defaultServingTime) => ({
+  reservationFormValues => ({
     invoicingData: reservationFormValues.invoicingData || '',
     message: reservationFormValues.message || '',
     order: reservationFormValues.order || {},
-    servingTime: reservationFormValues.servingTime || defaultServingTime,
+    servingTime: reservationFormValues.servingTime,
   })
 );
 
