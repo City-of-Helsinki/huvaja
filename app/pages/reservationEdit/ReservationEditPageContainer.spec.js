@@ -9,12 +9,15 @@ import { UnconnectedReservationEditPageContainer } from './ReservationEditPageCo
 
 describe('pages/reservationEdit/ReservationEditPageContainer', () => {
   const defaults = {
+    cateringOrder: { id: 3 },
+    fetchCateringOrder: () => null,
     fetchReservation: () => null,
     isFetching: false,
     params: {
       id: '234',
     },
     reservation: {
+      hasCateringOrder: true,
       id: 234,
       userPermissions: {
         canModify: true,
@@ -36,6 +39,33 @@ describe('pages/reservationEdit/ReservationEditPageContainer', () => {
         instance.componentDidMount();
         expect(fetchReservation.callCount).to.equal(1);
         expect(fetchReservation.lastCall.arg).to.equal(defaults.params.id);
+      });
+    });
+
+    describe('componentWillReceiveProps', () => {
+      it('fetches cateringOrder when reservation with catering order appears', () => {
+        const fetchCateringOrder = simple.mock();
+        const props = {
+          ...defaults,
+          fetchCateringOrder,
+          reservation: {
+            ...defaults.reservation,
+            hasCateringOrder: false,
+          },
+        };
+        const instance = getWrapper(props).instance();
+        instance.componentWillReceiveProps(defaults);
+        expect(fetchCateringOrder.callCount).to.equal(1);
+        expect(fetchCateringOrder.lastCall.arg).to.equal(
+          defaults.reservation.id
+        );
+      });
+
+      it('does not fetch cateringOrder when reservation with order already existed', () => {
+        const fetchCateringOrder = simple.mock();
+        const instance = getWrapper({ fetchCateringOrder }).instance();
+        instance.componentWillReceiveProps(defaults);
+        expect(fetchCateringOrder.callCount).to.equal(0);
       });
     });
   });
@@ -64,6 +94,7 @@ describe('pages/reservationEdit/ReservationEditPageContainer', () => {
         expect(form).to.have.length(1);
         expect(form.prop('initialResource')).to.deep.equal(defaults.resource);
         expect(form.prop('reservation')).to.deep.equal(defaults.reservation);
+        expect(form.prop('cateringOrder')).to.deep.equal(defaults.cateringOrder);
       });
     });
 

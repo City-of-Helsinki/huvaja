@@ -15,6 +15,10 @@ function reservationSelector(state, props) {
   return props.reservation;
 }
 
+function cateringOrderSelector(state, props) {
+  return props.cateringOrder;
+}
+
 function resourcesSelector(state) {
   return state.data.resources;
 }
@@ -60,7 +64,9 @@ function getInitialTime(reservation) {
 const initialValuesSelector = createSelector(
   reservationSelector,
   initialResourceIdSelector,
-  (reservation, resourceId) => ({
+  cateringOrderSelector,
+  (reservation, resourceId, cateringOrder) => ({
+    cateringOrder,
     eventDescription: reservation.eventDescription,
     eventSubject: reservation.eventSubject,
     hostName: reservation.hostName,
