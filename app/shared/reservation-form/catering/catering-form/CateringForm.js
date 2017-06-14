@@ -62,7 +62,7 @@ export function UnconnectedCateringForm(props) {
           {renderField(
             'servingTime',
             'time',
-            'Tarjoiluaika',
+            'Klo:',
             { step: 5 * 60, value: props.formValues.servingTime },
             ServingTimeField
           )}

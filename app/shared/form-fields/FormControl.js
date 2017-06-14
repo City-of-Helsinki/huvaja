@@ -4,9 +4,9 @@ import RBFormControl from 'react-bootstrap/lib/FormControl';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 
-function FormControl({ controlProps = {}, help, id, label, type, validationState }) {
+function FormControl({ className, controlProps = {}, help, id, label, type, validationState }) {
   return (
-    <FormGroup controlId={id} validationState={validationState}>
+    <FormGroup className={className} controlId={id} validationState={validationState}>
       <ControlLabel>
         {label}
       </ControlLabel>
@@ -21,6 +21,7 @@ function FormControl({ controlProps = {}, help, id, label, type, validationState
 }
 
 FormControl.propTypes = {
+  className: PropTypes.string,
   controlProps: PropTypes.object,
   help: PropTypes.string,
   id: PropTypes.string.isRequired,
