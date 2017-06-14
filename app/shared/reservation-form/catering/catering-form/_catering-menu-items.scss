@@ -60,3 +60,13 @@ $item-horizontal-padding: 12px;
     margin-top: $list-margin;
   }
 }
+.serving-time-field {
+  label {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .serving-time-form-control {
+    display: inline-block;
+    width: auto;
+  }
+}

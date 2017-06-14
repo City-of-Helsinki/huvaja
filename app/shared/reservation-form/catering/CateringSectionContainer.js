@@ -24,7 +24,7 @@ export const selector = createSelector(
 
 export class UnconnectedCateringSectionContainer extends Component {
   static propTypes = {
-    servingTime: PropTypes.string,
+    servingTime: PropTypes.string.isRequired,
     controlProps: PropTypes.shape({
       onChange: PropTypes.func.isRequired,
     }).isRequired,

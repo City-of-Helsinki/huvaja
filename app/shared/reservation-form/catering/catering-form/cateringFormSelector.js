@@ -60,13 +60,18 @@ const initialValuesSelector = createSelector(
     invoicingData: reservationFormValues.invoicingData || '',
     message: reservationFormValues.message || '',
     order: reservationFormValues.order || {},
-    servingTime: reservationFormValues.servingTime,
+    servingTime: reservationFormValues.servingTime || '',
   })
 );
 
-const valuesSelector = state => formValueSelector('catering')(
-  state, 'invoicingData', 'message', 'order', 'servingTime'
-);
+const valuesSelector = (state) => {
+  const selector = formValueSelector('catering');
+  const servingTime = selector(state, 'servingTime');
+  return {
+    ...selector(state, 'invoicingData', 'message', 'order'),
+    servingTime: servingTime !== '' ? servingTime : null,
+  };
+};
 
 export default createStructuredSelector({
   cateringMenu: cateringMenuSelector,
