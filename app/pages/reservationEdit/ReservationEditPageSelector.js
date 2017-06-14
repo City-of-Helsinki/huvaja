@@ -1,7 +1,11 @@
 import isEmpty from 'lodash/isEmpty';
 import { createSelector, createStructuredSelector } from 'reselect';
 
-import { reservationGetIsActiveSelector } from 'api/selectors';
+import {
+  cateringOrderGetIsActiveSelector,
+  reservationGetIsActiveSelector,
+} from 'api/selectors';
+import cateringUtils from 'utils/cateringUtils';
 
 function reservationsSelector(state) {
   return state.data.reservations;
@@ -34,13 +38,40 @@ const resourceSelector = createSelector(
 
 const isFetchingSelector = createSelector(
   reservationGetIsActiveSelector,
+  cateringOrderGetIsActiveSelector,
   resourcesSelector,
-  (reservationGetIsActive, resources) => (
-    reservationGetIsActive || isEmpty(resources)
+  (reservationGetIsActive, cateringOrderGetIsActive, resources) => (
+    reservationGetIsActive || cateringOrderGetIsActive || isEmpty(resources)
+  )
+);
+
+function cateringOrdersSelector(state) {
+  return state.data.cateringOrders;
+}
+
+function reservationCateringOrdersSelector(state) {
+  return state.reservationCateringOrders;
+}
+
+const cateringOrderSelector = createSelector(
+  reservationSelector,
+  reservationCateringOrdersSelector,
+  cateringOrdersSelector,
+  (reservation, reservationCateringOrders, cateringOrders) => {
+    const id = reservation && reservationCateringOrders[reservation.id];
+    return id && cateringOrders[id];
+  }
+);
+
+const cateringOrderFormValueSelector = createSelector(
+  cateringOrderSelector,
+  cateringOrder => (
+    cateringOrder && cateringUtils.cateringOrderToFormValue(cateringOrder)
   )
 );
 
 export default createStructuredSelector({
+  cateringOrder: cateringOrderFormValueSelector,
   isFetching: isFetchingSelector,
   reservation: reservationSelector,
   resource: resourceSelector,

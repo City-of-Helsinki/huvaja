@@ -2,12 +2,14 @@ import React, { Component, PropTypes } from 'react';
 import Loader from 'react-loader';
 import { connect } from 'react-redux';
 
-import { fetchReservation } from 'api/actions';
+import { fetchCateringOrder, fetchReservation } from 'api/actions';
 import { ReservationEditForm } from 'shared/reservation-form';
 import selector from './ReservationEditPageSelector';
 
 export class UnconnectedReservationEditPageContainer extends Component {
   static propTypes = {
+    cateringOrder: PropTypes.object,
+    fetchCateringOrder: PropTypes.func.isRequired,
     fetchReservation: PropTypes.func.isRequired,
     isFetching: PropTypes.bool.isRequired,
     params: PropTypes.shape({
@@ -21,8 +23,19 @@ export class UnconnectedReservationEditPageContainer extends Component {
     this.props.fetchReservation(this.props.params.id);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const shouldFetchCateringOrder = (
+      nextProps.reservation &&
+      nextProps.reservation.hasCateringOrder &&
+      !(this.props.reservation && this.props.reservation.hasCateringOrder)
+    );
+    if (shouldFetchCateringOrder) {
+      this.props.fetchCateringOrder(nextProps.reservation.id);
+    }
+  }
+
   renderContent() {
-    const { reservation, resource } = this.props;
+    const { cateringOrder, reservation, resource } = this.props;
     if (!reservation) {
       return (
         <div className="message">Varausta ei löytynyt.</div>
@@ -37,6 +50,7 @@ export class UnconnectedReservationEditPageContainer extends Component {
     }
     return (
       <ReservationEditForm
+        cateringOrder={cateringOrder}
         reservation={reservation}
         initialResource={resource}
       />
@@ -57,6 +71,7 @@ export class UnconnectedReservationEditPageContainer extends Component {
 
 const actions = {
   fetchReservation,
+  fetchCateringOrder,
 };
 
 export default connect(selector, actions)(UnconnectedReservationEditPageContainer);
