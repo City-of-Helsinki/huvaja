@@ -7,14 +7,37 @@ import CateringOrderTable from 'shared/catering-order-table';
 import CateringModal from './CateringModal';
 import cateringUtils from './utils';
 
+function cateringOrderSelector(state) {
+  return state.form.resourceReservation.values.cateringOrder;
+}
+
+function cateringProductsSelector(state) {
+  return state.data.cateringProducts;
+}
+
+const cateringProductsMissingSelector = createSelector(
+  cateringOrderSelector,
+  cateringProductsSelector,
+  (cateringOrder, products) => {
+    if (!cateringOrder) return false;
+    const productIds = Object.keys(cateringOrder.order);
+    for (const productId of productIds) {
+      if (!products[productId]) return true;
+    }
+    return false;
+  }
+);
+
 export const selector = createSelector(
-  state => state.form.resourceReservation.values.cateringOrder,
-  state => state.data.cateringProducts,
-  (cateringData, cateringMenuItems) => {
-    const orderItems = cateringUtils.getOrderItems(
-      cateringMenuItems,
-      cateringData ? cateringData.order : {}
-    );
+  cateringOrderSelector,
+  cateringProductsSelector,
+  cateringProductsMissingSelector,
+  (cateringData, cateringMenuItems, productsMissing) => {
+    const orderItems = productsMissing ? [] :
+      cateringUtils.getOrderItems(
+        cateringMenuItems,
+        cateringData ? cateringData.order : {}
+      );
     return {
       servingTime: cateringData && cateringData.servingTime ? cateringData.servingTime : '',
       orderItems,
@@ -24,7 +47,7 @@ export const selector = createSelector(
 
 export class UnconnectedCateringSectionContainer extends Component {
   static propTypes = {
-    servingTime: PropTypes.string.isRequired,
+    servingTime: PropTypes.string,
     controlProps: PropTypes.shape({
       onChange: PropTypes.func.isRequired,
     }).isRequired,
