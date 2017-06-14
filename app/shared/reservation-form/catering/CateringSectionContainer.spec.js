@@ -43,6 +43,18 @@ describe('shared/reservation-form/catering/CateringSectionContainer', () => {
       expect(selected.orderItems).to.deep.equal(expected);
     });
 
+    it('returns empty orderItems when products not fetched', () => {
+      const state = {
+        ...defaultState,
+        data: {
+          ...defaultState.data,
+          cateringProducts: {},
+        },
+      };
+      const selected = selector(getState(state));
+      expect(selected.orderItems).to.deep.equal([]);
+    });
+
     it('returns servingTime from the state', () => {
       const selected = selector(getState(defaultState));
       expect(selected.servingTime).to.deep.equal(cateringOrder.servingTime);
