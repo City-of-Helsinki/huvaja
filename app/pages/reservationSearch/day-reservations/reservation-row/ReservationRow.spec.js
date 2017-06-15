@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
+import FontAwesome from 'react-fontawesome';
 
 import ReservationRow from './ReservationRow';
 
@@ -47,5 +48,16 @@ describe('pages/reservationSearch/reservation-row/ReservationRow', () => {
   it('renders event subject', () => {
     const eventSubject = getWrapper().find('.event-subject');
     expect(eventSubject.text()).to.equal(defaults.eventSubject);
+  });
+
+  it('renders a has catering icon', () => {
+    const spanIcon = getWrapper({ hasCateringOrder: true }).find('.catering');
+    const fontAwesome = spanIcon.find(FontAwesome);
+    expect(fontAwesome.prop('name')).to.equal('coffee');
+  });
+
+  it('does not render a has catering icon if not hasCateringOrder', () => {
+    const spanIcon = getWrapper().find('.catering');
+    expect(spanIcon).to.have.length(0);
   });
 });

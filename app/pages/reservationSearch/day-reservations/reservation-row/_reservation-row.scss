@@ -44,6 +44,15 @@
     font-weight: regular;
   }
 
+  .icons {
+    & > * {
+      margin-right: 10px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
   .icon {
     color: $brand-primary;
   }
