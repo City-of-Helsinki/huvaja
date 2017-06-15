@@ -26,7 +26,11 @@ export class UnconnectedCateringFormContainer extends Component {
   }
 
   handleSubmit = () => {
-    this.props.onSubmitCallback(this.props.formValues);
+    const servingTime = this.props.formValues.servingTime;
+    this.props.onSubmitCallback({
+      ...this.props.formValues,
+      servingTime: servingTime === '' ? null : servingTime,
+    });
   }
 
   addOrRemoveItem = (itemId) => {

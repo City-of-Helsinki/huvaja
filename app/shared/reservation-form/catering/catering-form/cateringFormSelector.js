@@ -64,14 +64,9 @@ const initialValuesSelector = createSelector(
   })
 );
 
-const valuesSelector = (state) => {
-  const selector = formValueSelector('catering');
-  const servingTime = selector(state, 'servingTime');
-  return {
-    ...selector(state, 'invoicingData', 'message', 'order'),
-    servingTime: servingTime !== '' ? servingTime : null,
-  };
-};
+const valuesSelector = state => formValueSelector('catering')(
+  state, 'invoicingData', 'message', 'order', 'servingTime'
+);
 
 export default createStructuredSelector({
   cateringMenu: cateringMenuSelector,

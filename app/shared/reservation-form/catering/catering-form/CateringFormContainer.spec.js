@@ -73,6 +73,20 @@ describe('shared/reservation-form/catering/catering-form/CateringFormContainer',
       expect(onSubmitCallback.callCount).to.equal(1);
       expect(onSubmitCallback.lastCall.arg).to.deep.equal(formValues);
     });
+
+    it('sets servingTime to null if it is an empty string', () => {
+      const onSubmitCallback = simple.mock();
+      const formValues = {
+        foo: 'bar',
+        servingTime: '',
+      };
+      const instance = getWrapper({ formValues, onSubmitCallback }).instance();
+      instance.handleSubmit();
+      expect(onSubmitCallback.lastCall.arg[0]).to.equal({
+        foo: 'bar',
+        servingTime: null,
+      });
+    });
   });
 
   describe('updateOrder', () => {
