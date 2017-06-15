@@ -59,11 +59,19 @@ function dataReducer(state = initialState, action) {
       return handleData(state, action.payload.entities);
     }
 
-    case actionTypes.CATERING_ORDER_POST_SUCCESS: {
+    case actionTypes.CATERING_ORDER_POST_SUCCESS:
+    case actionTypes.CATERING_ORDER_PUT_SUCCESS: {
       return state.merge({
         cateringOrders: {
           [action.payload.id]: action.payload,
         },
+      });
+    }
+
+    case actionTypes.CATERING_ORDER_DELETE_SUCCESS: {
+      return immutable({
+        ...state,
+        cateringOrders: state.cateringOrders.without(action.meta.id),
       });
     }
 

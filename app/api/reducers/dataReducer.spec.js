@@ -446,5 +446,46 @@ describe('api/reducers/dataReducer', () => {
         expect(actualOrders).to.deep.equal(expectedOrders);
       });
     });
+
+    describe('CATERING_ORDER_PUT_SUCCESS', () => {
+      const putOrderSuccess = createAction(actionTypes.CATERING_ORDER_PUT_SUCCESS);
+
+      it('adds catering order to catering orders', () => {
+        const cateringOrder = { id: 1234 };
+        const initialState = immutable({
+          cateringOrders: {},
+        });
+        const action = putOrderSuccess(cateringOrder);
+        const nextState = dataReducer(initialState, action);
+
+        const actualOrders = nextState.cateringOrders;
+        const expectedOrders = { [cateringOrder.id]: cateringOrder };
+
+        expect(actualOrders).to.deep.equal(expectedOrders);
+      });
+    });
+
+    describe('CATERING_ORDER_DELETE_SUCCESS', () => {
+      it('adds catering order to catering orders', () => {
+        const initialState = immutable({
+          cateringOrders: {
+            1234: {},
+            4321: {},
+          },
+        });
+        const action = {
+          meta: { id: 1234 },
+          type: actionTypes.CATERING_ORDER_DELETE_SUCCESS,
+        };
+        const nextState = dataReducer(initialState, action);
+
+        const actualOrders = nextState.cateringOrders;
+        const expectedOrders = {
+          4321: {}
+        };
+
+        expect(actualOrders).to.deep.equal(expectedOrders);
+      });
+    });
   });
 });
