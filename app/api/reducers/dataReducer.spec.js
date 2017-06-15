@@ -481,7 +481,7 @@ describe('api/reducers/dataReducer', () => {
 
         const actualOrders = nextState.cateringOrders;
         const expectedOrders = {
-          4321: {}
+          4321: {},
         };
 
         expect(actualOrders).to.deep.equal(expectedOrders);

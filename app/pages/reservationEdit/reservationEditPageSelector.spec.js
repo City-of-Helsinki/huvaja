@@ -21,14 +21,14 @@ describe('pages/search/ReservationEditPageSelector', () => {
         { product: 3, quantity: 10 },
       ],
     },
-  }
+  };
 
   function getSelected(id = '2') {
     const state = getState({
       'data.cateringOrders': cateringOrders,
       'data.reservations': reservations,
       'data.resources': resources,
-      'reservationCateringOrders': { 2: 5 },
+      reservationCateringOrders: { 2: 5 },
     });
     const props = {
       params: { id },
