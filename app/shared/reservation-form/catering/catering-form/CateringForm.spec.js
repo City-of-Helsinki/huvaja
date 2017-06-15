@@ -7,6 +7,7 @@ import CateringOrderTable from 'shared/catering-order-table';
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
 import { UnconnectedCateringForm } from './CateringForm';
 import CateringMenu from './CateringMenu';
+import ServingTimeField from './ServingTimeField';
 
 describe('shared/reservation-form/catering/catering-form/CateringForm', () => {
   const defaults = {
@@ -51,7 +52,7 @@ describe('shared/reservation-form/catering/catering-form/CateringForm', () => {
 
     it('has servingTime field', () => {
       const field = fields.filter({
-        component: ReduxFormField,
+        component: ServingTimeField,
         controlProps: {
           step: 5 * 60,
           value: defaults.formValues.servingTime,

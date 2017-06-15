@@ -76,13 +76,14 @@ describe('shared/reservation-form/catering/catering-form/CateringFormContainer',
 
     it('sets servingTime to null if it is an empty string', () => {
       const onSubmitCallback = simple.mock();
-      const formValues = {
+      const customFormValues = {
         foo: 'bar',
         servingTime: '',
       };
-      const instance = getWrapper({ formValues, onSubmitCallback }).instance();
+      const instance = getWrapper({ formValues: customFormValues, onSubmitCallback }).instance();
       instance.handleSubmit();
-      expect(onSubmitCallback.lastCall.arg[0]).to.equal({
+      expect(onSubmitCallback.callCount).to.equal(1);
+      expect(onSubmitCallback.lastCall.arg).to.deep.equal({
         foo: 'bar',
         servingTime: null,
       });
