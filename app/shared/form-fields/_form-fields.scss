@@ -22,12 +22,13 @@
     border-radius: $input-border-radius;
     padding: $padding-small-vertical $padding-small-horizontal;
     background-color: $input-bg;
+    border-bottom-width: 2px;
 
     &--focused {
       border-color: $input-border-focus;
     }
     .has-error & {
-      border-color: $state-danger-text;
+      border-color: $brand-danger;
     }
   }
 }
