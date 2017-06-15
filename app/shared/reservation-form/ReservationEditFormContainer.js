@@ -1,12 +1,26 @@
+import isEqual from 'lodash/isEqual';
+import pick from 'lodash/pick';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { createSelector, createStructuredSelector } from 'reselect';
 
 import uiActions from 'actions/uiActions';
-import { fetchCateringProducts, fetchCateringProductCategories, fetchResource } from 'api/actions';
+import {
+  deleteCateringOrder,
+  editCateringOrder,
+  fetchCateringProducts,
+  fetchCateringProductCategories,
+  fetchResource,
+  makeCateringOrder,
+} from 'api/actions';
 import { editReservation } from 'api/actions/reservations';
 import { createCateringProviderSelector } from 'api/selectors';
+import { createAPIPromise } from 'api/utils';
+import cateringUtils from 'shared/reservation-form/catering/utils';
+import {
+  fields as cateringOrderFields,
+} from 'shared/reservation-form/catering/catering-form/CateringForm';
 import createFormSubmitHandler from 'utils/createFormSubmitHandler';
 import ReservationForm from './ReservationForm';
 import utils from './utils';
@@ -66,7 +80,7 @@ const initialValuesSelector = createSelector(
   initialResourceIdSelector,
   cateringOrderSelector,
   (reservation, resourceId, cateringOrder) => ({
-    cateringOrder,
+    cateringOrder: cateringOrder && pick(cateringOrder, cateringOrderFields),
     eventDescription: reservation.eventDescription,
     eventSubject: reservation.eventSubject,
     hostName: reservation.hostName,
@@ -103,6 +117,7 @@ const numberOfParticipantsSelector = state => (
 
 export const selector = createStructuredSelector({
   cateringProvider: createCateringProviderSelector(unitIdSelector),
+  formDate: formDateSelector,
   initialValues: initialValuesSelector,
   numberOfParticipants: numberOfParticipantsSelector,
   resource: resourceSelector,
@@ -111,10 +126,13 @@ export const selector = createStructuredSelector({
 });
 
 const actions = {
+  deleteCateringOrder,
+  editCateringOrder,
+  editReservation,
   fetchCateringProducts,
   fetchCateringProductCategories,
   fetchResource,
-  editReservation,
+  makeCateringOrder,
   showReservationSuccessModal: uiActions.showReservationSuccessModal,
 };
 
@@ -122,10 +140,47 @@ function formatTime({ date, time }) {
   return moment(`${date}T${time}:00`).format();
 }
 
+// Create, edit or delete depending on how the catering order data has changed.
+// Or, just resolve the promise if nothing has changed.
+export function doUpdateCateringOrder(
+  actionOptions,
+  editReservationSuccessAction,
+  props
+) {
+  const reservationId = editReservationSuccessAction.payload.id;
+  const oldFormData = props.initialValues.cateringOrder;
+  const newFormData = editReservationSuccessAction.meta.cateringOrder;
+  const data = {
+    ...newFormData,
+    reservation: reservationId,
+  };
+  if (props.cateringOrder) {
+    data.id = props.cateringOrder.id;
+  }
+
+  const hasOrders = cateringUtils.hasOrders;
+  if (!hasOrders(oldFormData) && hasOrders(newFormData)) {
+    props.makeCateringOrder(data, actionOptions);
+  } else if (hasOrders(oldFormData) && !hasOrders(newFormData)) {
+    props.deleteCateringOrder(data.id, {
+      ...actionOptions,
+      meta: {
+        ...actionOptions.meta,
+        id: data.id,
+        reservationId,
+      },
+    });
+  } else if (isEqual(oldFormData, newFormData)) {
+    actionOptions.successMeta.sideEffect();
+  } else {
+    props.editCateringOrder(data, actionOptions);
+  }
+}
+
 export function mergeProps(stateProps, dispatchProps, ownProps) {
   const props = { ...ownProps, ...stateProps, ...dispatchProps };
-  const callback = (actionOptions, values) => props.editReservation(
-    {
+  const updateReservation = (actionOptions, values) => {
+    const reservationData = {
       begin: formatTime(values.time.begin),
       end: formatTime(values.time.end),
       event_description: values.eventDescription,
@@ -136,12 +191,25 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
       participants: values.participants,
       reserver_name: values.reserverName,
       resource: values.resource,
-    },
-    actionOptions
+    };
+    const options = {
+      ...actionOptions,
+      successMeta: {
+        ...actionOptions.successMeta,
+        cateringOrder: values.cateringOrder,
+      },
+    };
+    props.editReservation(reservationData, options);
+  };
+  const updateCateringOrder = (actionOptions, editReservationSuccessAction) => (
+    doUpdateCateringOrder(
+      actionOptions,
+      editReservationSuccessAction,
+      props,
+    )
   );
-  const successHandler = (action) => {
-    const begin = utils.parseBeginDate(action);
-    const url = utils.getResourceUrl(props.resource.id, begin);
+  const successHandler = () => {
+    const url = utils.getResourceUrl(props.resource.id, props.formDate);
     // Use setTimeout to make url change happen after form handling has
     // been fully completed.
     window.setTimeout(
@@ -153,8 +221,11 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
   };
   return {
     ...props,
+    // onSubmit will first send PUT reservation request. On success, catering
+    // order is POSTed, PUTed or DELETEd if catering order data has changed.
     onSubmit: (...args) => (
-      createFormSubmitHandler(callback)(...args)
+      createFormSubmitHandler(updateReservation)(...args)
+        .then(createAPIPromise(updateCateringOrder))
         .then(successHandler)
     ),
   };

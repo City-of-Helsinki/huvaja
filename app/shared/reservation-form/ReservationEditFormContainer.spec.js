@@ -1,9 +1,11 @@
+import pick from 'lodash/pick';
+import size from 'lodash/size';
 import { expect } from 'chai';
 import moment from 'moment';
 import simple from 'simple-mock';
 
 import { getState } from 'utils/testUtils';
-import { mergeProps, selector } from './ReservationEditFormContainer';
+import { doUpdateCateringOrder, mergeProps, selector } from './ReservationEditFormContainer';
 
 describe('shared/reservation-form/ReservationEditFormContainer', () => {
   const reservation = {
@@ -19,6 +21,16 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
     reserverPhoneNumber: '123456789',
     resource: 'abc123',
     state: 'confirmed',
+  };
+
+  const cateringOrder = {
+    createdAt: '2017-01-01T18:01:04.123',
+    invoicingData: 'abc123',
+    message: 'Hello!',
+    order: {
+      2: 10,
+    },
+    servingTime: '18:30',
   };
 
   const resource = {
@@ -65,7 +77,7 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
   };
 
   describe('selector', () => {
-    const props = { initialResource: resource, reservation };
+    const props = { cateringOrder, initialResource: resource, reservation };
     const time = { begin: { date: '2016-01-01', time: '10:00' } };
 
     function getSelected(extraState, extraProps) {
@@ -84,6 +96,19 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
     });
 
     describe('initialValues', () => {
+      describe('cateringOrder picks cateringOrder prop data needed for form', () => {
+        const fields = [
+          'invoicingData',
+          'message',
+          'order',
+          'servingTime',
+        ];
+        const actual = getSelected().initialValues.cateringOrder;
+        const expected = pick(cateringOrder, fields);
+        expect(size(expected) < size(cateringOrder)).to.be.true;
+        expect(actual).to.deep.equal(expected);
+      });
+
       it('time is correct', () => {
         expect(getSelected().initialValues.time).to.deep.equal({
           begin: {
@@ -121,6 +146,17 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
 
       it('resource equals initial resource id from props', () => {
         expect(getSelected().initialValues.resource).to.equal(resource.id);
+      });
+    });
+
+    describe('formDate', () => {
+      it('returns date if exists', () => {
+        const extraState = {
+          'form.resourceReservation.values': {
+            time,
+          },
+        };
+        expect(getSelected(extraState).formDate).to.equal('2016-01-01');
       });
     });
 
@@ -219,6 +255,10 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
 
       it('calls props.editReservation', () => {
         const values = {
+          cateringOrder: {
+            message: 'Hello!',
+            order: { 2: 10 },
+          },
           time: {
             begin: { date: '2016-01-01', time: '10:00' },
             end: { date: '2016-01-01', time: '12:00' },
@@ -231,6 +271,7 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
           reserverName: 'Luke Skywalker',
           resource: 'r-1',
         };
+
         const editReservation = simple.mock();
         const props = {
           editReservation,
@@ -251,6 +292,154 @@ describe('shared/reservation-form/ReservationEditFormContainer', () => {
           participants: values.participants,
           reserver_name: values.reserverName,
           resource: values.resource,
+        });
+        expect(args[1].successMeta.cateringOrder).to.deep.equal(values.cateringOrder);
+      });
+    });
+
+    describe('doUpdateCateringOrder helper function', () => {
+      let makeCateringOrder;
+      let editCateringOrder;
+      let deleteCateringOrder;
+      const reservationId = 123;
+      const cateringOrderData = {
+        id: 45,
+        invoicingData: 'abc123',
+        order: {
+          2: 10,
+        },
+      };
+      const defaultArgs = {
+        actionOptions: {
+          successMeta: {
+            sideEffect: () => null,
+          },
+        },
+        cateringOrder: cateringOrderData,
+        initialCateringOrder: cateringOrderData,
+      };
+
+      beforeEach(() => {
+        makeCateringOrder = simple.mock();
+        editCateringOrder = simple.mock();
+        deleteCateringOrder = simple.mock();
+      });
+
+      afterEach(() => {
+        simple.restore();
+      });
+
+      function doUpdate(extraArgs) {
+        const args = { ...defaultArgs, ...extraArgs };
+        const editReservationSuccessAction = {
+          payload: {
+            id: reservationId,
+          },
+          meta: {
+            cateringOrder: args.cateringOrder,
+          },
+        };
+        const props = {
+          cateringOrder: { id: cateringOrderData.id },
+          editCateringOrder,
+          deleteCateringOrder,
+          initialValues: {
+            cateringOrder: args.initialCateringOrder,
+          },
+          makeCateringOrder,
+        };
+        doUpdateCateringOrder(
+          args.actionOptions,
+          editReservationSuccessAction,
+          props,
+        );
+      }
+
+      describe('when cateringOrder is added', () => {
+        it('calls makeCateringOrder with correct args', () => {
+          const args = { initialCateringOrder: null };
+          doUpdate(args);
+          expect(makeCateringOrder.callCount).to.equal(1);
+          expect(makeCateringOrder.lastCall.args[0]).to.deep.equal({
+            ...cateringOrderData,
+            reservation: reservationId,
+          });
+          expect(makeCateringOrder.lastCall.args[1]).to.deep.equal(
+            defaultArgs.actionOptions
+          );
+          expect(deleteCateringOrder.callCount).to.equal(0);
+          expect(editCateringOrder.callCount).to.equal(0);
+        });
+      });
+
+      describe('when cateringOrder is removed', () => {
+        function createTest(name, order) {
+          it(name, () => {
+            const args = {
+              cateringOrder: {
+                ...cateringOrderData,
+                order,
+              },
+            };
+            doUpdate(args);
+            expect(deleteCateringOrder.callCount).to.equal(1);
+            expect(deleteCateringOrder.lastCall.args[0]).to.equal(
+              cateringOrderData.id
+            );
+            expect(deleteCateringOrder.lastCall.args[1]).to.deep.equal({
+              ...defaultArgs.actionOptions,
+              meta: {
+                id: cateringOrderData.id,
+                reservationId,
+              },
+            });
+            expect(makeCateringOrder.callCount).to.equal(0);
+            expect(editCateringOrder.callCount).to.equal(0);
+          });
+        }
+
+        createTest('calls deleteCateringOrder with correct args when only zero values exists', { 2: 0 });
+        createTest('calls deleteCateringOrder with correct args when no items exist', {});
+      });
+
+      describe('when cateringOrder does not change', () => {
+        it('just resolves promise', () => {
+          const sideEffect = simple.mock();
+          const actionOptions = {
+            successMeta: {
+              sideEffect,
+            },
+          };
+          doUpdate({ actionOptions });
+          expect(sideEffect.callCount).to.equal(1);
+          expect(makeCateringOrder.callCount).to.equal(0);
+          expect(deleteCateringOrder.callCount).to.equal(0);
+          expect(editCateringOrder.callCount).to.equal(0);
+        });
+      });
+
+      describe('when cateringOrder is edited', () => {
+        it('calls editCateringOrder with correct args', () => {
+          const args = {
+            cateringOrder: {
+              ...cateringOrderData,
+              order: {
+                2: 8,
+              },
+            },
+          };
+          doUpdate(args);
+          expect(editCateringOrder.callCount).to.equal(1);
+          expect(editCateringOrder.lastCall.args[0]).to.deep.equal({
+            ...args.cateringOrder,
+            id: cateringOrderData.id,
+            reservation: reservationId,
+          });
+          expect(editCateringOrder.lastCall.args[1]).to.deep.equal(
+            defaultArgs.actionOptions
+          );
+          expect(makeCateringOrder.callCount).to.equal(0);
+          expect(deleteCateringOrder.callCount).to.equal(0);
         });
       });
     });
