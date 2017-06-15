@@ -132,29 +132,9 @@ describe('shared/reservation-form/catering/catering-form/cateringFormSelector', 
         invoicingData: '',
         message: '',
         order: {},
-        servingTime: '12:00',
+        servingTime: '',
       };
       expect(selected.initialValues).to.deep.equal(expected);
-    });
-
-    it('returns reservation begin time as default serving time if exists', () => {
-      const reservationBeginTime = '17:00';
-      const selected = getSelected({
-        'form.resourceReservation.values': {
-          cateringOrder: {},
-          numberOfParticipants,
-          resource: 'r1',
-          time: {
-            begin: {
-              time: reservationBeginTime,
-            },
-            end: {},
-          },
-        },
-      });
-      expect(selected.initialValues.servingTime).to.deep.equal(
-        reservationBeginTime
-      );
     });
   });
 });
