@@ -116,8 +116,8 @@ describe('shared/reservation-form/catering/CateringSectionContainer', () => {
       });
 
       it('renders correct text if servingTime is not empty', () => {
-        const paragraph = getOrderMadeWrapper({ servingTime: '11:11' }).find('p');
-        expect(paragraph.text()).to.equal('Tilatut tuotteet tarjoillaan klo 11:11.');
+        const paragraph = getOrderMadeWrapper({ servingTime: '09:11:00' }).find('p');
+        expect(paragraph.text()).to.equal('Tilatut tuotteet tarjoillaan klo 9:11.');
       });
 
       it('renders correct text if servingTime is empty', () => {

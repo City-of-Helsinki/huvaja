@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import CateringOrderTable from 'shared/catering-order-table';
+import utils from 'utils/cateringUtils';
 import CateringModal from './CateringModal';
 import cateringUtils from './utils';
 
@@ -79,6 +80,10 @@ export class UnconnectedCateringSectionContainer extends Component {
   render() {
     const { servingTime, orderItems } = this.props;
     const orderMade = Boolean(orderItems.length);
+    const formattedServingTime = (
+      servingTime &&
+      utils.formatServingTime(servingTime)
+    );
 
     return (
       <div className="catering-section">
@@ -89,7 +94,7 @@ export class UnconnectedCateringSectionContainer extends Component {
         {orderMade &&
           <div>
             {servingTime ?
-              <p>Tilatut tuotteet tarjoillaan klo {servingTime}.</p> :
+              <p>Tilatut tuotteet tarjoillaan klo {formattedServingTime}.</p> :
               <p>Tilatut tuotteet tarjoillaan varauksen alkaessa.</p>
             }
             <CateringOrderTable items={orderItems} />
