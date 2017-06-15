@@ -148,6 +148,25 @@ export class UnconnectedReservationForm extends React.Component {
 
   render() {
     const warning = this.getWarning();
+    const cateringDisabledReason = this.props.isRecurring ?
+      (
+        'Huom. Tarjoilutilauksia ei voi tehdä toistuviin varauksiin. Jos ' +
+        'haluat tilata tarjoiluja, poista varauksen toistuvuus tai lisää ' +
+        'tarjoilutilaukset jälkeenpäin yksittäisiin varauksiin.'
+      ) :
+      null;
+    const isRecurringDisabled = Boolean(
+      !this.props.isRecurring &&
+      (!this.props.baseReservation || this.props.isOrderingCatering)
+    );
+    const recurringDisabledReason = this.props.isOrderingCatering ?
+      (
+        'Huom. Toistuvaa varausta ei voi tehdä, kun varaukseen sisältyy ' +
+        'tarjoilutilaus. Jos haluat tehdä toistuvan varauksen, poista ' +
+        'tarjoilutilaus ja lisää se jälkeenpäin yksittäisiin varauksiin.'
+      ) :
+      null;
+
     return (
       <div>
         <form className="reservation-form" onSubmit={this.props.handleSubmit}>
@@ -178,9 +197,14 @@ export class UnconnectedReservationForm extends React.Component {
                       'Tee toistuva varaus',
                       {
                         className: 'is-recurring-checkbox',
-                        disabled: !this.props.isRecurring && !this.props.baseReservation,
+                        disabled: isRecurringDisabled,
                       },
                     )}
+                    {recurringDisabledReason &&
+                      <p className="recurring-disabled-reason">
+                        {recurringDisabledReason}
+                      </p>
+                    }
                     {this.props.isRecurring &&
                       <div className="recurring-reservations">
                         <RecurringReservationControls />
@@ -258,6 +282,7 @@ export class UnconnectedReservationForm extends React.Component {
                   'cateringOrder',
                   'cateringOrder',
                   'Tarjoilutilaus',
+                  { disabledReason: cateringDisabledReason },
                 )}
               </Col>
               <Col md={6}>
@@ -313,6 +338,7 @@ UnconnectedReservationForm.propTypes = {
   fetchCateringProductCategories: PropTypes.func.isRequired,
   fetchResource: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  isOrderingCatering: PropTypes.bool,
   isRecurring: PropTypes.bool,
   numberOfParticipants: PropTypes.number,
   recurringReservations: PropTypes.array,

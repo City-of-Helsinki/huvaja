@@ -293,6 +293,38 @@ describe('shared/reservation-form/ReservationForm', () => {
           });
           expect(field).to.have.length(1);
         });
+
+        it('is disabled when not checked and catering order exists', () => {
+          const props = {
+            isOrderingCatering: true,
+            isRecurring: false,
+          };
+          const field = fields = getWrapper(props).find(Field).filter({
+            name: 'isRecurring',
+            controlProps: {
+              disabled: true,
+            },
+          });
+          expect(field).to.have.length(1);
+        });
+      });
+    });
+
+    describe('"recurring disabled" reason', () => {
+      it('is shown when isOrderingCatering prop is true', () => {
+        const wrapper = getWrapper({ isOrderingCatering: true });
+        const reason = wrapper.find('.recurring-disabled-reason');
+        expect(reason).to.have.length(1);
+        expect(reason.text()).to.contain(
+          'Toistuvaa varausta ei voi tehdä, kun varaukseen sisältyy ' +
+          'tarjoilutilaus.'
+        );
+      });
+
+      it('is not shown when isOrderingCatering prop is false', () => {
+        const wrapper = getWrapper({ isOrderingCatering: false });
+        const reason = wrapper.find('.recurring-disabled-reason');
+        expect(reason).to.have.length(0);
       });
     });
 
@@ -355,6 +387,28 @@ describe('shared/reservation-form/ReservationForm', () => {
         const fields = wrapper.find(Field);
         const field = fields.filter(props);
         expect(field).to.have.length(0);
+      });
+
+      it('gets disabledReason if isRecurring prop is true', () => {
+        const wrapper = getWrapper({
+          cateringProvider: { id: 1 },
+          isRecurring: true,
+        });
+        const fields = wrapper.find(Field);
+        const field = fields.filter(props);
+        expect(field.prop('controlProps').disabledReason).to.contain(
+          'Tarjoilutilauksia ei voi tehdä toistuviin varauksiin.'
+        );
+      });
+
+      it('gets null as disabledReason if isRecurring prop is false', () => {
+        const wrapper = getWrapper({
+          cateringProvider: { id: 1 },
+          isRecurring: false,
+        });
+        const fields = wrapper.find(Field);
+        const field = fields.filter(props);
+        expect(field.prop('controlProps').disabledReason).to.be.null;
       });
     });
 

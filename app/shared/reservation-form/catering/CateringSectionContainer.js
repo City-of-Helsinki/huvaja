@@ -48,11 +48,12 @@ export const selector = createSelector(
 
 export class UnconnectedCateringSectionContainer extends Component {
   static propTypes = {
-    servingTime: PropTypes.string,
     controlProps: PropTypes.shape({
+      disabledReason: PropTypes.string,
       onChange: PropTypes.func.isRequired,
     }).isRequired,
     orderItems: PropTypes.array.isRequired,
+    servingTime: PropTypes.string,
   }
 
   constructor(props) {
@@ -78,12 +79,14 @@ export class UnconnectedCateringSectionContainer extends Component {
   }
 
   render() {
-    const { servingTime, orderItems } = this.props;
+    const { controlProps, servingTime, orderItems } = this.props;
+    const disabledReason = controlProps.disabledReason;
     const orderMade = Boolean(orderItems.length);
     const formattedServingTime = (
       servingTime &&
       utils.formatServingTime(servingTime)
     );
+    const disabled = Boolean(disabledReason);
 
     return (
       <div className="catering-section">
@@ -100,9 +103,16 @@ export class UnconnectedCateringSectionContainer extends Component {
             <CateringOrderTable items={orderItems} />
           </div>
         }
-        <Button onClick={this.openCateringModal}>
+        <Button
+          className="catering-section-open-modal-button"
+          disabled={disabled}
+          onClick={this.openCateringModal}
+        >
           {orderMade ? 'Muokkaa tarjoiluja' : 'Tilaa tarjoilut'}
         </Button>
+        {disabledReason &&
+          <p className="catering-section-disabled-reason">{disabledReason}</p>
+        }
         <CateringModal
           onClose={this.closeCateringModal}
           onSubmit={this.handleSubmit}

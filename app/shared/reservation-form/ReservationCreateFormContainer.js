@@ -138,11 +138,20 @@ const isRecurringSelector = state => Boolean(
   state.form.resourceReservation.values.isRecurring
 );
 
+const isOrderingCateringSelector = (state) => {
+  const cateringOrder = (
+    state.form.resourceReservation &&
+    state.form.resourceReservation.values.cateringOrder
+  );
+  return cateringUtils.hasOrders(cateringOrder);
+};
+
 export const selector = createStructuredSelector({
   baseReservation: baseReservationSelector,
   cateringProvider: createCateringProviderSelector(unitIdSelector),
   formDate: formDateSelector,
   initialValues: initialValuesSelector,
+  isOrderingCatering: isOrderingCateringSelector,
   isRecurring: isRecurringSelector,
   numberOfParticipants: numberOfParticipantsSelector,
   recurringReservations: recurringReservationsSelector,
