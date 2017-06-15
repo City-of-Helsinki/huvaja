@@ -1,3 +1,12 @@
 @import 'catering-form/catering-menu-items';
 @import 'catering-modal';
 @import 'catering-order-table';
+
+.catering-section {
+  &-open-modal-button {
+    margin-bottom: 10px;
+  }
+  &-disabled-reason {
+    color: $info-text-color;
+  }
+}

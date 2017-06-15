@@ -13,16 +13,16 @@ import {
 } from './CateringSectionContainer';
 
 describe('shared/reservation-form/catering/CateringSectionContainer', () => {
+  const defaults = {
+    controlProps: {
+      onChange: () => null,
+    },
+    servingTime: '10:00',
+    orderItems: [
+      { id: 'cmi-1', name: { fi: 'Kahvi' }, price: 1, quantity: 2 },
+    ],
+  };
   function getWrapper(props) {
-    const defaults = {
-      controlProps: {
-        onChange: () => null,
-      },
-      servingTime: '10:00',
-      orderItems: [
-        { id: 'cmi-1', name: { fi: 'Kahvi' }, price: 1, quantity: 2 },
-      ],
-    };
     return shallow(<CateringSectionContainer {...defaults} {...props} />);
   }
 
@@ -70,8 +70,8 @@ describe('shared/reservation-form/catering/CateringSectionContainer', () => {
     describe('if order has not been made', () => {
       const orderItems = [];
 
-      function getOrderNotMadeWrapper() {
-        return getWrapper({ orderItems });
+      function getOrderNotMadeWrapper(props) {
+        return getWrapper({ orderItems, ...props });
       }
 
       it('does not render CateringOrderTable', () => {
@@ -79,17 +79,54 @@ describe('shared/reservation-form/catering/CateringSectionContainer', () => {
         expect(cateringOrderTable).to.have.length(0);
       });
 
-      it('renders Button with text "Tilaa tarjoilut"', () => {
-        const wrapper = getOrderNotMadeWrapper();
-        const button = wrapper.find(Button);
-        expect(button).to.have.length(1);
-        expect(button.prop('children')).to.equal('Tilaa tarjoilut');
-        expect(button.prop('onClick')).to.equal(wrapper.instance().openCateringModal);
-      });
-
       it('renders correct text if no orders', () => {
         const paragraph = getOrderNotMadeWrapper().find('p');
         expect(paragraph.text()).to.equal('Ei tarjoilua');
+      });
+
+      describe('reason for disabling', () => {
+        const className = '.catering-section-disabled-reason';
+
+        it('is shown if disabledReason control prop exists', () => {
+          const disabledReason = 'Reservation is recurring.';
+          const controlProps = {
+            ...defaults.controlProps,
+            disabledReason,
+          };
+          const wrapper = getOrderNotMadeWrapper({ controlProps });
+          const reason = wrapper.find(className);
+          expect(reason).to.have.length(1);
+          expect(reason.text()).to.equal(disabledReason);
+        });
+
+        it('is not shown if no disabledReason control prop', () => {
+          const wrapper = getOrderNotMadeWrapper();
+          const reason = wrapper.find(className);
+          expect(reason).to.have.length(0);
+        });
+      });
+
+      describe('button', () => {
+        it('is rendered with text "Tilaa tarjoilut"', () => {
+          const wrapper = getOrderNotMadeWrapper();
+          const button = wrapper.find(Button);
+          expect(button).to.have.length(1);
+          expect(button.prop('children')).to.equal('Tilaa tarjoilut');
+          expect(button.prop('onClick')).to.equal(wrapper.instance().openCateringModal);
+          expect(button.prop('disabled')).to.be.false;
+        });
+
+        it('is disabled if disabledReason control prop exists', () => {
+          const disabledReason = 'Reservation is recurring.';
+          const controlProps = {
+            ...defaults.controlProps,
+            disabledReason,
+          };
+          const wrapper = getOrderNotMadeWrapper({ controlProps });
+          const button = wrapper.find(Button);
+          expect(button).to.have.length(1);
+          expect(button.prop('disabled')).to.be.true;
+        });
       });
     });
 

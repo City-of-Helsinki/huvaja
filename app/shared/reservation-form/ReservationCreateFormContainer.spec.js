@@ -129,6 +129,25 @@ describe('shared/reservation-form/ReservationCreateFormContainer', () => {
       });
     });
 
+    describe('isOrderingCatering', () => {
+      it('returns true if form has catering order', () => {
+        const extraState = {
+          'form.resourceReservation.values': {
+            time,
+            cateringOrder: {
+              message: 'Hello!',
+              order: { 2: 10 },
+            },
+          },
+        };
+        expect(getSelected(extraState).isOrderingCatering).to.be.true;
+      });
+
+      it('returns false if form does not have catering order', () => {
+        expect(getSelected().isOrderingCatering).to.be.false;
+      });
+    });
+
     describe('resource', () => {
       const resource1 = { id: 'r-1' };
       const resource2 = { id: 'r-2' };
