@@ -10,7 +10,17 @@ function renderNumberOfParticipants(number) {
   );
 }
 
+function renderHasCatering(hasCateringOrder) {
+  if (!hasCateringOrder) return null;
+  return (
+    <span className="catering">
+      <FontAwesome className="icon" name="coffee" />
+    </span>
+  );
+}
+
 ReservationRow.propTypes = {
+  hasCateringOrder: PropTypes.bool,
   hostName: PropTypes.string.isRequired,
   place: PropTypes.string.isRequired,
   eventSubject: PropTypes.string.isRequired,
@@ -21,6 +31,7 @@ ReservationRow.propTypes = {
 export default function ReservationRow({
   place,
   eventSubject,
+  hasCateringOrder,
   hostName,
   numberOfParticipants,
   onClick,
@@ -36,6 +47,7 @@ export default function ReservationRow({
         <div className="right-top">
           <div className="place">{place}</div>
           <div className="icons">
+            {renderHasCatering(hasCateringOrder)}
             {renderNumberOfParticipants(numberOfParticipants)}
           </div>
         </div>
@@ -44,4 +56,3 @@ export default function ReservationRow({
     </a>
   );
 }
-

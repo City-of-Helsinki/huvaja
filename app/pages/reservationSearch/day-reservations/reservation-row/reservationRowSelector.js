@@ -46,6 +46,7 @@ export default createSelector(
     const end = moment(reservation.end).format('HH:mm');
     return {
       eventSubject: reservation.eventSubject || 'Tuntematon varauksen nimi',
+      hasCateringOrder: reservation.hasCateringOrder,
       hostName: reservation.hostName || 'Tuntematon isäntä',
       id: reservation.id,
       numberOfParticipants: reservation.numberOfParticipants || null,

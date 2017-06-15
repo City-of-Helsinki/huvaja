@@ -7,6 +7,7 @@ import ReservationRow from './ReservationRow';
 
 UnconnectedReservationRowContainer.propTypes = {
   eventSubject: PropTypes.string.isRequired,
+  hasCateringOrder: PropTypes.bool,
   hostName: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   numberOfParticipants: PropTypes.number,
@@ -18,6 +19,7 @@ export function UnconnectedReservationRowContainer(props) {
   return (
     <ReservationRow
       eventSubject={props.eventSubject}
+      hasCateringOrder={props.hasCateringOrder}
       hostName={props.hostName}
       numberOfParticipants={props.numberOfParticipants}
       onClick={() => props.onClick(props.id)}
