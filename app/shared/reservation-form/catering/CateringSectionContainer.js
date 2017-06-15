@@ -16,7 +16,7 @@ export const selector = createSelector(
       cateringData ? cateringData.order : {}
     );
     return {
-      servingTime: cateringData ? cateringData.servingTime : '',
+      servingTime: cateringData && cateringData.servingTime ? cateringData.servingTime : '',
       orderItems,
     };
   }
