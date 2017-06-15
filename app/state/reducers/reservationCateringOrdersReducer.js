@@ -1,4 +1,5 @@
 import fromPairs from 'lodash/fromPairs';
+import omit from 'lodash/omit';
 import { handleActions } from 'redux-actions';
 
 import actionTypes from 'api/actionTypes';
@@ -18,4 +19,7 @@ export default handleActions({
     ...state,
     [action.payload.reservation]: action.payload.id,
   }),
+  [actionTypes.CATERING_ORDER_DELETE_SUCCESS]: (state, action) => omit(
+    state, [action.meta.reservationId]
+  ),
 }, initialState);

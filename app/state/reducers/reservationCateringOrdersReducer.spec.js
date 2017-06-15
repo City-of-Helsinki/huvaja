@@ -62,4 +62,23 @@ describe('state/reducers/reservationCateringOrdersReducer', () => {
       expect(actual).to.deep.equal(expected);
     });
   });
+
+  describe('CATERING_ORDER_DELETE_SUCCESS', () => {
+    it('removes correct mapping from state', () => {
+      const state = {
+        1: 2,
+        5: 6,
+      };
+      const actual = reducer(state, {
+        type: 'CATERING_ORDER_DELETE_SUCCESS',
+        meta: {
+          reservationId: 5,
+        },
+      });
+      const expected = {
+        1: 2,
+      };
+      expect(actual).to.deep.equal(expected);
+    });
+  });
 });
