@@ -10,6 +10,13 @@ import ServingTimeField from './ServingTimeField';
 import CateringMenu from './CateringMenu';
 import cateringUtils from '../utils';
 
+export const fields = [
+  'invoicingData',
+  'servingTime',
+  'message',
+  'order',
+];
+
 const requiredFields = [
   'invoicingData',
 ];
