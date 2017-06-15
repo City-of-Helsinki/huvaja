@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import FormControl from 'react-bootstrap/lib/FormControl';
+import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 
 class ServingTimeField extends Component {
   static propTypes = {
@@ -33,6 +34,9 @@ class ServingTimeField extends Component {
     return (
       <div className="serving-time-field">
         <div className="form-group">
+          <ControlLabel>
+            {this.props.label}
+          </ControlLabel>
           <div>
             <input
               defaultChecked={!this.state.enabledCustomTime}
@@ -41,7 +45,9 @@ class ServingTimeField extends Component {
               name="customTime"
               onClick={this.disableCustomTime}
             />
-            <label htmlFor="serving-reservation-time">Varauksen alkamisaika</label>
+            <label className="radio-label" htmlFor="serving-reservation-time">
+              Varauksen alkamisaika
+            </label>
           </div>
           <div>
             <input
@@ -51,7 +57,7 @@ class ServingTimeField extends Component {
               name="customTime"
               onClick={this.enableCustomTime}
             />
-            <label htmlFor="serving-custom-time">{this.props.label}</label>
+            <label className="radio-label" htmlFor="serving-custom-time">Klo</label>
             <FormControl
               {...this.props.input}
               {...this.props.controlProps}

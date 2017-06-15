@@ -61,9 +61,10 @@ $item-horizontal-padding: 12px;
   }
 }
 .serving-time-field {
-  label {
+  .radio-label {
     padding-left: 10px;
     padding-right: 10px;
+    font-weight: normal;
   }
   .serving-time-form-control {
     display: inline-block;
