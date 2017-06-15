@@ -65,7 +65,10 @@ export class UnconnectedCateringSectionContainer extends Component {
         }
         {orderMade &&
           <div>
-            <p>Tilatut tuotteet tarjoillaan klo {servingTime}.</p>
+            {servingTime ?
+              <p>Tilatut tuotteet tarjoillaan klo {servingTime}.</p> :
+              <p>Tilatut tuotteet tarjoillaan varauksen alkaessa.</p>
+            }
             <CateringOrderTable items={orderItems} />
           </div>
         }
