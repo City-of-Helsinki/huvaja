@@ -74,28 +74,43 @@ describe('shared/reservation-form/catering/CateringSectionContainer', () => {
         expect(button.prop('children')).to.equal('Tilaa tarjoilut');
         expect(button.prop('onClick')).to.equal(wrapper.instance().openCateringModal);
       });
+
+      it('renders correct text if no orders', () => {
+        const paragraph = getOrderNotMadeWrapper().find('p');
+        expect(paragraph.text()).to.equal('Ei tarjoilua');
+      });
     });
 
     describe('if order has been made', () => {
       const orderItems = [
         { id: 'cmi-1', name: { fi: 'Kahvi' }, price: 1, quantity: 2 },
       ];
-      function getOrderNotMadeWrapper() {
-        return getWrapper({ orderItems });
+      function getOrderMadeWrapper(props) {
+        return getWrapper({ orderItems, ...props });
       }
 
       it('renders CateringOrderTable with correct data', () => {
-        const cateringOrderTable = getOrderNotMadeWrapper().find(CateringOrderTable);
+        const cateringOrderTable = getOrderMadeWrapper().find(CateringOrderTable);
         expect(cateringOrderTable).to.have.length(1);
         expect(cateringOrderTable.prop('items')).to.deep.equal(orderItems);
       });
 
       it('renders Button for opening modal with text "Muokkaa tarjoiluja"', () => {
-        const wrapper = getOrderNotMadeWrapper();
+        const wrapper = getOrderMadeWrapper();
         const button = wrapper.find(Button);
         expect(button).to.have.length(1);
         expect(button.prop('children')).to.equal('Muokkaa tarjoiluja');
         expect(button.prop('onClick')).to.equal(wrapper.instance().openCateringModal);
+      });
+
+      it('renders correct text if servingTime is not empty', () => {
+        const paragraph = getOrderMadeWrapper({ servingTime: '11:11' }).find('p');
+        expect(paragraph.text()).to.equal('Tilatut tuotteet tarjoillaan klo 11:11.');
+      });
+
+      it('renders correct text if servingTime is empty', () => {
+        const paragraph = getOrderMadeWrapper({ servingTime: '' }).find('p');
+        expect(paragraph.text()).to.equal('Tilatut tuotteet tarjoillaan varauksen alkaessa.');
       });
     });
 
