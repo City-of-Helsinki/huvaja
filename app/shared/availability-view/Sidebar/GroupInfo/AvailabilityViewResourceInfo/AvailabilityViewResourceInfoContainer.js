@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import { createSelector } from 'reselect';
 
 AvailabilityViewResourceInfo.propTypes = {
+  canMakeReservations: PropTypes.bool.isRequired,
   date: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   isFavorite: PropTypes.bool.isRequired,
@@ -18,7 +19,10 @@ export function AvailabilityViewResourceInfo(props) {
     <div
       className={classNames(
         'availability-view-resource-info',
-        { 'availability-view-resource-info-highlighted': props.isHighlighted },
+        {
+          'availability-view-resource-info-highlighted': props.isHighlighted,
+          'availability-view-resource-info-can-make-reservations': props.canMakeReservations,
+        },
       )}
       title={props.name}
     >
@@ -48,6 +52,7 @@ export function selector() {
   return createSelector(
     resourceSelector,
     resource => ({
+      canMakeReservations: resource.reservable,
       isFavorite: resource.isFavorite,
       name: resource.name.fi,
       peopleCapacity: resource.peopleCapacity,

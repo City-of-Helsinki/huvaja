@@ -48,7 +48,8 @@ export function selector() {
 
   return createSelector(
     itemsSelector,
-    items => ({ items })
+    resourceSelector,
+    (items, resource) => ({ items, canMakeReservations: resource.reservable })
   );
 }
 

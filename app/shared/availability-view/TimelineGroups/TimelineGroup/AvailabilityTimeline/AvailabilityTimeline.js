@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import React, { PropTypes } from 'react';
 
 import Reservation from './Reservation';
@@ -5,6 +6,7 @@ import ReservationSlot from './ReservationSlot';
 
 export default class AvailabilityTimeline extends React.Component {
   static propTypes = {
+    canMakeReservations: PropTypes.bool.isRequired,
     id: PropTypes.string.isRequired,
     items: PropTypes.arrayOf(
       PropTypes.shape({
@@ -38,7 +40,10 @@ export default class AvailabilityTimeline extends React.Component {
   render() {
     return (
       <div
-        className="availability-timeline"
+        className={classnames(
+          'availability-timeline',
+          { 'availability-timeline-can-make-reservations': this.props.canMakeReservations },
+        )}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
       >

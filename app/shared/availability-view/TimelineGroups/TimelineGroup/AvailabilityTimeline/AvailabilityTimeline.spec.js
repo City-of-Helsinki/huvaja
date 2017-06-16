@@ -10,6 +10,7 @@ import ReservationSlot from './ReservationSlot';
 
 function getWrapper(props) {
   const defaults = {
+    canMakeReservations: true,
     id: 'resource-1',
     items: [],
     onReservationClick: () => null,
@@ -23,12 +24,36 @@ describe('shared/availability-view/AvailabilityTimeline', () => {
     expect(wrapper.is('div.availability-timeline')).to.be.true;
   });
 
+  it('does not add can-make-reservations class if not canMakeReservations', () => {
+    const wrapperWithoutClass = (
+      getWrapper({
+        canMakeReservations: false,
+      }).filter('.availability-timeline-can-make-reservations')
+    );
+    expect(wrapperWithoutClass).to.have.length(0);
+  });
+
+  it('adds can-make-reservations class if canMakeReservations', () => {
+    const wrapperWithClass = (
+      getWrapper().filter('.availability-timeline-can-make-reservations')
+    );
+    expect(wrapperWithClass).to.have.length(1);
+  });
+
   it('renders given reservation slot', () => {
     const wrapper = getWrapper({
       items: [{
         key: '1',
         type: 'reservation-slot',
-        data: { begin: moment(), end: moment(), resourceId: '', isSelectable: true },
+        data: {
+          begin: moment(),
+          end: moment(),
+          resourceId: '',
+          isSelectable: true,
+          userPermissions: {
+            canModify: true,
+          },
+        },
       }],
     });
     const slot = wrapper.find(ReservationSlot);
@@ -45,6 +70,9 @@ describe('shared/availability-view/AvailabilityTimeline', () => {
           end: '',
           id: 12345,
           name: 'My Reservation',
+          userPermissions: {
+            canModify: true,
+          },
         },
       }],
     });
@@ -64,9 +92,24 @@ describe('shared/availability-view/AvailabilityTimeline', () => {
             end: moment(),
             resourceId: '',
             isSelectable: true,
+            userPermissions: {
+              canModify: true,
+            },
           },
         },
-        { key: '2', type: 'reservation', data: { begin: '', end: '', id: 12345, name: '' } },
+        {
+          key: '2',
+          type: 'reservation',
+          data: {
+            begin: '',
+            end: '',
+            id: 12345,
+            name: '',
+            userPermissions: {
+              canModify: true,
+            },
+          },
+        },
         {
           key: '3',
           type: 'reservation-slot',
@@ -75,6 +118,9 @@ describe('shared/availability-view/AvailabilityTimeline', () => {
             end: moment(),
             resourceId: '',
             isSelectable: false,
+            userPermissions: {
+              canModify: true,
+            },
           },
         },
       ],

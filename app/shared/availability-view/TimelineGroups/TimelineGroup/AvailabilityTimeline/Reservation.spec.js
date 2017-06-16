@@ -17,6 +17,9 @@ function getOuterWrapper(props) {
     eventSubject: 'Meeting',
     id: 12345,
     onClick: () => {},
+    userPermissions: {
+      canModify: true,
+    },
   };
   return shallow(<Reservation {...defaults} {...props} />);
 }
@@ -29,6 +32,24 @@ describe('shared/availability-view/Reservation', () => {
   it('renders a div.reservation', () => {
     const wrapper = getWrapper();
     expect(wrapper.is('div.reservation')).to.be.true;
+  });
+
+  it('does not add can-modify class if not userPermissions.canModify', () => {
+    const wrapperWithoutClass = (
+      getWrapper({
+        userPermissions: {
+          canModify: false,
+        },
+      }).find('.reservation-can-modify')
+    );
+    expect(wrapperWithoutClass).to.have.length(0);
+  });
+
+  it('adds can-modify class if userPermissions.canModify', () => {
+    const wrapperWithClass = (
+      getWrapper().find('.reservation-can-modify')
+    );
+    expect(wrapperWithClass).to.have.length(1);
   });
 
   it('renders a link', () => {
