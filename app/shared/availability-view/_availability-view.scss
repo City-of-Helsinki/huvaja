@@ -1,15 +1,47 @@
+
+
 .availability-view {
   $group-row-height: 30px;
   $resource-row-height: 50px;
   $slot-border: 1px solid white;
 
-  $open-slot-color: $silver;
-  $closed-slot-color: $dark-gray;
-  $hovered-row-open-slot-color: $light-gray;
-  $hovered-row-closed-slot-color: $medium-gray;
-  $hovered-open-slot-color: $open-slot-color;
-  $hovered-closed-slot-color: $closed-slot-color;
+  $availability-gray-1: #676767;
+  $availability-gray-2: #AFAFAF;
+  $availability-gray-3: #CACACA;
+  $availability-gray-4: #DEDFE1;
+  $availability-gray-5: #EDEDED;
+
+  $availability-green-1: #00AC52;
+  $availability-green-2: #00F1BB;
+
+  $icon-ban: $hel-brick;
+  $icon-plus: $hel-copper;
   $selected-slot-color: $brand-primary;
+
+  // HAS RIGHTS TO USE RESOURCE -ROW
+  $reservable-open-slot-color: $availability-gray-4; //
+  $reservable-not-open-slot-color: $availability-gray-2; //
+  $reservable-open-slot-rowhover-color: $availability-gray-5; //
+  $reservable-not-open-slot-rowhover-color: $availability-gray-3; //
+  $reservable-hover: $white; //
+  $reservable-header-bg-color: $availability-gray-4;  //
+  $reservable-header-bg-rowhover-color: $availability-gray-5; //
+  $reservable-header-color: $black;
+  $reservable-header-rowhover-color: $hel-coat;
+  $reservable-seats-color: $hel-coat;
+
+  // NO RIGHTS TO USE RESOURCE -ROW
+  $not-reservable-open-slot-color: $availability-gray-2; //
+  $not-reservable-not-open-slot-color: $availability-gray-1; //
+  $not-reservable-header-bg-color: $availability-gray-2;  //
+  $not-reservable-header-color: $availability-gray-1;
+  $not-reservable-seats-color: $availability-gray-1;
+
+  // RESERVATIONS
+  $reservation-cannot-modify: $hel-tram; //
+  $reservation-can-modify: $hel-copper; //
+  $reservation-cannot-modify-hover: $availability-green-1; //
+  $reservation-can-modify-hover: $availability-green-2; //
 
   width: 100%;
 
@@ -153,14 +185,30 @@
     height: $resource-row-height;
     font-size: $font-size-small;
     line-height: 1;
-    background-color: $open-slot-color;
+    background-color: $not-reservable-header-bg-color;
     border: $slot-border;
     border-left: 0;
     border-right: 0;
 
-    &-highlighted {
-      background-color: $hovered-row-open-slot-color;
+    &.availability-view-resource-info-can-make-reservations {
+      background-color: $reservable-header-bg-color;
+      &.availability-view-resource-info-highlighted {
+        background-color: $reservable-header-bg-rowhover-color;
+        .name a {
+          color: $reservable-header-rowhover-color;
+        }
+      }
+      .name a{
+        color: $reservable-header-color ;
+      }
+      .capacity {
+        color: $reservable-seats-color ;
+        .chair-icon {
+          filter: none;
+        }
+      }
     }
+
     .favorite-icon {
       color: $favorite-color;
       padding: 3px;
@@ -173,17 +221,19 @@
       max-width: 100%;
 
       a {
-        color: $text-color;
+        color: $not-reservable-header-color;
         font-size: $font-size-small;
         font-weight: $headings-font-weight;
       }
     }
     .capacity {
-      color: $brand-primary;
+      color: $not-reservable-seats-color;
       .chair-icon {
+        filter: grayscale(100%);
         margin-right: 0;
       }
     }
+
   }
   .timeline-groups {
     width: 100%;
@@ -220,11 +270,44 @@
   .availability-timeline {
     display: flex;
 
-    &:hover {
-      .reservation-slot:not(:hover):not(.reservation-slot-selected) {
-        background-color: $hovered-row-closed-slot-color;
+    .reservation-slot {
+      background-color: $not-reservable-not-open-slot-color;
+      overflow: hidden;
+
+      &-selectable {
+        background-color: $not-reservable-open-slot-color;
+      }
+      // Add forbiden
+      // &:hover, &-selectable:hover {
+      //   background-color: $hovered-closed-slot-color;
+      // }
+      &-selected, &-selected:hover {
+        background-color: $selected-slot-color;
+      }
+
+      .a11y-text {
+        position: relative;
+        left: 100px;
+      }
+    }
+
+    &-can-make-reservations {
+      &:hover {
+        .reservation-slot:not(:hover):not(.reservation-slot-selected) {
+          background-color: $reservable-not-open-slot-rowhover-color;
+          &.reservation-slot-selectable {
+            background-color: $reservable-open-slot-rowhover-color;
+          }
+        }
+      }
+      .reservation-slot {
+        background-color: $reservable-not-open-slot-color;
         &.reservation-slot-selectable {
-          background-color: $hovered-row-open-slot-color;
+          background-color: $reservable-open-slot-color;
+          &:hover {
+            background-color: $reservable-hover;
+            // add plus
+          }
         }
       }
     }
@@ -241,13 +324,17 @@
   }
   .reservation {
     height: $resource-row-height;
-    background-color: $brand-success;
+    background-color: $reservation-cannot-modify;
     color: white;
     font-size: $font-size-small;
     align-items: center;
     padding: $padding-small-vertical $padding-small-horizontal;
     overflow: hidden;
     cursor: pointer;
+
+    &:hover {
+      background-color: $reservation-cannot-modify-hover;
+    }
 
     &-link:hover {
       text-decoration: none;
@@ -258,26 +345,11 @@
       text-overflow: clip;
       white-space: nowrap;
     }
-  }
-  .reservation-slot {
-    background-color: $closed-slot-color;
-    overflow: hidden;
-
-    &-selectable {
-      background-color: $open-slot-color;
-    }
-    &:hover {
-      background-color: $hovered-closed-slot-color;
-    }
-    &-selectable:hover {
-      background-color: $hovered-open-slot-color;
-    }
-    &-selected, &-selected:hover {
-      background-color: $selected-slot-color;
-    }
-    .a11y-text {
-      position: relative;
-      left: 100px;
+    &-can-modify {
+      background-color: $reservation-can-modify;
+      &:hover {
+        background-color: $reservation-can-modify-hover;
+      }
     }
   }
 }
