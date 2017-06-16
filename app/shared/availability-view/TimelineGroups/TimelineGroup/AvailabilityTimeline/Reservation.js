@@ -55,8 +55,8 @@ function Reservation(props) {
           style={{ width }}
         >
           <div className="names">
-            <div className="event-subject">{props.eventSubject}</div>
             <div className="reserver-name">{props.reserverName}</div>
+            <div className="event-subject">{props.eventSubject}</div>
           </div>
         </div>
       </OverlayTrigger>
