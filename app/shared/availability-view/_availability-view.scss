@@ -273,16 +273,22 @@
     .reservation-slot {
       background-color: $not-reservable-not-open-slot-color;
       overflow: hidden;
+      position: relative;
+      &:hover:before {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        font-family: 'Glyphicons Halflings';
+        line-height: $resource-row-height;
+        text-align: center;
+        color: $icon-ban;
+        content: "\e090";
+      }
 
       &-selectable {
         background-color: $not-reservable-open-slot-color;
-      }
-      // Add forbiden
-      // &:hover, &-selectable:hover {
-      //   background-color: $hovered-closed-slot-color;
-      // }
-      &-selected, &-selected:hover {
-        background-color: $selected-slot-color;
       }
 
       .a11y-text {
@@ -304,9 +310,14 @@
         background-color: $reservable-not-open-slot-color;
         &.reservation-slot-selectable {
           background-color: $reservable-open-slot-color;
-          &:hover {
+          &:hover:before {
             background-color: $reservable-hover;
-            // add plus
+            color: $icon-plus;
+            content: "+";
+          }
+          &.reservation-slot-selected:hover:before, &.reservation-slot-selected {
+            content: '';
+            background-color: $selected-slot-color;
           }
         }
       }
