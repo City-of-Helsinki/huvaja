@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import moment from 'moment';
 import React, { PropTypes } from 'react';
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
@@ -15,6 +16,9 @@ Reservation.propTypes = {
   numberOfParticipants: PropTypes.number,
   onClick: PropTypes.func.isRequired,
   reserverName: PropTypes.string,
+  userPermissions: PropTypes.shape({
+    canModify: PropTypes.bool.isRequired,
+  }).isRequired,
 };
 
 function Reservation(props) {
@@ -34,13 +38,22 @@ function Reservation(props) {
     </Popover>
   );
   return (
-    <Link className="reservation-link" onClick={() => props.onClick(props.id)}>
+    <Link
+      className="reservation-link"
+      onClick={() => props.onClick(props.id)}
+    >
       <OverlayTrigger
         overlay={popover}
         placement="top"
         trigger={['hover', 'focus']}
       >
-        <div className="reservation" style={{ width }}>
+        <div
+          className={classnames(
+            'reservation',
+            { 'reservation-can-modify': props.userPermissions.canModify },
+          )}
+          style={{ width }}
+        >
           <div className="names">
             <div className="event-subject">{props.eventSubject}</div>
             <div className="reserver-name">{props.reserverName}</div>

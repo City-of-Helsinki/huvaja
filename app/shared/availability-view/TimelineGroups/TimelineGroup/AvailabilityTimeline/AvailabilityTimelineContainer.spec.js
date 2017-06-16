@@ -14,18 +14,21 @@ function getState() {
       resources: {
         'resource-1': {
           id: 'resource-1',
+          reservable: false,
           reservations: [
             {
               id: 111,
               name: 'Reservation 1',
               begin: moment('2016-01-01T02:00:00').format(),
               end: moment('2016-01-01T10:00:00').format(),
+              reservable: true,
             },
             {
               id: 222,
               name: 'Reservation 2',
               begin: moment('2016-01-01T11:30:00').format(),
               end: moment('2016-01-01T18:00:00').format(),
+              reservable: true,
             },
             {
               id: 333,
@@ -35,9 +38,10 @@ function getState() {
             },
           ],
         },
-        'resource-2': { id: 'resource-2' },
+        'resource-2': { id: 'resource-2', reservable: true },
         'resource-3': {
           id: 'resource-3',
+          reservable: true,
           reservations: [
             {
               id: 444,

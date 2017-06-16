@@ -15,6 +15,7 @@ function getState() {
           peopleCapacity: 9,
           extra: 'attribute',
           isFavorite: false,
+          reservable: true,
         },
       },
     },
@@ -24,7 +25,11 @@ function getState() {
 describe('shared/availability-view/AvailabilityViewResourceInfoContainer', () => {
   describe('container', () => {
     function getWrapper(props) {
-      const defaults = { date: '2016-01-01', id: '123456', store: { getState } };
+      const defaults = {
+        date: '2016-01-01',
+        id: '123456',
+        store: { getState },
+      };
       return shallow(<AvailabilityViewResourceInfoContainer {...defaults} {...props} />);
     }
 
@@ -37,6 +42,7 @@ describe('shared/availability-view/AvailabilityViewResourceInfoContainer', () =>
   describe('component', () => {
     function getWrapper(props) {
       const defaults = {
+        canMakeReservations: true,
         date: '2016-01-01',
         id: 'r-1',
         isFavorite: false,
@@ -77,6 +83,22 @@ describe('shared/availability-view/AvailabilityViewResourceInfoContainer', () =>
         expect(favoriteIcon).to.have.length(0);
       });
     });
+
+    it('does not add can-make-reservations class if not canMakeReservations', () => {
+      const wrapperWithoutClass = (
+        getWrapper({
+          canMakeReservations: false,
+        }).filter('.availability-view-resource-info-can-make-reservations')
+      );
+      expect(wrapperWithoutClass).to.have.length(0);
+    });
+
+    it('adds can-make-reservations class if canMakeReservations', () => {
+      const wrapperWithClass = (
+        getWrapper().filter('.availability-view-resource-info-can-make-reservations')
+      );
+      expect(wrapperWithClass).to.have.length(1);
+    });
   });
 
   describe('selector', () => {
@@ -88,6 +110,7 @@ describe('shared/availability-view/AvailabilityViewResourceInfoContainer', () =>
     it('returns resource info', () => {
       const actual = getSelected();
       expect(actual).to.deep.equal({
+        canMakeReservations: true,
         isFavorite: false,
         name: 'Resource Name',
         peopleCapacity: 9,
