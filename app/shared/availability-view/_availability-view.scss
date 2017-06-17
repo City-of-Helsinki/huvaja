@@ -1,5 +1,3 @@
-
-
 .availability-view {
   $group-row-height: 30px;
   $resource-row-height: 50px;
@@ -19,29 +17,29 @@
   $selected-slot-color: $brand-primary;
 
   // HAS RIGHTS TO USE RESOURCE -ROW
-  $reservable-open-slot-color: $availability-gray-4; //
-  $reservable-not-open-slot-color: $availability-gray-2; //
-  $reservable-open-slot-rowhover-color: $availability-gray-5; //
-  $reservable-not-open-slot-rowhover-color: $availability-gray-3; //
-  $reservable-hover: $white; //
-  $reservable-header-bg-color: $availability-gray-4;  //
-  $reservable-header-bg-rowhover-color: $availability-gray-5; //
+  $reservable-open-slot-color: $availability-gray-4;
+  $reservable-not-open-slot-color: $availability-gray-2;
+  $reservable-open-slot-rowhover-color: $availability-gray-5;
+  $reservable-not-open-slot-rowhover-color: $availability-gray-3;
+  $reservable-hover: $white;
+  $reservable-header-bg-color: $availability-gray-4; 
+  $reservable-header-bg-rowhover-color: $availability-gray-5;
   $reservable-header-color: $black;
   $reservable-header-rowhover-color: $hel-coat;
   $reservable-seats-color: $hel-coat;
 
   // NO RIGHTS TO USE RESOURCE -ROW
-  $not-reservable-open-slot-color: $availability-gray-2; //
-  $not-reservable-not-open-slot-color: $availability-gray-1; //
-  $not-reservable-header-bg-color: $availability-gray-2;  //
+  $not-reservable-open-slot-color: $availability-gray-2;
+  $not-reservable-not-open-slot-color: $availability-gray-1;
+  $not-reservable-header-bg-color: $availability-gray-2; 
   $not-reservable-header-color: $availability-gray-1;
   $not-reservable-seats-color: $availability-gray-1;
 
   // RESERVATIONS
-  $reservation-cannot-modify: $hel-tram; //
-  $reservation-can-modify: $hel-copper; //
-  $reservation-cannot-modify-hover: $availability-green-1; //
-  $reservation-can-modify-hover: $availability-green-2; //
+  $reservation-cannot-modify: $hel-tram;
+  $reservation-can-modify: $hel-copper;
+  $reservation-cannot-modify-hover: $availability-green-1;
+  $reservation-can-modify-hover: $availability-green-2;
 
   width: 100%;
 
@@ -198,7 +196,7 @@
           color: $reservable-header-rowhover-color;
         }
       }
-      .name a{
+      .name a {
         color: $reservable-header-color ;
       }
       .capacity {
@@ -355,6 +353,12 @@
       overflow: hidden;
       text-overflow: clip;
       white-space: nowrap;
+      line-height: 15px;
+      font-size: 12px;
+
+      .event-subject {
+        font-weight: bold;
+      }
     }
     &-can-modify {
       background-color: $reservation-can-modify;
