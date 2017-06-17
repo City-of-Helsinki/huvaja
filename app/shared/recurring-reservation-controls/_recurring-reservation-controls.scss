@@ -2,4 +2,8 @@
   .Select-control {
     margin-bottom: $form-group-margin-bottom;
   }
+
+  .react-date-field {
+    @include form-date-picker();
+  }
 }
