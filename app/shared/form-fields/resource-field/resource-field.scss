@@ -25,12 +25,22 @@
     }
 
     &.unavailable > a {
-      color: red;
+      color: $theme-danger;
+    }
+
+    &-disabled-text {
+      color: $theme-danger;
+      margin-bottom: 0;
     }
 
     &:hover {
-      background-color: $gray-light;
-      cursor: pointer;
+      &:not(.disabled) {
+        background-color: $gray-light;
+        cursor: pointer;
+      }
+      &.disabled {
+        cursor: not-allowed;
+      }
     }
 
     .capacity {
