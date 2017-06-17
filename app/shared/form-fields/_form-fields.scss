@@ -1,6 +1,17 @@
 @import './label-select/label-select';
 @import './resource-field/resource-field';
 
+@mixin form-date-picker() {
+  height: $input-height-base;
+  margin-bottom: $padding-small-vertical;
+  border-width: 1px;
+  border-bottom-width: 2px;
+  border-color: $input-border;
+  border-radius: $input-border-radius;
+  padding: $padding-small-vertical $padding-small-horizontal;
+  background-color: $input-bg;
+}
+
 .date-time-range-field {
   display: flex;
   justify-content: flex-start;
@@ -15,14 +26,7 @@
     }
   }
   .react-date-field {
-    height: $input-height-base;
-    margin-bottom: $padding-small-vertical;
-    border-width: 1px;
-    border-color: $input-border;
-    border-radius: $input-border-radius;
-    padding: $padding-small-vertical $padding-small-horizontal;
-    background-color: $input-bg;
-    border-bottom-width: 2px;
+    @include form-date-picker();
 
     &--focused {
       border-color: $input-border-focus;
