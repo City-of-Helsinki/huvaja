@@ -21,14 +21,12 @@ function getState() {
               name: 'Reservation 1',
               begin: moment('2016-01-01T02:00:00').format(),
               end: moment('2016-01-01T10:00:00').format(),
-              reservable: true,
             },
             {
               id: 222,
               name: 'Reservation 2',
               begin: moment('2016-01-01T11:30:00').format(),
               end: moment('2016-01-01T18:00:00').format(),
-              reservable: true,
             },
             {
               id: 333,
