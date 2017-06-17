@@ -306,6 +306,12 @@
       }
       .reservation-slot {
         background-color: $reservable-not-open-slot-color;
+
+        &.reservation-slot-selected:hover:before, &.reservation-slot-selected {
+          content: '';
+          background-color: $selected-slot-color;
+        }
+
         &.reservation-slot-selectable {
           background-color: $reservable-open-slot-color;
           &:hover:before {
