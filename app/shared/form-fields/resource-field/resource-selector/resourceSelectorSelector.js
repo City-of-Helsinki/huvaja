@@ -7,10 +7,23 @@ import { resourcesGetIsActiveSelector } from 'api/selectors';
 import resourceUtils from 'utils/resourceUtils';
 
 const selectedResourceIdSelector = (state, props) => props.selectedResourceId;
+const allowedCateringProviderSelector = (state, props) => (
+  props.allowedCateringProvider
+);
 const resourcesSelector = state => state.data.resources;
 const unitsSelector = state => state.data.units;
 const availableResourceIdsSelector = state => (
   state.resourceSelector.availableResourceIds
+);
+
+const allowedCateringUnitsSelector = createSelector(
+  allowedCateringProviderSelector,
+  (cateringProvider) => {
+    if (!cateringProvider) return null;
+    const units = {};
+    cateringProvider.units.forEach((unitId) => { units[unitId] = true; });
+    return units;
+  }
 );
 
 const unavailableResourceIdsSelector = createSelector(
@@ -19,12 +32,17 @@ const unavailableResourceIdsSelector = createSelector(
   (resources, availableIds) => Object.keys(omit(resources, availableIds))
 );
 
-const getResources = (ids, resources, units, excludedId) => {
+const getResources = (ids, resources, units, excludedId, allowedCateringUnits) => {
   const cleaned = filter(ids, id => id !== excludedId);
   return cleaned.map((id) => {
     const resource = resources[id];
     const unit = units[resource.unit];
+    const hasBadCateringProvider = Boolean(
+      allowedCateringUnits &&
+      !allowedCateringUnits[resource.unit]
+    );
     return {
+      hasBadCateringProvider,
       id,
       label: resourceUtils.getLongName(resource, unit),
       peopleCapacity: resource.peopleCapacity,
@@ -36,6 +54,7 @@ const availableSelector = createSelector(
   resourcesSelector,
   unitsSelector,
   selectedResourceIdSelector,
+  allowedCateringUnitsSelector,
   getResources
 );
 const unavailableSelector = createSelector(
@@ -43,6 +62,7 @@ const unavailableSelector = createSelector(
   resourcesSelector,
   unitsSelector,
   selectedResourceIdSelector,
+  allowedCateringUnitsSelector,
   getResources
 );
 
@@ -70,10 +90,20 @@ const allResourcesSelector = createSelector(
   resourcesSelector,
   unitsSelector,
   selectedResourceIdSelector,
-  (hasTime, resources, units, selectedResourceId) => (
+  allowedCateringUnitsSelector,
+  (hasTime, resources, units, selectedResourceId, allowedCateringUnits) => (
     hasTime
     ? null
-    : sortBy(getResources(Object.keys(resources), resources, units, selectedResourceId), 'label')
+    : sortBy(
+      getResources(
+        Object.keys(resources),
+        resources,
+        units,
+        selectedResourceId,
+        allowedCateringUnits,
+      ),
+      'label'
+    )
   )
 );
 
