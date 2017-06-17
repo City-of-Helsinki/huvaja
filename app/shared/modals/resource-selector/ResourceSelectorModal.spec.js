@@ -12,6 +12,7 @@ describe('shared/modals/resource-selector/ResourceSelectorModal', () => {
     name: { fi: 'Room 123' },
   };
   const defaults = {
+    allowedCateringProvider: { id: 78 },
     onHide: () => null,
     onSelect: () => null,
     selectedResource: resource,
@@ -90,6 +91,7 @@ describe('shared/modals/resource-selector/ResourceSelectorModal', () => {
       expect(wrapper.prop('onSelect')).to.equal(defaults.onSelect);
       expect(wrapper.prop('selectedResourceId')).to.equal(resource.id);
       expect(wrapper.prop('selectedTimeRange')).to.deep.equal(defaults.selectedTimeRange);
+      expect(wrapper.prop('allowedCateringProvider')).to.deep.equal(defaults.allowedCateringProvider);
     });
 
     describe('without resource, time and unit', () => {

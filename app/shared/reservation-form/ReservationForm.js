@@ -181,6 +181,11 @@ export class UnconnectedReservationForm extends React.Component {
                   {
                     resource: this.props.resource,
                     timeRange: this.props.timeRange,
+                    allowedCateringProvider: (
+                      this.props.isOrderingCatering ?
+                      this.props.cateringProvider :
+                      null
+                    ),
                   }
                 )}
                 {renderField(
@@ -338,7 +343,7 @@ UnconnectedReservationForm.propTypes = {
   fetchCateringProductCategories: PropTypes.func.isRequired,
   fetchResource: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  isOrderingCatering: PropTypes.bool,
+  isOrderingCatering: PropTypes.bool.isRequired,
   isRecurring: PropTypes.bool,
   numberOfParticipants: PropTypes.number,
   recurringReservations: PropTypes.array,

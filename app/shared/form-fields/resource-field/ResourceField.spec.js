@@ -15,6 +15,7 @@ describe('shared/form-field/resource-field/ResourceField', () => {
   const defaults = {
     id: 'resource',
     controlProps: {
+      allowedCateringProvider: { id: 78 },
       resource: { name: { fi: 'Room 123' } },
       timeRange: {
         begin: {},
@@ -105,6 +106,9 @@ describe('shared/form-field/resource-field/ResourceField', () => {
       );
       expect(modal.prop('selectedTimeRange')).to.deep.equal(
         defaults.controlProps.timeRange
+      );
+      expect(modal.prop('allowedCateringProvider')).to.deep.equal(
+        defaults.controlProps.allowedCateringProvider
       );
     });
 

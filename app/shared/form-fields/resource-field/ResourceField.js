@@ -19,10 +19,10 @@ ResourceField.propTypes = {
   validationState: PropTypes.string,
 };
 export default function ResourceField({
-  id,
   controlProps,
   help,
   hideSelector,
+  id,
   label,
   showSelector,
   validationState,
@@ -62,6 +62,7 @@ export default function ResourceField({
         <ResourceInfoButton resourceId={controlProps.resource.id} />
       }
       <ResourceSelectorModal
+        allowedCateringProvider={controlProps.allowedCateringProvider}
         onSelect={onSelect}
         selectedResource={controlProps.resource}
         selectedTimeRange={controlProps.timeRange}

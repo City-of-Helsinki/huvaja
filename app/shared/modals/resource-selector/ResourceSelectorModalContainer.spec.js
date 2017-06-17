@@ -9,6 +9,7 @@ import {
 
 describe('shared/modals/resource-selector/ResourceSelectorModalContainer', () => {
   const defaults = {
+    allowedCateringProvider: { id: 78 },
     onHide: () => null,
     onSelect: () => null,
     selectedResource: {},
@@ -23,6 +24,7 @@ describe('shared/modals/resource-selector/ResourceSelectorModalContainer', () =>
   it('renders a ResourceSelectorModal with correct props', () => {
     const modal = getWrapper();
     expect(modal.is(ResourceSelectorModal)).to.be.true;
+    expect(modal.prop('allowedCateringProvider')).to.equal(defaults.allowedCateringProvider);
     expect(modal.prop('onHide')).to.equal(defaults.onHide);
     expect(modal.prop('onSelect')).to.equal(defaults.onSelect);
     expect(modal.prop('selectedResource')).to.equal(defaults.selectedResource);

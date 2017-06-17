@@ -6,6 +6,7 @@ import ResourceSelectorModal from './ResourceSelectorModal';
 import selector from './resourceSelectorModalSelector';
 
 UnconnectedResourceSelectorModalContainer.propTypes = {
+  allowedCateringProvider: PropTypes.object,
   onHide: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
   selectedResource: PropTypes.object,
@@ -16,6 +17,7 @@ UnconnectedResourceSelectorModalContainer.propTypes = {
 export function UnconnectedResourceSelectorModalContainer(props) {
   return (
     <ResourceSelectorModal
+      allowedCateringProvider={props.allowedCateringProvider}
       onHide={props.onHide}
       onSelect={props.onSelect}
       selectedResource={props.selectedResource}
