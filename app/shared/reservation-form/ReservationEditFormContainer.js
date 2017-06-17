@@ -115,10 +115,19 @@ const numberOfParticipantsSelector = state => (
   parseInt(state.form.resourceReservation.values.numberOfParticipants, 10)
 );
 
+const isOrderingCateringSelector = (state) => {
+  const cateringOrder = (
+    state.form.resourceReservation &&
+    state.form.resourceReservation.values.cateringOrder
+  );
+  return cateringUtils.hasOrders(cateringOrder);
+};
+
 export const selector = createStructuredSelector({
   cateringProvider: createCateringProviderSelector(unitIdSelector),
   formDate: formDateSelector,
   initialValues: initialValuesSelector,
+  isOrderingCatering: isOrderingCateringSelector,
   numberOfParticipants: numberOfParticipantsSelector,
   resource: resourceSelector,
   timelineDate: timelineDateSelector,

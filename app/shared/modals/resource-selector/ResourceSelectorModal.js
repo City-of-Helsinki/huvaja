@@ -26,6 +26,7 @@ function getFormattedTimeRange(dateTimeRange) {
 }
 
 ResourceSelectorModal.propTypes = {
+  allowedCateringProvider: PropTypes.object,
   onHide: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
   selectedResource: PropTypes.object,
@@ -35,6 +36,7 @@ ResourceSelectorModal.propTypes = {
 };
 export default function ResourceSelectorModal(props) {
   const {
+    allowedCateringProvider,
     onHide,
     onSelect,
     selectedResource,
@@ -69,6 +71,7 @@ export default function ResourceSelectorModal(props) {
           </Row>
         </div>
         <ResourceSelector
+          allowedCateringProvider={allowedCateringProvider}
           onSelect={onSelect}
           selectedResourceId={selectedResource && selectedResource.id}
           selectedTimeRange={selectedTimeRange}

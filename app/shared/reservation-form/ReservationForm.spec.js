@@ -16,6 +16,7 @@ describe('shared/reservation-form/ReservationForm', () => {
   const defaults = {
     allowRecurring: true,
     baseReservation: { begin: 'bar', end: 'foo' },
+    isOrderingCatering: false,
     isRecurring: false,
     timelineDate: '2016-01-01',
     fetchCateringProducts: () => null,
@@ -363,6 +364,35 @@ describe('shared/reservation-form/ReservationForm', () => {
           const wrapper = getWrapper({ isRecurring: false });
           const list = wrapper.find(CompactReservationList);
           expect(list).to.have.length(0);
+        });
+      });
+    });
+
+    describe('resource field', () => {
+      function getResourceFieldWrapper(props) {
+        const wrapper = getWrapper(props);
+        return wrapper.find(Field).filter({ name: 'resource' });
+      }
+
+      describe('allowedCateringProvider', () => {
+        it('is null when not ordering catering', () => {
+          const props = {
+            isOrderingCatering: false,
+            cateringProvider: { id: 78 },
+          };
+          const wrapper = getResourceFieldWrapper(props);
+          const actual = wrapper.prop('controlProps').allowedCateringProvider;
+          expect(actual).to.be.null
+        });
+
+        it('is cateringProvider prop when ordering catering', () => {
+          const props = {
+            isOrderingCatering: true,
+            cateringProvider: { id: 78 },
+          };
+          const wrapper = getResourceFieldWrapper(props);
+          const actual = wrapper.prop('controlProps').allowedCateringProvider;
+          expect(actual).to.deep.equal(props.cateringProvider);
         });
       });
     });
