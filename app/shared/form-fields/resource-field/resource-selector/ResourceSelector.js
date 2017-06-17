@@ -8,6 +8,7 @@ function renderResources(resources, onSelect, available) {
   return resources.map(resource =>
     <ResourceItem
       available={available}
+      hasBadCateringProvider={resource.hasBadCateringProvider}
       id={resource.id}
       key={resource.id}
       label={resource.label}

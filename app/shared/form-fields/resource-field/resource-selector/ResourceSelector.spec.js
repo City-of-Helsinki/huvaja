@@ -10,11 +10,13 @@ describe('shared/form-field/resource-field/resource-selector/ResourceSelector', 
   const defaults = {
     availableResources: [
       {
+        hasBadCateringProvider: true,
         id: 'r-1',
         label: 'Unit 1 / Room 1',
         peopleCapacity: 25,
       },
       {
+        hasBadCateringProvider: false,
         id: 'r-3',
         label: 'Unit 3 / Room 3',
         peopleCapacity: 27,
@@ -24,6 +26,7 @@ describe('shared/form-field/resource-field/resource-selector/ResourceSelector', 
     onSelect: () => null,
     unavailableResources: [
       {
+        hasBadCateringProvider: false,
         id: 'r-2',
         label: 'Unit 2 / Room 2',
         peopleCapacity: 30,
@@ -42,6 +45,7 @@ describe('shared/form-field/resource-field/resource-selector/ResourceSelector', 
     expect(item.prop('label')).to.equal(resource.label);
     expect(item.prop('onSelect')).to.equal(defaults.onSelect);
     expect(item.prop('peopleCapacity')).to.equal(resource.peopleCapacity);
+    expect(item.prop('hasBadCateringProvider')).to.equal(resource.hasBadCateringProvider);
   }
 
   it('renders div.resource-selector', () => {
@@ -68,7 +72,15 @@ describe('shared/form-field/resource-field/resource-selector/ResourceSelector', 
 
   describe('when given resources prop', () => {
     function getResourcesWrapper() {
-      return getWrapper({ resources: [{ id: '1', label: 'U1 / R1', peopleCapacity: 1 }] });
+      const props = {
+        resources: [{
+          hasBadCateringProvider: false,
+          id: '1',
+          label: 'U1 / R1',
+          peopleCapacity: 1,
+        }],
+      };
+      return getWrapper(props);
     }
 
     it('does not render available resources', () => {
@@ -87,7 +99,16 @@ describe('shared/form-field/resource-field/resource-selector/ResourceSelector', 
       const items = list.find(ResourceItem);
       expect(list).to.have.length(1);
       expect(items).to.have.length(1);
-      testResourceItem(items.at(0), { id: '1', label: 'U1 / R1', peopleCapacity: 1 }, true);
+      testResourceItem(
+        items.at(0),
+        {
+          id: '1',
+          label: 'U1 / R1',
+          peopleCapacity: 1,
+          hasBadCateringProvider: false
+        },
+        true
+      );
     });
   });
 

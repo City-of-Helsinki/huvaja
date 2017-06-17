@@ -23,46 +23,77 @@ describe('shared/form-fields/resource-field/resource-selector/resourceSelectorSe
     'resourceSelector.availableResourceIds': ['r-1', 'r-2'],
   };
 
-  function getSelected(stateData = defaultState) {
+  function getSelected(stateData = defaultState, extraProps) {
     const state = getState(stateData);
     const props = {
       selectedResourceId: 'r-5',
+      ...extraProps,
     };
     return selector(state, props);
   }
 
-  it('returns available resources sorted by label', () => {
-    const actual = getSelected();
-    const expected = [
-      {
-        id: 'r-2',
-        label: 'Unit 1 / Resource 2',
-        peopleCapacity: 20,
-      },
-      {
-        id: 'r-1',
-        label: 'Unit 2 / Resource 1',
-        peopleCapacity: 10,
-      },
-    ];
-    expect(actual.availableResources).to.deep.equal(expected);
+  describe('availableResources', () => {
+    it('is returned sorted by label', () => {
+      const actual = getSelected();
+      const expected = [
+        {
+          hasBadCateringProvider: false,
+          id: 'r-2',
+          label: 'Unit 1 / Resource 2',
+          peopleCapacity: 20,
+        },
+        {
+          hasBadCateringProvider: false,
+          id: 'r-1',
+          label: 'Unit 2 / Resource 1',
+          peopleCapacity: 10,
+        },
+      ];
+      expect(actual.availableResources).to.deep.equal(expected);
+    });
+
+    it('can have bad catering provider', () => {
+      const props = {
+        allowedCateringProvider: { units: ['u-1'] },
+      };
+      const actual = getSelected(defaultState, props).availableResources.map(
+        resource => resource.hasBadCateringProvider
+      );
+      const expected = [false, true];
+      expect(actual).to.deep.equal(expected);
+    });
   });
 
-  it('returns unavailable resources sorted by label', () => {
-    const actual = getSelected();
-    const expected = [
-      {
-        id: 'r-4',
-        label: 'Unit 1 / Resource 4',
-        peopleCapacity: 40,
-      },
-      {
-        id: 'r-3',
-        label: 'Unit 2 / Resource 3',
-        peopleCapacity: 30,
-      },
-    ];
-    expect(actual.unavailableResources).to.deep.equal(expected);
+  describe('unavailableResources', () => {
+    it('is returned sorted by label', () => {
+      const actual = getSelected();
+      const expected = [
+        {
+          hasBadCateringProvider: false,
+          id: 'r-4',
+          label: 'Unit 1 / Resource 4',
+          peopleCapacity: 40,
+        },
+        {
+          hasBadCateringProvider: false,
+          id: 'r-3',
+          label: 'Unit 2 / Resource 3',
+          peopleCapacity: 30,
+        },
+      ];
+      expect(actual.unavailableResources).to.deep.equal(expected);
+    });
+
+    it('can have bad catering provider', () => {
+      const props = {
+        allowedCateringProvider: { units: ['u-1'] },
+      };
+      const actual = getSelected(defaultState, props).unavailableResources.map(
+        resource => resource.hasBadCateringProvider
+      );
+      const expected = [false, true];
+      expect(actual).to.deep.equal(expected);
+    });
   });
 
   describe('resources', () => {
@@ -86,26 +117,41 @@ describe('shared/form-fields/resource-field/resource-selector/resourceSelectorSe
       });
       expect(actual.resources).to.deep.equal([
         {
+          hasBadCateringProvider: false,
           id: 'r-2',
           label: 'Unit 1 / Resource 2',
           peopleCapacity: 20,
         },
         {
+          hasBadCateringProvider: false,
           id: 'r-4',
           label: 'Unit 1 / Resource 4',
           peopleCapacity: 40,
         },
         {
+          hasBadCateringProvider: false,
           id: 'r-1',
           label: 'Unit 2 / Resource 1',
           peopleCapacity: 10,
         },
         {
+          hasBadCateringProvider: false,
           id: 'r-3',
           label: 'Unit 2 / Resource 3',
           peopleCapacity: 30,
         },
       ]);
+    });
+
+    it('can have bad catering provider', () => {
+      const props = {
+        allowedCateringProvider: { units: ['u-1'] },
+      };
+      const actual = getSelected(defaultState, props).resources.map(
+        resource => resource.hasBadCateringProvider
+      );
+      const expected = [false, false, true, true];
+      expect(actual).to.deep.equal(expected);
     });
   });
 
