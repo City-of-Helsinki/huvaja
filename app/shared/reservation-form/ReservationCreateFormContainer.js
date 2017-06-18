@@ -14,7 +14,7 @@ import {
 import recurringReservationsActions from 'actions/recurringReservations';
 import { makeReservation } from 'api/actions/reservations';
 import { createCateringProviderSelector } from 'api/selectors';
-import { createAPIPromise } from 'api/utils';
+import { createAlwaysResolvingAPIPromise } from 'api/utils';
 import { currentUserSelector } from 'auth/selectors';
 import { slotSize } from 'shared/availability-view';
 import cateringUtils from 'shared/reservation-form/catering/utils';
@@ -265,7 +265,7 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
     // reservations with catering orders is not allowed.
     onSubmit: (...args) => (
       createFormSubmitHandler(createReservation)(...args)
-        .then(createAPIPromise(createCateringOrder))
+        .then(createAlwaysResolvingAPIPromise(createCateringOrder))
         .then(successHandler)
     ),
   };
