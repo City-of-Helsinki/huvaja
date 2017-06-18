@@ -147,6 +147,7 @@ describe('shared/modal/ReservationInfo', () => {
       const cateringData = {
         cateringOrder: {
           id: 23,
+          invoicingData: 'abc123',
           message: 'Hello!',
           servingTime: '12:00:00',
         },
@@ -166,6 +167,12 @@ describe('shared/modal/ReservationInfo', () => {
         const time = getBodyWrapper(cateringData).find('.serving-time');
         const value = time.find('.details-value');
         expect(value.text()).to.equal('12:00');
+      });
+
+      it('renders invoicingData', () => {
+        const data = getBodyWrapper(cateringData).find('.catering-invoicing-data');
+        const value = data.find('.details-value');
+        expect(value.text()).to.equal('abc123');
       });
 
       it('renders message if exists', () => {

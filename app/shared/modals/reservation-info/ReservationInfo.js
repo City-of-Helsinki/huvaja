@@ -94,6 +94,12 @@ export default function ReservationInfoModal(props) {
                 {cateringUtils.getServingTimeText(cateringOrder.servingTime)}
               </div>
             </Col>
+            <Col className="details-row catering-invoicing-data" xs={6}>
+              <div className="details-label">Projektinumero (laskutustieto): </div>
+              <div className="details-value">
+                {cateringOrder.invoicingData}
+              </div>
+            </Col>
             {cateringOrder.message &&
               <Col className="details-row catering-message" xs={12}>
                 <div className="details-label">
