@@ -105,7 +105,7 @@ describe('shared/form-field/resource-field/resource-selector/ResourceSelector', 
           id: '1',
           label: 'U1 / R1',
           peopleCapacity: 1,
-          hasBadCateringProvider: false
+          hasBadCateringProvider: false,
         },
         true
       );
