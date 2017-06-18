@@ -4,6 +4,7 @@ import { actionTypes as formActions } from 'redux-form';
 import apiActionTypes from 'api/actionTypes';
 
 const initialState = immutable({
+  cateringOrderResult: null,
   created: [],
   edited: null,
   failed: [],
@@ -40,6 +41,24 @@ function reservationSuccessModalReducer(state = initialState, action) {
         created: [],
         edited: action.payload,
       });
+    }
+    case apiActionTypes.CATERING_ORDER_DELETE_SUCCESS: {
+      return state.merge({ cateringOrderResult: 'DELETE-success' });
+    }
+    case apiActionTypes.CATERING_ORDER_DELETE_ERROR: {
+      return state.merge({ cateringOrderResult: 'DELETE-error' });
+    }
+    case apiActionTypes.CATERING_ORDER_POST_SUCCESS: {
+      return state.merge({ cateringOrderResult: 'POST-success' });
+    }
+    case apiActionTypes.CATERING_ORDER_POST_ERROR: {
+      return state.merge({ cateringOrderResult: 'POST-error' });
+    }
+    case apiActionTypes.CATERING_ORDER_PUT_SUCCESS: {
+      return state.merge({ cateringOrderResult: 'PUT-success' });
+    }
+    case apiActionTypes.CATERING_ORDER_PUT_ERROR: {
+      return state.merge({ cateringOrderResult: 'PUT-error' });
     }
     case formActions.START_SUBMIT: {
       if (action.meta.form === 'resourceReservation') return initialState;
