@@ -16,7 +16,7 @@ import {
 } from 'api/actions';
 import { editReservation } from 'api/actions/reservations';
 import { createCateringProviderSelector } from 'api/selectors';
-import { createAPIPromise } from 'api/utils';
+import { createAlwaysResolvingAPIPromise } from 'api/utils';
 import cateringUtils from 'shared/reservation-form/catering/utils';
 import {
   fields as cateringOrderFields,
@@ -234,7 +234,7 @@ export function mergeProps(stateProps, dispatchProps, ownProps) {
     // order is POSTed, PUTed or DELETEd if catering order data has changed.
     onSubmit: (...args) => (
       createFormSubmitHandler(updateReservation)(...args)
-        .then(createAPIPromise(updateCateringOrder))
+        .then(createAlwaysResolvingAPIPromise(updateCateringOrder))
         .then(successHandler)
     ),
   };

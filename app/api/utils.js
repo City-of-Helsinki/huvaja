@@ -1,27 +1,13 @@
-import { SubmissionError } from 'redux-form';
-
 import actionTypes from './actionTypes';
 
-// Proper error handling has not been implemented yet.
-function getErrors(action) {
-  if (action.type === 'CATERING_ORDER_POST_ERROR') {
-    return { _error: 'Tarjoilutilauksen tekeminen epäonnistui.' };
-  }
-  return { _error: 'Jokin meni pieleen.' };
-}
-
-function createAPIPromise(callback) {
+function createAlwaysResolvingAPIPromise(callback) {
   return function handleAPIAction(apiAction) {
     let resolve;
-    let reject;
-    const promise = new Promise((res, rej) => {
+    const promise = new Promise((res) => {
       resolve = res;
-      reject = rej;
-    }).catch((action) => {
-      throw new SubmissionError(getErrors(action));
     });
     const actionOptions = {
-      errorMeta: { sideEffect: reject },
+      errorMeta: { sideEffect: resolve },
       successMeta: { sideEffect: resolve },
     };
     callback(actionOptions, apiAction);
@@ -38,7 +24,7 @@ function isApiAction(actionType) {
 }
 
 export {
-  createAPIPromise,
+  createAlwaysResolvingAPIPromise,
   getApiActionName,
   isApiAction,
 };

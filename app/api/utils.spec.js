@@ -2,7 +2,11 @@ import { expect } from 'chai';
 import simple from 'simple-mock';
 
 import actionTypes from './actionTypes';
-import { createAPIPromise, getApiActionName, isApiAction } from './utils';
+import {
+  createAlwaysResolvingAPIPromise,
+  getApiActionName,
+  isApiAction,
+} from './utils';
 
 describe('api/utils', () => {
   describe('getApiActionName', () => {
@@ -29,15 +33,15 @@ describe('api/utils', () => {
     });
   });
 
-  describe('createAPIPromise', () => {
+  describe('createAlwaysResolvingAPIPromise', () => {
     it('returns a handler function', () => {
-      const actual = createAPIPromise(null);
+      const actual = createAlwaysResolvingAPIPromise(null);
       expect(actual).to.be.a('function');
     });
 
     describe('handler', () => {
       function callHandler(callback, apiAction) {
-        const handler = createAPIPromise(callback || (() => null));
+        const handler = createAlwaysResolvingAPIPromise(callback || (() => null));
         return handler(apiAction);
       }
 
@@ -64,53 +68,12 @@ describe('api/utils', () => {
           promise.then(() => done());
           callback.lastCall.args[0].successMeta.sideEffect();
         });
-      });
 
-      describe('rejecting promise', () => {
         it('can be done by calling errorMeta.sideEffect', (done) => {
           const callback = simple.mock();
           const promise = callHandler(callback);
-          promise.catch(() => done());
+          promise.then(() => done());
           callback.lastCall.args[0].errorMeta.sideEffect();
-        });
-
-        it('modifies the data correctly in general case', (done) => {
-          const callback = simple.mock();
-          const promise = callHandler(callback);
-          promise.catch((error) => {
-            expect(error.errors).to.deep.equal({
-              _error: 'Jokin meni pieleen.',
-            });
-            done();
-          });
-          callback.lastCall.args[0].errorMeta.sideEffect({
-            payload: {
-              response: {
-                non_field_errors: ['non-field error.'],
-                some_field: ['error 1.', 'error 2.'],
-              },
-            },
-          });
-        });
-
-        it('modifies the data correctly on CATERING_ORDER_POST_ERROR', (done) => {
-          const callback = simple.mock();
-          const promise = callHandler(callback);
-          promise.catch((error) => {
-            expect(error.errors).to.deep.equal({
-              _error: 'Tarjoilutilauksen tekeminen epäonnistui.',
-            });
-            done();
-          });
-          callback.lastCall.args[0].errorMeta.sideEffect({
-            payload: {
-              response: {
-                non_field_errors: ['non-field error.'],
-                some_field: ['error 1.', 'error 2.'],
-              },
-            },
-            type: 'CATERING_ORDER_POST_ERROR',
-          });
         });
       });
     });
