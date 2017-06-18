@@ -382,7 +382,7 @@ describe('shared/reservation-form/ReservationForm', () => {
           };
           const wrapper = getResourceFieldWrapper(props);
           const actual = wrapper.prop('controlProps').allowedCateringProvider;
-          expect(actual).to.be.null
+          expect(actual).to.be.null;
         });
 
         it('is cateringProvider prop when ordering catering', () => {
