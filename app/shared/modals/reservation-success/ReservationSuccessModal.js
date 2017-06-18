@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { PropTypes } from 'react';
 import Modal from 'react-bootstrap/lib/Modal';
 
@@ -11,7 +12,48 @@ function getListTitle(edited, createdReservations) {
     `Sinulle on tehty ${successCount} tilavarausta`;
 }
 
+function getCateringOrderItem(cateringOrderResult) {
+  if (!cateringOrderResult) return null;
+  const baseClass = 'reservation-success-modal-catering-order';
+  const className = classNames(
+    baseClass,
+    `${baseClass}-${cateringOrderResult.split('-')[1]}`
+  );
+  return (
+    <div className={className}>
+      {getCateringOrderText(cateringOrderResult)}
+    </div>
+  );
+}
+
+function getCateringOrderText(cateringOrderResult) {
+  switch (cateringOrderResult) {
+    case 'POST-success':
+      return 'Tilaisuuden tarjoilutilaus on lähetetty palveluntarjoajalle.';
+    case 'PUT-success':
+      return 'Tilaisuuden muokattu tarjoilutilaus on lähetetty palveluntarjoajalle.';
+    case 'DELETE-success':
+      return 'Tilaisuuden tarjoilutilaus on poistettu.';
+    case 'POST-error':
+      return 'Tilaisuuden tarjoilutilauksen tekeminen epäonnistui.';
+    case 'PUT-error':
+      return 'Tilaisuuden tarjoilutilauksen muokkaus epäonnistui.';
+    case 'DELETE-error':
+      return 'Tilaisuuden tarjoilutilauksen poistaminen epäonnistui.';
+    default:
+      throw new Error('Unknown cateringOrderResult.');
+  }
+}
+
 ReservationSuccessModal.propTypes = {
+  cateringOrderResult: PropTypes.oneOf([
+    'DELETE-error',
+    'DELETE-success',
+    'POST-error',
+    'POST-success',
+    'PUT-error',
+    'PUT-success',
+  ]),
   createdReservations: PropTypes.array.isRequired,
   editedReservation: PropTypes.object,
   failedReservations: PropTypes.array.isRequired,
@@ -20,6 +62,7 @@ ReservationSuccessModal.propTypes = {
   show: PropTypes.bool.isRequired,
 };
 function ReservationSuccessModal({
+  cateringOrderResult,
   createdReservations,
   editedReservation,
   failedReservations,
@@ -52,6 +95,7 @@ function ReservationSuccessModal({
             resourceNames={resourceNames}
             success
           />
+          {getCateringOrderItem(cateringOrderResult)}
         </div>
         {Boolean(failedReservations.length) &&
           <div className="reservation-success-modal-section">

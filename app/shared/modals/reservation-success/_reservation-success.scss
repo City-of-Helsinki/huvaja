@@ -34,4 +34,18 @@
   &-section + &-section {
     margin-top: 35px;
   }
+
+  &-catering-order {
+    padding: $padding-base-vertical $padding-base-horizontal;
+    text-align: center;
+    font-weight: 500;
+
+    &-success {
+      background-color: $theme-info;
+    }
+
+    &-error {
+      background-color: $theme-danger;
+    }
+  }
 }

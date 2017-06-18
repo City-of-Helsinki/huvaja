@@ -25,6 +25,7 @@ describe('modals/reservation-success/reservationSuccessModalSelector', () => {
       'data.resources': resources,
       'data.units': units,
       'modals.reservationSuccess': {
+        cateringOrderResult: 'POST-success',
         created: [rsv2, rsv1],
         edited: rsv5,
         failed: [rsv4, rsv3],
@@ -57,5 +58,9 @@ describe('modals/reservation-success/reservationSuccessModalSelector', () => {
 
   it('returns show', () => {
     expect(getSelected().show).to.be.true;
+  });
+
+  it('returns cateringOrderResult', () => {
+    expect(getSelected().cateringOrderResult).to.equal('POST-success');
   });
 });

@@ -75,6 +75,81 @@ describe('shared/modals/reservation-success/ReservationSuccessModal', () => {
     expect(list.prop('failure')).to.be.true;
   });
 
+  describe('catering order item', () => {
+    const baseClass = 'reservation-success-modal-catering-order';
+    const successClass = 'reservation-success-modal-catering-order-success';
+    const errorClass = 'reservation-success-modal-catering-order-error';
+
+    function getItemWrapper(cateringOrderResult) {
+      return getWrapper({ cateringOrderResult }).find(`.${baseClass}`);
+    }
+
+    it('is not rendered when no cateringOrderResult prop', () => {
+      const item = getItemWrapper(null);
+      expect(item).to.have.length(0);
+    });
+
+    it('renders correct text on POST-success', () => {
+      const item = getItemWrapper('POST-success');
+      expect(item).to.have.length(1);
+      expect(item.text()).to.equal(
+        'Tilaisuuden tarjoilutilaus on lähetetty palveluntarjoajalle.'
+      );
+    });
+
+    it('renders correct text on POST-error', () => {
+      const item = getItemWrapper('POST-error');
+      expect(item).to.have.length(1);
+      expect(item.text()).to.equal(
+        'Tilaisuuden tarjoilutilauksen tekeminen epäonnistui.'
+      );
+    });
+
+    it('renders correct text on PUT-success', () => {
+      const item = getItemWrapper('PUT-success');
+      expect(item).to.have.length(1);
+      expect(item.text()).to.equal(
+        'Tilaisuuden muokattu tarjoilutilaus on lähetetty palveluntarjoajalle.'
+      );
+    });
+
+    it('renders correct text on PUT-error', () => {
+      const item = getItemWrapper('PUT-error');
+      expect(item).to.have.length(1);
+      expect(item.text()).to.equal(
+        'Tilaisuuden tarjoilutilauksen muokkaus epäonnistui.'
+      );
+    });
+
+    it('renders correct text on DELETE-success', () => {
+      const item = getItemWrapper('DELETE-success');
+      expect(item).to.have.length(1);
+      expect(item.text()).to.equal(
+        'Tilaisuuden tarjoilutilaus on poistettu.'
+      );
+    });
+
+    it('renders correct text on DELETE-error', () => {
+      const item = getItemWrapper('DELETE-error');
+      expect(item).to.have.length(1);
+      expect(item.text()).to.equal(
+        'Tilaisuuden tarjoilutilauksen poistaminen epäonnistui.'
+      );
+    });
+
+    it('has success class on success', () => {
+      const item = getItemWrapper('DELETE-success');
+      expect(item.hasClass(successClass)).to.be.true;
+      expect(item.hasClass(errorClass)).to.be.false;
+    });
+
+    it('has error class on error', () => {
+      const item = getItemWrapper('PUT-error');
+      expect(item.hasClass(errorClass)).to.be.true;
+      expect(item.hasClass(successClass)).to.be.false;
+    });
+  });
+
   describe('when edited', () => {
     function getEditedWrapper() {
       return getWrapper({
