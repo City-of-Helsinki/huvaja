@@ -6,6 +6,7 @@ import selector from './reservationSuccessModalSelector';
 import ReservationSuccessModal from './ReservationSuccessModal';
 
 UnconnectedReservationSuccessModalContainer.propTypes = {
+  cateringOrderResult: PropTypes.string,
   createdReservations: PropTypes.array.isRequired,
   editedReservation: PropTypes.object,
   failedReservations: PropTypes.array.isRequired,
