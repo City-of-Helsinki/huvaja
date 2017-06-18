@@ -5,6 +5,7 @@ import reducer from './reservationSuccessModalReducer';
 
 describe('state/reducers/reservationSuccessModalReducer', () => {
   const initialState = {
+    cateringOrderResult: null,
     created: [],
     edited: null,
     failed: [],
@@ -121,6 +122,58 @@ describe('state/reducers/reservationSuccessModalReducer', () => {
       });
       expect(actual.created).to.deep.equal([]);
     });
+  });
+
+  function createCateringOrderResultTest(type, cateringOrderResult) {
+    it('changes cateringOrderResult correctly', () => {
+      const initial = immutable({ cateringOrderResult: null, show: true });
+      const action = { type };
+      const actual = reducer(initial, action);
+      const expected = { ...initial, cateringOrderResult };
+      expect(actual).to.deep.equal(expected);
+    });
+  }
+
+  describe('CATERING_ORDER_DELETE_SUCCESS', () => {
+    createCateringOrderResultTest(
+      'CATERING_ORDER_DELETE_SUCCESS',
+      'DELETE-success'
+    );
+  });
+
+  describe('CATERING_ORDER_DELETE_ERROR', () => {
+    createCateringOrderResultTest(
+      'CATERING_ORDER_DELETE_ERROR',
+      'DELETE-error'
+    );
+  });
+
+  describe('CATERING_ORDER_POST_SUCCESS', () => {
+    createCateringOrderResultTest(
+      'CATERING_ORDER_POST_SUCCESS',
+      'POST-success'
+    );
+  });
+
+  describe('CATERING_ORDER_POST_ERROR', () => {
+    createCateringOrderResultTest(
+      'CATERING_ORDER_POST_ERROR',
+      'POST-error'
+    );
+  });
+
+  describe('CATERING_ORDER_PUT_SUCCESS', () => {
+    createCateringOrderResultTest(
+      'CATERING_ORDER_PUT_SUCCESS',
+      'PUT-success'
+    );
+  });
+
+  describe('CATERING_ORDER_PUT_ERROR', () => {
+    createCateringOrderResultTest(
+      'CATERING_ORDER_PUT_ERROR',
+      'PUT-error'
+    );
   });
 
   describe('HIDE_RESERVATION_SUCCESS_MODAL', () => {
