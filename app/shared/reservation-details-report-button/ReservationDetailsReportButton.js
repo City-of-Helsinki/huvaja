@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import Button from 'react-bootstrap/lib/Button';
+import DropdownButton from 'react-bootstrap/lib/DropdownButton';
+import MenuItem from 'react-bootstrap/lib/MenuItem';
 
 import { fetchReservationDetailsReport } from 'api/actions';
 
@@ -10,12 +11,16 @@ ReservationDetailsReportButton.propTypes = {
 };
 export function ReservationDetailsReportButton({ onClick, reservationId }) {
   return (
-    <Button
-      className="reservation-details-report-button"
-      onClick={() => onClick(reservationId)}
-    >
-      Lataa raportti
-    </Button>
+    <div className="reservation-details-report-button">
+      <DropdownButton
+        id="reservation-details-report-button"
+        title="Lataa raportti"
+      >
+        <MenuItem onClick={() => onClick(reservationId)} >
+          Täysi raportti
+        </MenuItem>
+      </DropdownButton>
+    </div>
   );
 }
 

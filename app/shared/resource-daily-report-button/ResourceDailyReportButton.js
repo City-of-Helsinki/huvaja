@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import Button from 'react-bootstrap/lib/Button';
+import DropdownButton from 'react-bootstrap/lib/DropdownButton';
+import MenuItem from 'react-bootstrap/lib/MenuItem';
 
 import { fetchResourceDailyReport } from 'api/actions';
 
@@ -12,13 +13,17 @@ ResourceDailyReportButton.propTypes = {
 
 export function ResourceDailyReportButton({ date, onClick, resourceIds }) {
   return (
-    <Button
-      bsStyle="primary"
-      className="resource-daily-report-button"
-      onClick={() => onClick({ date, resourceIds })}
-    >
-      Lataa päiväraportti
-    </Button>
+    <div className="resource-daily-report-button">
+      <DropdownButton
+        bsStyle="primary"
+        id="resource-daily-report-button"
+        title="Lataa raportti"
+      >
+        <MenuItem onClick={() => onClick({ date, resourceIds })} >
+          Päiväraportti
+        </MenuItem>
+      </DropdownButton>
+    </div>
   );
 }
 
