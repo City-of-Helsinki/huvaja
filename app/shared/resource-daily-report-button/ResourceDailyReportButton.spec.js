@@ -1,7 +1,8 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
-import Button from 'react-bootstrap/lib/Button';
+import DropdownButton from 'react-bootstrap/lib/DropdownButton';
+import MenuItem from 'react-bootstrap/lib/MenuItem';
 import simple from 'simple-mock';
 
 import { ResourceDailyReportButton } from './ResourceDailyReportButton';
@@ -17,25 +18,31 @@ describe('shared/resource-daily-report-button/ResourceDailyReportButton', () => 
     return shallow(<ResourceDailyReportButton {...defaultProps} {...props} />);
   }
 
-  it('is a button', () => {
-    expect(getWrapper().is(Button)).to.be.true;
-  });
-
   it('has class resource-daily-report-button', () => {
     expect(getWrapper().hasClass('resource-daily-report-button')).to.be.true;
   });
 
-  it('renders correct text', () => {
-    expect(getWrapper().children().text()).to.equal('Lataa päiväraportti');
+  it('renders a DropdownButton with correct title', () => {
+    const button = getWrapper().find(DropdownButton);
+    expect(button).to.have.length(1);
+    expect(button.prop('title')).to.equal('Lataa raportti');
   });
 
-  it('calls fetchResourceDailyReport action on click', () => {
-    const onClick = simple.mock();
-    getWrapper({ onClick }).simulate('click');
-    expect(onClick.callCount).to.equal(1);
-    expect(onClick.lastCall.arg).to.deep.equal({
-      date: defaultProps.date,
-      resourceIds: defaultProps.resourceIds,
+  describe('daily report item', () => {
+    it('has correct text', () => {
+      const item = getWrapper().find(MenuItem).at(0);
+      expect(item.children().text()).to.equal('Päiväraportti');
+    });
+
+    it('calls onClick action on click', () => {
+      const onClick = simple.mock();
+      const item = getWrapper({ onClick }).find(MenuItem).at(0);
+      item.simulate('click');
+      expect(onClick.callCount).to.equal(1);
+      expect(onClick.lastCall.arg).to.deep.equal({
+        date: defaultProps.date,
+        resourceIds: defaultProps.resourceIds,
+      });
     });
   });
 });
