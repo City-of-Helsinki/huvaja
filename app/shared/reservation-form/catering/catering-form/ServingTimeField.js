@@ -1,24 +1,30 @@
+import classNames from 'classnames';
 import React, { Component, PropTypes } from 'react';
-import FormControl from 'react-bootstrap/lib/FormControl';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
+import HelpBlock from 'react-bootstrap/lib/HelpBlock';
+
+import Time from 'shared/form-fields/Time';
 
 class ServingTimeField extends Component {
   static propTypes = {
-    input: PropTypes.object.isRequired,
-    controlProps: PropTypes.object,
+    controlProps: PropTypes.shape({
+      onChange: PropTypes.func.isRequired,
+      value: PropTypes.string,
+    }).isRequired,
+    help: PropTypes.string,
     label: PropTypes.string,
-    type: PropTypes.string,
+    validationState: PropTypes.string,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      enabledCustomTime: Boolean(props.input.value),
+      enabledCustomTime: Boolean(props.controlProps.value),
     };
   }
 
   disableCustomTime = () => {
-    this.props.input.onChange('');
+    this.props.controlProps.onChange('');
     this.setState({
       enabledCustomTime: false,
     });
@@ -31,8 +37,12 @@ class ServingTimeField extends Component {
   }
 
   render() {
+    const className = classNames(
+      'serving-time-field',
+      { 'has-error': this.props.validationState },
+    );
     return (
-      <div className="serving-time-field">
+      <div className={className}>
         <div className="form-group">
           <ControlLabel>
             {this.props.label}
@@ -58,15 +68,12 @@ class ServingTimeField extends Component {
               onClick={this.enableCustomTime}
             />
             <label className="radio-label" htmlFor="serving-custom-time">Klo</label>
-            <FormControl
-              {...this.props.input}
+            <Time
               {...this.props.controlProps}
-              className="serving-time-form-control"
               disabled={!this.state.enabledCustomTime}
-              id="servingTime"
-              type={this.props.type}
             />
           </div>
+          {this.props.help && <HelpBlock>{this.props.help}</HelpBlock>}
         </div>
       </div>
     );

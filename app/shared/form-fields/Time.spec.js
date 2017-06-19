@@ -23,6 +23,12 @@ describe('shared/form-fields/Time', () => {
     expect(props.className).to.equal('time-field');
     expect(props.componentClass).to.equal(MaskedInput);
     expect(props.mask).to.equal('11:11');
+    expect(props.disabled).to.be.false;
+  });
+
+  it('can be disabled', () => {
+    const wrapper = getWrapper({ disabled: true });
+    expect(wrapper.prop('disabled')).to.be.true;
   });
 
   describe('handleChange', () => {

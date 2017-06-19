@@ -5,9 +5,8 @@ import { Field } from 'redux-form';
 
 import CateringOrderTable from 'shared/catering-order-table';
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
-import { UnconnectedCateringForm } from './CateringForm';
+import { UnconnectedCateringForm, validate } from './CateringForm';
 import CateringMenu from './CateringMenu';
-import ServingTimeField from './ServingTimeField';
 
 describe('shared/reservation-form/catering/catering-form/CateringForm', () => {
   const defaults = {
@@ -52,14 +51,13 @@ describe('shared/reservation-form/catering/catering-form/CateringForm', () => {
 
     it('has servingTime field', () => {
       const field = fields.filter({
-        component: ServingTimeField,
+        component: ReduxFormField,
         controlProps: {
-          step: 5 * 60,
           value: defaults.formValues.servingTime,
         },
         label: 'Tarjoiluaika',
         name: 'servingTime',
-        type: 'time',
+        type: 'servingTime',
       });
       expect(field).to.have.length(1);
     });
@@ -139,5 +137,47 @@ describe('shared/reservation-form/catering/catering-form/CateringForm', () => {
     const wrapper = getWrapper();
     const saveButton = wrapper.find('.save-button');
     expect(saveButton).to.have.length(1);
+  });
+
+  describe('validation', () => {
+    const defaultValues = {
+      invoicingData: 'abc123',
+      order: {
+        2: 10,
+      },
+    };
+
+    function getErrors(extraValues) {
+      return validate({ ...defaultValues, ...extraValues });
+    }
+
+    describe('when no orders', () => {
+      it('has no errors', () => {
+        const actual = getErrors({
+          order: {},
+          servingTime: 'invalid',
+        });
+        expect(actual).to.deep.equal({});
+      });
+    });
+
+    describe('invoicingData', () => {
+      it('has error when missing', () => {
+        const actual = getErrors({ invoicingData: '' }).invoicingData;
+        expect(actual).to.deep.equal('Pakollinen tieto');
+      });
+    });
+
+    describe('servingTime', () => {
+      it('has error when invalid servingTime', () => {
+        const actual = getErrors({ servingTime: '12:--' }).servingTime;
+        expect(actual).to.deep.equal('Aika ei kelpaa.');
+      });
+
+      it('no error when valid servingTime', () => {
+        const actual = getErrors({ servingTime: '12:30' }).servingTime;
+        expect(actual).to.be.undefined;
+      });
+    });
   });
 });
