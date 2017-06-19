@@ -52,7 +52,7 @@ export function selector() {
   return createSelector(
     resourceSelector,
     resource => ({
-      canMakeReservations: resource.reservable,
+      canMakeReservations: resource.userPermissions.canMakeReservations,
       isFavorite: resource.isFavorite,
       name: resource.name.fi,
       peopleCapacity: resource.peopleCapacity,
