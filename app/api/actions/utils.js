@@ -1,3 +1,4 @@
+import fileSaver from 'file-saver';
 import { camelizeKeys, decamelizeKeys } from 'humps';
 import pickBy from 'lodash/pickBy';
 import { normalize } from 'normalizr';
@@ -97,14 +98,7 @@ function getSuccessTypeDescriptor(type, options = {}) {
 
 function downloadReport(response, filename) {
   response.blob().then((blob) => {
-    const url = window.URL.createObjectURL(blob);
-    const anchor = document.createElement('a');
-    anchor.setAttribute('href', url);
-    anchor.setAttribute('download', `${filename}.docx`);
-    document.body.appendChild(anchor);
-    anchor.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(anchor);
+    fileSaver.saveAs(blob, `${filename}.docx`);
   });
 }
 
