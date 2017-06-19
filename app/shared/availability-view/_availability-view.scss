@@ -247,6 +247,7 @@
     }
     .sticky {
       overflow: hidden;
+      z-index: 10;
     }
     .hours {
       display: flex;
@@ -269,7 +270,6 @@
     display: flex;
 
     .reservation-slot {
-      z-index: -1;
       background-color: $not-reservable-not-open-slot-color;
       overflow: hidden;
       position: relative;
