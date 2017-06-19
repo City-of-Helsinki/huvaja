@@ -31,8 +31,8 @@ export function UnconnectedCommentForm(props) {
         withRef
       />
       <div className="form-controls">
-        <Button bsStyle="primary" type="submit">Tallenna kommentti</Button>
         <Button bsStyle="default" onClick={props.onCancel}>Peruuta</Button>
+        <Button bsStyle="primary" type="submit">Tallenna kommentti</Button>
       </div>
     </form>
   );
