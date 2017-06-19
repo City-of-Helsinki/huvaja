@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 
 import CateringSection from 'shared/reservation-form/catering';
+import ServingTimeField from 'shared/reservation-form/catering/catering-form/ServingTimeField';
 import Checkbox from './Checkbox';
 import FormControl from './FormControl';
 import ReduxFormField from './ReduxFormField';
@@ -11,7 +12,7 @@ import ResourceField from './resource-field';
 
 describe('shared/form-fields/ReduxFormField', () => {
   const defaultProps = {
-    controlProps: { someProp: 'some', otherProp: 'other' },
+    controlProps: { onChange: () => null, someProp: 'some' },
     input: { name: 'email' },
     label: 'Enter your email',
     meta: { error: 'some error' },
@@ -51,6 +52,14 @@ describe('shared/form-fields/ReduxFormField', () => {
     it('renders a ResourceField component', () => {
       const wrapper = getWrapper({ type: 'resource' });
       const time = wrapper.find(ResourceField);
+      expect(time).to.have.length(1);
+    });
+  });
+
+  describe('if type is "servingTime"', () => {
+    it('renders a ServingTimeField component', () => {
+      const wrapper = getWrapper({ type: 'servingTime' });
+      const time = wrapper.find(ServingTimeField);
       expect(time).to.have.length(1);
     });
   });

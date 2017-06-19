@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 
 import CateringSection from 'shared/reservation-form/catering';
+import ServingTimeField from 'shared/reservation-form/catering/catering-form/ServingTimeField';
 import Checkbox from './Checkbox';
 import DateTimeRange from './DateTimeRange';
 import FormControl from './FormControl';
@@ -32,6 +33,9 @@ function ReduxFormField({ controlProps = {}, help, input, label, meta, type }) {
   }
   if (type === 'resource') {
     return <ResourceField {...props} />;
+  }
+  if (type === 'servingTime') {
+    return <ServingTimeField {...props} />;
   }
 
   return <FormControl {...props} />;

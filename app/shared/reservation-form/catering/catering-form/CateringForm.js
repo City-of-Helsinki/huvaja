@@ -6,7 +6,6 @@ import { Field, reduxForm } from 'redux-form';
 
 import CateringOrderTable from 'shared/catering-order-table';
 import ReduxFormField from 'shared/form-fields/ReduxFormField';
-import ServingTimeField from './ServingTimeField';
 import CateringMenu from './CateringMenu';
 import cateringUtils from '../utils';
 
@@ -29,14 +28,22 @@ export function validate(values) {
       errors[value] = 'Pakollinen tieto';
     }
   });
+
+  if (values.servingTime && values.servingTime !== '') {
+    const pattern = /^\d\d:\d\d$/;
+    const isServingTimeValid = pattern.exec(values.servingTime);
+    if (!isServingTimeValid) {
+      errors.servingTime = 'Aika ei kelpaa.';
+    }
+  }
   return errors;
 }
 
-function renderField(name, type, label, controlProps, component = ReduxFormField) {
+function renderField(name, type, label, controlProps) {
   const required = requiredFields.indexOf(name) !== -1;
   return (
     <Field
-      component={component}
+      component={ReduxFormField}
       controlProps={controlProps}
       label={`${label}${required ? '*' : ''}`}
       name={name}
@@ -68,10 +75,9 @@ export function UnconnectedCateringForm(props) {
         <Col xs={12} sm={6} md={6}>
           {renderField(
             'servingTime',
-            'time',
+            'servingTime',
             'Tarjoiluaika',
-            { step: 5 * 60, value: props.formValues.servingTime },
-            ServingTimeField
+            { value: props.formValues.servingTime },
           )}
           {renderField(
             'invoicingData',

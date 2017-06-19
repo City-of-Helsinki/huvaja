@@ -1,25 +1,33 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
-import FormControl from 'react-bootstrap/lib/FormControl';
 import simple from 'simple-mock';
 
+import Time from 'shared/form-fields/Time';
 import ServingTimeField from './ServingTimeField';
 
 describe('shared/reservation-form/catering/catering-form/ServingTimeField', () => {
   function getWrapper(props) {
     const defaults = {
-      input: {
+      controlProps: {
         value: '11:10',
         onChange: () => {},
       },
-      controlProps: {
-        step: 5,
-      },
-      type: 'time',
+      help: 'Some error.',
+      label: 'Serving time',
     };
     return shallow(<ServingTimeField {...defaults} {...props} />);
   }
+
+  it('has correct class', () => {
+    expect(getWrapper().hasClass('serving-time-field')).to.be.true;
+    expect(getWrapper().hasClass('has-error')).to.be.false;
+  });
+
+  it('has correct error class when validationState is error', () => {
+    const props = { validationState: 'error' };
+    expect(getWrapper(props).hasClass('has-error')).to.be.true;
+  });
 
   describe('serving at reservation time', () => {
     it('renders a radio input', () => {
@@ -53,13 +61,16 @@ describe('shared/reservation-form/catering/catering-form/ServingTimeField', () =
     });
   });
 
-  it('sets enabledCustomTime state to true if input has value', () => {
+  it('sets enabledCustomTime state to true if controlProps has value', () => {
     const instance = getWrapper().instance();
     expect(instance.state.enabledCustomTime).to.be.true;
   });
 
-  it('sets enabledCustomTime state to false if input has no value', () => {
-    const instance = getWrapper({ input: { value: '' } }).instance();
+  it('sets enabledCustomTime state to false if controlProps has no value', () => {
+    const props = {
+      controlProps: { onChange: () => null, value: '' },
+    };
+    const instance = getWrapper(props).instance();
     expect(instance.state.enabledCustomTime).to.be.false;
   });
 
@@ -79,51 +90,40 @@ describe('shared/reservation-form/catering/catering-form/ServingTimeField', () =
     expect(instance.state.enabledCustomTime).to.be.false;
   });
 
-  it('disableCustomTime calls input onChange and passes an empty string', () => {
+  it('disableCustomTime calls onChange and passes an empty string', () => {
     const onChange = simple.mock();
-    const instance = getWrapper({ input: { value: '11:11', onChange } }).instance();
+    const props = { controlProps: { value: '11:11', onChange } };
+    const instance = getWrapper(props).instance();
     instance.disableCustomTime();
     expect(onChange.lastCall.args[0]).to.equal('');
   });
 
-  describe('FormControl', () => {
-    function getFormControlWrapper(props) {
-      return getWrapper(props).find('.serving-time-form-control');
+  describe('Time', () => {
+    function getTimeWrapper(props) {
+      return getWrapper(props).find(Time);
     }
-    it('is a formControl', () => {
-      expect(getFormControlWrapper().is(FormControl)).to.be.true;
-    });
-
-    it('has correct props', () => {
-      const wrapper = getFormControlWrapper();
-      expect(wrapper.prop('className')).to.equal('serving-time-form-control');
-      expect(wrapper.prop('type')).to.equal('time');
-    });
-
-    it('gets props from input', () => {
-      const formControl = getFormControlWrapper({ input: { foo: 'bar' } });
-      expect(formControl.prop('foo')).to.equal('bar');
-    });
 
     it('gets props from controlProps', () => {
-      const formControl = getFormControlWrapper({ controlProps: { foo: 'bar' } });
-      expect(formControl.prop('foo')).to.equal('bar');
+      const controlProps = { foo: 'bar', onChange: () => null };
+      const time = getTimeWrapper({ controlProps });
+      expect(time.prop('foo')).to.equal(controlProps.foo);
+      expect(time.prop('onChange')).to.equal(controlProps.onChange);
     });
 
     it('gets disabled prop if disabled custom time', () => {
       const wrapper = getWrapper();
       const instance = wrapper.instance();
       instance.setState({ enabledCustomTime: false });
-      const formControl = wrapper.find('.serving-time-form-control');
-      expect(formControl.prop('disabled')).to.be.true;
+      const time = wrapper.find(Time);
+      expect(time.prop('disabled')).to.be.true;
     });
 
     it('gets endabled prop if enabled custom time', () => {
       const wrapper = getWrapper();
       const instance = wrapper.instance();
       instance.setState({ enabledCustomTime: true });
-      const formControl = wrapper.find('.serving-time-form-control');
-      expect(formControl.prop('disabled')).to.be.false;
+      const time = wrapper.find(Time);
+      expect(time.prop('disabled')).to.be.false;
     });
   });
 });
