@@ -269,6 +269,7 @@
     display: flex;
 
     .reservation-slot {
+      z-index: -1;
       background-color: $not-reservable-not-open-slot-color;
       overflow: hidden;
       position: relative;
