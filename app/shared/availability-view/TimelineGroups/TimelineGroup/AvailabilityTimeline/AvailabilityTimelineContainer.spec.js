@@ -14,7 +14,7 @@ function getState() {
       resources: {
         'resource-1': {
           id: 'resource-1',
-          reservable: false,
+          userPermissions: { canMakeReservations: false },
           reservations: [
             {
               id: 111,
@@ -36,10 +36,13 @@ function getState() {
             },
           ],
         },
-        'resource-2': { id: 'resource-2', reservable: true },
+        'resource-2': {
+          id: 'resource-2',
+          userPermissions: { canMakeReservations: false },
+        },
         'resource-3': {
           id: 'resource-3',
-          reservable: true,
+          userPermissions: { canMakeReservations: true },
           reservations: [
             {
               id: 444,
@@ -81,6 +84,18 @@ describe('shared/availability-view/AvailabilityTimelineContainer', () => {
       const defaults = { id: 'resource-1', date: '2016-01-01T00:00:00' };
       return selector()(getState(), { ...defaults, ...props });
     }
+
+    describe('canMakeReservations', () => {
+      it('returns false if user cannot make reservations to resource', () => {
+        const actual = getSelected().canMakeReservations;
+        expect(actual).to.be.false;
+      });
+
+      it('returns true if user can make reservations to resource', () => {
+        const actual = getSelected({ id: 'resource-3' }).canMakeReservations;
+        expect(actual).to.be.true;
+      });
+    });
 
     describe('items', () => {
       it('contains slots if no reservations', () => {

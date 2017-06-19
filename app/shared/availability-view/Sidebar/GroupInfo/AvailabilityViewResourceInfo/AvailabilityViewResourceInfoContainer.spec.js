@@ -15,7 +15,7 @@ function getState() {
           peopleCapacity: 9,
           extra: 'attribute',
           isFavorite: false,
-          reservable: true,
+          userPermissions: { canMakeReservations: true },
         },
       },
     },

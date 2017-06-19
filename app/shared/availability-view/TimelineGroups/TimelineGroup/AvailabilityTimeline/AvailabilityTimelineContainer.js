@@ -49,7 +49,10 @@ export function selector() {
   return createSelector(
     itemsSelector,
     resourceSelector,
-    (items, resource) => ({ items, canMakeReservations: resource.reservable })
+    (items, resource) => ({
+      items,
+      canMakeReservations: resource.userPermissions.canMakeReservations,
+    })
   );
 }
 
