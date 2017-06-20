@@ -29,7 +29,7 @@ function Reservation(props) {
     <Popover id={`popover-${props.id}`} title={props.eventSubject}>
       <div>
         <FontAwesome fixedWidth name="clock-o" />{' '}
-        {startTime.format('HH:mm')} - {endTime.format('HH:mm')}
+        {startTime.format('HH:mm')}–{endTime.format('HH:mm')}
       </div>
       <div><FontAwesome fixedWidth name="user" /> {props.reserverName}</div>
       {Boolean(props.numberOfParticipants) && (

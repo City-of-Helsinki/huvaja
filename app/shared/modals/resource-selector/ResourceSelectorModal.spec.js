@@ -82,7 +82,7 @@ describe('shared/modals/resource-selector/ResourceSelectorModal', () => {
 
     it('renders time range', () => {
       const wrapper = getBodyWrapper().find('.current-time-range');
-      expect(wrapper.text()).to.equal('15:00 - 16:30');
+      expect(wrapper.text()).to.equal('15:00–16:30');
     });
 
     it('renders ResourceSelector with correct props', () => {

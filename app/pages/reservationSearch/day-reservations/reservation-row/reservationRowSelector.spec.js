@@ -67,7 +67,7 @@ describe('pages/search/reservationRowSelector', () => {
     });
 
     it('returns timeRange', () => {
-      expect(selected.timeRange).to.equal('09:00 - 10:00');
+      expect(selected.timeRange).to.equal('09:00–10:00');
     });
   });
 
@@ -97,7 +97,7 @@ describe('pages/search/reservationRowSelector', () => {
     });
 
     it('returns timeRange', () => {
-      expect(selected.timeRange).to.equal('09:00 - 10:00');
+      expect(selected.timeRange).to.equal('09:00–10:00');
     });
   });
 });
