@@ -81,9 +81,12 @@ export function UnconnectedCateringForm(props) {
           )}
           {renderField(
             'invoicingData',
-            'text',
-            'Projektinumero (laskutustieto)',
-            { value: props.formValues.invoicingData },
+            'textarea',
+            'Laskutustiedot',
+            {
+              rows: 4,
+              value: props.formValues.invoicingData,
+            },
           )}
           {renderField(
             'message',

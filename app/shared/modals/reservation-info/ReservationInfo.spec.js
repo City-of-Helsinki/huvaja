@@ -171,8 +171,8 @@ describe('shared/modal/ReservationInfo', () => {
 
       it('renders invoicingData', () => {
         const data = getBodyWrapper(cateringData).find('.catering-invoicing-data');
-        const value = data.find('.details-value');
-        expect(value.text()).to.equal('abc123');
+        const value = data.find('WrappedText.details-value');
+        expect(value.prop('text')).to.equal('abc123');
       });
 
       it('renders message if exists', () => {
@@ -185,7 +185,7 @@ describe('shared/modal/ReservationInfo', () => {
       it('does not render message if does not exist', () => {
         const dataWithoutMessage = {
           ...cateringData,
-          cateringOrder: {},
+          cateringOrder: { invoicingData: 'abc123' },
         };
         const message = getBodyWrapper(dataWithoutMessage).find('.catering-message');
         expect(message).to.have.length(0);

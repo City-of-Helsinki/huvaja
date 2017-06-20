@@ -95,10 +95,11 @@ export default function ReservationInfoModal(props) {
               </div>
             </Col>
             <Col className="details-row catering-invoicing-data" xs={6}>
-              <div className="details-label">Projektinumero (laskutustieto): </div>
-              <div className="details-value">
-                {cateringOrder.invoicingData}
-              </div>
+              <div className="details-label">Laskutustiedot: </div>
+              <WrappedText
+                className="details-value"
+                text={cateringOrder.invoicingData}
+              />
             </Col>
             {cateringOrder.message &&
               <Col className="details-row catering-message" xs={12}>
