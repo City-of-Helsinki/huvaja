@@ -21,7 +21,7 @@ function getFormattedTimeRange(dateTimeRange) {
     dateTimeRange &&
     dateTimeRange.begin.time &&
     dateTimeRange.end.time &&
-    `${dateTimeRange.begin.time} - ${dateTimeRange.end.time}`
+    `${dateTimeRange.begin.time}–${dateTimeRange.end.time}`
   );
 }
 

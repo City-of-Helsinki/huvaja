@@ -51,7 +51,7 @@ export default createSelector(
       id: reservation.id,
       numberOfParticipants: reservation.numberOfParticipants || null,
       place: resourceUtils.getLongName(resource, unit) || 'Tuntematon tila',
-      timeRange: `${begin} - ${end}`,
+      timeRange: `${begin}–${end}`,
     };
   }
 );

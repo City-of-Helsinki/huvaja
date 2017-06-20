@@ -38,7 +38,7 @@ export default function ReservationInfoModal(props) {
   const startTime = moment(reservation.begin);
   const endTime = moment(reservation.end);
   const date = startTime.format(constants.DATE_FORMAT);
-  const time = `${startTime.format(constants.TIME_FORMAT)} - ${endTime.format(constants.TIME_FORMAT)}`;
+  const time = `${startTime.format(constants.TIME_FORMAT)}–${endTime.format(constants.TIME_FORMAT)}`;
   const cancelReservation = () => showReservationCancelModal(reservation.id);
   const { canDelete, canModify } = reservation.userPermissions;
   return (
