@@ -68,9 +68,9 @@ describe('shared/reservation-form/catering/catering-form/CateringForm', () => {
         controlProps: {
           value: defaults.formValues.invoicingData,
         },
-        label: 'Projektinumero (laskutustieto)*',
+        label: 'Laskutustiedot*',
         name: 'invoicingData',
-        type: 'text',
+        type: 'textarea',
       });
       expect(field).to.have.length(1);
     });
