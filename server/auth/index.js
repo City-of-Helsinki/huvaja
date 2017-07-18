@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const cookieSession = require('cookie-session');
+const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
 const express = require('express');
 
 const configurePassport = require('./configurePassport');
@@ -13,9 +14,16 @@ const maxSessionAge = 4 * 60 * 60 * 1000;  // 4 hours
 // Session handling
 router.use(cookieParser());
 router.use(bodyParser.urlencoded({ extended: true }));
-router.use(cookieSession({
+router.use(session({
+  store: new RedisStore({
+    url: process.env.REDIS_URL || 'redis://localhost:6379',
+  }),
   secret: process.env.SESSION_SECRET,
-  maxAge: maxSessionAge,
+  cookie: {
+    maxAge: maxSessionAge,
+  },
+  resave: false,
+  saveUninitialized: false,
 }));
 
 // Initialize Passport and restore authentication state, if any, from the
