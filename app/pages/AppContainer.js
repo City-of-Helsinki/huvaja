@@ -20,6 +20,7 @@ import ResourceImagesModal from 'shared/modals/resource-images';
 import ResourceInfoModal from 'shared/modals/resource-info';
 import Navbar from 'shared/navbar';
 import locationUtils from 'utils/locationUtils';
+import FeedbackButton from 'shared/feedback-button';
 
 export class UnconnectedAppContainer extends Component {
   componentDidMount() {
@@ -58,6 +59,7 @@ export class UnconnectedAppContainer extends Component {
         <ResourceImagesModal />
         <ResourceInfoModal />
         <ReservationSuccessModal />
+        <FeedbackButton />
       </div>
     );
   }
