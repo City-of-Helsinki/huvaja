@@ -2,6 +2,8 @@ huvaja
 ======
 
 [![Circle CI](https://circleci.com/gh/City-of-Helsinki/huvaja.svg?style=svg)](https://circleci.com/gh/City-of-Helsinki/huvaja)
+[![Build status](https://travis-ci.org/City-of-Helsinki/huvaja.svg)](https://travis-ci.org/City-of-Helsinki/huvaja)
++[![codecov](https://codecov.io/gh/City-of-Helsinki/huvaja/branch/master/graph/badge.svg)](https://codecov.io/gh/City-of-Helsinki/huvaja)
 
 Requirements
 ------------
