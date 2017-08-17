@@ -1,7 +1,7 @@
 huvaja
 ======
 
-[![Build status](https://travis-ci.org/City-of-Helsinki/huvaja.svg)](https://travis-ci.org/City-of-Helsinki/huvaja)
+[![Build status](https://travis-ci.org/City-of-Helsinki/huvaja.svg?branch=develop)](https://travis-ci.org/City-of-Helsinki/huvaja)
 [![codecov](https://codecov.io/gh/City-of-Helsinki/huvaja/branch/develop/graph/badge.svg)](https://codecov.io/gh/City-of-Helsinki/asomap/branch/develop)
 
 Requirements
