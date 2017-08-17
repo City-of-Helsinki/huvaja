@@ -41,7 +41,7 @@ function Navbar(props) {
                   Omat tiedot
                 </MenuItem>
               </LinkContainer>
-              <MenuItem href={`/logout?next=${window.location.origin}`}>
+              <MenuItem href={`https://api.hel.fi/sso/logout/?next=${window.location.origin}/logout`}>
                 Kirjaudu ulos
               </MenuItem>
             </NavDropdown>
