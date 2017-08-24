@@ -138,14 +138,16 @@ class ReservationSearchControls extends Component {
             <Col md={4}>
               <FormGroup controlId="unit-control-group">
                 <ControlLabel>Kiinteistö</ControlLabel>
-                <FormControl
-                  componentClass="select"
-                  onChange={event => this.handleChange({ unit: event.target.value })}
-                  type="select"
-                  value={this.props.values.unit}
-                >
-                  {renderUnitOptions(this.props.units)}
-                </FormControl>
+                <div className="select">
+                  <FormControl
+                    componentClass="select"
+                    onChange={event => this.handleChange({ unit: event.target.value })}
+                    type="select"
+                    value={this.props.values.unit}
+                  >
+                    {renderUnitOptions(this.props.units)}
+                  </FormControl>
+                </div>
               </FormGroup>
             </Col>
             <Col md={4}>

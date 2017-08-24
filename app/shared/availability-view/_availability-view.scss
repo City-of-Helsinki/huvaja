@@ -331,6 +331,7 @@
   }
   .reservation-link, .reservation-slot {
     height: $resource-row-height;
+    text-decoration: none;
   }
   .reservation, .reservation-slot {
     display: inline-flex;

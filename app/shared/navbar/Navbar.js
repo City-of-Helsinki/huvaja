@@ -9,7 +9,7 @@ import { IndexLinkContainer, LinkContainer } from 'react-router-bootstrap';
 
 function Navbar(props) {
   return (
-    <RBNavbar inverse>
+    <RBNavbar inverse fluid>
       <RBNavbar.Header>
         <RBNavbar.Brand>
           <IndexLink to="/">
