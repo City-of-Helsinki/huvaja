@@ -52,7 +52,7 @@ describe('shared/availability-view/utils', () => {
     });
 
     it('returns one reservation if entire day is a reservation', () => {
-      const reservation = { id: 11, begin: '2016-01-01T00:00:00', end: '2016-01-02T00:00:00' };
+      const reservation = { id: 11, begin: '2016-01-01T00:00:00', end: '2016-01-02T00:00:00', visualBegin: '2016-01-01T00:00:00', visualEnd: '2016-01-02T00:00:00' };
       const actual = utils.getTimelineItems(moment('2016-01-01T00:00:00'), [reservation], '1');
       expect(actual).to.have.length(1);
       expect(actual[0]).to.deep.equal({
@@ -64,9 +64,9 @@ describe('shared/availability-view/utils', () => {
 
     it('returns reservations and slots', () => {
       const reservations = [
-        { id: 11, begin: '2016-01-01T02:00:00', end: '2016-01-01T10:00:00' },
-        { id: 12, begin: '2016-01-01T12:30:00', end: '2016-01-01T20:00:00' },
-        { id: 13, begin: '2016-01-01T20:00:00', end: '2016-01-01T20:30:00' },
+        { id: 11, begin: '2016-01-01T02:00:00', end: '2016-01-01T10:00:00', visualBegin: '2016-01-01T02:00:00', visualEnd: '2016-01-01T10:00:00' },
+        { id: 12, begin: '2016-01-01T12:30:00', end: '2016-01-01T20:00:00', visualBegin: '2016-01-01T12:30:00', visualEnd: '2016-01-01T20:00:00' },
+        { id: 13, begin: '2016-01-01T20:00:00', end: '2016-01-01T20:30:00', visualBegin: '2016-01-01T20:00:00', visualEnd: '2016-01-01T20:30:00' },
       ];
       const actual = utils.getTimelineItems(
         moment('2016-01-01T00:00:00'),
@@ -266,8 +266,8 @@ describe('shared/availability-view/utils', () => {
 
     it('supports excluding reservation', () => {
       const reservations = [
-        { id: 11, begin: '2016-01-01T00:30:00', end: '2016-01-01T01:30:00' },
-        { id: 12, begin: '2016-01-01T02:00:00', end: '2016-01-02T00:00:00' },
+        { id: 11, begin: '2016-01-01T00:30:00', end: '2016-01-01T01:30:00', visualBegin: '2016-01-01T00:30:00', visualEnd: '2016-01-01T01:30:00' },
+        { id: 12, begin: '2016-01-01T02:00:00', end: '2016-01-02T00:00:00', visualBegin: '2016-01-01T02:00:00', visualEnd: '2016-01-02T00:00:00' },
       ];
       const excludeReservation = reservations[0].id;
       const actual = utils.getTimelineItems(
