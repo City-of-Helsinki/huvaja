@@ -17,7 +17,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(session({
   store: new RedisStore({
     url: process.env.REDIS_URL || 'redis://localhost:6379',
-    logErrors: true
+    logErrors: true,
   }),
   secret: process.env.SESSION_SECRET,
   cookie: {
