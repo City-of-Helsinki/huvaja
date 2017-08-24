@@ -16,33 +16,70 @@ function isInsideOpeningHours(item, openingHours) {
   ));
 }
 
+function roundDateToSlotSize(date, roundSlotSize, direction) {
+  if (!date) {
+    return null;
+  }
+  const slotDate = moment(date);
+  const modulo = slotDate.minute() % roundSlotSize;
+  if (modulo === 0) {
+    return moment(date);
+  }
+  if (direction > 0) {
+    slotDate.add(roundSlotSize - modulo, 'minutes');
+  } else if (direction < 0) {
+    slotDate.subtract(modulo, 'minutes');
+  }
+  return slotDate;
+}
+
 function getTimelineItems(date, reservations, resource, excludeReservation) {
   const items = [];
   let reservationPointer = 0;
   let timePointer = date.clone().startOf('day');
   const end = date.clone().endOf('day');
+  let previousReservationEnd = null;
   while (timePointer.isBefore(end)) {
     const reservation = reservations && reservations[reservationPointer];
     if (reservation && reservation.id === excludeReservation) {
       reservationPointer += 1;
       continue; // eslint-disable-line no-continue
     }
-    const isSlotReservation = reservation && timePointer.isSame(reservation.begin);
+    let visualBegin = null;
+    if (reservation && previousReservationEnd &&
+        previousReservationEnd.isAfter(reservation.begin)) {
+        // This is a rare edge case where the previous reservation
+        // ends between slots at t0 and the current reservation begins
+        // at the same t0.
+        //
+        // The former reservation ending has already been rounded up,
+        // overlapping the current reservation, the beginning of which
+        // thus cannot be rounded down. They are just forced to equal.
+      visualBegin = previousReservationEnd;
+    } else {
+      visualBegin = reservation && roundDateToSlotSize(reservation.begin, slotSize, -1);
+    }
+    const visualEnd = reservation && roundDateToSlotSize(reservation.end, slotSize, 1);
+    const isSlotReservation = reservation && timePointer.isSame(visualBegin);
+    const key = String(items.length);
     if (isSlotReservation) {
       items.push({
-        key: String(items.length),
+        key,
         type: 'reservation',
-        data: reservation,
+        data: { ...reservation,
+          visualBegin: visualBegin.format('YYYY-MM-DDTHH:mm:ss'),
+          visualEnd: visualEnd.format('YYYY-MM-DDTHH:mm:ss') },
       });
-      timePointer = moment(reservation.end);
+      timePointer = moment(visualEnd);
       reservationPointer += 1;
+      previousReservationEnd = visualEnd;
     } else {
       const data = {
         begin: timePointer.clone(),
         end: timePointer.clone().add(slotSize, 'minutes'),
       };
       items.push({
-        key: String(items.length),
+        key,
         type: 'reservation-slot',
         data: {
           ...data,

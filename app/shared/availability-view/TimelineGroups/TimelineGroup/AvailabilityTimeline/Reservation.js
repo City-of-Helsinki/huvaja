@@ -11,6 +11,8 @@ import Link from './Link';
 Reservation.propTypes = {
   begin: PropTypes.string.isRequired,
   end: PropTypes.string.isRequired,
+  visualBegin: PropTypes.object,
+  visualEnd: PropTypes.object,
   eventSubject: PropTypes.string,
   id: PropTypes.number.isRequired,
   numberOfParticipants: PropTypes.number,
@@ -22,9 +24,13 @@ Reservation.propTypes = {
 };
 
 function Reservation(props) {
+  // If a reservation is between slots, the visual
+  // and actual start/end times can be different
+  const visualStartTime = moment(props.visualBegin || props.begin);
+  const visualEndTime = moment(props.visualEnd || props.end);
   const startTime = moment(props.begin);
   const endTime = moment(props.end);
-  const width = utils.getTimeSlotWidth({ startTime, endTime });
+  const width = utils.getTimeSlotWidth({ startTime: visualStartTime, endTime: visualEndTime });
   const popover = (
     <Popover id={`popover-${props.id}`} title={props.eventSubject}>
       <div>
