@@ -9,6 +9,7 @@ Requirements
 
 - [node](http://nodejs.org/) `6.5.0`
 - [npm](https://www.npmjs.com/) `3.10.3`
+- [redis](https://redis.io/)
 
 Architecture
 ------------
