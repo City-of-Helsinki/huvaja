@@ -19,7 +19,7 @@ describe('shared/navbar/Navbar', () => {
   }
 
   function getLogoutLinkWrapper(props) {
-    const logoutHref = `/logout?next=${window.location.origin}`;
+    const logoutHref = `https://api.hel.fi/sso/logout/?next=${window.location.origin}/logout`;
     return getWrapper(props).find(`[href="${logoutHref}"]`);
   }
 
