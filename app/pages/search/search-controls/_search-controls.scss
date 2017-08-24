@@ -23,12 +23,12 @@
     );
     .date-picker {
       width: 145px;
-      border: 1px solid $input-border;
-      border-bottom-width: 2px;
-      background-color: #fff;
+      border: 2px solid $input-border;
+      height: 40px;
 
       input {
         padding: 0;
+        background-color: transparent;
       }
     }
 

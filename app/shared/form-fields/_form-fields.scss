@@ -4,8 +4,7 @@
 @mixin form-date-picker() {
   height: $input-height-base;
   margin-bottom: $padding-small-vertical;
-  border-width: 1px;
-  border-bottom-width: 2px;
+  border-width: 2px;
   border-color: $input-border;
   border-radius: $input-border-radius;
   padding: $padding-small-vertical $padding-small-horizontal;
@@ -29,6 +28,7 @@
     @include form-date-picker();
 
     &--focused {
+      border-width: 2px;
       border-color: $input-border-focus;
     }
     .has-error & {
