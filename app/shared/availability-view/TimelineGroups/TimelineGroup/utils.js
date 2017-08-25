@@ -17,6 +17,9 @@ function isInsideOpeningHours(item, openingHours) {
 }
 
 function roundDateToSlotSize(date, roundSlotSize, direction) {
+  if ((60 % roundSlotSize) !== 0) {
+    throw new RangeError('60 must be divisible by roundSlotSize');
+  }
   if (!date) {
     return null;
   }
