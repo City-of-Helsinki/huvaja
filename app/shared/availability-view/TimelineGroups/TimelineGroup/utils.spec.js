@@ -38,6 +38,17 @@ describe('shared/availability-view/utils', () => {
     });
   });
 
+  describe('roundDateToSlotSize', () => {
+    it('rounds Dates and moments not conforming to the slot divisions to the nearest slot division', () => {
+      const unrounded = moment('2017-01-01T12:03:00Z');
+      const roundedUp = utils.roundDateToSlotSize(unrounded, 30, 1);
+      const roundedDown = utils.roundDateToSlotSize(unrounded, 30, -1);
+      expect(roundedUp.isSame(moment('2017-01-01T12:30:00Z'))).to.be.true;
+      expect(roundedDown.isSame(moment('2017-01-01T12:00:00Z'))).to.be.true;
+      expect(() => utils.roundDateToSlotSize(unrounded, 13, 1)).to.throw(RangeError, 'divisible');
+    });
+  });
+
   describe('getTimelineItems', () => {
     it('returns reservation slots if reservations is undefined', () => {
       const actual = utils.getTimelineItems(moment('2016-01-01T00:00:00Z'), undefined, '1');

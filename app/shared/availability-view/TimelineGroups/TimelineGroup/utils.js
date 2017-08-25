@@ -99,4 +99,5 @@ function getTimelineItems(date, reservations, resource, excludeReservation) {
 export default {
   getTimelineItems,
   getTimeSlotWidth,
+  roundDateToSlotSize,
 };
