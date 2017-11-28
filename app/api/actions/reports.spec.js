@@ -15,6 +15,7 @@ describe('api/actions/reports', () => {
         'daily_reservations',
         {
           day: '2017-02-18',
+          include_resources_without_reservations: 'true',
           resource: 'abc,def',
         }
       ),
