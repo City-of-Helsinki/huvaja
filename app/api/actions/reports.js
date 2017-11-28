@@ -10,6 +10,7 @@ function fetchResourceDailyReport({ date, resourceIds }) {
     type: 'RESOURCE_DAILY_REPORT',
     params: {
       resource: resourceIds.join(','),
+      includeResourcesWithoutReservations: 'true',
       day,
     },
   });
