@@ -10,6 +10,7 @@ import { browserHistory, Link } from 'react-router';
 
 import uiActions from 'actions/uiActions';
 import { fetchReservations } from 'api/actions';
+import ReservationsReportButton from 'shared/reservations-report-button';
 import DayReservations from './day-reservations';
 import selector from './reservationSearchPageSelector';
 import ReservationSearchControls from './reservation-search-controls';
@@ -103,6 +104,9 @@ export class UnconnectedReservationSearchPageContainer extends Component {
           values={searchFilters}
           onChange={changeFilters}
           units={units}
+        />
+        <ReservationsReportButton
+          searchFilters={searchFilters}
         />
         <div className="search-results-container">
           <Loader loaded={!isFetching}>
