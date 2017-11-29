@@ -11,6 +11,7 @@ import { createComment, fetchComments } from './comments';
 import { fetchEquipment } from './equipment';
 import {
   fetchReservationDetailsReport,
+  fetchReservationsReport,
   fetchResourceDailyReport,
 } from './reports';
 import {
@@ -45,6 +46,7 @@ export {
   fetchEquipment,
   fetchFavoritedResources,
   fetchReservationDetailsReport,
+  fetchReservationsReport,
   fetchResourceDailyReport,
   fetchReservation,
   fetchReservations,
