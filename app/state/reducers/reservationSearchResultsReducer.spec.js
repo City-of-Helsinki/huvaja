@@ -49,5 +49,22 @@ describe('state/reducers/reservationSearchResultsReducer', () => {
         expect(nextState).to.deep.equal(expected);
       });
     });
+    describe('RESERVATION_DELETE_SUCCESS', () => {
+      const deleteReservationSuccess = createAction(
+        actionTypes.RESERVATION_DELETE_SUCCESS,
+        reservation => ({
+          id: reservation,
+        })
+      );
+
+      it('removes the given reservation id from state', () => {
+        const action = deleteReservationSuccess('r-1');
+        const currentState = ['r-1', 'r-2'];
+        const expected = ['r-2'];
+        const nextState = reservationSearchResultsReducer(currentState, action);
+
+        expect(nextState).to.deep.equal(expected);
+      });
+    });
   });
 });

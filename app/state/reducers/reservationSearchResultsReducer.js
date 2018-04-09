@@ -9,4 +9,8 @@ export default handleActions({
     const reservationIds = Object.keys(action.payload.entities.reservations || {});
     return reservationIds;
   },
+  [actionTypes.RESERVATION_DELETE_SUCCESS]: (state, action) => {
+    const reservationIds = state.filter(id => id !== String(action.payload.id));
+    return reservationIds;
+  },
 }, initialState);
