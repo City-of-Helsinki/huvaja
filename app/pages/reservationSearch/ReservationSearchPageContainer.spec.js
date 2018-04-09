@@ -27,6 +27,9 @@ describe('pages/search/ReservationSearchPageContainer', () => {
     start: '2016-11-12',
     unit: '',
   };
+  const defaultFilters = {
+    state: 'requested,confirmed',
+  };
   const defaultProps = {
     changeFilters: () => null,
     fetchReservations: () => null,
@@ -144,7 +147,9 @@ describe('pages/search/ReservationSearchPageContainer', () => {
       instance.componentDidMount();
       expect(fetchReservations.callCount).to.equal(1);
       const expectedArgs = decamelizeKeys(searchFilters);
-      expect(props.fetchReservations.lastCall.arg).to.deep.equal(expectedArgs);
+      expect(props.fetchReservations.lastCall.arg).to.deep.equal(
+        { ...defaultFilters, ...expectedArgs }
+      );
     });
   });
 
@@ -224,6 +229,7 @@ describe('pages/search/ReservationSearchPageContainer', () => {
 
       expect(fetchReservations.callCount).to.equal(1);
       expect(fetchReservations.lastCall.arg).to.deep.equal({
+        ...defaultFilters,
         is_favorite_resource: 'true',
         event_subject: 'Meeting',
       });
