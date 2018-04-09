@@ -60,7 +60,8 @@ export class UnconnectedReservationSearchPageContainer extends Component {
 
   fetch(filters) {
     const decamelized = decamelizeKeys(filters);
-    this.props.fetchReservations(decamelized);
+    const defaultFilters = { state: 'requested,confirmed' };
+    this.props.fetchReservations({ ...defaultFilters, ...decamelized });
   }
 
   fetchAndChangeUrl(filters) {
