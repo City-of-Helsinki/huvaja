@@ -1,5 +1,6 @@
 import immutable from 'seamless-immutable';
 import { actionTypes as formActions } from 'redux-form';
+import * as Sentry from '@sentry/browser';
 
 import apiActionTypes from 'api/actionTypes';
 
@@ -29,6 +30,11 @@ function reservationSuccessModalReducer(state = initialState, action) {
       });
     }
     case apiActionTypes.RESERVATION_POST_ERROR: {
+      const status = action.payload.status;
+      if (status >= 500 || status === 401 || status === 403) {
+        Sentry.captureMessage('Reservation POST failed');
+      }
+
       const reservation = action.meta.reservation;
       if (!reservation) return state;
       const failReason = parseError(action.payload);
