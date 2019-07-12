@@ -36,8 +36,18 @@ function fetchReservationsReport(filters) {
   });
 }
 
+function fetchReservationListReport(filters) {
+  return createReportAction({
+    endpoint: 'reservation_list',
+    filename: 'varaukset',
+    type: 'RESERVATION_LIST_REPORT',
+    params: filters,
+  });
+}
+
 export {
   fetchReservationDetailsReport,
   fetchResourceDailyReport,
   fetchReservationsReport,
+  fetchReservationListReport,
 };
