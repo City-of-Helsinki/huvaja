@@ -11,6 +11,7 @@
     "npm": "3.10.3"
   },
   "dependencies": {
+    "@sentry/browser": "5.2.1",
     "autoprefixer": "6.5.3",
     "babel-core": "6.18.2",
     "babel-eslint": "7.1.0",
@@ -44,7 +45,7 @@
     "moment-range": "2.2.0",
     "moment-timezone": "0.5.13",
     "morgan": "1.9.0",
-    "node-sass": "4.5.2",
+    "node-sass": "^4.5",
     "normalizr": "2.2.1",
     "passport": "0.3.2",
     "passport-helsinki": "git://github.com/City-of-Helsinki/passport-helsinki.git",
@@ -71,6 +72,7 @@
     "redux-actions": "0.13.0",
     "redux-api-middleware": "1.0.3",
     "redux-form": "6.6.1",
+    "redux-sentry-middleware": "0.0.15",
     "reselect": "2.5.4",
     "sass-loader": "4.1.1",
     "seamless-immutable": "6.1.4",

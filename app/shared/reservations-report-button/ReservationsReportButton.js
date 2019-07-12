@@ -3,14 +3,17 @@ import { connect } from 'react-redux';
 import DropdownButton from 'react-bootstrap/lib/DropdownButton';
 import MenuItem from 'react-bootstrap/lib/MenuItem';
 
-import { fetchReservationsReport } from 'api/actions';
+import { fetchReservationsReport, fetchReservationListReport } from 'api/actions';
 
 ReservationsReportButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  onListReportClick: PropTypes.func.isRequired,
+  onDetailedReportClick: PropTypes.func.isRequired,
   searchFilters: PropTypes.object.isRequired,
 };
 
-export function ReservationsReportButton({ onClick, searchFilters }) {
+export function ReservationsReportButton({
+  onListReportClick, onDetailedReportClick, searchFilters,
+}) {
   return (
     <div className="reservations-report-button">
       <DropdownButton
@@ -18,14 +21,20 @@ export function ReservationsReportButton({ onClick, searchFilters }) {
         id="reservations-report-button"
         title="Lataa raportti"
       >
-        <MenuItem onClick={() => onClick(searchFilters)} >
+        <MenuItem onClick={() => onDetailedReportClick(searchFilters)} >
           Varausraportti
+        </MenuItem>
+        <MenuItem onClick={() => onListReportClick(searchFilters)} >
+          Listaraportti
         </MenuItem>
       </DropdownButton>
     </div>
   );
 }
 
-const actions = { onClick: fetchReservationsReport };
+const actions = {
+  onListReportClick: fetchReservationListReport,
+  onDetailedReportClick: fetchReservationsReport,
+};
 
 export default connect(null, actions)(ReservationsReportButton);

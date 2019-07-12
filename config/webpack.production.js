@@ -44,6 +44,7 @@ module.exports = merge(common, {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
+      'process.env.SENTRY_DSN': JSON.stringify(process.env.SENTRY_DSN),
       SETTINGS: {
         API_URL: JSON.stringify(process.env.API_URL || 'https://api.hel.fi/virkarespa/v1/'),
         REPORT_URL: JSON.stringify(
