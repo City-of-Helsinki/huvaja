@@ -9,7 +9,7 @@ import { ReservationsReportButton } from './ReservationsReportButton';
 
 describe('shared/reservation-report-button/ReservationsReportButton', () => {
   const defaultProps = {
-    onClick: () => null,
+    onDetailedReportClick: () => null,
     searchFilters: {
       start: '2017-11-29',
       end: '2017-11-30',
@@ -37,11 +37,11 @@ describe('shared/reservation-report-button/ReservationsReportButton', () => {
     });
 
     it('calls onClick action on click', () => {
-      const onClick = simple.mock();
-      const item = getWrapper({ onClick }).find(MenuItem).at(0);
+      const onDetailedReportClick = simple.mock();
+      const item = getWrapper({ onDetailedReportClick }).find(MenuItem).at(0);
       item.simulate('click');
-      expect(onClick.callCount).to.equal(1);
-      expect(onClick.lastCall.arg).to.deep.equal(defaultProps.searchFilters);
+      expect(onDetailedReportClick.callCount).to.equal(1);
+      expect(onDetailedReportClick.lastCall.arg).to.deep.equal(defaultProps.searchFilters);
     });
   });
 });
