@@ -8,11 +8,31 @@ if (!isProduction) {
 
 const express = require('express');
 const morgan = require('morgan');
+const fs = require('fs');
+const https = require('https');
 
 const auth = require('./auth');
 
 const app = express();
 const port = isProduction ? 8080 : 3000;
+
+// Configure https.globalAgent to use systems root certificate as the Node's
+// certificate inside the Node binary is expired.
+if (isProduction) {
+  var caPath = '/etc/ssl/certs';
+  var rootCerts = [];
+  var caBuf;
+
+  fs.readdir(caPath, (err, files) => {
+    files.forEach(file => {
+      if(file.endsWith('.pem')) {
+        caBuf = fs.readFileSync(`${caPath}/${file}`);
+        rootCerts.push(caBuf);
+      }
+    });
+  });
+  https.globalAgent.options.ca = rootCerts;
+}
 
 // Request logging
 app.use(morgan('combined'));
@@ -39,8 +59,6 @@ app.listen(port, (error) => {
   // This will start NGINX in Heroku. More details:
   // https://github.com/ryandotsmith/nginx-buildpack#applicationdyno-coordination
   if (isProduction) {
-    const fs = require('fs');
-
     fs.openSync('/tmp/app-initialized', 'w');
   }
 });
