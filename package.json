@@ -53,6 +53,7 @@
     "react": "15.3.2",
     "react-addons-css-transition-group": "15.3.2",
     "react-bootstrap": "0.30.6",
+    "react-bootstrap-typeahead": "3.4.7",
     "react-date-picker": "git://github.com/YoYuUm/react-date-picker.git#build-readonly",
     "react-document-title": "2.0.2",
     "react-dom": "15.3.2",

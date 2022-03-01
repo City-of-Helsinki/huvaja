@@ -10,6 +10,7 @@ import { ReservationsReportButton } from './ReservationsReportButton';
 describe('shared/reservation-report-button/ReservationsReportButton', () => {
   const defaultProps = {
     onClick: () => null,
+    showReservationsRateReportModal: () => null,
     searchFilters: {
       start: '2017-11-29',
       end: '2017-11-30',
@@ -30,10 +31,12 @@ describe('shared/reservation-report-button/ReservationsReportButton', () => {
     expect(button.prop('title')).to.equal('Lataa raportti');
   });
 
-  describe('daily report item', () => {
+  describe('report items', () => {
     it('has correct text', () => {
-      const item = getWrapper().find(MenuItem).at(0);
-      expect(item.children().text()).to.equal('Varausraportti');
+      const item1 = getWrapper().find(MenuItem).at(0);
+      const item2 = getWrapper().find(MenuItem).at(1);
+      expect(item1.children().text()).to.equal('Varausraportti');
+      expect(item2.children().text()).to.equal('Varausasteraportti');
     });
 
     it('calls onClick action on click', () => {
@@ -42,6 +45,12 @@ describe('shared/reservation-report-button/ReservationsReportButton', () => {
       item.simulate('click');
       expect(onClick.callCount).to.equal(1);
       expect(onClick.lastCall.arg).to.deep.equal(defaultProps.searchFilters);
+    });
+    it('calls showReservationsRateReportModal action on click', () => {
+      const showReservationsRateReportModal = simple.mock();
+      const item = getWrapper({ showReservationsRateReportModal }).find(MenuItem).at(1);
+      item.simulate('click');
+      expect(showReservationsRateReportModal.callCount).to.equal(1);
     });
   });
 });

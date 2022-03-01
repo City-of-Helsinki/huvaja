@@ -1,0 +1,57 @@
+.reservations-rate-report-modal {
+  .modal-title {
+    color: $black;
+  }
+  .modal-body {
+    box-sizing: border-box;
+    padding: 15px;
+    width: 100%;
+  
+    .date-pickers-container {
+        display: flex;
+        width: 100%;
+  
+      .delimiter {
+        display: flex;
+        align-items: center;
+        padding: 0 8px;
+        font-size: 32px;
+      }
+    }
+    
+    .unit-multi-select {
+      .rbt-input-wrapper {
+        padding: 0 5px 0 5px;
+      }
+    }
+
+    .time-picker-container {
+      display: flex;
+      width: 100%;
+    }
+
+    @include input-size(
+      '.date-picker',
+      $input-height-base,
+      $padding-base-vertical,
+      $padding-base-horizontal,
+      $font-size-base,
+      $line-height-base,
+      $input-border-radius
+    );
+  
+    .date-picker {
+      border: 2px solid $input-border;
+      background-color: transparent;
+  
+      input {
+        padding: 0;
+        background-color: transparent;
+      }
+    }
+  }
+
+  .download-button {
+    float: left;
+  }
+}
