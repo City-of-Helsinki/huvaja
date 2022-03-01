@@ -9,6 +9,7 @@ import recurringReservations from './recurringReservationsReducer';
 import resourcePage from './resourcePageReducer';
 import reservationCancel from './reservationCancelModalReducer';
 import reservationInfo from './reservationInfoModalReducer';
+import reservationsRateReport from './reservationsRateReportModalReducer';
 import reservationSearchFilters from './reservationSearchFiltersReducer';
 import reservationSearchResults from './reservationSearchResultsReducer';
 import reservationSuccess from './reservationSuccessModalReducer';
@@ -32,6 +33,7 @@ export default combineReducers({
     resourceImages,
     resourceInfo,
     resourceSelector: resourceSelectorModal,
+    reservationsRateReport,
   }),
   recurringReservations,
   reservationSearchPage: combineReducers({
