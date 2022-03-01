@@ -13,6 +13,7 @@ import {
   fetchReservationDetailsReport,
   fetchReservationsReport,
   fetchResourceDailyReport,
+  fetchReservationsRateReport,
 } from './reports';
 import {
   cancelReservation,
@@ -48,6 +49,7 @@ export {
   fetchReservationDetailsReport,
   fetchReservationsReport,
   fetchResourceDailyReport,
+  fetchReservationsRateReport,
   fetchReservation,
   fetchReservations,
   fetchResource,
