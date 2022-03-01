@@ -8,15 +8,16 @@ import DateTimeRange from './DateTimeRange';
 import Field from './Field';
 import Time from './Time';
 
+const defaults = {
+  controlProps: {
+    onChange: () => null,
+    value: { begin: {}, end: {} },
+  },
+  id: '1234',
+  noLabels: false,
+};
+
 function getWrapper(props) {
-  const defaults = {
-    controlProps: {
-      onChange: () => null,
-      value: { begin: {}, end: {} },
-    },
-    id: '1234',
-    noLabels: false,
-  };
   return shallow(<DateTimeRange {...defaults} {...props} />);
 }
 
@@ -37,6 +38,18 @@ describe('shared/form-fields/DateTimeRange', () => {
     expect(fields.at(0).prop('componentClass')).to.equal(DatePicker);
     expect(fields.at(1).prop('componentClass')).to.equal(Time);
     expect(fields.at(2).prop('componentClass')).to.equal(Time);
+  });
+
+  it('does not render datepicker if specified', () => {
+    const fields = getWrapper({
+      controlProps: {
+        ...defaults.controlProps,
+        renderDatePicker: false,
+      },
+    }).find(Field);
+    expect(fields).to.have.length(2);
+    expect(fields.at(0).prop('componentClass')).to.equal(Time);
+    expect(fields.at(1).prop('componentClass')).to.equal(Time);
   });
 
   it('renders labels only when noLabels = false', () => {
