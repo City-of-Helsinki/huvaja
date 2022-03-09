@@ -35,6 +35,10 @@ module.exports = merge(common, {
           presets: ['es2015', 'node6', 'react', 'stage-2'],
         },
       },
+      {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader',
+      },
     ],
   },
   plugins: [
