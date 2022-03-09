@@ -11,8 +11,8 @@ import Link from './Link';
 Reservation.propTypes = {
   begin: PropTypes.string.isRequired,
   end: PropTypes.string.isRequired,
-  visualBegin: PropTypes.object,
-  visualEnd: PropTypes.object,
+  visualBegin: PropTypes.string,
+  visualEnd: PropTypes.string,
   eventSubject: PropTypes.string,
   id: PropTypes.number.isRequired,
   numberOfParticipants: PropTypes.number,
