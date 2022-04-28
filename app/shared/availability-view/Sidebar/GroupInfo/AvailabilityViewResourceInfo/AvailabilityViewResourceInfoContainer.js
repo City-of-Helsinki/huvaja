@@ -12,7 +12,7 @@ AvailabilityViewResourceInfo.propTypes = {
   isFavorite: PropTypes.bool.isRequired,
   isHighlighted: PropTypes.bool,
   name: PropTypes.string.isRequired,
-  peopleCapacity: PropTypes.number.isRequired,
+  peopleCapacity: PropTypes.number,
 };
 export function AvailabilityViewResourceInfo(props) {
   return (

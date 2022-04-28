@@ -12,6 +12,7 @@ export default class DateTimeRange extends React.Component {
       onBlur: PropTypes.func,
       onChange: PropTypes.func.isRequired,
       required: PropTypes.bool,
+      renderDatePicker: PropTypes.bool,
       value: PropTypes.shape({
         begin: PropTypes.object.isRequired,
         end: PropTypes.object.isRequired,
@@ -55,6 +56,8 @@ export default class DateTimeRange extends React.Component {
 
   render() {
     const value = this.props.controlProps.value;
+    const renderDatePicker = this.props.controlProps.renderDatePicker === undefined
+      ? true : this.props.controlProps.renderDatePicker;
     const requiredPostfix = this.props.controlProps.required ? '*' : '';
     return (
       <div
@@ -64,16 +67,18 @@ export default class DateTimeRange extends React.Component {
         )}
       >
         <div className="date-time-range-field">
-          <Field
-            componentClass={DatePicker}
-            controlProps={{
-              onBlur: this.handleBlur,
-              onChange: this.handleDateChange,
-              value: value.begin.date,
-            }}
-            id={`${this.props.id}-date`}
-            label={this.props.noLabels ? '' : `Päivä${requiredPostfix}`}
-          />
+          {renderDatePicker === true ? (
+            <Field
+              componentClass={DatePicker}
+              controlProps={{
+                onBlur: this.handleBlur,
+                onChange: this.handleDateChange,
+                value: value.begin.date,
+              }}
+              id={`${this.props.id}-date`}
+              label={this.props.noLabels ? '' : `Päivä${requiredPostfix}`}
+            />
+          ) : null}
           <Field
             componentClass={Time}
             controlProps={{

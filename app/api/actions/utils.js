@@ -98,7 +98,7 @@ function getSuccessTypeDescriptor(type, options = {}) {
 
 function downloadReport(response, filename) {
   response.blob().then((blob) => {
-    fileSaver.saveAs(blob, `${filename}.docx`);
+    fileSaver.saveAs(blob, filename);
   });
 }
 
