@@ -78,7 +78,10 @@ export class ReservationsRateReportModal extends Component {
 
     const unitOptions = Object.keys(units).map((id) => {
       const unit = units[id];
-      return { value: unit.id, label: unit.name.fi };
+      return {
+        value: unit.id,
+        label: `${unit.name.fi} - ${unit.streetAddress.fi}`,
+      };
     });
 
     return (
