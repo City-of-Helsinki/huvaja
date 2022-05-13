@@ -43,7 +43,7 @@ export default handleActions({
   }),
   [actionTypes.RESERVATIONS_RATE_REPORT_GET_ERROR]: (state, action) => ({
     ...state,
-    errorMessage: action.payload.response[0],
+    errorMessage: action.payload.status === 500 ? 'Jotain meni pieleen' : action.payload.response[0],
     loading: false,
   }),
   [actionTypes.RESERVATIONS_RATE_REPORT_GET_SUCCESS]: state => ({
