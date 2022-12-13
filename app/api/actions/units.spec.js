@@ -11,7 +11,7 @@ describe('api/actions/units', () => {
       args: [],
       tests: {
         method: 'GET',
-        endpoint: buildAPIUrl('unit', { pageSize: 100, resource_group: 'kanslia' }),
+        endpoint: buildAPIUrl('unit', { pageSize: 1000, resource_group: 'kanslia' }),
         request: {
           type: types.UNITS_GET_REQUEST,
         },

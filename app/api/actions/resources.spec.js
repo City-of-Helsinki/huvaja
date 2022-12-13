@@ -99,7 +99,7 @@ describe('api/actions/resources', () => {
     describe('without times', () => {
       const params = {
         resource_group: 'kanslia',
-        pageSize: 100,
+        pageSize: 1000,
         some: 'arg',
       };
       createApiTest({

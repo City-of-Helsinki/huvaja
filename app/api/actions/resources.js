@@ -21,7 +21,7 @@ function fetchResource(id, params = {}) {
 function fetchResources(params = {}, times = true, meta) {
   const defaultParams = {
     resource_group: 'kanslia',
-    pageSize: 100,
+    pageSize: 1000,
   };
   const paramsWithTimes = times ? getParamsWithTimes(params) : params;
   return createApiAction({
