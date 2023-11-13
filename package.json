@@ -27,7 +27,7 @@
     "clean-webpack-plugin": "0.1.14",
     "connect-redis": "3.3.0",
     "cookie-parser": "1.4.3",
-    "css-loader": "0.25.0",
+    "css-loader": "2.0.0",
     "dragscroll": "0.0.8",
     "express": "4.16.0",
     "express-session": "1.15.6",
